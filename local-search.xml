@@ -16,5 +16,24 @@
   
   
   
+  <entry>
+    <title>Echarts学习后感</title>
+    <link href="/2020/10/11/Echarts%E5%AD%A6%E4%B9%A0%E5%90%8E%E6%84%9F/"/>
+    <url>/2020/10/11/Echarts%E5%AD%A6%E4%B9%A0%E5%90%8E%E6%84%9F/</url>
+    
+    <content type="html"><![CDATA[<h2 id="学习过程"><a href="#学习过程" class="headerlink" title="学习过程"></a>学习过程</h2><p>由于本学习的需要对交通数据进行可视化处理，老师推荐利用Echarts来制图。  </p><p>个人觉得学习任何一款软件，首先<em>官方教程</em>和<em>实例</em>必然是最恰当的，这里是官网<a href="https://echarts.apache.org/zh/index.html">https://echarts.apache.org/zh/index.html</a>，其中较为重要的是官方文档和官方实例，文档中包含特性、教程、API、配置项手册、版本记录和常见问题，在教程中，会利用说明方式介绍Echarts，配置项中则是对option中各类别代码的给出，较为复杂并不适合新手去查看，在另外一个实例中，给出各种利用Echarts做出的图案并显示option中的代码，有利于新手直接调用。</p><p>首先Echarts 的使用方式，由于对于html和Java从未了解过（也不知道是否和Echarts有关），并不清楚Echarts 的使用方式，经过摸索，大致分为以下两种方式</p><p>一、 首先下载Echarts文件压缩包，可以在官网上直接下载，找到其中的dist文件夹（以后写html文件夹的依赖项大部分都可以寻找dist文件夹），在自己电脑上新建一个文件夹，将dist文件复制进去，利用记事本编写html文件，即新建txt文件后，比如将Echart实例中的代码复制进去（主要除了option以外的html的基本格式要求），重命名为html文件即可看见图标</p><p>二、前部分同上，在visual studio 社区版<a href="https://visualstudio.microsoft.com/zh-hans/vs/">https://visualstudio.microsoft.com/zh-hans/vs/</a>，之后新建新项目，选择空白解决方案（注意不是空项目），选择和刚才相同文件夹（保证编辑的html文件和.js文件保存在同一文件夹内，右键-添加—新建项，可以选择html文件就可以开始编译了  </p><p>之后就是编译了，这里推荐菜鸟教程<a href="https://www.runoob.com/echarts/echarts-tutorial.html">https://www.runoob.com/echarts/echarts-tutorial.html</a>，其中介绍的比较详细，想要速成的话可以之间根据官方的五分钟+实例上手。但那样可能会在自己做出改动时有困惑。</p><h2 id="学习心得"><a href="#学习心得" class="headerlink" title="学习心得"></a>学习心得</h2><p>  最喜欢Echarts教程中的这张图，因为要图像可视化，最重要的是要明白图表的组成部分，同样matlab也可以利用get函数来得到图形的各种特征，并利用set函数对各部分进行更改。<br>  <img src="https://echarts.apache.org/zh/documents/asset/img/basic-concepts-overview/components.jpg" alt="图标格式"></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>Study</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
   
 </search>
