@@ -1,0 +1,1040 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenxia">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这里主要借鉴Tsinghua的2020fall&lt;数据结构与算法&gt;这本书，包含对于一些基本数据结构的探索，先从定义梳理，在整理题目，之后是实际训练。结合之前在程序设计或嵌入式中对于数据在实际存储的例子来学习可能会更好。从中也能体悟到算法一些含义 本次主要对绪论、线性结构的数组（Array）为基础的向量（Vector）、以链表（Link）为基础的列表（List）、栈（Stack）与队列（Q">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法01-向量｜列表｜栈与队列｜树">
+<meta property="og:url" content="https://blog.tjdata.site/posts/d1d898bf.html">
+<meta property="og:site_name" content="Chenxia&#39;s blog">
+<meta property="og:description" content="这里主要借鉴Tsinghua的2020fall&lt;数据结构与算法&gt;这本书，包含对于一些基本数据结构的探索，先从定义梳理，在整理题目，之后是实际训练。结合之前在程序设计或嵌入式中对于数据在实际存储的例子来学习可能会更好。从中也能体悟到算法一些含义 本次主要对绪论、线性结构的数组（Array）为基础的向量（Vector）、以链表（Link）为基础的列表（List）、栈（Stack）与队列（Q">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzmerjgvj214q0g6gn4.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bz8egi6ij219c0nugrp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzbbeztyj213o0lmtcs.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzdw2k5zj215a0fu0v1.jpg">
+<meta property="og:image" content="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b8bad7c8-b710-4d5d-bd03-b0f384cc6eaa/Untitled.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzehjzcjj20l20es74x.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzem3ys4j20kq0c0mxo.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzerqbzij20k806mglr.jpg">
+<meta property="article:published_time" content="2022-04-16T15:10:37.000Z">
+<meta property="article:modified_time" content="2022-10-17T08:18:08.952Z">
+<meta property="article:author" content="chenxia">
+<meta property="article:tag" content="TsinghuaBook">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzmerjgvj214q0g6gn4.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>数据结构与算法01-向量｜列表｜栈与队列｜树 - Chenxia&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"4ace08e3aba4620ee513a74cf9c779c1","google":"G-WBB268CYE1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?4ace08e3aba4620ee513a74cf9c779c1";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+    <!-- Google Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('https://www.google-analytics.com/analytics.js', function() {
+          window.ga = window.ga || function() { (ga.q = ga.q || []).push(arguments) };
+          ga.l = +new Date;
+          ga('create', 'G-WBB268CYE1', 'auto');
+          ga('send', 'pageview');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Chenxia's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenxia&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法01-向量｜列表｜栈与队列｜树"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-04-16 23:10" pubdate>
+          2022年4月16日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          10k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          84 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数据结构与算法01-向量｜列表｜栈与队列｜树</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这里主要借鉴Tsinghua的2020fall&lt;数据结构与算法&gt;这本书，包含对于一些基本数据结构的探索，先从定义梳理，在整理题目，之后是实际训练。结合之前在程序设计或嵌入式中对于数据在实际存储的例子来学习可能会更好。从中也能体悟到算法一些含义</p>
+<p>本次主要对绪论、线性结构的数组（Array）为基础的向量（Vector）、以链表（Link）为基础的列表（List）、栈（Stack）与队列（Queue）；半线性结构的数（Tree）做定义的记录和梳理。</p>
+<span id="more"></span>
+<h1 id="chapter01-绪论"><a class="markdownIt-Anchor" href="#chapter01-绪论"></a> Chapter01 绪论</h1>
+<h2 id="11-瞎说"><a class="markdownIt-Anchor" href="#11-瞎说"></a> 1.1 瞎说</h2>
+<p>计算机是人类从事计算的工具，也是抽象计算模型的具体物化，基于图灵模型的现代计算机，即是人类现代文明的标志与基础，更是人脑思维的拓展与延伸。尽管计算机的性能日益提高，但是这种能力在解决实际应用问题能够真正得到发挥，决定性的因素在于人类如何深入思考与分析获得对问题本质的透彻理解，</p>
+<ul>
+<li>需要按照长期积淀的框架和模式来设计出合乎问题内在规律的算法，</li>
+<li>选用、改进或者定制足以支撑算法高效实现的数据结构，</li>
+<li>并在真实的应用环境中充分测试、调试和改进</li>
+</ul>
+<p>那么什么是算法？</p>
+<ul>
+<li>埃及人的绳索是算法</li>
+<li>尺规作图是算法</li>
+<li>冒泡排序bubble sort也是算法</li>
+</ul>
+<p>宏观的定义是<strong>基于特定的计算模型，在解决某一信息处理问题而设计的一个指令序列，本书所说的算法还需要具有以下的特点</strong></p>
+<ul>
+<li>有input和output</li>
+<li>可操作、确定性与可行性</li>
+<li>有穷性和正确性，finiteness and correctness</li>
+<li>退化与鲁棒性，degeneracy and robustness</li>
+<li>重用性，reuse</li>
+</ul>
+<p>如何评价一个算法呢？</p>
+<ul>
+<li>可计算性computability</li>
+<li>难解性 intractability，本书将更多的关注于非“不可解和难解”的一般性问题，并讨论如何效率的解决这一层面的计算问题，因此需要<strong>确定一种尺度，从时间和空间方面度量算法的计算成本，并由此对不同算法进行比较和评判，当然最重要的是在研究和归纳算法设计月实现过程中的一般性规律与技巧，以编写出效率更高、能够处理更大规模数据的程序，这是本书的基本主题也是贯穿主题的脉络</strong></li>
+<li>计算效率</li>
+<li>数据结构</li>
+</ul>
+<h2 id="12-复杂度complexity度量"><a class="markdownIt-Anchor" href="#12-复杂度complexity度量"></a> 1.2 复杂度complexity度量</h2>
+<aside> 💡 时间复杂度（Time complexity），运行时间是由多种综合因素作用而决定的，因为对于同种算法，对于不同的输入所需的运行时间并不相同，比如对于排序问题，输入序列的规模其中各元素的元素以及次序均不确定，这些因素都将影响到排序算法最终的运行时间，因此**为来运行时间建立一种可行、可信的评估标准，需要考虑其中的关键因素 因此可以将这个问题转化成为：随着输入模式的扩大，算法的执行时间将如何增长？执行时间的这一变化趋势可表示为输入模式的一个函数，可以讲起称为时间复杂度time complexity，对于特定算法处理规模为n的问题所需要的时间可以作T(n)**
+</aside>
+<aside> 💡 渐进复杂度（asymptotic analysis），一些算法适用于小规模输入，一些算法适用于大规模输入，在评价算法运行效率时，我们往往可以忽略其处理小规模问题的差异，转而关注在处理更大规模问题时的表现，在其中我们可以尝试用一些方法，1. 大O记号 2 大Omega记号 3 大Theta记号
+</aside>
+<ol>
+<li>渐进上界 ，也就是最差情况big-O notation，对于规模为n的任意输入，算法的运行时间都不高于O（f（n））</li>
+<li>渐进下界，也就是最好情况big-Omega-Notation，对于规模为n的任意输入，算法的运行时间都不低于Omega（g（n））</li>
+<li>如果恰好渐进上界和渐进下界之间先等，O=Omega，因此可以使用big-theta-notation做记号</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzmerjgvj214q0g6gn4.jpg" srcset="/img/loading.gif" lazyload alt="image-20220416233840239" /></p>
+<aside> 💡 空间复杂度（space complexity），为了更加客观地评价算法性能的优劣，除非特别申明，空间复杂度通常并不原始输入本身所占用的空间，对于同一问题，这一指标对任何算法都是相同的，反之其他的各种方面所小孩的空间都应该计算
+</aside>
+<p>另外在很多时候我们都是更好甚至仅仅关注于算法的时间复杂度，而不必对空间复杂度多专门的考察，这种简单评测方式的一句都来自于一下事实：就渐进复杂度的意义而言，在任一算法的任何一次运行过程中所消耗的存储空间都不会多余期间所执行基本操作的累计次数；但是空间复杂度的分析的意义在于对空间效率非常在乎的应用场合中，当问题的输入规模极为庞大时，由时间复杂度所确立的平凡上界已经难以令人满意</p>
+<h2 id="13-复杂度分析"><a class="markdownIt-Anchor" href="#13-复杂度分析"></a> 1.3 复杂度分析</h2>
+<p>在1.2 中确定算法复杂度的度量标准，分析算法的复杂度，可一般使用大O算法，来将各种算法的复杂度从低到高划分为不同的级别</p>
+<ul>
+<li>常数O（1）</li>
+<li>对数O(log N)</li>
+<li>线性 O（n）</li>
+<li>多项式 O（polynomial（n））</li>
+<li>指数O（2^n）</li>
+</ul>
+<h2 id="14-递归recursive"><a class="markdownIt-Anchor" href="#14-递归recursive"></a> 1.4 递归recursive</h2>
+<p>递归的价值在于，许多应用问题都可以简介而准确地描述为递归形式，同时也是一种基本而典型的算法设计模型，这模式可以对实际问题中反复出现的结构和形式loop variant进行高度概括，并从本质层面加以描述与刻画，进而导出高效的算法</p>
+<p>本篇文章从递归的基本模式入手，循序渐进介绍如何选择和应用（线性递归、二分递归和多分支递归等）不同的递归形式，来实现（遍历、分治等）算法策略，以及如何利用递归跟踪和递推方程等方法分析递归算法的复杂度</p>
+<ul>
+<li>线性递归，base case of recursion，避免因无限递归导致系统溢出，往往对应减而治之decrease and conquer的算法策略，<strong>递归每深入一层，待求解问题的规模都缩减一个常熟，直至最终蜕化为平凡的简单问题</strong></li>
+<li>递归分析，可以使用递归跟踪与递归方程两种主要的方法
+<ul>
+<li>算法的每一个递归实例都表示为一个方框，其中著名该实例调用的参数</li>
+<li>若实例M调用实例N，则在M与N对应的方框之间添加一条有向联线</li>
+</ul>
+</li>
+<li>递归模式</li>
+<li>递归消除</li>
+<li>二分递归 divide-and-conquer</li>
+</ul>
+<h1 id="chapter02-static向量vector"><a class="markdownIt-Anchor" href="#chapter02-static向量vector"></a> Chapter02 （Static）向量vector</h1>
+<p>数据结构是数据项的结构化集合，其结构表现为数据项之间的相互系列与作用，也可以理解为定义与数据项之间的某种逻辑次序，根据这种逻辑次序的复杂程度，可以将数据结构划分为线性结构、半线性结构和非线性结构三个部分</p>
+<p>在线性结构中，数据项按照一个线性次数构成一个整体，其中最基本的线性结构为sequence，根据数据项的逻辑次序和物理存储地址的不同可以区分为向量vector和列表list</p>
+<p>本章的讲解将围绕向量结构的高效实现而逐步展开，包括作为抽象数据类型的接口规范以及对应的额算法，尤其是高效维护动态向量的技巧</p>
+<h2 id="21-从数组和向量"><a class="markdownIt-Anchor" href="#21-从数组和向量"></a> 2.1 从数组和向量</h2>
+<aside> 💡 数组 Array
+</aside>
+<p>若集合S由n个元素组成，且各元素之间具有一个线性次序，则可以将他们存在在开始地址A、物理位置连续的一段存储空间，</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>A</mi><mo>=</mo><mo>[</mo><msub><mi>a</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>]</mo></mrow><annotation encoding="application/x-tex">A=[a_0,a_1,...,a_{n-1}]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit">A</span><span class="mrel">=</span><span class="mopen">[</span><span class="mord"><span class="mord mathit">a</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">0</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mpunct">,</span><span class="mord"><span class="mord mathit">a</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">1</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mpunct">,</span><span class="mord mathrm">.</span><span class="mord mathrm">.</span><span class="mord mathrm">.</span><span class="mpunct">,</span><span class="mord"><span class="mord mathit">a</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">n</span><span class="mbin">−</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">]</span></span></span></span></p>
+<p>q其中i小于j，A[i]都是A[j]的predecessor，后者是successor，相邻的成为immediate predecessor；immediate successor，元素的所有前去构成前缀prefix，所有的后继构成suffix</p>
+<p>采用这样的元素规范，不仅使得每个元素都通过下标唯一指代，而且可以让我们直接访问任何元素，这里所说的访问包括 读取和修改等基本操作，“直接”的意思是这些操作可以在常数时间内完成</p>
+<p>在其中元素的物理地址与其下标之间满足这种线性关系，因此被称作Linear Array</p>
+<aside> 💡 向量Vector
+</aside>
+<p>对数组array基础上做一般性的推广。也是具有线性次序的一组元素构成的集合</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>V</mi><mo>=</mo><mo>[</mo><msub><mi>v</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>v</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>v</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>]</mo></mrow><annotation encoding="application/x-tex">V=[v_0,v_1,...,v_{n-1}]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.22222em;">V</span><span class="mrel">=</span><span class="mopen">[</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">0</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mpunct">,</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">1</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mpunct">,</span><span class="mord mathrm">.</span><span class="mord mathrm">.</span><span class="mord mathrm">.</span><span class="mpunct">,</span><span class="mord"><span class="mord mathit" style="margin-right:0.03588em;">v</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">n</span><span class="mbin">−</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mclose">]</span></span></span></span>其中的元素分别由Rank秩相互区分</p>
+<p>在这样抽象之后，我们不在限定同一个向量中的元素都属于同一基本类型，本身可以是来自于更具一般性的某一类的对象，另外各元素也不见得同时具有某一数值属性，故并不保证之间可以相互比较大小</p>
+<h2 id="22-interface接口"><a class="markdownIt-Anchor" href="#22-interface接口"></a> 2.2 Interface接口</h2>
+<p>操作接口</p>
+<p>具有一些基本操作，</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bz8egi6ij219c0nugrp.jpg" srcset="/img/loading.gif" lazyload alt="Untitled" /></p>
+<p>介绍其中某些操作，比如size（）、get（）等静态操作可以在常数时间内完成</p>
+<p>insert（）、remove（）等动态操作可能需要线性时间</p>
+<h1 id="chapter03-dynamic列表list"><a class="markdownIt-Anchor" href="#chapter03-dynamic列表list"></a> Chapter03 （Dynamic）列表List</h1>
+<p>上一个章节中的元素访问为call-by-rank访问</p>
+<p>另外一种形象的元素访问时间可以是call-by-link</p>
+<p>不同数据结构内部的存储与组织方式差异，其操作接口的作用方式和时空性能也不相同，在设计和选用数据结构时，应该从实际应用的需求出发，先确定功能规范及性能指标，比如引入LIst的目的就是为了弥补Vector在解决某些应用问题的功能和性能方面的不足，两者之间的差异体现在对外的操作不同，根源在于内部存储方式的不同</p>
+<h2 id="31-从vector到list"><a class="markdownIt-Anchor" href="#31-从vector到list"></a> 3.1 从Vector到List</h2>
+<p>这也代表这从Static到Dynamic之间的转变</p>
+<p>Static Storage Policy 静态存储策略</p>
+<p>之前的Vector采用的就是静态存储的策略，“各元素物理地址连续”，由此导致的size（）get（）静态操作均可以在常数时间完成，而insert（）、remove（）等动态操作却都可能需要线性时间；得益于这种策略，我们可以O（1）时间内由Rank确定向量元素的物理地址，但是反过来在insert和remove的 过程中又不得不移动 O（n）元素，可以看出静态存储策略的静态操作的效率达到了极致，但是动态操作，局部的修改会引起整个范围甚至整个数据结构的调整</p>
+<p>Dynamic Storage Policy 动态存储策略</p>
+<p>List作为代表，尽管要求元素在逻辑上具有线性次序，但对物理地址并未做出任何限制，具体的是在生命周期内，此类数据结构将随着内部数据的需要，相应分配或回收局部的数据空间，如此元素之间的逻辑关系得以延续，却不必与物理次序相关，作为补偿，这类结构将通过指针或引用等机制来确定各元素的实际物理地址</p>
+<p>比如链表（Linked list）就是一种典型的动态存储结构，其中的数据分散为一系列称为节点（Node）的单位，节点之间通过指针相互索引和访问，引入新的节点就可以删除原有的节点，在局部调整少量相关节点之间的指针</p>
+<p>但是这样并不是没有问题</p>
+<p>在提高动态动态操作效率的同时，却不不得不舍弃原静态存储策略中使用Rank访问的方式，从而造成来静态操作性能的下降，虽然Link list的访问可以通过Rank来查询，但是其本质上是通过多次的指针递归得到的，因此平均访问时间为O（n）</p>
+<h1 id="chapter04-更基本栈stack-与队列queue"><a class="markdownIt-Anchor" href="#chapter04-更基本栈stack-与队列queue"></a> Chapter04 （更基本）栈Stack 与队列Queue</h1>
+<p>本章的目标是实现更加基本，也更加常用的两类数据结构—栈和队列，属于线性序列结构，古其中存放的数据对象之间也具有线性次序，相对于一般的序列结构，栈与队列的数据操作范围仅限于逻辑上的特定某段，得益于其简洁行于规范性，他们可以构建更复杂、更高级数据结构的基础，也是算法设计的基本方法</p>
+<p>相对于向量和列表，栈于队列的外部接口更为简化和紧凑，得益于此，本章的重点将不在拘泥对数据结构内部实现机制的展现，并转而更多从外部特性出发，结合若干典型的实际问题介绍栈和队列的具体应用</p>
+<p>在队列的应用方面，贲张将介绍如何实现基于轮值策略的通用循环分配器，并以银行窗口服务为例实现基本的调度算法</p>
+<h2 id="41-栈stack"><a class="markdownIt-Anchor" href="#41-栈stack"></a> 4.1 栈（Stack）</h2>
+<p>栈是存放数据对象的一种特殊容器，其中数据元素按照线性逻辑次序排列，因此可以定义首、末元素，不过尽管栈结构也支持对象的插入和删除操作，<strong>其操作的范围仅限于栈的某一特定端，也就是说，若约定的元素只能从某一端插入其中，则反过来也只能从这一端删除已有的元素</strong></p>
+<p>类似于这种操作，栈中可以操作的一段成为栈顶Stack Top，另一段无法直接操作的盲端称为Stack Bottom，最常用的插入和删除操作分别称为入栈Push和出栈Pop</p>
+<h2 id="42-栈与递归"><a class="markdownIt-Anchor" href="#42-栈与递归"></a> 4.2 栈与递归</h2>
+<p>递归算法所需的空间量主要决定于最大递归深度，在达到这个深度的时刻，同时活跃的递归实例达到最多，</p>
+<p>关于操作系统是如何实现函数递归调用的？如何记录调用与被调用函数（递归）之间的关系？如何实现函数（递归）调用的返回？又是如何维护同时活跃的所有函数（递归）实例的实现的？</p>
+<p><strong>这些所有问题的答案，都可以归结于栈Stack</strong></p>
+<p>在windows操作系统中，每个运行中的binary executable的二进制程序都配有一个调用栈（call stack）或执行栈execution stack，借助调用栈可以跟踪属于同一程序的所有函数，记录它们之间的相互调用关系，并保证在每一调用实例执行完毕之后，可以准确返回</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzbbeztyj213o0lmtcs.jpg" srcset="/img/loading.gif" lazyload alt="image-20220416232800442" /></p>
+<ul>
+<li>函数调用</li>
+</ul>
+<p>Call Stack的基本单位是帧（Frame）、以及局部变量、输入参数，并将该栈Push调用栈，并在该函数返回之前发生新的调用，同样将与新函数对应的一帧Push栈顶，函数一旦运行完毕，对应的帧随即弹出，运行控制权将被交还给该函数的上层调用，并按照Frame记录的返回地址确定二进制程序中继续执行的位置，当位于栈底的main（）被弹出意味着整个程序的运行结束，此后控制权将交还给OS</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1FY411J7s7?spm_id_from=333.337.search-card.all.click">CPU眼里的：{函数} | 栈帧 | 堆栈 | 栈变量 | 调用栈_哔哩哔哩_bilibili</a></p>
+<ul>
+<li>递归</li>
+</ul>
+<p>作为函数调用的特殊形式，递归也可以借助上述调用栈得以实现，可以看出同一函数可能同时拥有多个实例，并在调用栈中各自占有一栈，这些栈的结构完全相同</p>
+<p>一些没有用的建议</p>
+<h2 id="43-栈的典型应用"><a class="markdownIt-Anchor" href="#43-栈的典型应用"></a> 4.3 栈的典型应用</h2>
+<p>4.3.1 逆序输出</p>
+<p>逆序输出中的共同特征：首先，虽有明确的算法，但解答却以线性序列的形式给出，其次无论是递归还是迭代实现，该序列都是按照逆序计算输出的，最后输入和输出规模不确定，事先难以确定盛放输出数据的容器大小，因此具有特有的“后进先出”的特点，以及在容量方面的自适应性，因此可以使用Stack来解决这类问题</p>
+<aside> 💡 进制转换问题，可以将十进制整数n转换为lambda进制的表现形式
+</aside>
+<p>比较简单的除呗</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">convert</span><span class="hljs-params">(S,<span class="hljs-type">int</span>：n,base)</span></span>&#123;<br>	<span class="hljs-type">static</span> <span class="hljs-type">char</span> digit[]=&#123;<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>,...,<span class="hljs-string">&#x27;E&#x27;</span>,<span class="hljs-string">&#x27;F&#x27;</span>&#125;;<br>	<span class="hljs-keyword">if</span> (n&gt;<span class="hljs-number">0</span>)&#123;<br>	S.<span class="hljs-built_in">push</span>(digit[n%base]&#125;<br>	<span class="hljs-built_in">convert</span>(S,n/base,base)<span class="hljs-comment">//在C中这里的n/base会自动输出为整数</span><br>&#125;<br>&#125;<br><span class="hljs-comment">//新的base进制下由高到低的各数位，自顶而下保存与栈S中</span><br></code></pre></td></tr></table></figure>
+<p>4.3.2 递归嵌套</p>
+<p>具有自相似性的问题可以用多嵌套递归描述，但因为分支位置和嵌套深度并不固定，其递归算法的复杂度不易控制，栈结构及其操作天然具有递归嵌套性，因此可用于高效解决这类问题</p>
+<hr />
+<hr />
+<p>栈混洗（Stack Permutation）</p>
+<p>假设三个栈A、B、S，其中BS开始为空，A中包含n元素，S作为中间转移栈，将A中元素转移到B中，其中仅允许</p>
+<p>S.Push(A.Pop())</p>
+<p>B.Push(S.Pop())</p>
+<hr />
+<aside> 💡 括号匹配问题，对源程序的检查是代码compile中重要而基本的一个步骤，而对表达式括号匹配的检查又是语法检查中必需的一个环节 其任务是，对任何一个程序块，需要判断其中的括号是否在嵌套的意义下完全匹配，
+</aside>
+<h2 id="44-试探回溯法probing-and-backtracking"><a class="markdownIt-Anchor" href="#44-试探回溯法probing-and-backtracking"></a> 4.4 试探回溯法（Probing and BackTracking）</h2>
+<p>古希腊神话中半人半牛的怪物弥诺陶洛斯（Minotaur），藏身于一个精心设计、结构极其 复杂的迷宫之中。因此，找到并消灭它绝非易事，而此后如何顺利返回而不致困死更是一个难题。 不过，在公主阿里阿德涅（Ariadne）的帮助下，英雄忒修斯（Theseus）还是想出了个好办法， 他最终消灭了怪物，并带着公主轻松地走出迷宫。</p>
+<p>实际上，忒修斯所使用的法宝，只不过是一团普通的线绳。他将线绳的一端系在迷宫的入口 处，而在此后不断检查各个角落的过程中，线团始终握在他的手中。线团或收或放，跟随着忒修 斯穿梭于蜿蜒曲折的迷宫之中，确保他不致迷路。</p>
+<p>忒修斯的高招，与现代计算机中求解很多问题的算法异曲同工。事实上，很多应用问题的解， 在形式上都可看作若干元素按特定次序构成的一个序列。 以 经典 的旅行商问题（ traveling salesman problem, TSP）为例，其目标是计算出由给定的n个城市构成的一个序列，使得按此 序列对这些城市的环游成本（比如机票价格）最低。尽管此类问题本身的描述并不复杂，但遗憾 的是，由于所涉及元素（比如城市）的每一排列都是一个候选解，它们往往构成一个极大的搜索 空间。通常，其搜索空间的规模与全排列总数大体相当，为n! = O(nn )。因此若采用蛮力策略， 逐一生成可能的候选解并检查其是否合理，则必然无法将运行时间控制在多项式的范围以内。</p>
+<p><strong>这样的算法对应这样的模式：</strong></p>
+<p>从零开始，尝试逐步增加候选解的长度，更准确地是在这个过程中成批的考察具有特定前缀的所有候选解，这种从长度上逐步向目标解靠近的尝试，成为试探 Probing</p>
+<p>作为解得到局部特征，特征前缀在试探的过程中一旦被发现与目标解不适合，则收缩到此前一步的长度，然后试探下一可能的组合，特征前缀长度缩减的这类操作成为，回溯BackTracking，其效果等同于剪枝Pruning</p>
+<p>在上述的故事中，这种方法依赖于有型的物质基础，也就是需要保证搜索过的过程不被重复搜索，办法就是在剪枝的位置留下某种标记</p>
+<aside> 💡 八皇后，国际象棋中皇后的势力范围覆盖所在的水平线、垂直线和两条对角线，现在考察如下的问题 在n*n的棋盘中，如何使得她们之间彼此互不攻击， 此时称她们构成一个可行的棋局，对于任何整数n大于等于4
+</aside>
+<p>首先分析问题可以看出，n皇后可以在n*n的棋盘上可行，首先需要设计Queen这个类，也就是坐标，通过重载判断等操作符来实现对皇后位置是否相互冲突的便捷判断</p>
+<p>若每行能且只能放置一个皇后，不妨首先将每个皇后分配给每一行，然后从空棋盘开始逐个尝试将她们放置到无冲突的某列，没放置好一个皇后才继续试探下一个，若当前皇后在任何列都会造成冲突，则后续皇后的试探都是徒劳的，因此应该回溯到上一皇后</p>
+<p>可以借助栈solu来动态记录各皇后的列号，当该栈的规模增至N得到全局解</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzdw2k5zj215a0fu0v1.jpg" srcset="/img/loading.gif" lazyload alt="image-20220416233029045" /></p>
+<aside> 💡 迷宫寻路，要求依照预定的行进规则，在具有特定集合结构的空间区域内，找到从起点到终点的一条通路，这样的简化版本 在空间区域限定为由n*n的方格组成的迷宫，除来四周的围墙，还有分布其间的若干障碍物，只能水平或垂直移动 我们的任务是在任意制定的Origin和Des中找到一条通路
+</aside>
+<h2 id="45-队列queue"><a class="markdownIt-Anchor" href="#45-队列queue"></a> 4.5 队列Queue</h2>
+<p>与栈Stack一样，队列Queue也是存放数据对象的一种容器，其中的数据对象也按照线性的逻辑次序排列，队列结构同样支持对象Insert和delete，但是两种操作的范围分别被限制于队列的两端（若约定新对象只能从某一端插入其中，则只能从另一端删除已有的元素，允许取出元素的一端成为队头Front，而允许插入元素的另一端成为队尾Rear</p>
+<p>对于的插入和删除操作，从队的角度可以称为enqueue和dequeue的操作</p>
+<p>对应的一些基本操作</p>
+<aside> 💡 循环分配器，为在客户client群体共享某一资源，比如共享CPU，一套公平且高效的分配规则必不可少，而队列结构则非常适于定义和实现这样的一套分配规则
+</aside>
+<p>可以使用所谓的轮值round robin算法中，首先令所有参与资源分配的客户组成一个队列Q，接下来是一个反复轮回式的调度过程</p>
+<p>这里，每位用户持续占用资源的时间对算法的成败至关重要，一方面，未来保证响应速度，这个时间值通常不能过大；另一方面，因占有权限的切换也需要消耗一定时间，因此这个时间取的过小，切换过于频繁也会造成整体效率的下降</p>
+<aside> 💡 银行服务模拟，介绍如何使用Queue结构实现顾客服务的调度于优化，
+</aside>
+<h1 id="chapter05-二叉树-tree"><a class="markdownIt-Anchor" href="#chapter05-二叉树-tree"></a> Chapter05 二叉树 Tree</h1>
+<p>如果以平衡二叉搜索数为例子，若其中包含n个元素，则每次查找、更新、插入和删除操作等都可以在O(log N)的时间内完成</p>
+<p>数结构有不计其数的变种，在算法理论以及实际应用中扮演着最为关键的角色，得益于独特而又普适的逻辑结构。树作为一种分层结构，而层次化这个特征几乎蕴含在所有食物及其联系之中</p>
+<p>作为树的特例，二叉树实际上并不失其一般性，就本章而言，无论是逻辑结构还是算法功能来说，任何有跟有序的多叉树都可以等价转化并实现为二叉树，本章的终点在二叉树中，我们将用通讯编码算法的实现这个应用实例作为线索贯穿全章</p>
+<h2 id="51-二叉树及其表示"><a class="markdownIt-Anchor" href="#51-二叉树及其表示"></a> 5.1 二叉树及其表示</h2>
+<h3 id="511-树tree"><a class="markdownIt-Anchor" href="#511-树tree"></a> 5.1.1 树（Tree）</h3>
+<p>从图论的角度来看，树等价于连通无环图，因此与一般的图相同，树可以用</p>
+<ul>
+<li>一组定点Vertex，及其连接与其间的若干条边edge组成</li>
+<li>在计算机科学，在这个基础上在制定某一特定定点成为根root，实现rooted tree</li>
+<li>在程序实现的角度上，更多将定点vertex称做节点node</li>
+</ul>
+<p>由于树的连通性，每个节点与根之间都有一条路相连，而根据树的无环性，由根通往每个节点的路径必然唯一，因此在每个节点vertex到根root的唯一通路所经过边的数目，称作的深度depth，依据深度排序可以对所有节点做分层归类</p>
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b8bad7c8-b710-4d5d-bd03-b0f384cc6eaa/Untitled.png" srcset="/img/loading.gif" lazyload alt="Untitled" /></p>
+<ul>
+<li>depth；沿每个节点vertex到根root的唯一通路所经过边的数目成为该节点的深度</li>
+<li>祖先ancestor/后代descendant；这个是包含vertex节点本身</li>
+<li>真祖先proper ancestor/真后代proper descendant；不包含vertex节点本身</li>
+<li>parent/child；相邻的成为父母节点，和孩子节点</li>
+<li>degree，vertex的孩子总数称为度树或者度，记做deg（v）</li>
+<li>leaf，无孩子的节点被成为叶节点，包括根在内的其余节点都被称内部节点internal node</li>
+<li>subtree；vertex的所有后代及其之间的联边称作子树，subtree（v）</li>
+</ul>
+<h3 id="512-二叉树-binary-tree"><a class="markdownIt-Anchor" href="#512-二叉树-binary-tree"></a> 5.1.2 二叉树 （Binary Tree）</h3>
+<p>二叉树中的每个节点的degree均不超过2，因此在Binary Tree中同一父节点中的汉子都可以使用左、右相互区分，因此可以被称为有序二叉（Ordered Binary Tree）；特别的，不包含一度节点的二叉树称为真二叉树（Proper Binary Tree）</p>
+<h3 id="513-多叉树k-ary-tree"><a class="markdownIt-Anchor" href="#513-多叉树k-ary-tree"></a> 5.1.3 多叉树（K-ary Tree）</h3>
+<p>一般来说，树中各节点的degree的数目并不确定，每个节点的degree均不超过k个的有根树，称为K叉树</p>
+<p>在这个过程过，多叉树的表现方式有多种</p>
+<ol>
+<li>父节点表示方法</li>
+<li>孩子节点表示方法</li>
+<li>父节点和孩子节点表示方法</li>
+<li>有序多叉树=二叉树</li>
+<li>长子和兄弟</li>
+</ol>
+<ul>
+<li>父节点表示方法</li>
+</ul>
+<p>可以将各节点组织为向量Vector或列表List，其中每个元素除保存节点本身的信息Data之外，还需要保存父节点Parent的Rank或Position</p>
+<p>特别的，可以为Root指定一个虚构的父节点-1或Null，便于统一判断</p>
+<p>如此，所有向量或列表所占的空间总量为O（N），线性正比于节点总数N，时间方面，仅需常数时间就可以确定任一节点的父节点Parent；但是反过来，孩子节点的查找却不得不花费O（n）时间访遍所有节点</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzehjzcjj20l20es74x.jpg" srcset="/img/loading.gif" lazyload alt="image-20220416233103957" /></p>
+<ul>
+<li>孩子节点表示方法</li>
+</ul>
+<p>可以让每个节点将其所有的孩子组织为一个向量或列表，由此对于拥有r个孩子的节点，可以在O（r+1）的时间内列举出其所有的孩子</p>
+<ul>
+<li>父节点和孩子节点</li>
+</ul>
+<p>上面两种方式各有所长，也各有所短，为了综合两者之间的优势，消除缺点，可以使用各节点记录父节点，也记录序列保存所有孩子</p>
+<p>但是这种方法并不是没有缺点；尽管如此可以高效兼顾对父节点和孩子定位，但在节点插入与删除操作频繁的场合，为了动态维护和更新树的拓扑结构，不得不反复遍历和调整一些节点所对应的孩子序列，然而Vector和List等线性结构的此类操作都需要耗费大量时间，势必影响到整体的效率</p>
+<ul>
+<li>有序多叉树和二叉树</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzem3ys4j20kq0c0mxo.jpg" srcset="/img/loading.gif" lazyload alt="image-20220416233111158" /></p>
+<p>采用从支持高效动态调整的二叉树结构，为此必须首先建立从多叉树到二叉树之间的某种转换关系，在这种转换的意义下，任何多叉树都等价与某颗二叉树</p>
+<ul>
+<li>长子和兄弟</li>
+</ul>
+<p>多序多叉树中任一非叶节点都有唯一的长子，而且可以该长子出发，按照约定或指定的次序遍历所有的孩子节点</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h1bzerqbzij20k806mglr.jpg" srcset="/img/loading.gif" lazyload alt="image-20220416233120308" /><strong>一个非常有趣的现象出现：尽管二叉树只是多叉树的一个子集，但是对应用问题的描述和刻画能力并不低于后者，实际上以下我们还能进一步发现，即便就计算效率而言，二叉树也并不逊色一般意义上的树，反过来，得益与定义的简洁性以及结构的规范性，二叉树所所支撑的算法往往可以更好地得到描述，更加便捷实现</strong></p>
+<h2 id="52-编码树"><a class="markdownIt-Anchor" href="#52-编码树"></a> 5.2 编码树</h2>
+<p>通过将通讯编码算法的实现作为二叉树的应用实例，通讯理论的基本问题是在尽可能低的成本下，用最高的速度来真实的实现信息在空间和时间上的复制和转移；在信道转移的信息大多按照二进制比特形式表示和存在，而每一个具体的编码方案都对应一颗二叉编码树</p>
+<p>讲解的不深，不值得看，可以去看《信息传输远离》</p>
+<h2 id="53-二叉树的实现"><a class="markdownIt-Anchor" href="#53-二叉树的实现"></a> 5.3 二叉树的实现</h2>
+<p>作为图（Graph）的特殊形式，二叉树的基本组成单元是节点与边，作为数据结构，其基本的组成实体是二叉树节点（Binary Tree Node），边作用与节点之间的相互作用</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/DataStructure/" class="category-chain-item">DataStructure</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/TsinghuaBook/">#TsinghuaBook</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法01-向量｜列表｜栈与队列｜树</div>
+      <div>https://blog.tjdata.site/posts/d1d898bf.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenxia</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年4月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/36d150d2.html" title="数据结构与算法02-图">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构与算法02-图</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/fc444d3.html" title="PAPER01">
+                        <span class="hidden-mobile">PAPER01</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://blog.tjdata.site/posts/d1d898bf.html';
+          this.page.identifier = '/posts/d1d898bf.html';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'chenxiablog' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

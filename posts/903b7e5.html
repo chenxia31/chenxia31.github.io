@@ -1,0 +1,897 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenxia">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="pyomo是Python中的一个建模求解语言 Pyomo(Python Optimization Modeling Objects):优化建模对象，支持复杂优化应用的数学模型的建立和分析,是一种功能齐全的高级编程语言，包含一组丰富的支持库；建模的过程是科学研究、工程和商业许多方面的基本过程，建模涉及系统或现实世界对象的简化表示的制定。可以调用cplex这样的求解器来进行计算。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="优化算法-01--pyomo的简单学习">
+<meta property="og:url" content="https://blog.tjdata.site/posts/903b7e5.html">
+<meta property="og:site_name" content="Chenxia&#39;s blog">
+<meta property="og:description" content="pyomo是Python中的一个建模求解语言 Pyomo(Python Optimization Modeling Objects):优化建模对象，支持复杂优化应用的数学模型的建立和分析,是一种功能齐全的高级编程语言，包含一组丰富的支持库；建模的过程是科学研究、工程和商业许多方面的基本过程，建模涉及系统或现实世界对象的简化表示的制定。可以调用cplex这样的求解器来进行计算。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h1t87h6ybuj20w609a74r.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h1t87n2lgfj20qa05c74f.jpg">
+<meta property="article:published_time" content="2022-05-01T13:24:56.000Z">
+<meta property="article:modified_time" content="2022-10-17T08:18:08.948Z">
+<meta property="article:author" content="chenxia">
+<meta property="article:tag" content="Pyomo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h1t87h6ybuj20w609a74r.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>优化算法-01--pyomo的简单学习 - Chenxia&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"4ace08e3aba4620ee513a74cf9c779c1","google":"G-WBB268CYE1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?4ace08e3aba4620ee513a74cf9c779c1";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+    <!-- Google Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('https://www.google-analytics.com/analytics.js', function() {
+          window.ga = window.ga || function() { (ga.q = ga.q || []).push(arguments) };
+          ga.l = +new Date;
+          ga('create', 'G-WBB268CYE1', 'auto');
+          ga('send', 'pageview');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Chenxia's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenxia&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="优化算法-01--pyomo的简单学习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-05-01 21:24" pubdate>
+          2022年5月1日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          44 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">优化算法-01--pyomo的简单学习</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>pyomo是Python中的一个建模求解语言 Pyomo(Python Optimization Modeling Objects):优化建模对象，支持复杂优化应用的数学模型的建立和分析,是一种功能齐全的高级编程语言，包含一组丰富的支持库；建模的过程是科学研究、工程和商业许多方面的基本过程，建模涉及系统或现实世界对象的简化表示的制定。可以调用cplex这样的求解器来进行计算。</p>
+<span id="more"></span>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/479835520">Cplex12.10–Linux–(Py3~Py38安装过程（附安装包）)</a></p>
+<p>因此像Pyomo的建模工具可以用于：</p>
+<ol>
+<li>解释系统中出现的现象</li>
+<li>预测系统的未来状态</li>
+<li>识别系统中可能的最坏情况或者最低成本的极值点</li>
+<li>分析权衡来给予决策者支持</li>
+</ol>
+<p>常见的求解器：</p>
+<ul>
+<li>CBC，开源求解器（COIN-OR）开发的线性规划求解器，性能不足</li>
+<li>GLPK（GNU Linear Programmed Kit）是GNU维护一个线形规划工具包，对于求解大规模的额线性规划问题速度缓慢</li>
+<li>CPLEX，是IBM开发的商业线性规划求解器，可以求解LP,QP,QCQP,SOCP等四类基本问题和对应的MIP，社区版仅支持低于1000变量的使用，教育版无限制，建模时间长，但是求解速度非常快</li>
+<li>Gurobi，是CPLEX团队创始人重新创建的商业求解器，和cplex速度差别不大，相对来说比Cplex好一点</li>
+</ul>
+<p>Pyomo的学习网站</p>
+<p><a target="_blank" rel="noopener" href="https://pyomo.readthedocs.io/en/stable/installation.html">Installation - Pyomo 6.4.0 documentation</a></p>
+<h2 id="0x01-pyomo-overview"><a class="markdownIt-Anchor" href="#0x01-pyomo-overview"></a> 0x01 Pyomo overview</h2>
+<h3 id="11-mathematical-modeling-数学建模"><a class="markdownIt-Anchor" href="#11-mathematical-modeling-数学建模"></a> 1.1 Mathematical modeling 数学建模</h3>
+<p>数学模型是用形式化的语言表示系统只是，以下数学概念是现代建模活动的核心</p>
+<ol>
+<li>变量variable，变量代表模型的未知或变化部分，（例如是否做出决定，或系统结果的特征），变量所取的值通常称为解，通常是优化过程的输出</li>
+<li>参数parameters，参数表示为执行优化必须提供的数据，实际上在某些设置中data用来代替parameters</li>
+<li>关系relations，这里是在定义模型的不同部分如何相互链接的方程、不等式或者其他的数学关系</li>
+<li>目标goal，反应被建模系统的目标和功能</li>
+</ol>
+<p>在计算机求解的过程中可以分为建模和求解两个方面，计算性能的替僧是的数学模型的数值分析称为一项司空见惯的活动，但是如果没有建模语言，设置输入文件、执行求解器以及从求解器中输出中提取结果的过程即繁琐又容易出错，在发生错误时难以调试，在大规模的实际应用程序中这种困难更加复杂，此外优化软件包使用的格式很多，而许多优化器实际识别的格式很少，因此应用多个优化器求解来分析模型会带来额外的复杂性</p>
+<p>在这个过程中pyomo希望拓展用于python的数学建模，并调用对应的优化求解器来辅助求解，在这个过程中其具有的特征有</p>
+<ul>
+<li>开源</li>
+<li>可定制</li>
+<li>求解器集成</li>
+<li>具有非常robust的语言、广泛的文档、丰富的标准库集，对现代编程中类和函数的支持</li>
+</ul>
+<h3 id="12-overview-of-modeling-components-and-processes建模组建和过程描述"><a class="markdownIt-Anchor" href="#12-overview-of-modeling-components-and-processes建模组建和过程描述"></a> 1.2 Overview of modeling components and processes建模组建和过程描述</h3>
+<p>简单建模过程的基本步骤</p>
+<ol>
+<li>创建模型并声明组建</li>
+<li>实例化模型</li>
+<li>应用求解器</li>
+<li>询问求解器结果</li>
+</ol>
+<p>在整个过程中pyomo的建模组件定义来模型的不同方面，包括现代AML通常支持的建模组件，</p>
+<p>sets, symbolic parameters, decision variables, objectives，constraints</p>
+<p>在pyomo中定义相关的python类</p>
+<ul>
+<li>Set，用于定义模型实例的数据</li>
+<li>Param，用于定义模型实例的参数数据</li>
+<li>Var。模型中的决策变量</li>
+<li>Objective，模型中最小化或最大化的目标函数</li>
+<li>Constraint，对模型中的Var施加约束限制的表达式</li>
+</ul>
+<h2 id="0x02-abstract-versus-concrete-models抽象模型和具体模型"><a class="markdownIt-Anchor" href="#0x02-abstract-versus-concrete-models抽象模型和具体模型"></a> 0x02 Abstract versus concrete models抽象模型和具体模型</h2>
+<p>使用类AbstractModel（）可以使用表示数据值的符号来定义数学模型，，例如下列表示一个线性程序，用于找到向量的最优值x，包括参数n和b，和参数向量a和c</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h1t87h6ybuj20w609a74r.jpg" srcset="/img/loading.gif" lazyload alt="image-20220501213016741" /></p>
+<p>使用类ConcreteModel（）来建立具体模型</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h1t87n2lgfj20qa05c74f.jpg" srcset="/img/loading.gif" lazyload alt="image-20220501213028132" /></p>
+<p>python程序可能更喜欢 编写具体模型，而其他的一些代数建模语言的用户可能更喜欢编写抽象模型</p>
+<h3 id="21-simple-models简单模型"><a class="markdownIt-Anchor" href="#21-simple-models简单模型"></a> 2.1 Simple models简单模型</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> pyomo.environ as pyo<br>model=pyo.ConcreteModel()<br>model.x=pyo.Var([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],domain=pyo.NonNegativeReals)<br>model.Obj=pyo.Objective(expr=<span class="hljs-number">2</span>*model.x[<span class="hljs-number">1</span>]+<span class="hljs-number">3</span>*model.x[<span class="hljs-number">2</span>])<br>model.Constraint1=pyo.Constraint(expr=<span class="hljs-number">3</span>*model.x[<span class="hljs-number">1</span>]+<span class="hljs-number">4</span>*model.x[<span class="hljs-number">2</span>]&gt;=<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+<p>虽然规则函数也可以用于指定Constraint和Objective，但是在此示例中使用expr来仅在具体模型中可用的选项，来直接指定表达式</p>
+<h3 id="22-abstract-models抽象模型"><a class="markdownIt-Anchor" href="#22-abstract-models抽象模型"></a> 2.2 Abstract Models抽象模型</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs java">from _future_ <span class="hljs-keyword">import</span> division<br><span class="hljs-keyword">import</span> pyomo.environ as pyo<br><br>model=pyo.AbstractModel()<br><br><span class="hljs-comment">//  定义一些参数的集合</span><br><span class="hljs-comment">// within 用于验证分配给参数数据值的选项的使用</span><br>model.m=pyo.Param(within=pyo.NonNegativeReals)<br>model.n=pyo.Param(within=pyo.NonNegativeReals)<br><br><span class="hljs-comment">// 使用rangeset来声明集合是一个整数序列</span><br>Model.I=Pyo.RangeSet(<span class="hljs-number">1</span>,model.m)<br>Model.J=Pyo.RangeSet(<span class="hljs-number">1</span>,model.n)<br><br><span class="hljs-comment">// 当集合Set作为Param的组件参数给出之后，表明该集合将索引参数</span><br>model.a=pyo.Param(model.I,model.J)<br>model.b=pro.Param(model.I)<br>model.c=pyo.Param(model.J)<br><br><span class="hljs-comment">//根据参数j定义变量，第二个参数表示Variable指定的参数域</span><br>model.x=pyo.Var(model.J,domain=pyo.NonNegativeReals)<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">在抽象模型中，promo表达式通常通过def来定义函数给定目标和约束声明，该def为函数及其参数建立一个名称，当pyomo使用函数来获取objective或者constraint时候，总是将模型作为第一个参数输入</span><br><span class="hljs-comment">因此在pyomo中声明此类函数时，模型始终是第一个形式参数，如果需要请遵循其他参数</span><br><span class="hljs-comment">定义的过程中有，常见的</span><br><span class="hljs-comment">sum函数，来表示求和</span><br><span class="hljs-comment">summation（）表示两个参数在他们的索引的乘积之和，默认最小化，如果希望最大化需要加入senese=pyo.maximize</span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-comment">//定义目标函数</span><br>def <span class="hljs-title function_">obj_experssion</span><span class="hljs-params">(m)</span>:<br>	<span class="hljs-keyword">return</span> pyo.summation(m.c,m.x)<span class="hljs-comment">//??这里应该是矩阵相乘</span><br>model.OBJ=pyo.Objective(rule=obj_experssion)<span class="hljs-comment">//？？这里的参数输入为什么是rule</span><br><br>def <span class="hljs-title function_">ax_constraint_rule</span><span class="hljs-params">(m, i)</span>:<br>    # <span class="hljs-keyword">return</span> the expression <span class="hljs-keyword">for</span> the constraint <span class="hljs-keyword">for</span> i<br>    <span class="hljs-keyword">return</span> sum(m.a[i,j] * m.x[j] <span class="hljs-keyword">for</span> j in m.J) &gt;= m.b[i]<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">从抽象模型中可以看出，我们需要为每个值设置一个约束i从1到m</span><br><span class="hljs-comment">为参数化表达式i，我们将它作为形式参数包含在声明约束表达式的函数中，使用pyomo.constraint参数</span><br><span class="hljs-comment">因为我们模型具有许多相同形式的约束，并且我们创建来一个集合，model.I这些约束可以在其上被索引，因此这是约束声明的第一个参数，</span><br><span class="hljs-comment">下个参数给出来将用于生成约束表达式的规则，</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">这个约束声明model.I将创建一个由集合索引的约束列表，并且对于每个成员model.I都会调用函数ax-constraint-rule并传递给模型对象以及成员model.I</span><br><span class="hljs-comment">*/</span><br># the next line creates one constraint <span class="hljs-keyword">for</span> each member of the set model.I<br>model.AxbConstraint = pyo.Constraint(model.I, rule=ax_constraint_rule)<br></code></pre></td></tr></table></figure>
+<p>为了使用这个模型，必须给出参数值的数据，可以提供数据的文件，格式为dat</p>
+<h2 id="0x03-pyomo-model-setting"><a class="markdownIt-Anchor" href="#0x03-pyomo-model-setting"></a> 0x03 Pyomo model setting</h2>
+<ul>
+<li><code>Any</code>= 所有可能的值</li>
+<li><code>Reals</code>= 浮点值</li>
+<li><code>PositiveReals</code>= 严格的正浮点值</li>
+<li><code>NonPositiveReals</code>= 非正浮点值</li>
+<li><code>NegativeReals</code>= 严格的负浮点值</li>
+<li><code>NonNegativeReals</code>= 非负浮点值</li>
+<li><code>PercentFraction</code>= 区间 [0,1] 中的浮点值</li>
+<li><code>UnitInterval</code>= PercentFraction 的别名</li>
+<li><code>Integers</code>= 整数值</li>
+<li><code>PositiveIntegers</code>= 正整数值</li>
+<li><code>NonPositiveIntegers</code>= 非正整数值</li>
+<li><code>NegativeIntegers</code>= 负整数值</li>
+<li><code>NonNegativeIntegers</code>= 非负整数值</li>
+<li><code>Boolean</code> 布尔值，可以表示为 False/True、0/1、‘False’/‘True’ 和 ‘F’/‘T’</li>
+<li><code>Binary</code>= 整数 {0, 1}</li>
+</ul>
+<h3 id="31-sets"><a class="markdownIt-Anchor" href="#31-sets"></a> 3.1 Sets</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java">pyo.Set()<br>* dimen,集合参数的维度<br>* doc，描述集合的字符串<br>* filter，在构造过程中使用布尔函数<br>* initialize，包含set的初始成员的可迭代对象<br>* ordered，一个bool来表示集合是有序的<br>* validate，验证新成员数据的bool<br>* within，用于验证的集合<br><br>pyo.rangeSet()<br>生成一个【min,max,step】<br></code></pre></td></tr></table></figure>
+<h3 id="32-parameters"><a class="markdownIt-Anchor" href="#32-parameters"></a> 3.2 Parameters</h3>
+<p>使用该词表示必须提供的数据，以便为决策变量找到最佳的分配</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java">pyo.Param()<br>* <span class="hljs-keyword">default</span><br>* doc<br>* initialize 返回用于初始化参数值的数据函数<br>* mutable，bool来设置是否允许在param初始化后更改值<br>* validate，一个回调函数，接受模型、建议值和建议值的索引<br>* within，用于验证的集合，指定有效参数值的域<br></code></pre></td></tr></table></figure>
+<h3 id="33-varibles"><a class="markdownIt-Anchor" href="#33-varibles"></a> 3.3 Varibles</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">pyo.Var()<br>* bounds<br>* domain<br>* initialize,为变量提供初始值，或者提供初始索引值<br></code></pre></td></tr></table></figure>
+<h3 id="34-objectives"><a class="markdownIt-Anchor" href="#34-objectives"></a> 3.4 Objectives</h3>
+<p>返回试图最大化或最小化值的变量函数，可以构建一个默认参数位model的函数来作为输入</p>
+<figure class="highlight stan"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stan">def ObjRule(<span class="hljs-title">model</span>):<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>*<span class="hljs-title">model</span>.x[<span class="hljs-number">1</span>] + <span class="hljs-number">3</span>*<span class="hljs-title">model</span>.x[<span class="hljs-number">2</span>]<br><span class="hljs-title">model</span>.obj1 = pyo.Objective(rule=ObjRule)<br></code></pre></td></tr></table></figure>
+<p>可以使用sense参数来最大化</p>
+<h3 id="35-constraints"><a class="markdownIt-Anchor" href="#35-constraints"></a> 3.5 Constraints</h3>
+<p>大多数约束是使用规则创建的等式或不等式指定表达的</p>
+<p>约束可以通过列表或集合来索引，当声明中包含列表或集合作为参数，元素会迭代传递给规则函数</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">model.A = <span class="hljs-constructor">RangeSet(1,10)</span><br>model.a = <span class="hljs-constructor">Param(<span class="hljs-params">model</span>.A, <span class="hljs-params">within</span>=PositiveReals)</span><br>model.ToBuy = <span class="hljs-constructor">Var(<span class="hljs-params">model</span>.A)</span><br>def bud<span class="hljs-constructor">_rule(<span class="hljs-params">model</span>, <span class="hljs-params">i</span>)</span>:<br>    return model.a<span class="hljs-literal">[<span class="hljs-identifier">i</span>]</span>*model.ToBuy<span class="hljs-literal">[<span class="hljs-identifier">i</span>]</span> &lt;= i<br>aBudget = <span class="hljs-constructor">Constraint(<span class="hljs-params">model</span>.A, <span class="hljs-params">rule</span>=<span class="hljs-params">bud_rule</span>)</span><br></code></pre></td></tr></table></figure>
+<h2 id="求解实例"><a class="markdownIt-Anchor" href="#求解实例"></a> 求解实例</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 学习promo中建模的基本过程</span><br><span class="hljs-comment"># min 2*x+3*y</span><br><span class="hljs-comment"># s.t. 3x+4y&gt;=1</span><br><span class="hljs-comment"># x,y&gt;=0</span><br><span class="hljs-comment"># 尝试构建模型，求解并得到最终的结果</span><br><span class="hljs-keyword">from</span> pyomo.environ <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">import</span> pyomo.environ <span class="hljs-keyword">as</span> pyo<br><br><span class="hljs-comment"># 建立实际模型</span><br>model=ConcreteModel()<br>model.x=Var([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],domain=pyo.NonNegativeReals)<br>model.Obj=Objective(expr=<span class="hljs-number">2</span>*model.x[<span class="hljs-number">1</span>]+<span class="hljs-number">3</span>*model.x[<span class="hljs-number">2</span>])<br>model.Constraint1=Constraint(expr=<span class="hljs-number">3</span>*model.x[<span class="hljs-number">1</span>]+<span class="hljs-number">4</span>*model.x[<span class="hljs-number">2</span>]&gt;=<span class="hljs-number">1</span>)<br><br>opt=pyo.SolverFactory(<span class="hljs-string">&#x27;cplex&#x27;</span>)<br>opt.solve(model)<br><span class="hljs-built_in">print</span>(pyo.value(model.x[<span class="hljs-number">1</span>]))<br><span class="hljs-built_in">print</span>(pyo.value(model.x[<span class="hljs-number">2</span>]))<br></code></pre></td></tr></table></figure>
+<h2 id=""><a class="markdownIt-Anchor" href="#"></a> </h2>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Optimizer/" class="category-chain-item">Optimizer</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Pyomo/">#Pyomo</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>优化算法-01--pyomo的简单学习</div>
+      <div>https://blog.tjdata.site/posts/903b7e5.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenxia</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年5月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/ac6f4ba.html" title="操作系统-01--基本概念">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">操作系统-01--基本概念</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/36d150d2.html" title="数据结构与算法02-图">
+                        <span class="hidden-mobile">数据结构与算法02-图</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://blog.tjdata.site/posts/903b7e5.html';
+          this.page.identifier = '/posts/903b7e5.html';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'chenxiablog' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

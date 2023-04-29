@@ -1,0 +1,977 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenxia">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="尝试将课本中的知识重新整理成为自己的post，虽然用自己的理解去描述可能会带来错误，但是“太对的话并没有新的价值”，本次主要描述位于计算就网络应用层和网络层之间的运输层的通信协议，以及其在传递过程中的：可靠性和拥塞控制两个基本问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络-03-Chapter03 运输层协议">
+<meta property="og:url" content="https://blog.tjdata.site/posts/30d17536.html">
+<meta property="og:site_name" content="Chenxia&#39;s blog">
+<meta property="og:description" content="尝试将课本中的知识重新整理成为自己的post，虽然用自己的理解去描述可能会带来错误，但是“太对的话并没有新的价值”，本次主要描述位于计算就网络应用层和网络层之间的运输层的通信协议，以及其在传递过程中的：可靠性和拥塞控制两个基本问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j553zhshj20yu0iqjt6.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j5baidh9j20go0fkzku.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j5ica43wj20vu0u0wgh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j5qmjcrbj20u0118adu.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j5vh6fz9j20u00ufwhd.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j62wp107j20ww0g8aau.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j635ogl7j212o0e6q3y.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j63h1aosj20j60hyt9b.jpg">
+<meta property="og:image" content="https://cdn.fasionchan.com/p/39b4247a4dea3d460832c67f8791ca06d1b72753.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3ja78n9qbj20wg0pognp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3jaa8apaqj20yf0u0die.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3jaaw97tbj20x30u040a.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3jadgm29gj20xf0u00uz.jpg">
+<meta property="article:published_time" content="2022-06-24T02:16:56.000Z">
+<meta property="article:modified_time" content="2022-10-17T08:18:08.956Z">
+<meta property="article:author" content="chenxia">
+<meta property="article:tag" content="CS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j553zhshj20yu0iqjt6.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>计算机网络-03-Chapter03 运输层协议 - Chenxia&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"4ace08e3aba4620ee513a74cf9c779c1","google":"G-WBB268CYE1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?4ace08e3aba4620ee513a74cf9c779c1";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+    <!-- Google Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('https://www.google-analytics.com/analytics.js', function() {
+          window.ga = window.ga || function() { (ga.q = ga.q || []).push(arguments) };
+          ga.l = +new Date;
+          ga('create', 'G-WBB268CYE1', 'auto');
+          ga('send', 'pageview');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Chenxia's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenxia&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算机网络-03-Chapter03 运输层协议"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-06-24 10:16" pubdate>
+          2022年6月24日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          54 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">计算机网络-03-Chapter03 运输层协议</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>尝试将课本中的知识重新整理成为自己的post，虽然用自己的理解去描述可能会带来错误，但是“太对的话并没有新的价值”，本次主要描述位于计算就网络应用层和网络层之间的运输层的通信协议，以及其在传递过程中的：可靠性和拥塞控制两个基本问题。</p>
+<span id="more"></span>
+<h2 id="0x01-背景"><a class="markdownIt-Anchor" href="#0x01-背景"></a> 0x01 背景</h2>
+<h3 id="11-运输层概述"><a class="markdownIt-Anchor" href="#11-运输层概述"></a> 1.1 运输层概述</h3>
+<p>运输层为运行在不同主机上的应用进程之间提供逻辑通信（logic communication），从应用程序的角度来说，运行不同进程的主机之间好像直接相连一样，而不用考虑承载这些物理基础设施的细节。</p>
+<p>运输层协议是在端系统中而不是路由器中实现的：</p>
+<p><strong>在发送端，运输层将从发送应用程序进程接收到报文转换成运输层分组成为运输层报文段（segment）</strong>，（后续网络层可能会封装成网络层分组（数据报）向目的地发送，在这个过程中网络路由器仅作用于该数据报的网络层字段），<strong>在接收端网络层从数据报中提取出运输层字段，并将报文上交给运输层</strong></p>
+<p>网络应用程序中可以有多种运输层协议，在因特网中包括UDP和TCP协议。</p>
+<p>？运输层和网络层区别？</p>
+<p>运输层主要负责两个host之间不同进程之间的通信；而网络层提供host之间的逻辑通信；以寄快递的方式来描述：</p>
+<blockquote>
+<p>应用层报文是快递里面的东西，运输层主要负责收件人的具体信息，运输层协议主要负责各地区收集和分发快递人员；网络层主要负责收货地址，网络层协议主要负责运输车辆、方式的分配</p>
+</blockquote>
+<p>这种解耦的过程可以为不同进程通信之间规定不同的协议，而不是每个人都安排一辆车或者一种地址编码方式来造成杂乱的情况；同时不同的运输层协议也可以搭配不同的网络层协议。</p>
+<h3 id="12-因特网运输层概述"><a class="markdownIt-Anchor" href="#12-因特网运输层概述"></a> 1.2 因特网运输层概述</h3>
+<p>UDP：用户数据报协议，这个进程提供一种不可靠、无连接的服务</p>
+<p>TCP：传输控制协议，提供可靠的、面向连接的服务</p>
+<p>结合IP层理解可能会更好，这里需要了解的是：因特网网络协议的为IP协议（网际协议），提供主机与主机之间的逻辑通信，服务模型是尽力而为角度，并不作任何确保，也就是称为不可靠服务，在这一章我们需要知道的是每一台主机都有一个IP地址</p>
+<p>UDP和TCP的基本责任是将两个端系统之间的IP交付服务拓展到端系统上两个进程之间的交付服务，这个称为多路复用（transport- layer multiplexing）和多路分解（demultiplexing）。除此之外TCP还会提供可靠数据传输（reliable data transfer）和拥塞控制（congestion control）</p>
+<blockquote>
+<p>举个例子：当你坐在计算机下载web页面，这个时候需要运行一个FTP会话和两个Telnet会话，这样4个网络应用进程在运行，在这个时候我们需要将主机接受到的信息分配给这4个进程中的一个，这就是运输层负责事情。应用层里面是通过套接字（socket）将数据从应用层传向运输层和向运输层进程传递数据的门户，因此在任何一个时刻主机上存在多个套接字，套接字具有唯一的标识符。</p>
+</blockquote>
+<p>？那么主机如何将一个到达的运输层报文定向到适当的套接字？</p>
+<p>这个就需要我们在运输层报文段中定义一些字段，在接收端运输层来解析这些字段来将报文定向到套接字，这个就是多路分解（demultiplexing）的过程；在源主机上将报文段传递到运输层这个工作称为多路复用（multiplexing）；但是当然TCP相比较UDP的解析过程会更加复杂</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j553zhshj20yu0iqjt6.jpg" srcset="/img/loading.gif" lazyload alt="image-20220624104913355" /></p>
+<h3 id="13-规范语言"><a class="markdownIt-Anchor" href="#13-规范语言"></a> 1.3 规范语言</h3>
+<p>报文段（segment）：经过网络层到达运输层后生成的分组报文</p>
+<p>数据报（datagram）：运输层的报文到达网络层生成的分组报文</p>
+<p>socket：应用层进程和运输层之间数据通信的方式，同一个host存在多个套接字，每个套接字具有唯一标识符</p>
+<p>多路复用：多个数据传输到运输层</p>
+<p>多路分解：收到下层数据转移到上层多个进程</p>
+<h2 id="0x02-基本原理"><a class="markdownIt-Anchor" href="#0x02-基本原理"></a> 0x02 基本原理</h2>
+<h3 id="21-可靠数据传输原理reliable-data-transfer-protocol"><a class="markdownIt-Anchor" href="#21-可靠数据传输原理reliable-data-transfer-protocol"></a> 2.1 可靠数据传输原理（Reliable Data Transfer Protocol）</h3>
+<p>在数据传输的过程中，我们会遇到差错、损坏和丢失的现象，想要按照原来数据复原就是可靠数据传输协议需要规范的事情，这种协议可以看作是策略方面的method，因为它不仅可以适用于运输层、也可以网络层或者应用层，更重要的是内在思想，而TCP相比较UDP的一方面就是使用了可靠数据传输的东西</p>
+<p>可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40177015/article/details/112836182">https://blog.csdn.net/qq_40177015/article/details/112836182</a></p>
+<p>最基本的模型如下图所示，后面我们可以层层递进来看这个是如何实现的：</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j5baidh9j20go0fkzku.jpg" srcset="/img/loading.gif" lazyload alt="image-20220624105512085" /></p>
+<h4 id="211-rdt10-底层信道可靠的情况"><a class="markdownIt-Anchor" href="#211-rdt10-底层信道可靠的情况"></a> 2.1.1 RDT1.0 – 底层信道可靠的情况</h4>
+<p>那就只需要</p>
+<p>发送端：接受上层的data、转换（make-pkt）成数据段packet、然后发送（send）</p>
+<p>接收端：接受下层的packet、提取extract出数据data、然后移交deliver给上层</p>
+<h4 id="212-rdt20-底层差错的情况但不会丢失"><a class="markdownIt-Anchor" href="#212-rdt20-底层差错的情况但不会丢失"></a> 2.1.2 RDT2.0 – 底层差错的情况（但不会丢失）</h4>
+<p>出现差错我们的第一反应是需要：如何检查出差错、以及如果告诉发送方错了、以及重新发送，这种称为基于自动重传请求（ARQ、automatic repeat request）</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j5ica43wj20vu0u0wgh.jpg" srcset="/img/loading.gif" lazyload alt="image-20220624110157727" /></p>
+<h4 id="213-rdt2122"><a class="markdownIt-Anchor" href="#213-rdt2122"></a> 2.1.3 RDT2.1&amp;2.2</h4>
+<p>但是RDT2.0并没有考虑ACK和NAK错误的情况，这个时候发生发送端忘记重传或者过度重传，这个时候我们需要对报文进行标记，也就是需要增加数据分组编号（sequence number）来帮助区分，这也就是RDT2.1的工作</p>
+<p>由于同时检验ACK和NAK很麻烦，因此可以设计单纯只用ACK的确认和否定就可。</p>
+<h4 id="214-rdt30-经过比特差错和丢包信道的可靠信息传输"><a class="markdownIt-Anchor" href="#214-rdt30-经过比特差错和丢包信道的可靠信息传输"></a> 2.1.4 RDT3.0 – 经过比特差错和丢包信道的可靠信息传输</h4>
+<p>针对丢包，我们需要设置定时器（？如何针对每个报文设置），在一定的时间间隔（？后面介绍这么确定）下，没有收到ACK就重新发送</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j5qmjcrbj20u0118adu.jpg" srcset="/img/loading.gif" lazyload alt="image-20220624110956831" /></p>
+<h4 id="214-暂停思考rdt"><a class="markdownIt-Anchor" href="#214-暂停思考rdt"></a> 2.1.4 暂停思考RDT</h4>
+<p>RDT是一个功能完全正确的协议，但是它是一个停等协议，在于我每个分组报文需要等到上一个ACK到来的时候再重新发送，信道中只有一个报文必然是浪费的</p>
+<p>因此我们可以采用流水线的方式，不停的发送报文，但是这个时候又会面临新的问题</p>
+<h4 id="215-流水线-退回n步gbn"><a class="markdownIt-Anchor" href="#215-流水线-退回n步gbn"></a> 2.1.5 流水线-退回N步（GBN）</h4>
+<p>由于流水线允许发送发连续发送多个分组而不需要等待确认，在这个过程中出现某个数据分组差错或者丢失的情况就非常麻烦，GBN设置是错误就退回N步重新发送，这样的缺点是通信系统可能会被许许多多的无用报文充斥</p>
+<h4 id="216-流水线-选择重传sr"><a class="markdownIt-Anchor" href="#216-流水线-选择重传sr"></a> 2.1.6 流水线-选择重传（SR）</h4>
+<p>为了解决GBN的问题，可以使用选择重传的协议，对于错误之后的序列号接收端保存</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j5vh6fz9j20u00ufwhd.jpg" srcset="/img/loading.gif" lazyload alt="image-20220624111436365" /></p>
+<h4 id="217-总结"><a class="markdownIt-Anchor" href="#217-总结"></a> 2.1.7 总结</h4>
+<p>在经过上述可靠数据传输机制的描述之后，存在一些基本概念：</p>
+<ul>
+<li>差错检验（checksum）</li>
+<li>定时器（timer）</li>
+<li>序号（sequence number）</li>
+<li>确认（acknowledgement）</li>
+<li>否定确认（NAK）</li>
+<li>窗口、流水线（windows、pipeline）</li>
+</ul>
+<h3 id="22-拥塞控制原理"><a class="markdownIt-Anchor" href="#22-拥塞控制原理"></a> 2.2 拥塞控制原理</h3>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/37379780">https://zhuanlan.zhihu.com/p/37379780</a></p>
+<h4 id="221-什么是拥塞"><a class="markdownIt-Anchor" href="#221-什么是拥塞"></a> 2.2.1 什么是拥塞</h4>
+<p>作用于网络的，避免过多的无效重传数据充斥在传输网络中</p>
+<p>第一种情况：两台机器之间+无限缓存的路由器</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j62wp107j20ww0g8aau.jpg" srcset="/img/loading.gif" lazyload alt="image-20220624112144178" /></p>
+<p>第二种情况：两台机器之间+有限缓存的路由器</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j635ogl7j212o0e6q3y.jpg" srcset="/img/loading.gif" lazyload alt="image-20220624112159474" /></p>
+<p>第三种情况：多台机器之间+有限缓存的路由器</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3j63h1aosj20j60hyt9b.jpg" srcset="/img/loading.gif" lazyload alt="image-20220624112217633" /></p>
+<h4 id="222-拥塞控制方法"><a class="markdownIt-Anchor" href="#222-拥塞控制方法"></a> 2.2.2 拥塞控制方法</h4>
+<p>第一种方法：端到端的拥塞控制，比如根据报文丢包情况来观察网络拥塞状态，进而缩小自己的窗口（TCP采用的）</p>
+<p>第二种方法：网络辅助拥塞控制，网络中路由器等传输给端设备，高速拥堵情况</p>
+<h2 id="0x03-udptcp"><a class="markdownIt-Anchor" href="#0x03-udptcp"></a> 0x03 UDP/TCP</h2>
+<h3 id="31-udp传输协议"><a class="markdownIt-Anchor" href="#31-udp传输协议"></a> 3.1 UDP传输协议</h3>
+<h4 id="311-udp报文"><a class="markdownIt-Anchor" href="#311-udp报文"></a> 3.1.1 UDP报文</h4>
+<p><img src="https://cdn.fasionchan.com/p/39b4247a4dea3d460832c67f8791ca06d1b72753.png" srcset="/img/loading.gif" lazyload alt="img" /></p>
+<p>源端口：发送方的进程对应的socket的端口</p>
+<p>目的端口：接收方的进程对应的socket端口</p>
+<p>报文长度：用来检查报文是否会出错</p>
+<p>检验和：最基本的差错的checksum检验</p>
+<h4 id="312-udp套接字编程"><a class="markdownIt-Anchor" href="#312-udp套接字编程"></a> 3.1.2 UDP套接字编程</h4>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs stata">UDPClient.py<br><br>from socket import *<br>serverName=&#x27;hostname;<br>serverPort=12000<br><br><span class="hljs-comment">// 常见客户端的套接字</span><br>clientSocket=socket(AF_INET，SOCK_DGRAM)<br><span class="hljs-comment">// 第一个参数代表使用了ipv4；第二个参数代表该套接字是SOCK——DGRAM类型的</span><br>message=raw_input(&#x27;<span class="hljs-keyword">Input</span> your message:&#x27;)<br><br><span class="hljs-comment">//有了信息和发送端socket</span><br>clientSocket.sendto(message.<span class="hljs-keyword">encode</span>(),(serverName,serverPort))<br><br><span class="hljs-comment">//之后等待服务器的数据</span><br>modifiedMessage,serverAddreess =clientSocket.recvfrom(2048)<br><span class="hljs-comment">// 2048代表分组信息到达该客户端套接字，该分组的数据的放到变量modified message中</span><br><span class="hljs-comment">// 源地址放置到变量server Address，取缓存长度2048作为输入</span><br><span class="hljs-keyword">print</span>(modifiedMessage.<span class="hljs-keyword">decode</span>())<br>clientSocket.<span class="hljs-keyword">close</span>()<br></code></pre></td></tr></table></figure>
+<h3 id="32-tcp传输协议"><a class="markdownIt-Anchor" href="#32-tcp传输协议"></a> 3.2 TCP传输协议</h3>
+<h4 id="321-tcp报文"><a class="markdownIt-Anchor" href="#321-tcp报文"></a> 3.2.1 TCP报文</h4>
+<ul>
+<li>首部包括16比特源端口号和16比特目的端口号，被用于多路复用/分解来自或者送到上层应用的数据</li>
+<li>32比特的序号字段（sequence number field）和32比特的确认号字段（acknowledgment number field）用于实现可靠数据传输服务，随机的初始序列号还是很有意思的；讨论见后</li>
+<li>4比特的首部字段长度（header length field），指示以32比特的字为单位的TCP首部长度，由于TCP选项字段的原因，TCP首部的长度是可变的，一般为空则说明典型长度为20字节</li>
+<li>8比特的标志字段（flag field）
+<ul>
+<li>ACK，指示确认字段的值是有效的</li>
+<li>RST、SYN、FIN，用于连接和拆除</li>
+<li>CWR、ECE，拥塞通知里面使用</li>
+<li>PSH，有值时，应当指示接收方立即将数据交给上层</li>
+<li>URG，指示报文段中存在的被发送端的上层设置为紧急的数据，最后一个字节有紧急数据指针字段给出</li>
+</ul>
+</li>
+<li>16比特的接受窗口（receive windows field），用于流量控制，用于指示接收方愿意接受的字节数量</li>
+<li>校验和字段（checksum field）</li>
+<li>16比特的紧急数据指针（urgent data pointer field）</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3ja78n9qbj20wg0pognp.jpg" srcset="/img/loading.gif" lazyload alt="image-20220624134417983" /></p>
+<h4 id="322-tcp整个过程"><a class="markdownIt-Anchor" href="#322-tcp整个过程"></a> 3.2.2 TCP整个过程</h4>
+<p>TCP连接是在复杂的物理网络中建立两台主机（host）之间的点对点（point to point）之间的连接；两台主机之间连接的简约过程是通过三次握手（three-way handshake）进行的：</p>
+<p>客户端发送一个特殊的TCP报文段，服务器使用另一个特殊的TCP报文段来响应，之后客户端利用第三个特殊报文段作为响应，第三个可以包含有效负荷（也就是应用层数据），整个过程称为三次握手；之后包括四次挥手的过程；详细如下：</p>
+<ul>
+<li>第一步，client首先向服务器TCP发送一个特殊的TCP报文段，SYN报文段设计为1，同时client随机选择一个初始序号，包装在一个IP数据报发送给server</li>
+<li>第二步，这个特殊的TCP报文段到达server后，该TCP连接分配缓存和变量，并向client发送允许连接的报文段，这个允许的报文段包括三个重要的信息：SYN比特为1、确认号设置client-isn+1、设置服务器的server-isn字段，这个被称为SYNACK segment</li>
+<li>client在受到回复之后，为该连接分配缓存和变量，client向server发送另外一个报文段，对于服务器的允许连接的报文段进行确认，server-isn+1设置到TCP报文段首部确认字节，这里可以报文段中携带数据</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3jaa8apaqj20yf0u0die.jpg" srcset="/img/loading.gif" lazyload alt="image-20220624134710294" /></p>
+<p>拆除：</p>
+<p>通过FIN字段来设置关闭报文段，client发送包含FIN报文，server发送ACK；之后server发送FIN，client回复ACK，如果没有关闭设置超时重传机制</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3jaaw97tbj20x30u040a.jpg" srcset="/img/loading.gif" lazyload alt="image-20220624134748694" /></p>
+<p>之后应用层通过套接字（socket）来传递数据流，这些数据被引导到连接到发送缓存（send buffer）中，之后TCP会时不时地从发送缓存中取出来一块数据，并将数据传递到网络层，这里取出多少数据受限于最大报文段长度（maximum segment size，MSS），这个通过由最初确定的最大链路层帧长度（MTU）确定</p>
+<h4 id="323-tcp的可靠数据传输"><a class="markdownIt-Anchor" href="#323-tcp的可靠数据传输"></a> 3.2.3 TCP的可靠数据传输</h4>
+<p>定时器的重要设计是需要了解多长时间才是超时？因此需要对两个host之间的传送时间进行确认，这个需要考虑的这个超时时间间隔重传的设置，它必须要大于该链接的往返时间（RTT），以及是否需要为所有未确认的报文段各设置一个定时器</p>
+<p>TCP连接为每一个时间段做出一次SampleRTT，结合历史估计的Estimate RTT来做移动平均（EWMA，exponential weighed moving average）；同时定义偏差DevRTT</p>
+<p>EstimateRTT=0.875EstimateRTT+0.125SampleRTT</p>
+<p>DevRTT=0.75DevRTT+0.25（SampleRTT- EstimateRTT）</p>
+<p>设置时间间隔为</p>
+<p>Timeout Interval=EstimateRTT+4DevRTT</p>
+<p>在可靠性传输章节我们可以看到对于丢包最重要的是定时器的设置、对于发送方最重要的是定义如何重传数据，因此在TCP中采用的方法如图：也就是采用一个定时器的超时重传机制。</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3jadgm29gj20xf0u00uz.jpg" srcset="/img/loading.gif" lazyload alt="image-20220624135014852" /></p>
+<ol>
+<li>超时间隔加倍
+<ol>
+<li>定时器时限过期之后超时间间隔的长度，在这种修改中，没当超时事件发生后，TCP重传具有最小序号的还未被确认的报文段，只是每次TCP重传都会将以下一次超时间隔设置为前面的2倍；这种修改提供了一种形式受限的拥塞控制，因为时延增加并且重传会导致拥塞更严重</li>
+</ol>
+</li>
+<li>快速重传
+<ol>
+<li>上述的超时重传的问题在于超时周期可能相对较长，当一个报文段丢失时，这种长超时周期使得发送方延迟重传丢失的分组，从而增加了端到端的时延，这里可以采用冗余ACK（duplicate ACK）来帮助检测丢包</li>
+</ol>
+</li>
+<li>GBN or SR
+<ol>
+<li>TCP更多的事选择确认（selective acknowledgement），属于两者之间balance</li>
+</ol>
+</li>
+</ol>
+<h4 id="324-tcp的拥塞控制"><a class="markdownIt-Anchor" href="#324-tcp的拥塞控制"></a> 3.2.4 TCP的拥塞控制</h4>
+<p>还没看懂～～</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/37379780">https://zhuanlan.zhihu.com/p/37379780</a></p>
+<p>这位博主总结为</p>
+<ol>
+<li>慢开始、拥塞避免</li>
+<li>快重传、快恢复</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://zhangbinalan.gitbooks.io/protocol/content/tcpde_yong_sai_kong_zhi.html">https://zhangbinalan.gitbooks.io/protocol/content/tcpde_yong_sai_kong_zhi.html</a></p>
+<p>慢开始( slow-start )、拥塞避免( congestion avoidance )、快重传( fast retransmit )和快恢复( fast recovery )。</p>
+<h3 id="33-两者对比"><a class="markdownIt-Anchor" href="#33-两者对比"></a> 3.3 两者对比</h3>
+<p>既然TCP比UDP多出来这么多功能？两者之间的优劣在哪里呢，UDP提供了速度快、报文传递多的特点，而TCP虽然点对点安全传递但是计算开销大，适合用于安全性较强的业务。</p>
+<ul>
+<li>关于发送什么数据以及何时发送的应用层控制更为精细；采用UDP主需要进程将数据传送给UDP即可，但是TCP具有拥塞控制机制；在一些应用中更加强调实时性，而不必要数据的完整性</li>
+<li>无须连接建立，对于网页HTTP连接中可靠性是重要的，同时实时性也是重要的，所以谷歌的QUIC协议是在UDP协议的基础上在应用层协议中实现了可靠性</li>
+<li>无连接状态，TCP需要保持连接状态，这个包括接受和发送缓存、拥塞控制i参数以及序号与确认好的参数，而UDP不需要追踪这些参数，因此在某些特定应用使用UDP可以支持更多的并发用户</li>
+<li>分组首部开销小，TCP报文段20字节的首部开销、UDP仅有8字节</li>
+</ul>
+<p>同时在UDP不可靠的基础上，可以在应用层上增加可靠传输协议来实现可靠UDP（比如Google的QUIC协议）</p>
+<h2 id="0x04-回顾-收获和展望"><a class="markdownIt-Anchor" href="#0x04-回顾-收获和展望"></a> 0x04 回顾、收获和展望</h2>
+<p>将本科信息传输原理、通信网络基础没有听懂的数据报整明白了出处；并且在描述一件事情的过程最好先简化一个基本模型、然后逐步添加。同时理清楚其中的原理、策略和具体操作之间的区别和联系</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ComputerNetwork/" class="category-chain-item">ComputerNetwork</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CS/">#CS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算机网络-03-Chapter03 运输层协议</div>
+      <div>https://blog.tjdata.site/posts/30d17536.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenxia</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/582ef9f0.html" title="计算机网络-04-Chapter04 网络层协议">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机网络-04-Chapter04 网络层协议</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/e75be22e.html" title="计算机网络-02-Chapter02 应用层协议">
+                        <span class="hidden-mobile">计算机网络-02-Chapter02 应用层协议</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://blog.tjdata.site/posts/30d17536.html';
+          this.page.identifier = '/posts/30d17536.html';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'chenxiablog' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

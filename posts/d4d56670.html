@@ -1,0 +1,868 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenxia">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="LeNet和AlexNet是从传统手工特征提取SIFI、HOG等向深度卷积神经网络转变的过渡期。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="paper02-2012-imagenet-classification-with-deep-convolutional-neural-networks">
+<meta property="og:url" content="https://blog.tjdata.site/posts/d4d56670.html">
+<meta property="og:site_name" content="Chenxia&#39;s blog">
+<meta property="og:description" content="LeNet和AlexNet是从传统手工特征提取SIFI、HOG等向深度卷积神经网络转变的过渡期。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5l692hi8nj20fi07smy7.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5l69soa4aj20be0f4jsh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5l6a0jeaoj208v04mjrj.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5l6a3r2nmj20bn0670ta.jpg">
+<meta property="article:published_time" content="2022-08-27T03:27:20.000Z">
+<meta property="article:modified_time" content="2022-10-17T08:18:08.948Z">
+<meta property="article:author" content="chenxia">
+<meta property="article:tag" content="paper_reading">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5l692hi8nj20fi07smy7.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>paper02-2012-imagenet-classification-with-deep-convolutional-neural-networks - Chenxia&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"4ace08e3aba4620ee513a74cf9c779c1","google":"G-WBB268CYE1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?4ace08e3aba4620ee513a74cf9c779c1";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+    <!-- Google Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('https://www.google-analytics.com/analytics.js', function() {
+          window.ga = window.ga || function() { (ga.q = ga.q || []).push(arguments) };
+          ga.l = +new Date;
+          ga('create', 'G-WBB268CYE1', 'auto');
+          ga('send', 'pageview');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Chenxia's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenxia&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="paper02-2012-imagenet-classification-with-deep-convolutional-neural-networks"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-08-27 11:27" pubdate>
+          2022年8月27日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          51 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">paper02-2012-imagenet-classification-with-deep-convolutional-neural-networks</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>LeNet和AlexNet是从传统手工特征提取SIFI、HOG等向深度卷积神经网络转变的过渡期。</p>
+<span id="more"></span>
+<p><a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf">NIPS-2012-imagenet-classification-with-deep-convolutional-neural-networks-Paper.pdf</a></p>
+<h1 id="0x01-abstract"><a class="markdownIt-Anchor" href="#0x01-abstract"></a> 0x01 Abstract</h1>
+<p>训练一个deep convolutional nerual network来区分ImageNet的LSVRC-2010比赛中的120万张 high-resolution到1000个不同的class<br />
+（网络效果）在我们的test中，我们错误率从37.5%到17%的提升，显著的好于现有的SOTA<br />
+（网络结构）该neural network包括600万参数和65万参数，包括5个convolutional layers，顺序是1个max-pooling layers、3个fullyconnected layers、以及最终的1000个softmax<br />
+（训练过程）我们使用 non-saturating神经元和高效的GPU卷积实现，同时为了减少overfitting，我们使用最近一种新的regularization方法dropout</p>
+<h1 id="1-introduction"><a class="markdownIt-Anchor" href="#1-introduction"></a> 1 Introduction</h1>
+<p>在object recognition中的关键方法是采用一些 <strong>machine learning</strong> 的方法；由此我们收集更多的<strong>dataset</strong>、研究更强的<strong>models</strong>、以及使用更好的训练<strong>techniques</strong>来防止 overfitting。的却在一些大量数据集的加持下，一些简单的识别任务可以非常轻松的解决。比如在MNIST数据集中错误已经和人相当，同时数据集小的情况也被认识到缺点，因此新的更大的数据集LabelMe和ImageNet被开发出来</p>
+<p>为了从数百万的图片中学习数千数据集，我们需要一个新的模型。从一些论文中我们可以看到 deep convolutional nerual network在训练中是有效的，但是我们的数据集是如此之大以至于其中的prior knowledge并不能被人为获得，而是需要从数据集中得到【 owever, the immense complexity of the object recognition task means that this problem cannot be specified even by a dataset as large as ImageNet, so our model should also have lots of prior knowledge to compensate for all the data we don’t hav】；同时CNN的复杂度可以由深度和广度决定，同时其卷积天然的具有强有力的图片先验知识、同时因为卷积层存在其比feedforward neural network的参数要小但是性能并没有明显的下降</p>
+<p>尽管CNN的有效，依旧很难在高分辨率的图像中进行训练，但是幸运的是现有的GPU可以高度有效2D的卷积操作来实现大范围的训练。在本文中采用两块GTX580 3GB，训练时间为5～6天</p>
+<p>本文的贡献<br />
+The specific contributions of this paper are as follows: we trained one of the largest convolutional neural networks to date on the subsets of ImageNet used in the ILSVRC-2010 and ILSVRC-2012 competitions [2] and achieved by far the best results ever reported on these datasets. We wrote a highly-optimized GPU implementation of 2D convolution and all the other operations inherent in training convolutional neural networks, which we make available publicly1. Our network contains a number of new and unusual features which improve its performance and reduce its training time, which are detailed in Section 3. The size of our network made overfitting a significant problem, even with 1.2 million labeled training examples, so we used several effective techniques for preventing overfitting, which are described in Section 4. Our final network contains five convolutional and three fully-connected layers, and this depth seems to be important: we found that removing any convolutional layer (each of which contains no more than 1% of the model’s parameters) resulted in inferior performance.</p>
+<h1 id="0x02-dataset"><a class="markdownIt-Anchor" href="#0x02-dataset"></a> 0x02 DataSet</h1>
+<p>ImageNet</p>
+<p>ILSVRC，其中常见的指标为top1和top5</p>
+<pre><code class="hljs">其中前 5 个错误率是测试图像中正确标签不在模型认为最可能的五个标签中的部分
+</code></pre>
+<p>重采样256*256，对于非长方形的数据scale到相同的像素。我们并没有做其他与处理</p>
+<pre><code class="hljs">4.1 Data Augmentation
+</code></pre>
+<h1 id="0x03-architecture"><a class="markdownIt-Anchor" href="#0x03-architecture"></a> 0x03 Architecture</h1>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5l692hi8nj20fi07smy7.jpg" srcset="/img/loading.gif" lazyload alt="image_1661565390730_0" /></p>
+<h2 id="31-relu-nonlinearity"><a class="markdownIt-Anchor" href="#31-relu-nonlinearity"></a> 3.1 ReLU  Nonlinearity</h2>
+<pre><code class="hljs">常见的激活函数f(x)=tanh(x)或者\[f(x)=(1+e^&#123;-x&#125;)^-1\]属于saturating非线性神经元
+而ReLU函数\[f(x)=max(0,x)\]属于 non-saturating非线性神经元
+后者速度要显著快于前者,这个对于大训练集的训练是非常有效的
+同样我们并不是第一个去考虑替换激活函数，比如 有人尝试使用\[f(x)=|tanh(x)|\]
+</code></pre>
+<h2 id="32-training-on-multiple-gpus"><a class="markdownIt-Anchor" href="#32-training-on-multiple-gpus"></a> 3.2 Training on Multiple GPUs</h2>
+<pre><code class="hljs">如何使用不同的GPU进行训练
+GPU存在的问题是3GB的显存并不够完整数据的网络在其中训练（只能包含12万参数），因此我们将网络划分在两个GPU中训练，整个过程只有效
+</code></pre>
+<h2 id="33-local-response-normalization-card"><a class="markdownIt-Anchor" href="#33-local-response-normalization-card"></a> 3.3 Local Response Normalization card</h2>
+<p>ReLU中并不需要输入 normalization来方式神经元 saturating，只需要发生正样本则会产生训练结果，但是我们仍然发现下面的 normalization对于泛化性能是有效<br />
+$$b_{x,y}<sup>i=\frac{a_{x,y}</sup>i}{(k+a\Sigma_{j=max(0,i-n)/2}<sup>{min(N-1,i+n/2)}(a_{x,y}</sup>j)<sup>2)</sup>{\beta}}$$<br />
+k、n、[\alpha]、[\beta]都是超参数，取值分别为2、5、1e-4、0.75，这是由训练集表现来确定的</p>
+<h2 id="34-overlapping-poolingcard"><a class="markdownIt-Anchor" href="#34-overlapping-poolingcard"></a> 3.4 Overlapping Poolingcard</h2>
+<pre><code class="hljs">一般来说两个pooling是不重叠的，但是这里采用了一种对传统的pooling改进的方式，效果很好
+</code></pre>
+<h2 id="35-overall-architecture"><a class="markdownIt-Anchor" href="#35-overall-architecture"></a> 3.5 Overall Architecture</h2>
+<p>完整的网络结构如图所示，借用(动手学深度学习-现代卷积神经网络-AlexNet)[<a target="_blank" rel="noopener" href="https://zh.d2l.ai/chapter_convolutional-modern/alexnet.html#id11">https://zh.d2l.ai/chapter_convolutional-modern/alexnet.html#id11</a>]</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5l69soa4aj20be0f4jsh.jpg" srcset="/img/loading.gif" lazyload alt="image_1661567510569_0" /></p>
+<pre><code class="hljs"><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs routeros">AlexNet(<br>  (features): Sequential(<br>    (0): Conv2d(3, 64, kernel_size=(11, 11), stride=(4, 4), padding=(2, 2))<br>    (1): ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>)<br>    (2): MaxPool2d(<span class="hljs-attribute">kernel_size</span>=3, <span class="hljs-attribute">stride</span>=2, <span class="hljs-attribute">padding</span>=0, <span class="hljs-attribute">dilation</span>=1, <span class="hljs-attribute">ceil_mode</span>=<span class="hljs-literal">False</span>)<br>    (3): Conv2d(64, 192, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))<br>    (4): ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>)<br>    (5): MaxPool2d(<span class="hljs-attribute">kernel_size</span>=3, <span class="hljs-attribute">stride</span>=2, <span class="hljs-attribute">padding</span>=0, <span class="hljs-attribute">dilation</span>=1, <span class="hljs-attribute">ceil_mode</span>=<span class="hljs-literal">False</span>)<br>    (6): Conv2d(192, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))<br>    (7): ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>)<br>    (8): Conv2d(384, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))<br>    (9): ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>)<br>    (10): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))<br>    (11): ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>)<br>    (12): MaxPool2d(<span class="hljs-attribute">kernel_size</span>=3, <span class="hljs-attribute">stride</span>=2, <span class="hljs-attribute">padding</span>=0, <span class="hljs-attribute">dilation</span>=1, <span class="hljs-attribute">ceil_mode</span>=<span class="hljs-literal">False</span>)<br>  )<br>  (avgpool): AdaptiveAvgPool2d(output_size=(6, 6))<br>  (classifier): Sequential(<br>    (0): Dropout(<span class="hljs-attribute">p</span>=0.5, <span class="hljs-attribute">inplace</span>=<span class="hljs-literal">False</span>)<br>    (1): Linear(<span class="hljs-attribute">in_features</span>=9216, <span class="hljs-attribute">out_features</span>=4096, <span class="hljs-attribute">bias</span>=<span class="hljs-literal">True</span>)<br>    (2): ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>)<br>    (3): Dropout(<span class="hljs-attribute">p</span>=0.5, <span class="hljs-attribute">inplace</span>=<span class="hljs-literal">False</span>)<br>    (4): Linear(<span class="hljs-attribute">in_features</span>=4096, <span class="hljs-attribute">out_features</span>=4096, <span class="hljs-attribute">bias</span>=<span class="hljs-literal">True</span>)<br>    (5): ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>)<br>    (6): Linear(<span class="hljs-attribute">in_features</span>=4096, <span class="hljs-attribute">out_features</span>=1000, <span class="hljs-attribute">bias</span>=<span class="hljs-literal">True</span>)<br>  )<br>)<br></code></pre></td></tr></table></figure>
+</code></pre>
+  <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs routeros">class AlexNet(nn.Module):<br>    def __init__(self, <span class="hljs-attribute">num_classes</span>=1000, <span class="hljs-attribute">init_weights</span>=<span class="hljs-literal">False</span>):<br>        super(AlexNet, self).__init__()<br>        self.features = nn.Sequential(<br>            nn.Conv2d(3, 64, <span class="hljs-attribute">kernel_size</span>=11, <span class="hljs-attribute">stride</span>=4, <span class="hljs-attribute">padding</span>=2),<br>            nn.ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>),<br>            nn.MaxPool2d(<span class="hljs-attribute">kernel_size</span>=3, <span class="hljs-attribute">stride</span>=2),<br>            nn.Conv2d(64, 192, <span class="hljs-attribute">kernel_size</span>=5, <span class="hljs-attribute">padding</span>=2),<br>            nn.ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>),<br>            nn.MaxPool2d(<span class="hljs-attribute">kernel_size</span>=3, <span class="hljs-attribute">stride</span>=2),<br>            nn.Conv2d(192, 384, <span class="hljs-attribute">kernel_size</span>=3, <span class="hljs-attribute">padding</span>=1),<br>            nn.ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>),<br>            nn.Conv2d(384, 256, <span class="hljs-attribute">kernel_size</span>=3, <span class="hljs-attribute">padding</span>=1),<br>            nn.ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>),<br>            nn.Conv2d(256, 256, <span class="hljs-attribute">kernel_size</span>=3, <span class="hljs-attribute">padding</span>=1),<br>            nn.ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>),<br>            nn.MaxPool2d(<span class="hljs-attribute">kernel_size</span>=3, <span class="hljs-attribute">stride</span>=2),<br>        )<br>        self.avgpool = nn.AdaptiveAvgPool2d((6, 6))<br>        self.classifier = nn.Sequential(<br>            nn.Dropout(),<br>            nn.Linear(256 * 6 * 6, 4096),<br>            nn.ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>),<br>            nn.Dropout(),<br>            nn.Linear(4096, 4096),<br>            nn.ReLU(<span class="hljs-attribute">inplace</span>=<span class="hljs-literal">True</span>),<br>            nn.Linear(4096, num_classes),<br>        )<br>        <span class="hljs-keyword">if</span> init_weights:<br>            self._initialize_weights()<br><br>    def forward(self, x):<br>        x = self.features(x)<br>        x = torch.flatten(x, <span class="hljs-attribute">start_dim</span>=1)<br>        x = self.classifier(x)<br>        return x<br><br>    def _initialize_weights(self):<br>        <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> self.modules():<br>            <span class="hljs-keyword">if</span> isinstance(m, nn.Conv2d):<br>                nn.init.kaiming_normal_(m.weight, <span class="hljs-attribute">mode</span>=<span class="hljs-string">&#x27;fan_out&#x27;</span>, <span class="hljs-attribute">nonlinearity</span>=<span class="hljs-string">&#x27;relu&#x27;</span>)<br>                <span class="hljs-keyword">if</span> m.bias is <span class="hljs-keyword">not</span> None:<br>                    nn.init.constant_(m.bias, 0)<br>            elif isinstance(m, nn.Linear):<br>                nn.init.normal_(m.weight, 0, 0.01)<br>                nn.init.constant_(m.bias, 0)<br></code></pre></td></tr></table></figure>
+<p>特点</p>
+<pre><code class="hljs">因为在两块GPU上运行，因此网络结构被一分为二
+五层 convolutional layers加上三层 fullyconnected layers
+2，4，5层仅与自己之前的核有关系，也就是仅与自己这个GPU前一层训练的输出有关，第三层与前一层的两个GPU有关，在通道上做了一层融合
+Local Response Normalization运用在第一层和第二层
+每一层都使用了 ReLu
+</code></pre>
+<h1 id="0x04-reducing-overfitting"><a class="markdownIt-Anchor" href="#0x04-reducing-overfitting"></a> 0x04 Reducing overfitting</h1>
+<h2 id="41-data-augmentation"><a class="markdownIt-Anchor" href="#41-data-augmentation"></a> 4.1 Data Augmentation</h2>
+<pre><code class="hljs">这里的输入是256*256，但是网络的输入是224*224，因为为了扩充数据集的大小，在之后的训练过程中可以随机选择，这样可以得到2^11=2048倍的扩充
+另外一种方法是使用PCA对RGB进行修正，是的数据的数量得到增多，最终的效果也是成功的
+</code></pre>
+<h2 id="42-dropout"><a class="markdownIt-Anchor" href="#42-dropout"></a> 4.2 dropout</h2>
+<pre><code class="hljs">0.5的概率将一些神经元的输出设置为0，可以有效的降低过拟合
+</code></pre>
+<h1 id="0x05-details-of-learning"><a class="markdownIt-Anchor" href="#0x05-details-of-learning"></a> 0x05 Details of learning</h1>
+<p>SGD，随机梯度下降，增加动量的选项<br />
+初始化参数，使用均值为0、方差为0.01的高斯随机变量初始化权重参数<br />
+LearningRate设置为0.01</p>
+<h1 id="0x06-results"><a class="markdownIt-Anchor" href="#0x06-results"></a> 0x06 Results</h1>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5l6a0jeaoj208v04mjrj.jpg" srcset="/img/loading.gif" lazyload alt="image_1661568191988_0" /></p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5l6a3r2nmj20bn0670ta.jpg" srcset="/img/loading.gif" lazyload alt="image_1661568198286_0" /></p>
+<h1 id="0x07-参考别人的复现"><a class="markdownIt-Anchor" href="#0x07-参考别人的复现"></a> 0x07 参考别人的复现</h1>
+<p>to be continued ~~</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CNN/" class="category-chain-item">CNN</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/paper-reading/">#paper_reading</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>paper02-2012-imagenet-classification-with-deep-convolutional-neural-networks</div>
+      <div>https://blog.tjdata.site/posts/d4d56670.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenxia</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年8月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/cb0af509.html" title="Review：WebPage_Request的完整过程">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Review：WebPage_Request的完整过程</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/eac26b.html" title="作业记录">
+                        <span class="hidden-mobile">作业记录</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://blog.tjdata.site/posts/d4d56670.html';
+          this.page.identifier = '/posts/d4d56670.html';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'chenxiablog' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

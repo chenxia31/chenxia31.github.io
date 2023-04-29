@@ -1,0 +1,948 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenxia">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在前面稍微的完整了解的基础的线性表结构，知道数组、链表、队、栈、哈希表、堆之后；本来按照数据结构要学习高级数据结构字符串和二叉树，但是在学习KMP的时候对一些算法中的基本概念不清晰，同时需要对前一阶段中的排序、二分、双指针、优先队列、单调栈等进行总结，所以借此机会了解一下算法。算法中最基础的就是枚举或者说迭代，之后便是递归为基础的分治和回溯算法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法08-算法刷题-枚举｜递归｜分治｜回溯">
+<meta property="og:url" content="https://blog.tjdata.site/posts/551748b9.html">
+<meta property="og:site_name" content="Chenxia&#39;s blog">
+<meta property="og:description" content="在前面稍微的完整了解的基础的线性表结构，知道数组、链表、队、栈、哈希表、堆之后；本来按照数据结构要学习高级数据结构字符串和二叉树，但是在学习KMP的时候对一些算法中的基本概念不清晰，同时需要对前一阶段中的排序、二分、双指针、优先队列、单调栈等进行总结，所以借此机会了解一下算法。算法中最基础的就是枚举或者说迭代，之后便是递归为基础的分治和回溯算法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qi9ph3csj20j90pu0tf.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qikobs8yj21410u0qcx.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qilo3lblj20r80lhwg6.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qimxl3mbj20hm0bv3zc.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qiud55kyj21410u0119.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qiv5fkztj21410u0q8j.jpg">
+<meta property="article:published_time" content="2022-07-31T03:25:07.000Z">
+<meta property="article:modified_time" content="2022-10-17T08:18:08.955Z">
+<meta property="article:author" content="chenxia">
+<meta property="article:tag" content="Leetcode">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qi9ph3csj20j90pu0tf.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>数据结构与算法08-算法刷题-枚举｜递归｜分治｜回溯 - Chenxia&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"4ace08e3aba4620ee513a74cf9c779c1","google":"G-WBB268CYE1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?4ace08e3aba4620ee513a74cf9c779c1";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+    <!-- Google Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('https://www.google-analytics.com/analytics.js', function() {
+          window.ga = window.ga || function() { (ga.q = ga.q || []).push(arguments) };
+          ga.l = +new Date;
+          ga('create', 'G-WBB268CYE1', 'auto');
+          ga('send', 'pageview');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Chenxia's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenxia&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构与算法08-算法刷题-枚举｜递归｜分治｜回溯"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-31 11:25" pubdate>
+          2022年7月31日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          94 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数据结构与算法08-算法刷题-枚举｜递归｜分治｜回溯</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在前面稍微的完整了解的基础的线性表结构，知道数组、链表、队、栈、哈希表、堆之后；本来按照数据结构要学习高级数据结构字符串和二叉树，但是在学习KMP的时候对一些算法中的基本概念不清晰，同时需要对前一阶段中的排序、二分、双指针、优先队列、单调栈等进行总结，所以借此机会了解一下算法。算法中最基础的就是枚举或者说迭代，之后便是递归为基础的分治和回溯算法。</p>
+<span id="more"></span>
+<h1 id="0x01-枚举算法enumeration-algorithm"><a class="markdownIt-Anchor" href="#0x01-枚举算法enumeration-algorithm"></a> 0x01 枚举算法（Enumeration Algorithm）</h1>
+<h2 id="11-枚举算法简介"><a class="markdownIt-Anchor" href="#11-枚举算法简介"></a> 1.1  枚举算法简介</h2>
+<p>穷举算法，指的是按照问题的本身的性质，来列举出所有该问题可能存在的解，并在逐一枚举的过程中讲它们逐一和目标状态进行比较来得到满足问题要求的解</p>
+<p>枚举算法的核心是需要列举问题的所有状态，并与目标状态进行比较。它的优点是，容易编程调试、算法的正确性容易证明；它的缺点是效率比较低，不适合求解规模较大的问题</p>
+<h2 id="12-枚举算法的思路"><a class="markdownIt-Anchor" href="#12-枚举算法的思路"></a> 1.2 枚举算法的思路</h2>
+<ol>
+<li>确定枚举对象、 枚举范围和判断条件，并判断条件设立的正确性</li>
+<li>一一枚举可能的情况并验证是否是问题的解</li>
+<li>考虑提高枚举算法的效率</li>
+</ol>
+<h2 id="13-枚举算法的应用"><a class="markdownIt-Anchor" href="#13-枚举算法的应用"></a> 1.3  枚举算法的应用</h2>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/subsets/">LC78 子集</a></p>
+<p>如果集合A的任意一个元素都是集合S的元素，则集合A事集合S的子集，枚举子集的方法很多，一种简单有效的枚举方法是二进制枚举子集算法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">subsets</span>(<span class="hljs-params">self, nums: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]]:<br>        res=[]<br>        path=[]<br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtracking</span>(<span class="hljs-params">nums,index</span>):<br>            res.append(path[:])<br>            <span class="hljs-keyword">if</span> index&gt;=<span class="hljs-built_in">len</span>(nums):<br>                <span class="hljs-keyword">return</span> <br>            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(index,<span class="hljs-built_in">len</span>(nums)):<br>                path.append(nums[i])<br>                backtracking(nums,i+<span class="hljs-number">1</span>)<br>                path.pop()<br>        backtracking(nums,<span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span> res<br></code></pre></td></tr></table></figure>
+<p>python 的位运算符；</p>
+<p>&amp; ：and运算，参与运算的两个值相应位为1，则结果为1</p>
+<p>｜：or 运算，只要对应的两个二位有一个为1，结果就为1</p>
+<p>^:  XOR运算，两个对应的相异的时候，结果为1</p>
+<p>～：not运算，</p>
+<p>&lt;&lt; 左移运算符，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">subsets</span>(<span class="hljs-params">self, S: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]]:<br>        sub_sets=[]<br>        n=<span class="hljs-built_in">len</span>(S)<br>        <span class="hljs-comment"># 1&lt;&lt;n 相当于2^n次方，range(1&lt;&lt;n)相当于0～2^n-1</span><br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>&lt;&lt;n):<br>            sub_set=[]<br>            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>                <span class="hljs-comment"># &amp;1 相当于取最后一位</span><br>                <span class="hljs-keyword">if</span> i&gt;&gt;j&amp;<span class="hljs-number">1</span>:<br>                    sub_set.append(S[j])<br>            sub_sets.append(sub_set)<br>        <span class="hljs-keyword">return</span> sub_sets<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximal-square/">LC221 最大正方形</a></p>
+<p>需要用到一些简单的DP</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maximalSquare</span>(<span class="hljs-params">self, matrix: <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]]</span>) -&gt; <span class="hljs-built_in">int</span>:<br>        <span class="hljs-comment"># 最大面积的正方形</span><br>        <span class="hljs-comment"># 积分图的方式</span><br>        max_len=<span class="hljs-number">0</span>          <br>        m,n=<span class="hljs-built_in">len</span>(matrix),<span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])<br>        dp=[]<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):<br>            sub_dp=[]<br>            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>                matrix[i][j]=<span class="hljs-built_in">int</span>(matrix[i][j])<br>                <span class="hljs-keyword">if</span> matrix[i][j]==<span class="hljs-number">1</span>:<br>                    max_len=<span class="hljs-number">1</span><br>                sub_dp.append(matrix[i][j])<br>            dp.append(sub_dp)<br><br><br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,m):<br>            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,n):<br>                <span class="hljs-keyword">if</span> matrix[i][j]==<span class="hljs-number">1</span> <span class="hljs-keyword">and</span> dp[i-<span class="hljs-number">1</span>][j]&gt;=<span class="hljs-number">1</span> <span class="hljs-keyword">and</span> dp[i][j-<span class="hljs-number">1</span>]&gt;=<span class="hljs-number">1</span> <span class="hljs-keyword">and</span> dp[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>]&gt;=<span class="hljs-number">1</span>:<br>                    dp[i][j]=<span class="hljs-built_in">min</span>(dp[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>],dp[i-<span class="hljs-number">1</span>][j],dp[i][j-<span class="hljs-number">1</span>])+<span class="hljs-number">1</span><br>                <span class="hljs-keyword">if</span> dp[i][j]&gt;max_len:<br>                    max_len=dp[i][j]<br>        <span class="hljs-keyword">return</span> max_len*max_len<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-primes/">LC204 计算质数</a></p>
+<p>和以前在学校学习的就玩就完全不一样，枚举最重要的不是要确定列举的对象，还需要确定剪枝的条件。所以本题可以有筛子的概念</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">countPrimes</span>(<span class="hljs-params">self, n: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:<br>        is_prime = [<span class="hljs-literal">True</span>]*(n)<br>        ans = <span class="hljs-number">0</span><br>        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>,n): <br>            <span class="hljs-keyword">if</span> is_prime[num]:<br>                ans+=<span class="hljs-number">1</span><br>                <span class="hljs-comment"># 右边界:因为数字最大是n-1 所以只需要到(n-1)//num 右边是开区间 所以+1</span><br>                <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,(n-<span class="hljs-number">1</span>)//num+<span class="hljs-number">1</span>):<br>                    is_prime[num*k]=<span class="hljs-literal">False</span><br>        <span class="hljs-keyword">return</span> ans<br></code></pre></td></tr></table></figure>
+<h1 id="0x02-递归算法"><a class="markdownIt-Anchor" href="#0x02-递归算法"></a> 0x02 递归算法</h1>
+<h2 id="21-递归简介"><a class="markdownIt-Anchor" href="#21-递归简介"></a> 2.1 递归简介</h2>
+<p>是一种通过重复讲原问题分解为同类的子问题而解决的方法，在绝大数编程语言中，可以通过在函数中再次调用函数自身的方式来实现递归</p>
+<p>简单的例子就是阶乘的计算</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">fact</span>(<span class="hljs-params">n</span>):<br>	<span class="hljs-keyword">if</span> n==<span class="hljs-number">0</span>:<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>	<span class="hljs-keyword">return</span> n*fact(n-<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+<p>递归可以分为两个部分：</p>
+<ol>
+<li>（递推过程）先逐层向下调用自身，直到达到结束条件；指的是<strong>将原问题一层一层分解为与原问题形式相同、规模更小的字问题，直到达到结束条件时停止，此时返回最底层问题的解</strong></li>
+<li>然后想上逐层返回结果，直到返回原问题的解；指的是<strong>从最底层字问题的解开始，逆向逐一回归，最终达到递推开始的原问题，直到返回原问题的解</strong></li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qi9ph3csj20j90pu0tf.jpg" srcset="/img/loading.gif" lazyload alt="image-20220731230242978" /></p>
+<h2 id="22-递推与数据归纳法"><a class="markdownIt-Anchor" href="#22-递推与数据归纳法"></a> 2.2  递推与数据归纳法</h2>
+<p>多米罗骨牌类似的数学归纳法的步骤是：</p>
+<ol>
+<li>证明当n==b的时候，基本情况下成立</li>
+<li>证明当n&gt;b的时候，n=k成立的情况下，可以推导得出n=k+1成立</li>
+</ol>
+<p>这个时候需要解决的递归就需要</p>
+<ol>
+<li>递归的终止条件</li>
+<li>递归的过程</li>
+<li>回归过程</li>
+</ol>
+<h2 id="23-递归的模版"><a class="markdownIt-Anchor" href="#23-递归的模版"></a> 2.3 递归的模版</h2>
+<h3 id="231-递归公式"><a class="markdownIt-Anchor" href="#231-递归公式"></a> 2.3.1 递归公式</h3>
+<p>需要找到原问题分解称为子问题的规律，并且根据规律写出递推公式。这里的关键是需要找到原问题分解称为子问题的规律，并抽象称为递推公式。</p>
+<p>注意，在思考递归公式的时候没有必要将整个递推过程和回归过程一层层的想清楚，这样可能还没有递推到栈底就已经绕晕了。重点在于想清楚n=k到n=k+1这个步骤，而不是n=i到n=i+1（i=1:m）；也就是找到递归过程中的循环不变量（loop variant），先假设子问题解决了，再看如何将原问题分解</p>
+<h3 id="232-终止条件"><a class="markdownIt-Anchor" href="#232-终止条件"></a> 2.3.2 终止条件</h3>
+<p>递归的终止条件也叫做递归出口，在写出递推公式之后，就需要考虑递归的终止条件是什么。通常条件下，递归的终止条件是问题的边界值</p>
+<h3 id="233-翻译成代码"><a class="markdownIt-Anchor" href="#233-翻译成代码"></a> 2.3.3 翻译成代码</h3>
+<p>第一步，定义递归函数，明确函数意义、input和output</p>
+<p>第二步，根据循环不变量来推论得到递归公式</p>
+<p>第三步，明确递归的终止条件</p>
+<p>第四步，伪代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">recursion</span>(<span class="hljs-params">大规模）：</span><br><span class="hljs-params">	<span class="hljs-keyword">if</span> 终止条件：</span><br><span class="hljs-params">		终止条件处理</span><br><span class="hljs-params">	<span class="hljs-keyword">return</span> recursion（小规模）</span><br></code></pre></td></tr></table></figure>
+<h3 id="234-递归的注意点"><a class="markdownIt-Anchor" href="#234-递归的注意点"></a> 2.3.4 递归的注意点</h3>
+<p>避免栈溢出</p>
+<p>避免重复运算</p>
+<h2 id="24-递归的应用"><a class="markdownIt-Anchor" href="#24-递归的应用"></a> 2.4 递归的应用</h2>
+<p>递归在使用的过程需要明确你的loop variant是什么，在每次运行过程中循环不变量是什么</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/fibonacci-number/">LC509 斐波那契数列</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/climbing-stairs">LC70爬楼梯</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-string/">LC344 反转字符串</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/swap-nodes-in-pairs/">LC24 交换节点</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Definition for singly-linked list.</span><br><span class="hljs-comment"># class ListNode:</span><br><span class="hljs-comment">#     def __init__(self, val=0, next=None):</span><br><span class="hljs-comment">#         self.val = val</span><br><span class="hljs-comment">#         self.next = next</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">swapPairs</span>(<span class="hljs-params">self, head: ListNode</span>) -&gt; ListNode:<br>        <span class="hljs-keyword">if</span> head==<span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> head.<span class="hljs-built_in">next</span>==<span class="hljs-literal">None</span>:<br>            <span class="hljs-keyword">return</span> head<br>        dummy=ListNode(<span class="hljs-number">0</span>,head)<br>        node1=head<br>        res=ListNode(<span class="hljs-number">0</span>,head.<span class="hljs-built_in">next</span>)<br>        node2=head.<span class="hljs-built_in">next</span><br>        <span class="hljs-keyword">while</span>(node1!=<span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> node2!=<span class="hljs-literal">None</span>):<br>            <span class="hljs-comment"># 交换两者</span><br>            node1.<span class="hljs-built_in">next</span>=node2.<span class="hljs-built_in">next</span><br>            node2.<span class="hljs-built_in">next</span>=node1<br>            dummy.<span class="hljs-built_in">next</span>=node2<br><br>            <span class="hljs-comment"># 更新node</span><br>            dummy=node1<br><br>            <span class="hljs-keyword">if</span> node1.<span class="hljs-built_in">next</span>==<span class="hljs-literal">None</span>:<br>                <span class="hljs-keyword">break</span><br>            node1=node1.<span class="hljs-built_in">next</span><br>            node2=node1.<span class="hljs-built_in">next</span><br>        <span class="hljs-keyword">return</span> res.<span class="hljs-built_in">next</span><br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/pascals-triangle-ii/">LC119 杨辉三角</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-depth-of-binary-tree/">LC104 二叉树最大深度</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Definition for a binary tree node.</span><br><span class="hljs-comment"># class TreeNode:</span><br><span class="hljs-comment">#     def __init__(self, val=0, left=None, right=None):</span><br><span class="hljs-comment">#         self.val = val</span><br><span class="hljs-comment">#         self.left = left</span><br><span class="hljs-comment">#         self.right = right</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxDepth</span>(<span class="hljs-params">self, root: <span class="hljs-type">Optional</span>[TreeNode]</span>) -&gt; <span class="hljs-built_in">int</span>:<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(self.maxDepth(root.left),self.maxDepth(root.right))+<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/invert-binary-tree/">LC226 翻转二叉树</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Definition for a binary tree node.</span><br><span class="hljs-comment"># class TreeNode:</span><br><span class="hljs-comment">#     def __init__(self, val=0, left=None, right=None):</span><br><span class="hljs-comment">#         self.val = val</span><br><span class="hljs-comment">#         self.left = left</span><br><span class="hljs-comment">#         self.right = right</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">invertTree</span>(<span class="hljs-params">self, root: TreeNode</span>) -&gt; TreeNode:<br>        <span class="hljs-keyword">if</span> root == <span class="hljs-literal">None</span>:<br>            <span class="hljs-keyword">return</span> root<br>        <span class="hljs-comment"># 等于左边的反转 加上 右边的反转</span><br>        left=self.invertTree(root.left)<br>        right=self.invertTree(root.right)<br>        root.right=left<br>        root.left=right<br>        <span class="hljs-keyword">return</span> root<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/k-th-symbol-in-grammar/">LC779 第K个语法符号</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">kthGrammar</span>(<span class="hljs-params">self, n: <span class="hljs-built_in">int</span>, k: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:<br>        <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>:<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>        <span class="hljs-keyword">if</span> k % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>:<br>            <span class="hljs-keyword">return</span> self.kthGrammar(n-<span class="hljs-number">1</span>, (k+<span class="hljs-number">1</span>) // <span class="hljs-number">2</span>)<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">abs</span>(self.kthGrammar(n-<span class="hljs-number">1</span>, k // <span class="hljs-number">2</span>) - <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/unique-binary-search-trees-ii/">LC95 不同的二叉搜索树II</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Definition for a binary tree node.</span><br><span class="hljs-comment"># class TreeNode:</span><br><span class="hljs-comment">#     def __init__(self, val=0, left=None, right=None):</span><br><span class="hljs-comment">#         self.val = val</span><br><span class="hljs-comment">#         self.left = left</span><br><span class="hljs-comment">#         self.right = right</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">generateTrees</span>(<span class="hljs-params">self, n: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-type">List</span>[TreeNode]:<br>        <span class="hljs-keyword">if</span> n==<span class="hljs-number">0</span>:<br>            <span class="hljs-keyword">return</span> []<br>        <br><br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">recursionTree</span>(<span class="hljs-params">left,right</span>):<br>            <span class="hljs-comment"># 生成left-right之间的树</span><br>            <span class="hljs-keyword">if</span> left&gt;right:<br>                <span class="hljs-keyword">return</span> [<span class="hljs-literal">None</span>]<br>            trees=[]<br>            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left,right+<span class="hljs-number">1</span>):<br>                left_trees=recursionTree(left,i-<span class="hljs-number">1</span>)<br>                right_trees=recursionTree(i+<span class="hljs-number">1</span>,right)<br>                <span class="hljs-keyword">for</span> left_tree <span class="hljs-keyword">in</span> left_trees:<br>                    <span class="hljs-keyword">for</span> right_tree <span class="hljs-keyword">in</span> right_trees:<br>                        curr_tree=TreeNode(i)<br>                        curr_tree.left=left_tree<br>                        curr_tree.right=right_tree<br>                        trees.append(curr_tree)<br>            <span class="hljs-keyword">return</span> trees<br>        <span class="hljs-keyword">return</span> recursionTree(<span class="hljs-number">1</span>,n)<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/yuan-quan-zhong-zui-hou-sheng-xia-de-shu-zi-lcof/">offer62 圆圈中最后剩下的数字</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">lastRemaining</span>(<span class="hljs-params">self, n: <span class="hljs-built_in">int</span>, m: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:<br>        ans = <span class="hljs-number">0</span><br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, n + <span class="hljs-number">1</span>):<br>            ans = (m + ans) % i<br>        <span class="hljs-keyword">return</span> ans<br></code></pre></td></tr></table></figure>
+<h1 id="0x03-分治法divide-and-conquer"><a class="markdownIt-Anchor" href="#0x03-分治法divide-and-conquer"></a> 0x03 分治法（Divide and Conquer)</h1>
+<p>这里只是简单的了解，以归并排序作为基础。理解一个算法的好处就是去模拟它</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeSort</span>(<span class="hljs-params">arr</span>):<br>	<span class="hljs-comment"># 归并排序的基本思想：</span><br>	<span class="hljs-comment"># 采用经典的分治策略，先递归将当前序列平均分成两半，然后将有序序列合并，最终合并成一个有序序列</span><br>	<span class="hljs-comment"># </span><br>	<span class="hljs-comment"># 【算法步骤】</span><br>	<span class="hljs-comment"># 1. 将数组中的所有数据堪称n有序的子序列</span><br>	<span class="hljs-comment"># 2. 将当前序列组中的有序序列两两归并，完成一遍之后序列组里的排序序列的个数减版，每个子序列的长度加倍</span><br>	<span class="hljs-comment"># 3. 重复上述操作得到一个长度为n的有序序列</span><br>	<span class="hljs-comment"># </span><br>	<span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">left_arr,right_arr</span>):<br>		arr=[]<br>		<span class="hljs-keyword">while</span> left_arr <span class="hljs-keyword">and</span> right_arr:<br>			<span class="hljs-keyword">if</span> left_arr[<span class="hljs-number">0</span>]&lt;=right_arr[<span class="hljs-number">0</span>]:<br>				arr.append(left_arr.pop(<span class="hljs-number">0</span>))<br>			<span class="hljs-keyword">else</span>:<br>				arr.append(right_arr.pop[<span class="hljs-number">0</span>])<br><br>		<span class="hljs-keyword">while</span> left_arr:<br>			arr.append(left_arr.pop(<span class="hljs-number">0</span>))<br><br>		<span class="hljs-keyword">while</span> right_arr:<br>			arr.append(right_arr.pop(<span class="hljs-number">0</span>))<br><br>		<span class="hljs-keyword">return</span> arr<br><br>	size =<span class="hljs-built_in">len</span>(arr)<br>	<br>	<span class="hljs-comment"># 边界情况</span><br>	<span class="hljs-keyword">if</span> size&lt;<span class="hljs-number">2</span>:<br>		<span class="hljs-keyword">return</span> arr<br><br>	mid =size//<span class="hljs-number">2</span><br><br>	left_arr,right_arr=arr[<span class="hljs-number">0</span>:mid],arr[mid:]<br>	<span class="hljs-keyword">return</span> merge(mergeSort(left_arr),mergeSort(right_arr))<br></code></pre></td></tr></table></figure>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qikobs8yj21410u0qcx.jpg" srcset="/img/loading.gif" lazyload alt="IMG_C3B04D575C51-1" /></p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qilo3lblj20r80lhwg6.jpg" srcset="/img/loading.gif" lazyload alt="img" /></p>
+<h1 id="0x04-回溯算法backtracking-algorithm"><a class="markdownIt-Anchor" href="#0x04-回溯算法backtracking-algorithm"></a> 0x04 回溯算法(Backtracking algorithm)</h1>
+<h2 id="41-回溯算法简介"><a class="markdownIt-Anchor" href="#41-回溯算法简介"></a> 4.1  回溯算法简介</h2>
+<p>一种能够避免不必要搜索的穷举式的搜索算法，采用尝试错误的思想，在搜索尝试过程中寻找问题的解，当探索到某一步的时候，发现原先的选择并不满足求解条件、或者还需要满足更多的求解条件的的时候，就退回一步重新选择。这个过程中走不通就退回的技术称为回溯法、满足回溯条件的某个状态的点称为回溯点</p>
+<p>回溯算法通常用简单的递归的方法来实现，在进行回溯的过程中可能会出现两种情况：</p>
+<ol>
+<li>找到一个可能存在的正确答案</li>
+<li>在尝试所有可能的分布方法之后宣布该问题没有答案</li>
+</ol>
+<h2 id="42-回溯算法的例子"><a class="markdownIt-Anchor" href="#42-回溯算法的例子"></a> 4.2  回溯算法的例子</h2>
+<p>比如求解1，2，3的全排列的问题：</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qimxl3mbj20hm0bv3zc.jpg" srcset="/img/loading.gif" lazyload alt="image-20220731231528233" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">premute</span>(<span class="hljs-params">nums</span>):<br>    res=[] <span class="hljs-comment"># 存放所有符合条件结果的集合</span><br>    path=[] <span class="hljs-comment"># 存放当前符合条件的结果</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtracking</span>(<span class="hljs-params">nums</span>):<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(path)==<span class="hljs-built_in">len</span>(nums):<br>            res.append(path[:])<br>            <span class="hljs-keyword">return</span><br>        <br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):<br>            <span class="hljs-keyword">if</span> nums[i] <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> path:<br>                <span class="hljs-comment"># 从当前路径中没有出现的数字中选择</span><br>                path.append(nums[i])<br>                <span class="hljs-comment"># 递归搜索</span><br>                backtracking(nums)<br>                <span class="hljs-comment"># 撤销选择</span><br>                path.pop()<br>        <br>    backtracking(nums)<br><br>    <span class="hljs-keyword">return</span> res<br><span class="hljs-built_in">print</span>(premute([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]))<br></code></pre></td></tr></table></figure>
+<h2 id="43-回溯算法的过程"><a class="markdownIt-Anchor" href="#43-回溯算法的过程"></a> 4.3 回溯算法的过程</h2>
+<p>回溯算法的解题步骤比较抽象，这里只是做一个简单的介绍</p>
+<p>第一步：结合所给的问题，定义问题的求解空间，包括求解的组织形式和显性约束</p>
+<ol>
+<li>解的组织形式，将解的组织形式都规范称为一个n元祖</li>
+<li>显约束，对解分量的取值范围限定，用来控制解空间的大小</li>
+</ol>
+<p>第二步：确定解空间的组织结构，解空间的组织借口通常用解空间树的方式形象表达，根据解空间树的不同，解空间分为子集树、排列树和m叉树</p>
+<p>第三步：按照深度优先搜索策略，根据隐约束，在解空间中搜索问题的可行解或者最优解，当发现当前节点不满足求解条件时候回溯尝试其他的路径</p>
+<p>上面的是解题的抽象逻辑，后面根据code书写回溯算法的步骤可以分为：</p>
+<ol>
+<li>明确所有的选择，画出搜索过程的决策树，根据决策树来确定搜索路径</li>
+<li>明确终止条件，推敲出递归的终止条件，以及递归终止时要执行的处理方法</li>
+<li>将决策树和终止条件翻译成代码</li>
+</ol>
+<h2 id="44-回溯算法的应用"><a class="markdownIt-Anchor" href="#44-回溯算法的应用"></a> 4.4 回溯算法的应用</h2>
+<p>初步的回溯算法是将现有的可能性分类，然后选择其中的一个递归到下一层，并允许返回后执行下一个可能性。重点在于每一层递归都会有N个可能性，所以更近一步需要考虑剪枝。当然需要先把回溯学会，才能学会剪纸</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/permutations/">LC46 全排列</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">permute</span>(<span class="hljs-params">self, nums: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]]:<br>        res=[]<br>        path=[]<br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">bt</span>(<span class="hljs-params">nums</span>):<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(path)==<span class="hljs-built_in">len</span>(nums):<br>                res.append(path[:])<br>                <span class="hljs-keyword">return</span> <br>            <br>            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):<br>                <span class="hljs-keyword">if</span> nums[i] <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> path:<br>                    path.append(nums[i])<br>                    bt(nums)<br>                    path.pop()<br>        bt(nums)<br>        <span class="hljs-keyword">return</span> res<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/permutations-ii/">LC 47全排列II</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/subarray-sum-equals-k/">LC560 和为k的子数组</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">subarraySum</span>(<span class="hljs-params">self, nums: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>], k: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:<br>        pre_dic = &#123;<span class="hljs-number">0</span>: <span class="hljs-number">1</span>&#125;<br>        pre_sum = <span class="hljs-number">0</span><br>        count = <span class="hljs-number">0</span><br>        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:<br>            pre_sum += num<br>            <span class="hljs-keyword">if</span> pre_sum - k <span class="hljs-keyword">in</span> pre_dic:<br>                count += pre_dic[pre_sum - k]<br>            <span class="hljs-keyword">if</span> pre_sum <span class="hljs-keyword">in</span> pre_dic:<br>                pre_dic[pre_sum] += <span class="hljs-number">1</span><br>            <span class="hljs-keyword">else</span>:<br>                pre_dic[pre_sum] = <span class="hljs-number">1</span><br>        <span class="hljs-keyword">return</span> count<br></code></pre></td></tr></table></figure>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qiud55kyj21410u0119.jpg" srcset="/img/loading.gif" lazyload alt="IMG_CF3CEA8976F6-1" /></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/generate-parentheses/">LC22 括号生成</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">generateParenthesis</span>(<span class="hljs-params">self, n: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]:<br>        ans = []<br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">S, left, right</span>):<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(S) == <span class="hljs-number">2</span> * n:<br>                ans.append(<span class="hljs-string">&#x27;&#x27;</span>.join(S))<br>                <span class="hljs-keyword">return</span><br>            <span class="hljs-keyword">if</span> left &lt; n:<br>                S.append(<span class="hljs-string">&#x27;(&#x27;</span>)<br>                backtrack(S, left+<span class="hljs-number">1</span>, right)<br>                S.pop()<br>            <span class="hljs-keyword">if</span> right &lt; left:<br>                S.append(<span class="hljs-string">&#x27;)&#x27;</span>)<br>                backtrack(S, left, right+<span class="hljs-number">1</span>)<br>                S.pop()<br><br>        backtrack([], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span> ans<br></code></pre></td></tr></table></figure>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h4qiv5fkztj21410u0q8j.jpg" srcset="/img/loading.gif" lazyload alt="IMG_D7DDED1F4ECE-1" /></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/letter-combinations-of-a-phone-number/">LC 17 电话号码的字母组合</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">letterCombinations</span>(<span class="hljs-params">self, digits: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]:<br>        num2letter=[<span class="hljs-string">&#x27;abc&#x27;</span>,<span class="hljs-string">&#x27;def&#x27;</span>,<span class="hljs-string">&#x27;ghi&#x27;</span>,<span class="hljs-string">&#x27;jkl&#x27;</span>,<span class="hljs-string">&#x27;mno&#x27;</span>,<span class="hljs-string">&#x27;pqrs&#x27;</span>,<span class="hljs-string">&#x27;tuv&#x27;</span>,<span class="hljs-string">&#x27;wxyz&#x27;</span>]<br>        n=<span class="hljs-built_in">len</span>(digits)<br>        res=[]<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> digits:<br>            <span class="hljs-keyword">return</span> []<br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtracking</span>(<span class="hljs-params">S</span>):<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(S)==n:<br>                res.append(<span class="hljs-string">&#x27;&#x27;</span>.join(S))<br>                <span class="hljs-keyword">return</span><br>            <br>            index=<span class="hljs-built_in">len</span>(S)<br>            num=<span class="hljs-built_in">int</span>(digits[index])<br>            <span class="hljs-built_in">print</span>(num)<br>            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> num2letter[num-<span class="hljs-number">2</span>]:<br>                S.append(i)<br>                backtracking(S)<br>                S.pop()<br>        backtracking([])<br>        <span class="hljs-keyword">return</span> res<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/letter-case-permutation/">LC784 字幕大小写全排列</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">letterCasePermutation</span>(<span class="hljs-params">self, s: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]:<br>        res=[]<br>        path=[]<br><br><br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtracking</span>(<span class="hljs-params">path,index</span>):<br>            <span class="hljs-keyword">if</span> index==<span class="hljs-built_in">len</span>(s):<br>                <span class="hljs-comment"># 所有的字母都遍历完毕</span><br>                res.append(<span class="hljs-string">&#x27;&#x27;</span>.join(path[:]))<br>                <span class="hljs-keyword">return</span><br><br>            char=s[index]<br>            <span class="hljs-keyword">if</span> char.isdigit():<br>                <span class="hljs-comment"># 如果是数字，直接加上去就行</span><br>                path.append(char)<br>                backtracking(path,index+<span class="hljs-number">1</span>)<br>                path.pop()<br>            <span class="hljs-keyword">else</span>:<br>                path.append(char.lower())<br>                backtracking(path,index+<span class="hljs-number">1</span>)<br>                path.pop()<br>                path.append(char.upper())<br>                backtracking(path,index+<span class="hljs-number">1</span>)<br>                path.pop()<br>        backtracking([],<span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span> res<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/word-search/">LC79 单词搜索</a></p>
+<p>暂时还不会hhh</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">exist</span>(<span class="hljs-params">self, board: <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]], word: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:<br>        directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)]<br><br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">check</span>(<span class="hljs-params">i: <span class="hljs-built_in">int</span>, j: <span class="hljs-built_in">int</span>, k: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">bool</span>:<br>            <span class="hljs-keyword">if</span> board[i][j] != word[k]:<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>            <span class="hljs-keyword">if</span> k == <span class="hljs-built_in">len</span>(word) - <span class="hljs-number">1</span>:<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>            <br>            visited.add((i, j))<br>            result = <span class="hljs-literal">False</span><br>            <span class="hljs-keyword">for</span> di, dj <span class="hljs-keyword">in</span> directions:<br>                newi, newj = i + di, j + dj<br>                <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= newi &lt; <span class="hljs-built_in">len</span>(board) <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= newj &lt; <span class="hljs-built_in">len</span>(board[<span class="hljs-number">0</span>]):<br>                    <span class="hljs-keyword">if</span> (newi, newj) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:<br>                        <span class="hljs-keyword">if</span> check(newi, newj, k + <span class="hljs-number">1</span>):<br>                            result = <span class="hljs-literal">True</span><br>                            <span class="hljs-keyword">break</span><br>            <br>            visited.remove((i, j))<br>            <span class="hljs-keyword">return</span> result<br><br>        h, w = <span class="hljs-built_in">len</span>(board), <span class="hljs-built_in">len</span>(board[<span class="hljs-number">0</span>])<br>        visited = <span class="hljs-built_in">set</span>()<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(h):<br>            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(w):<br>                <span class="hljs-keyword">if</span> check(i, j, <span class="hljs-number">0</span>):<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>        <br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/letter-tile-possibilities/">LC1079 活字印刷</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">numTilePossibilities</span>(<span class="hljs-params">self, tiles: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">int</span>:<br>        res=<span class="hljs-built_in">set</span>()<br>        path=[]<br>        hashmap=&#123;&#125;<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(tiles)):<br>            <span class="hljs-keyword">if</span> tiles[i] <span class="hljs-keyword">in</span> hashmap:<br>                hashmap[tiles[i]]+=<span class="hljs-number">1</span><br>            <span class="hljs-keyword">else</span>:<br>                hashmap[tiles[i]]=<span class="hljs-number">1</span><br><br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtracking</span>(<span class="hljs-params">tiles</span>):<br>            <br>            temp=<span class="hljs-string">&#x27;&#x27;</span>.join(path[:])<br>            <span class="hljs-keyword">if</span> temp!=<span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-keyword">and</span> temp <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> res:<br>                res.add(temp)<br>            <br>            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(tiles)):<br>                <span class="hljs-keyword">while</span>(hashmap[tiles[i]]==<span class="hljs-number">0</span>):<br>                    i=i+<span class="hljs-number">1</span><br>                    <span class="hljs-keyword">if</span> i ==<span class="hljs-built_in">len</span>(tiles):<br>                        <span class="hljs-keyword">return</span> <br>                hashmap[tiles[i]]-=<span class="hljs-number">1</span><br>                path.append(tiles[i])<br>                backtracking(tiles)<br>                va=path.pop()<br>                hashmap[va]+=<span class="hljs-number">1</span><br>        backtracking(tiles)<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(res)<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/restore-ip-addresses/">LC93 复原IP地址</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">restoreIpAddresses</span>(<span class="hljs-params">self, s: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]:<br>        res=[]<br>        path=[]<br>        flag=<span class="hljs-number">4</span><br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtracking</span>(<span class="hljs-params">s,index</span>):<br>            temp=<span class="hljs-string">&#x27;&#x27;</span>.join(path[:])<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(temp)==<span class="hljs-built_in">len</span>(s)+<span class="hljs-number">4</span>:<br>                res.append(temp[:-<span class="hljs-number">1</span>])<br>                <span class="hljs-keyword">return</span><br><br>            <span class="hljs-keyword">nonlocal</span> flag<br>            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(index+<span class="hljs-number">1</span>,<span class="hljs-built_in">len</span>(s)+<span class="hljs-number">1</span>):<br>                <span class="hljs-keyword">if</span> flag&gt;<span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">int</span>(s[index:i])&lt;=<span class="hljs-number">255</span>:<br>                    <span class="hljs-keyword">if</span> i!=index+<span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">int</span>(s[index])==<span class="hljs-number">0</span>:<br>                        <span class="hljs-keyword">return</span> <br>                    path.append(s[index:i])<br>                    path.append(<span class="hljs-string">&#x27;.&#x27;</span>)<br>                    flag-=<span class="hljs-number">1</span><br>                <span class="hljs-keyword">else</span>:<br>                    <span class="hljs-keyword">return</span><br>                backtracking(s,i)<br>                path.pop()<br>                path.pop()<br>                flag+=<span class="hljs-number">1</span><br>        backtracking(s,<span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span> res<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/n-queens/">LC51-N皇后</a></p>
+<p>感觉N皇后是回溯里面最简单的一种了；确实比较经典</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs vim">class Solution:<br>    def solveNQueens(self, n: <span class="hljs-keyword">int</span>) -&gt; List[List[str]]:<br>        <span class="hljs-keyword">res</span>=[]<br>        path=[]<br>        def backtracking(n):<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(path)==n:<br>                <span class="hljs-keyword">res</span>.<span class="hljs-keyword">append</span>(path[:])<br>                <span class="hljs-keyword">return</span> <br>            <br>            <span class="hljs-keyword">for</span> i in <span class="hljs-built_in">range</span>(n):<br>                # 根据前面的path可以得出目前行能走的路线<br>                forbid=[]<br>                <span class="hljs-keyword">for</span> <span class="hljs-keyword">j</span> in <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(path)):<br>                    forbid.<span class="hljs-keyword">append</span>(path[<span class="hljs-keyword">j</span>])<br>                    forbid.<span class="hljs-keyword">append</span>(path[<span class="hljs-keyword">j</span>]+<span class="hljs-built_in">len</span>(path)-<span class="hljs-keyword">j</span>)<br>                    forbid.<span class="hljs-keyword">append</span>(path[<span class="hljs-keyword">j</span>]+<span class="hljs-keyword">j</span>-<span class="hljs-built_in">len</span>(path))<br>                <span class="hljs-keyword">if</span> i not in forbid:<br>                    path.<span class="hljs-keyword">append</span>(i)<br>                    backtracking(n)<br>                    path.<span class="hljs-keyword">pop</span>()<br>        backtracking(n)<br><br>        rest=[]<br>        # 翻译<br>        <span class="hljs-keyword">for</span> i in <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(<span class="hljs-keyword">res</span>)):<br>            rest.<span class="hljs-keyword">append</span>([])<br>            <span class="hljs-keyword">for</span> <span class="hljs-keyword">j</span> in <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(<span class="hljs-keyword">res</span>[<span class="hljs-number">0</span>])):<br>                temp=[<span class="hljs-string">&#x27;.&#x27;</span> <span class="hljs-keyword">for</span> _ in <span class="hljs-built_in">range</span>(n)]<br>                temp[<span class="hljs-keyword">res</span>[i][<span class="hljs-keyword">j</span>]]=<span class="hljs-string">&#x27;Q&#x27;</span><br>                #合成<br>                <span class="hljs-keyword">ts</span>=<span class="hljs-string">&#x27;&#x27;</span><br>                <span class="hljs-keyword">for</span> <span class="hljs-keyword">k</span> in temp:<br>                    <span class="hljs-keyword">ts</span>+=<span class="hljs-keyword">k</span><br>                rest[-<span class="hljs-number">1</span>].<span class="hljs-keyword">append</span>(<span class="hljs-keyword">ts</span>)<br>        <span class="hljs-keyword">return</span> rest<br></code></pre></td></tr></table></figure>
+<h1 id="0x05-总结conclusion"><a class="markdownIt-Anchor" href="#0x05-总结conclusion"></a> 0x05 总结（Conclusion）</h1>
+<ol>
+<li>理解一个算法，并不像一个数据结构一样直观。所以模拟运行，一步一步的执行才能理解其中的一些关键点。只是单纯的看概念是不ok的</li>
+<li>无论是算法还是数据结构，学习的过程并不是一个创造性的过程，只是将计算机的单条指令执行的思维强加在人身上，再写出利用合适的数据结构和算法能得到一个解决方案</li>
+<li>分治和回溯的根基还是递归，理解递归需要理解循环不变量</li>
+<li>剪枝后面再看趴</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/DataStructure/" class="category-chain-item">DataStructure</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Leetcode/">#Leetcode</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构与算法08-算法刷题-枚举｜递归｜分治｜回溯</div>
+      <div>https://blog.tjdata.site/posts/551748b9.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenxia</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月31日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/ed74d391.html" title="Reading01-GUI的历史以及macOS窗口">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Reading01-GUI的历史以及macOS窗口</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/c3b3eb20.html" title="数据结构与算法07-算法刷题-哈希表部分">
+                        <span class="hidden-mobile">数据结构与算法07-算法刷题-哈希表部分</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://blog.tjdata.site/posts/551748b9.html';
+          this.page.identifier = '/posts/551748b9.html';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'chenxiablog' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

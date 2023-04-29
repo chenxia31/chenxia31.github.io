@@ -1,0 +1,894 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenxia">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本次主要想总结一些目前使用的GUI界面，以及macOS界面中的窗口和应用程序的概念。首先对于一个新的东西了解之前是采用浏览引擎，从百度到Google，或者新生代的duckduckgo等等；但是因为互联网的垃圾太多，自己去寻找的过程也是挑挑拣拣的过程，直到发现wiki 百科。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reading01-GUI的历史以及macOS窗口">
+<meta property="og:url" content="https://blog.tjdata.site/posts/ed74d391.html">
+<meta property="og:site_name" content="Chenxia&#39;s blog">
+<meta property="og:description" content="本次主要想总结一些目前使用的GUI界面，以及macOS界面中的窗口和应用程序的概念。首先对于一个新的东西了解之前是采用浏览引擎，从百度到Google，或者新生代的duckduckgo等等；但是因为互联网的垃圾太多，自己去寻找的过程也是挑挑拣拣的过程，直到发现wiki 百科。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c2l1ovs8j207l0bet8y.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c2zd6ohtj20b407t74m.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c30qsspqj208x06s3yo.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c3e1z0rzj20b405z3yq.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c3e7lmaaj20ci08ht97.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c62i0t4jg209d0ds74e.gif">
+<meta property="og:image" content="https://cdn.arstechnica.net/wp-content/uploads/archive/images/gui/7-AltoST.jpg">
+<meta property="og:image" content="https://cdn.arstechnica.net/wp-content/uploads/archive/images/gui/8-Star.jpg">
+<meta property="og:image" content="https://cdn.arstechnica.net/wp-content/uploads/archive/images/gui/9-Lisamockup1.gif">
+<meta property="og:image" content="https://cdn.arstechnica.net/wp-content/uploads/archive/images/gui/11-Mac1.gif">
+<meta property="og:image" content="https://cdn.arstechnica.net/wp-content/uploads/archive/images/gui/21-next.gif">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c4x8iqzdg20hs09q747.gif">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c4yhvsy5g20hs0dcjrf.gif">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c528sqh3g20m80gognt.gif">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c59t7mkwj21h70s7442.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c5e9i6tmj20y80ps752.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c5sb4zb6j219c0f4js6.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c5x47nh1j20pc01swef.jpg">
+<meta property="article:published_time" content="2022-08-19T06:23:46.000Z">
+<meta property="article:modified_time" content="2022-10-17T08:18:08.946Z">
+<meta property="article:author" content="chenxia">
+<meta property="article:tag" content="Translation">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c2l1ovs8j207l0bet8y.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Reading01-GUI的历史以及macOS窗口 - Chenxia&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"4ace08e3aba4620ee513a74cf9c779c1","google":"G-WBB268CYE1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?4ace08e3aba4620ee513a74cf9c779c1";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+    <!-- Google Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('https://www.google-analytics.com/analytics.js', function() {
+          window.ga = window.ga || function() { (ga.q = ga.q || []).push(arguments) };
+          ga.l = +new Date;
+          ga('create', 'G-WBB268CYE1', 'auto');
+          ga('send', 'pageview');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Chenxia's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenxia&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Reading01-GUI的历史以及macOS窗口"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-08-19 14:23" pubdate>
+          2022年8月19日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          45 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Reading01-GUI的历史以及macOS窗口</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本次主要想总结一些目前使用的GUI界面，以及macOS界面中的窗口和应用程序的概念。首先对于一个新的东西了解之前是采用浏览引擎，从百度到Google，或者新生代的duckduckgo等等；但是因为互联网的垃圾太多，自己去寻找的过程也是挑挑拣拣的过程，直到发现wiki 百科。</p>
+<span id="more"></span>
+<h2 id="0x01-引言从vscode引起的macos应用和窗口的疑惑"><a class="markdownIt-Anchor" href="#0x01-引言从vscode引起的macos应用和窗口的疑惑"></a> 0x01 引言：从Vscode引起的macOS应用和窗口的疑惑</h2>
+<p>macOS的文档（Document）、窗口（window）和应用程序（application）的关系之前一直分不清楚，使用的时候能感受到和window不一样的地方，但是一直不知道区别在哪里。直到使用vs code对于默认打开文件夹的疑惑。</p>
+<p>事情是这样的，我的vs code每次打开的时候都不会显示上次打开的文件夹，在网上搜索设置的时候看到可以在</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">windows.restore = <span class="hljs-string">&#x27;one&#x27;</span> <span class="hljs-regexp">//</span> 可以打开上次关闭的文件夹<br></code></pre></td></tr></table></figure>
+<p>但是如果我使用左上角的红 ’x‘关闭，还是会退出文件夹，但是并没有关闭vs code（因为指示灯还是开着）；如果使用dock内的vs code’退出‘则可以关闭vs code并在下次打开的时候正常出现文件夹</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c2l1ovs8j207l0bet8y.jpg" srcset="/img/loading.gif" lazyload alt="7151660891268_.pic" /></p>
+<h2 id="0x02-gui的发展历史"><a class="markdownIt-Anchor" href="#0x02-gui的发展历史"></a> 0x02 GUI的发展历史</h2>
+<p>我们使用鼠标（mouse）进行交互，使用单击（click）图标启动程序，使用图形控件（graphical control）操作屏幕上的各种窗口（window），这些都和图形操作有关，<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9B%BE%E5%BD%A2%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2">这里参照wiki百科–GUI</a></p>
+<h4 id="21-没有计算机的时代"><a class="markdownIt-Anchor" href="#21-没有计算机的时代"></a> 2.1 没有计算机的时代</h4>
+<p>1930年，Vannevar Bush首次编写一种称为 Memex的设备，设想像一个桌子，上面有两个触摸屏图形显示器、一个键盘和一个扫描仪，允许用户使用与超链接的工作方式来访问所有的人类知识。注意这个时候并没有数字计算机，所以这个想法并没有得到任何讨论，<a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2007/11/memex.html">《信息机器Memex》–阮一峰</a></p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c2zd6ohtj20b407t74m.jpg" srcset="/img/loading.gif" lazyload alt="bg2007112201" /></p>
+<p>这种机器内部用微缩胶卷（microfile）存储信息，也就是自动翻拍，可以不断往里面添加新的信息；桌面上有阅读屏，用来放大阅读微缩胶卷；还有许多个按钮，每一个按钮代表一个主题，只要按一下，相应的微缩胶卷就会显示出来。每一个胶卷内部还记录着相关的其他胶卷的编号，可以方便地切换，形成同主题阅读</p>
+<h4 id="22-douglas-englebart-诞生初期"><a class="markdownIt-Anchor" href="#22-douglas-englebart-诞生初期"></a> 2.2 Douglas Englebart –  诞生初期</h4>
+<p>1968年，被称为GUI之父的Douglas Englebart （道格拉斯·恩格尔巴特）在NACA（NASA前身）在某些开车上班的日子EMO的时候突然想到，作为一名工程师，他真正的使命不是从事可能只会让少数人受益的小项目。因此回顾布什的文章来思考如何建造一台可以增强人类智力的机器，在战争时期担任雷达操作员，主要设想围绕阴极射线管构建显示系统；在1962年在一篇<a target="_blank" rel="noopener" href="http://www.invisiblerevolution.net/engelbart/full_62_paper_augm_hum_int.html">《AUGMENTING HUMAN INTELLECT: A Conceptual Framework》</a>提出认为数字计算机可以提供最快的方法来提高一个人处理复杂问题情况的能力，获得理解以适应他的特殊需求，并得到问题的解决方案，他也设想<strong>计算机不是人类智力的替代品，而是增强智力的工具</strong>，比如建筑师使用使用CAD来设计建筑物，而不是机器自己设计建筑物</p>
+<p>这个时候时间点还是1962年，人们采用的计算机的体积非常巨大，通常用户会使用打孔纸带和他们进行交互，然后计算机在数小时或者数天之后输出结果。但是人们的想象力并不会拘束与时代！</p>
+<p>因为这是一项全新的技术，Englebart的演示使用电视摄像机对准他的脸、手和正在观看的小显示屏，用来给人们展示一些全新的概念。这个显示系统基于矢量图形技术，可以在同一屏幕上显示文本和实线，受限于内存大小，它只能显示大写字母。Englebart采用的交互工具包括：一个标准打字机键盘、一个五键“和弦键盘”以及一个长方形三个按钮的盒子</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c30qsspqj208x06s3yo.jpg" srcset="/img/loading.gif" lazyload alt="2-NLSdisplay"  /><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c3e1z0rzj20b405z3yq.jpg" srcset="/img/loading.gif" lazyload alt="3-NLSmouse" /></p>
+<blockquote>
+<p>这个长方形的盒子、用着长电线连接到计算机，就是鼠标（mouse）；没有人知道谁先叫它鼠标的，但是它在当时出现，并一直保留到现在，在机械上，它与现代鼠标略有不同，因为连接到内部电位器的两个圆形轮子直接在桌面上滚动，而不是由单个鼠标球与滚轮摩擦来操纵。然而，对于最终用户来说，它的操作几乎与现代鼠标相同。其他输入设备也曾尝试过（如触摸屏和光笔），但用户测试发现鼠标是操作屏幕光标最自然的方式。今天仍然如此。</p>
+<p>鼠标的发明的伴生 – 指针也出现了，在当时演示的系统中指针是一个箭头，大约是单个字符的高度，指向正上方，指针在最初被称为‘Bug’。但是这个称呼并没有传承下来，而是pointer</p>
+</blockquote>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c3e7lmaaj20ci08ht97.jpg" srcset="/img/loading.gif" lazyload alt="4-NLSgui" /></p>
+<p>在当时的演示中包括：超文本连接（hypertext linking）、全屏文档编辑（full screen document editing）、上下文操作（context- sensitive help）、网络文档协同（networked document collaboration）、电子邮件（email）、即时消息（instant message）、视频会议（video meeting）；但是由于视频系统的显示很难分辨发生了什么。</p>
+<p>可惜没有钱来实现商业化</p>
+<h4 id="23-parc-施乐xerox-复印机公司的自救"><a class="markdownIt-Anchor" href="#23-parc-施乐xerox-复印机公司的自救"></a> 2.3 PARC – 施乐（Xerox） 复印机公司的自救</h4>
+<p>当复印机厂商看到了computer带来的电子文档进行协作创作的时候，会担心自己的公司会在无纸化的进程中不可避免的消亡，这个时候他们需要做的是确保自己控制这项新的技术，因此在1970年成立了PARC（帕洛阿尔托研究中心），来使用五年的时间自由的做感兴趣的任何事情</p>
+<p>第一件发明是激光打印机，是复印机业务的自然补充，因为打印需要一种更图形化的方式来让计算机开始准备文件，因为当时没有这样的计算机，它们方面来自己的计算机称为ALTO，它的显示屏的界面为606*808，每个像素都可以独立打开和关闭，但是只能显示固定的文本字符。但是具有一个键盘和更加现代化的Englebart鼠标，这个鼠标具有三个按钮，本身也变成了位图图像，并首次使用我们熟悉的对角线箭头形状，并可以根据正在执行的任务变成其他形状。Alto上软件开始非常粗糙，包括文件管理器（Norton commander）、图形文字处理器（Bravo，DOS的word前身）、位图图形编辑器（类似paint）；但是这些不同的应用程序需要一个一致的用户界面，因此它们发明了Smalltalk，第一个现代GUI</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c62i0t4jg209d0ds74e.gif" srcset="/img/loading.gif" lazyload alt="6-AltoFM" /></p>
+<p>第二件，smalltalk是一种易于使用的编程语言和开发环境，也可以算得上是第第一个面向对象的编程语言，其中程序代码和数据可以封装到称为对象的单元中来进行复用而不用了解其中实现细节，在1974年具有雏形并不不断完善，Smalltalk是一个图形开发环境，类似于windows和visual studio之间的感觉。Smalltalk 中的各个窗口都包含在图形边框中，并在其下方背景的灰色图案中显得格外醒目。他们每个人在每个窗口的顶行都有一个标题栏，可用于识别窗口并在屏幕上移动它。与 BeOS 类似，标题栏并没有延伸到窗口的整个长度，而是从左上角开始，仅延伸到标题本身。窗口可以与屏幕上的其他窗口重叠，并且选定的窗口会将自身移动到“堆栈”的顶部。此时还发明了“图标”的概念——程序或文档的小图标表示，可以单击以运行或操作它们。弹出菜单也是同时发明的——用户单击鼠标按钮之一并分层，基于手头任务的图形菜单将出现在鼠标光标的最后位置。首次出现的还有滚动条、单选按钮和对话框。</p>
+<p><img src="https://cdn.arstechnica.net/wp-content/uploads/archive/images/gui/7-AltoST.jpg" srcset="/img/loading.gif" lazyload alt="7-AltoST" /></p>
+<p>第三件便是Xerox star 8010文档，Smalltalk是如此优美，但是施乐公司管理层并没有允许其作为商业产品推销，而是在1981年推出了ALTO精简版Alto，最重要的是取消了重叠窗口的功能，但是对于公众来说太混乱了。但是太晚了，因为Apple Computer.Inc在1976年创立.</p>
+<p><img src="https://cdn.arstechnica.net/wp-content/uploads/archive/images/gui/8-Star.jpg" srcset="/img/loading.gif" lazyload alt="8-Star" /></p>
+<h4 id="24-applesteven-jobs-推动商业化的典范从lisa到macintosh"><a class="markdownIt-Anchor" href="#24-applesteven-jobs-推动商业化的典范从lisa到macintosh"></a> 2.4 Apple/Steven Jobs - - 推动商业化的典范，从Lisa到Macintosh</h4>
+<p>1976年，Steve Jobs和Steve Woznlak在车库内创立一家Apple Computer的小型创业公司，在推出饱受欢迎具有传统命令行界面的Apple II，因为其年轻的属性，资金充裕同时愿意冒险，在继承诸多Xerox PARC工程师之后，Apple的下一代计算机Lisa（Local Integrated Software Architecture）也因此改变，从商业用途的传统基于文本的命令行计算机直到转变为第一台采用GUI和鼠标的个人电脑。Lisa 界面的许多不同原型都在 Apple ]II上进行了模拟，包括一个基于任务的界面被称为“二十个问题”，因为它似乎需要很长时间才能让计算机做任何事情，以及一个类似的四列文件浏览器与 Smalltalk 一起出现的，后来在 NeXTstep 和 Mac OSX 中重新出现。Lisa 团队最终确定了一个基于图标的界面，其中每个图标都表示一个文档或一个应用程序，并开发了第一个下拉菜单栏，所有菜单都出现在屏幕的最顶行。</p>
+<p>LISA中创新包括，选定菜单项旁边显示复选标记、键盘快捷键、固定高度的滚动条、垃圾桶、灰显的菜单。但是也将鼠标从三个键简化称为一个键，所以引入双击的概念。同时也提出图标来代替文件系统中的文件，并使用分层目录结构浏览这些文件</p>
+<p><img src="https://cdn.arstechnica.net/wp-content/uploads/archive/images/gui/9-Lisamockup1.gif" srcset="/img/loading.gif" lazyload alt="9-Lisamockup1" /></p>
+<p>1983年发布的Lisa因为高昂的售价并没有成功，在1984年（也是IBM被打倒的一年），推出了Macintosh项目配备9英寸、128KB、没有多任务处理、低成本的图形计算机，并成功实现商业化。在1984年底销量开始下降、以及其他问题乔布斯在1985年9月17日离开苹果，前往NeXT</p>
+<blockquote>
+<p>Macintosh的名称来自于，公司员工喜欢的苹果品种（真的苹果）为mcIntosh，但是有一家音响公司为McIntosh，因此拼为Macintosh</p>
+</blockquote>
+<p><img src="https://cdn.arstechnica.net/wp-content/uploads/archive/images/gui/11-Mac1.gif" srcset="/img/loading.gif" lazyload alt="11-Mac1" /></p>
+<p>1988 年发布了 NeXTSTEP，这是史蒂夫·乔布斯的 NeXT 计算机的新 GUI 和操作系统，这是他在 1985 年离开 Apple 后的第一个重大项目。NeXTSTEP 为其所有 GUI 组件引入了锐利的 3D 斜面外观，是第一个使用“X”符号表示关闭窗口小部件，并在左上角引入了垂直菜单条的想法，也可以在任何时候“撕掉”，以便用户可以随时离开特定菜单点在屏幕上。NeXTSTEP 也有一个位于屏幕任意一侧的 Dock（但默认位于右侧）。</p>
+<p><img src="https://cdn.arstechnica.net/wp-content/uploads/archive/images/gui/21-next.gif" srcset="/img/loading.gif" lazyload alt="21-next" /></p>
+<h4 id="25-windows-更加商业化的gui推广"><a class="markdownIt-Anchor" href="#25-windows-更加商业化的gui推广"></a> 2.5 Windows - - 更加商业化的GUI推广</h4>
+<p>1985年的windows1.0版本，比尔盖茨来源于VisiOn、Dos的word的交叉，包括彩色界面、具有常见的GUI组件滚动条、窗口控件小部件和菜单；但是不想LIsa或者Macintosh上的单个菜单栏，每个应用程序都有自己的菜单栏；同时采用平铺的窗口而不是可以重叠的窗口，但是后续会改进</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c4x8iqzdg20hs09q747.gif" srcset="/img/loading.gif" lazyload alt="14-win101" /></p>
+<p>1987年，Windows2.0，采用现有的传统的重叠方法，增加了最大化和最小化窗口，也由此与Apple发生专利冲突</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c4yhvsy5g20hs0dcjrf.gif" srcset="/img/loading.gif" lazyload alt="19-win2" /></p>
+<p>1990的3.0、1992年的3.1版本的发布，一致到windows95的巩固其在GUI操作系统的领先地位</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c528sqh3g20m80gognt.gif" srcset="/img/loading.gif" lazyload alt="25-win95" /></p>
+<h4 id="26-others"><a class="markdownIt-Anchor" href="#26-others"></a> 2.6 others</h4>
+<p>GUI界面也包括其他厂商的努力，比如GEM、Amiga Workbench、GEOS、Acorn等等</p>
+<h2 id="0x03-mac中的窗口-文档的概念"><a class="markdownIt-Anchor" href="#0x03-mac中的窗口-文档的概念"></a> 0x03 Mac中的窗口、文档的概念</h2>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/21143701/answer/2521552530">参考</a></p>
+<p>在GUI的设计中面向用户的概念有三个：应用、窗口和文档。在三者之间的关系可以分为MDI、SDI和TDI</p>
+<ul>
+<li>MDI（multiple document interface），多份文档包含在窗口下，多个窗口保存在同一个应用</li>
+<li>SDI（Single Document interface），每个窗口都是独立的应用，由OS自动调度。这也是windows的首创，因此<strong>一个窗口就是一份应用，也就是一个文档</strong></li>
+<li>TDI（Tab document interface）比如chrome，术语两者的混合体</li>
+</ul>
+<p>每个应用可以打开一个或者多个窗口，每个窗口可以打开一份或者多份文档。</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c59t7mkwj21h70s7442.jpg" srcset="/img/loading.gif" lazyload alt="image-20220819161527184" /></p>
+<p>这个简单的概念在只有128KB的Macintosh上这一层抽象并不容易，这样多个窗口的共存可能需要多个应用的同步，因为当时的内存只能跑一个前台程序，因此需要传达给用户</p>
+<ol>
+<li>一个应用在逻辑上只能打开一个窗口</li>
+<li>用户应当尽可能的停留在单个页面</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c5e9i6tmj20y80ps752.jpg" srcset="/img/loading.gif" lazyload alt="img" /></p>
+<p>所以Mac系统的红x对应的是<strong>关闭现有的窗口，以及其打开的文档，但是并没有退出应用</strong>，退出的话可以用dock里面的退出或者使用“command+Q”</p>
+<p>而windows代表的操作系统让应用可以实现多开，逐渐弱化了窗口的概念，每份文档对应每个app，关闭文档也就是关闭对应的app</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c5sb4zb6j219c0f4js6.jpg" srcset="/img/loading.gif" lazyload alt="img" /></p>
+<p>更对应的，在ios或者android、harmony中已经完全失去了文档的概念，只存在应用和窗口。</p>
+<h2 id="0x04-使用注意"><a class="markdownIt-Anchor" href="#0x04-使用注意"></a> 0x04 使用注意</h2>
+<p>macOS中窗口的概念由内存和算力限制而诞生，也因现有GUI发展而茁壮，在使用中注意区分application和window的区别，关闭window使用红‘x’、退出应用使用‘command+Q’；或许这就是window- server内存为什么这么高的原因吧</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h5c5x47nh1j20pc01swef.jpg" srcset="/img/loading.gif" lazyload alt="image-20220819163754181" /></p>
+<p><a target="_blank" rel="noopener" href="https://jamesfriend.com.au/pce-js/">1984年Macintosh模拟</a></p>
+<h4 id="参考链接"><a class="markdownIt-Anchor" href="#参考链接"></a> 参考链接</h4>
+<p>PARC：Palo Alto Research Center，帕洛阿尔托研究中心</p>
+<p>Lisa：（Local Integrated Software Architecture），但是显然是Jobs的女儿名字</p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/21143701/answer/2521552530">https://www.zhihu.com/question/21143701/answer/2521552530</a></p>
+<p><a target="_blank" rel="noopener" href="https://arstechnica.com/features/2005/05/gui/">https://arstechnica.com/features/2005/05/gui/</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/interest/" class="category-chain-item">interest</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Translation/">#Translation</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Reading01-GUI的历史以及macOS窗口</div>
+      <div>https://blog.tjdata.site/posts/ed74d391.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenxia</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年8月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/eac26b.html" title="作业记录">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">作业记录</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/551748b9.html" title="数据结构与算法08-算法刷题-枚举｜递归｜分治｜回溯">
+                        <span class="hidden-mobile">数据结构与算法08-算法刷题-枚举｜递归｜分治｜回溯</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://blog.tjdata.site/posts/ed74d391.html';
+          this.page.identifier = '/posts/ed74d391.html';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'chenxiablog' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,874 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenxia">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在初等卷积神经网络中，我们可以看出从平移不变和缩放不变性质而得到的卷积性质的基础上，在上个世纪诞生的LeNet成功实现与之前不同的路径，在GPU诞生之后，新的网络AlexNet、VGG、NiN、GoogLeNet、Residual Net、DenseNet逐渐发展。卷积神经网络从变深变多，逐渐到变成块以及一些trick的增加。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动手学深度学习03_经典卷积神经网络实现">
+<meta property="og:url" content="https://blog.tjdata.site/posts/d43999e4.html">
+<meta property="og:site_name" content="Chenxia&#39;s blog">
+<meta property="og:description" content="在初等卷积神经网络中，我们可以看出从平移不变和缩放不变性质而得到的卷积性质的基础上，在上个世纪诞生的LeNet成功实现与之前不同的路径，在GPU诞生之后，新的网络AlexNet、VGG、NiN、GoogLeNet、Residual Net、DenseNet逐渐发展。卷积神经网络从变深变多，逐渐到变成块以及一些trick的增加。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h6gmxhdh2sj20t60gmtb7.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h6gn1hnzssj20ng0kmgnu.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h6gn6t6xxmj20xl0u0dj3.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h6gn7umg3uj212e0da3zz.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h6goeu8sttj21430u0761.jpg">
+<meta property="article:published_time" content="2022-09-23T08:12:59.000Z">
+<meta property="article:modified_time" content="2022-10-17T08:18:08.950Z">
+<meta property="article:author" content="chenxia">
+<meta property="article:tag" content="D2L">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h6gmxhdh2sj20t60gmtb7.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>动手学深度学习03_经典卷积神经网络实现 - Chenxia&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"4ace08e3aba4620ee513a74cf9c779c1","google":"G-WBB268CYE1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?4ace08e3aba4620ee513a74cf9c779c1";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+    <!-- Google Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('https://www.google-analytics.com/analytics.js', function() {
+          window.ga = window.ga || function() { (ga.q = ga.q || []).push(arguments) };
+          ga.l = +new Date;
+          ga('create', 'G-WBB268CYE1', 'auto');
+          ga('send', 'pageview');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Chenxia's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenxia&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="动手学深度学习03_经典卷积神经网络实现"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-23 16:12" pubdate>
+          2022年9月23日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          95 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">动手学深度学习03_经典卷积神经网络实现</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在初等卷积神经网络中，我们可以看出从平移不变和缩放不变性质而得到的卷积性质的基础上，在上个世纪诞生的LeNet成功实现与之前不同的路径，在GPU诞生之后，新的网络AlexNet、VGG、NiN、GoogLeNet、Residual Net、DenseNet逐渐发展。卷积神经网络从变深变多，逐渐到变成块以及一些trick的增加。</p>
+<span id="more"></span>
+<h2 id="0x01-introduction"><a class="markdownIt-Anchor" href="#0x01-introduction"></a> 0x01 introduction</h2>
+<h3 id="11-pytorch"><a class="markdownIt-Anchor" href="#11-pytorch"></a> 1.1 PyTorch</h3>
+<p>之前在讲座中听到深度学习框架是深度学习时代的操作系统，怎么说这个比喻有点粗旷但是又不失正确性。个人感觉在计算机时代人们协作的能力达到空前的地步，我们可以上千人共同开发app，这种和建造房屋似的过程充分体现了软件工程的魅力。与土建中规划、设计、建造、 验收等流程相似，个人验证计算机成就的结果是建立在一层一层的抽象的基础上的。</p>
+<p>从硬件的角度，现在并不是所有人都需要关心芯片上的三极管，也不需要关心加法器的构成。从之前手工焊机，到芯片的模块化设计，到更高级的抽象工艺和建造工艺的诞生，人们设计更高水平的芯片产生了可能。正是有这些抽象我们才能往前走。</p>
+<p>从深度学习框架的角度也是如此，从零实现某个网络在学习过程是有意思的，但是从汇编语言包装成高级编程语言，再包装成一个一个package而形成框架，在前人抽象好的基础上，在深度学习框架搭建的基础上，在使用者的角度更应该重视如何高效的使用。</p>
+<p>基于torch构建的PyTorch便是抽象好深度学习的框架。</p>
+<p>这里并没有参照 <a target="_blank" rel="noopener" href="https://pytorch.org/">PyTorch官网</a></p>
+<p>而是找到一个开源的 <a target="_blank" rel="noopener" href="https://handbook.pytorch.wiki/index.html">PyTorch中文手册</a> 来了解这个深度学习框架</p>
+<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs vhdl">Torch <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> going anywhere. PyTorch <span class="hljs-keyword">and</span> Torch <span class="hljs-keyword">use</span> the same C libraries that contain <span class="hljs-keyword">all</span> the performance: TH, THC, THNN, THCUNN <span class="hljs-keyword">and</span> they will continue <span class="hljs-keyword">to</span> be <span class="hljs-keyword">shared</span>.<br>We still <span class="hljs-keyword">and</span> will have continued engineering <span class="hljs-keyword">on</span> Torch itself, <span class="hljs-keyword">and</span> we have no immediate plan <span class="hljs-keyword">to</span> remove that.<br>PyTorch <span class="hljs-keyword">is</span> an <span class="hljs-keyword">open</span> source machine learning <span class="hljs-keyword">library</span> <span class="hljs-keyword">for</span> Python, based <span class="hljs-keyword">on</span> Torch, used <span class="hljs-keyword">for</span> applications such as <span class="hljs-built_in">natural</span> language processing. It <span class="hljs-keyword">is</span> primarily developed by Facebook<span class="hljs-symbol">&#x27;s</span> artificial-intelligence research <span class="hljs-keyword">group</span>, <span class="hljs-keyword">and</span> Uber<span class="hljs-symbol">&#x27;s</span> <span class="hljs-string">&quot;Pyro&quot;</span> software <span class="hljs-keyword">for</span> probabilistic programming <span class="hljs-keyword">is</span> built <span class="hljs-keyword">on</span> it.<br>PyTorch <span class="hljs-keyword">is</span> a Python <span class="hljs-keyword">package</span> that provides two high-level features:<br><br>    Tensor computation (like NumPy) <span class="hljs-keyword">with</span> <span class="hljs-keyword">strong</span> GPU acceleration<br><br>    Deep neural networks built <span class="hljs-keyword">on</span> a tape-based autograd system<br>You can reuse your favorite Python packages such as NumPy, SciPy <span class="hljs-keyword">and</span> Cython <span class="hljs-keyword">to</span> extend PyTorch <span class="hljs-keyword">when</span> needed.<br></code></pre></td></tr></table></figure>
+<h3 id="12-gpu"><a class="markdownIt-Anchor" href="#12-gpu"></a> 1.2 GPU</h3>
+<p>这里参照wiki所给的解释：<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-sg/%E5%9C%96%E5%BD%A2%E8%99%95%E7%90%86%E5%99%A8">图形处理器GPU解释</a></p>
+<p><strong>图形处理器</strong>（英语：<strong>G</strong>raphics <strong>P</strong>rocessing <strong>U</strong>nit，缩写：<strong>GPU</strong>；又称<strong>显示核心</strong>、<strong>显卡</strong>、<strong>视觉处理器</strong>、<strong>显示芯片</strong>或<strong>绘图芯片</strong>）是一种专门在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%80%8B%E4%BA%BA%E9%9B%BB%E8%85%A6">个人电脑</a>、<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%B7%A5%E4%BD%9C%E7%AB%99">工作站</a>、<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%81%8A%E6%88%B2%E6%A9%9F">游戏机</a>和一些<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%A1%8C%E5%8B%95%E8%A3%9D%E7%BD%AE">移动设备</a>（如<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%B9%B3%E6%9D%BF%E9%9B%BB%E8%85%A6">平板电脑</a>、<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%99%BA%E6%85%A7%E5%9E%8B%E6%89%8B%E6%A9%9F">智能手机</a>等）上执行绘图运算工作的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BE%AE%E8%99%95%E7%90%86%E5%99%A8">微处理器</a>。</p>
+<p>GPU不同于传统的CPU，如<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Intel">Intel</a> <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Intel_Core_i5">i5</a>或<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Intel_Core_i7">i7</a>处理器，其<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%86%85%E6%A0%B8">内核</a>数量较少，专为通用计算而设计。相反，GPU是一种特殊类型的处理器，具有数百或数千个内核，经过优化，可并行运行大量计算。虽然GPU在游戏中以<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/3D%E6%B8%B2%E6%9F%93">3D渲染</a>而闻名，但它们对运行分析、<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0">深度学习</a>和<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0">机器学习</a>算法尤其有用。GPU允许某些计算比传统CPU上运行相同的计算速度快10倍至100倍。</p>
+<h3 id="13-数据集输入和结果计算"><a class="markdownIt-Anchor" href="#13-数据集输入和结果计算"></a> 1.3 数据集输入和结果计算</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 读取fashion数据集</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">load_fashion_mnist</span>(<span class="hljs-params">batchsize,resize=<span class="hljs-literal">None</span></span>):<br>    <span class="hljs-comment"># resize相当于基本的填充模块</span><br>    <span class="hljs-keyword">import</span> torch<br>    <span class="hljs-keyword">from</span> torch.utils <span class="hljs-keyword">import</span> data<br>    <span class="hljs-keyword">import</span> torchvision<br>    <span class="hljs-keyword">from</span> torchvision <span class="hljs-keyword">import</span> transforms<br><br>    <span class="hljs-keyword">if</span> resize:<br>        trans=[transforms.ToTensor()]<br>        trans.insert(<span class="hljs-number">0</span>, transforms.Resize(resize))<br>        trans = transforms.Compose(trans)<br>    <span class="hljs-keyword">else</span>:<br>        trans=transforms.ToTensor()<br>    train_mnist=torchvision.datasets.FashionMNIST(root=<span class="hljs-string">&#x27;../data/FashionMNIST&#x27;</span>,train=<span class="hljs-literal">True</span>,transform=trans,download=<span class="hljs-literal">True</span>)<br>    test_mnist=torchvision.datasets.FashionMNIST(root=<span class="hljs-string">&#x27;../data/FashionMNIST&#x27;</span>,train=<span class="hljs-literal">False</span>,transform=trans,download=<span class="hljs-literal">True</span>)<br>    train_iter=data.DataLoader(train_mnist,batch_size=batchsize,shuffle=<span class="hljs-literal">True</span>,num_workers=<span class="hljs-number">4</span>)<br>    test_iter=data.DataLoader(test_mnist,batch_size=batchsize,shuffle=<span class="hljs-literal">True</span>,num_workers=<span class="hljs-number">4</span>)<br>    <span class="hljs-keyword">return</span> train_iter,test_iter<br>    <br>batchsize=<span class="hljs-number">256</span><br>train_iter,test_iter=load_fashion_mnist(batchsize,<span class="hljs-number">224</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">accuracy</span>(<span class="hljs-params">y_hat,y</span>):<br>    <span class="hljs-comment"># 数正确的数量</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(y_hat.shape)&gt;<span class="hljs-number">1</span> <span class="hljs-keyword">and</span> y_hat.shape[<span class="hljs-number">1</span>]&gt;<span class="hljs-number">1</span>:<br>        y_hat=y_hat.argmax(axis=<span class="hljs-number">1</span>)<br>    cmp=y_hat.<span class="hljs-built_in">type</span>(y.dtype)==y<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(cmp.<span class="hljs-built_in">type</span>(y.dtype).<span class="hljs-built_in">sum</span>())<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">gpu_acc</span>(<span class="hljs-params">model,data_iter,device=<span class="hljs-literal">None</span></span>):<br>    acc=<span class="hljs-number">0</span><br>    num=<span class="hljs-number">0</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(net,nn.Module):<br>        net.<span class="hljs-built_in">eval</span>()<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> device:<br>            device=<span class="hljs-built_in">next</span>(<span class="hljs-built_in">iter</span>(net.parameters())).device<br>    <span class="hljs-keyword">with</span> torch.no_grad():<br>        <span class="hljs-keyword">for</span> X,y <span class="hljs-keyword">in</span> data_iter:<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(X,<span class="hljs-built_in">list</span>):<br>                <span class="hljs-comment"># 这里的if仅仅是为之后bert微调所需的</span><br>                X=[x.to(device) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> X]<br>            <span class="hljs-keyword">else</span>:<br>                X=X.to(device)<br>            y=y.to(device)<br>            acc+=accuracy(net(X),y)<br>            num+=y.numel()<br>    <span class="hljs-keyword">return</span> acc/num<br><br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">trainer</span>(<span class="hljs-params">net,train_iter,test_iter,num_epoches,lr,device</span>):<br>    <span class="hljs-string">&#x27;&#x27;&#x27;用GPU训练模型&#x27;&#x27;&#x27;</span><br>    <span class="hljs-comment">#初始化参数</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">init_weights</span>(<span class="hljs-params">m</span>):<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">type</span>(m)==nn.Linear <span class="hljs-keyword">or</span> <span class="hljs-built_in">type</span>(m)==nn.Conv2d:<br>            nn.init.xavier_uniform_(m.weight)<br>            <span class="hljs-comment">#nn.init.normal_(m.weight,std=0.01)</span><br>    net.apply(init_weights)<br><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;training on&#x27;</span>,device)<br>    <span class="hljs-comment"># print(torch.cuda.get_device_name(0))</span><br>    net.to(device)<br>    optimizer=torch.optim.SGD(net.parameters(),lr=lr)<br>    loss=nn.CrossEntropyLoss()<br><br>    train_acc=[]<br>    test_acc=[]<br>    loss_epoches=[]<br>    <span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_epoches):<br>        temp_train_acc=<span class="hljs-number">0</span><br>        loss_epoch=<span class="hljs-number">0</span><br>        num=<span class="hljs-number">0</span><br>        net.train()<br>        <span class="hljs-keyword">for</span> i,(X,y) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(train_iter):<br>            optimizer.zero_grad()<br>            X,y=X.to(device),y.to(device)<br>            <span class="hljs-keyword">with</span> torch.no_grad():<br>                temp_train_acc+=accuracy(net(X),y)<br>            y_hat=net(X)<br>            l=loss(y_hat,y)<br>            l.backward()<br>            optimizer.step()<br>            loss_epoch+=l*X.shape[<span class="hljs-number">0</span>]<br>            num+=y.numel()<br>        train_acc.append(<span class="hljs-built_in">float</span>(temp_train_acc/num))<br>        test_acc.append(gpu_acc(net,test_iter))<br>        loss_epoches.append(<span class="hljs-built_in">float</span>(loss_epoch)/num)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;本轮&#123;&#125;训练的结果，test—acc:&#123;&#125;,train-acc:&#123;&#125;,train-loss:&#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">str</span>(epoch+<span class="hljs-number">1</span>),<span class="hljs-built_in">str</span>(test_acc[-<span class="hljs-number">1</span>]),<span class="hljs-built_in">str</span>(train_acc[-<span class="hljs-number">1</span>]),<span class="hljs-built_in">str</span>(loss_epoches[-<span class="hljs-number">1</span>])))<br>    <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br>    plt.plot(<span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>+num_epoches)),test_acc,label=<span class="hljs-string">&#x27;test_acc&#x27;</span>)<br>    plt.plot(<span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>+num_epoches)),train_acc,label=<span class="hljs-string">&#x27;train_acc&#x27;</span>)<br>    plt.plot(<span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>+num_epoches)),loss_epoches,label=<span class="hljs-string">&#x27;loss&#x27;</span>)<br>    plt.legend()<br>    plt.show()<br>    <br>        <br>lr,num_epoches=<span class="hljs-number">0.2</span>,<span class="hljs-number">20</span><br><br><br>device = torch.device(<span class="hljs-string">&quot;cuda:0&quot;</span> <span class="hljs-keyword">if</span> torch.cuda.is_available() <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;cpu&quot;</span>)<br>trainer(net,train_iter,test_iter,num_epoches,lr,device)<br></code></pre></td></tr></table></figure>
+<h2 id="0x02-经典的cnn"><a class="markdownIt-Anchor" href="#0x02-经典的cnn"></a> 0x02 经典的CNN</h2>
+<h3 id="21-alexnet"><a class="markdownIt-Anchor" href="#21-alexnet"></a> 2.1 AlexNet</h3>
+<p>之前的阅读笔记<a href="https://blog.tjdata.site/2022/08/27/paper02-2012-imagenet-classification-with-deep-convolutional-neural-networks/">paper02-2012-imagenet-classification-with-deep-convolutional-neural-networks</a></p>
+<p>主要的贡献，以及后面没有用的地方</p>
+<ol>
+<li>引入了ReLu激活函数，让训练的更快</li>
+<li>利用双GPU训练，注意这里对网络结构进行划分（对网络不同层进行切割而不是切割成两种小的部分），工程能力太强了</li>
+<li>（没有用）一种local response normalization，但是确实需要在这个方面做trick，在后面的resNet中可以看到</li>
+<li>（没有用）新的overlapping pooling，一种新的池化方法，这个与双GPU有关</li>
+<li>（有用，但是解释不对）将dropout引入训练过程，尝试解释为ensemble learning，但现在更偏向于regularization</li>
+<li>数据增强，才有随机抽样数据的方式，将256提取得到224来扩充数据集</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h6gmxhdh2sj20t60gmtb7.jpg" srcset="/img/loading.gif" lazyload alt="image-20220923164858838" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch <br><span class="hljs-keyword">from</span> torch <span class="hljs-keyword">import</span> nn<br><span class="hljs-comment">#AlexNet</span><br>net = nn.Sequential(<br>    <span class="hljs-comment"># 这里，我们使用一个11*11的更大窗口来捕捉对象。</span><br>    <span class="hljs-comment"># 同时，步幅为4，以减少输出的高度和宽度。</span><br>    <span class="hljs-comment"># 另外，输出通道的数目远大于LeNet</span><br>    nn.Conv2d(<span class="hljs-number">1</span>, <span class="hljs-number">96</span>, kernel_size=<span class="hljs-number">11</span>, stride=<span class="hljs-number">4</span>, padding=<span class="hljs-number">1</span>), nn.ReLU(),<br>    nn.MaxPool2d(kernel_size=<span class="hljs-number">3</span>, stride=<span class="hljs-number">2</span>),<br>    <span class="hljs-comment"># 减小卷积窗口，使用填充为2来使得输入与输出的高和宽一致，且增大输出通道数</span><br>    nn.Conv2d(<span class="hljs-number">96</span>, <span class="hljs-number">256</span>, kernel_size=<span class="hljs-number">5</span>, padding=<span class="hljs-number">2</span>), nn.ReLU(),<br>    nn.MaxPool2d(kernel_size=<span class="hljs-number">3</span>, stride=<span class="hljs-number">2</span>),<br>    <span class="hljs-comment"># 使用三个连续的卷积层和较小的卷积窗口。</span><br>    <span class="hljs-comment"># 除了最后的卷积层，输出通道的数量进一步增加。</span><br>    <span class="hljs-comment"># 在前两个卷积层之后，汇聚层不用于减少输入的高度和宽度</span><br>    nn.Conv2d(<span class="hljs-number">256</span>, <span class="hljs-number">384</span>, kernel_size=<span class="hljs-number">3</span>, padding=<span class="hljs-number">1</span>), nn.ReLU(),<br>    nn.Conv2d(<span class="hljs-number">384</span>, <span class="hljs-number">384</span>, kernel_size=<span class="hljs-number">3</span>, padding=<span class="hljs-number">1</span>), nn.ReLU(),<br>    nn.Conv2d(<span class="hljs-number">384</span>, <span class="hljs-number">256</span>, kernel_size=<span class="hljs-number">3</span>, padding=<span class="hljs-number">1</span>), nn.ReLU(),<br>    nn.MaxPool2d(kernel_size=<span class="hljs-number">3</span>, stride=<span class="hljs-number">2</span>),<br>    nn.Flatten(),<br>    <span class="hljs-comment"># 这里，全连接层的输出数量是LeNet中的好几倍。使用dropout层来减轻过拟合</span><br>    nn.Linear(<span class="hljs-number">6400</span>, <span class="hljs-number">4096</span>), nn.ReLU(),<br>    nn.Dropout(p=<span class="hljs-number">0.5</span>),<br>    nn.Linear(<span class="hljs-number">4096</span>, <span class="hljs-number">4096</span>), nn.ReLU(),<br>    nn.Dropout(p=<span class="hljs-number">0.5</span>),<br>    <span class="hljs-comment"># 最后是输出层。由于这里使用Fashion-MNIST，所以用类别数为10，而非论文中的1000</span><br>    nn.Linear(<span class="hljs-number">4096</span>, <span class="hljs-number">10</span>))<br></code></pre></td></tr></table></figure>
+<h3 id="22-vgg"><a class="markdownIt-Anchor" href="#22-vgg"></a> 2.2 VGG</h3>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1409.1556.pdf">VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION</a></p>
+<p>AlexNet证明 #卷积神经网络 CNN convolutional- neural-network 的深度是有效的，但并没有给出模版来进行创建网络。这里一个直觉的想法</p>
+<p>与芯片设计中工程师从放置晶体管到逻辑元件再到逻辑块的过程类似，神经网络架构设计也逐渐变成更加抽象，研究人员开始从单个神经元的角度思考问题，发展到整个层，转向可以复用层的块的模式 #memo</p>
+<p>使用 #循环loop 和 子函数 来实现 #VGG</p>
+<p>主要做出的贡献</p>
+<ol>
+<li>利用复用的思路构建卷积块</li>
+<li>作者尝试各种架构，最终发现深且窄的网络效果是较好的</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h6gn1hnzssj20ng0kmgnu.jpg" srcset="/img/loading.gif" lazyload alt="image-20220923165253079" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch <br><span class="hljs-keyword">from</span> torch <span class="hljs-keyword">import</span> nn<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">vgg_block</span>(<span class="hljs-params">num_convs, in_channels, out_channels</span>):<br>    layers = []<br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_convs):<br>        layers.append(nn.Conv2d(in_channels, out_channels,<br>                                kernel_size=<span class="hljs-number">3</span>, padding=<span class="hljs-number">1</span>))<br>        layers.append(nn.ReLU())<br>        in_channels = out_channels<br>    layers.append(nn.MaxPool2d(kernel_size=<span class="hljs-number">2</span>,stride=<span class="hljs-number">2</span>))<br>    <span class="hljs-keyword">return</span> nn.Sequential(*layers)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">vgg</span>(<span class="hljs-params">conv_arch</span>):<br>    conv_blks = []<br>    in_channels = <span class="hljs-number">1</span><br>    <span class="hljs-comment"># 卷积层部分</span><br>    <span class="hljs-keyword">for</span> (num_convs, out_channels) <span class="hljs-keyword">in</span> conv_arch:<br>        conv_blks.append(vgg_block(num_convs, in_channels, out_channels))<br>        in_channels = out_channels<br><br>    <span class="hljs-keyword">return</span> nn.Sequential(<br>        *conv_blks, nn.Flatten(),<br>        <span class="hljs-comment"># 全连接层部分</span><br>        nn.Linear(out_channels * <span class="hljs-number">7</span> * <span class="hljs-number">7</span>, <span class="hljs-number">4096</span>), nn.ReLU(), nn.Dropout(<span class="hljs-number">0.5</span>),<br>        nn.Linear(<span class="hljs-number">4096</span>, <span class="hljs-number">4096</span>), nn.ReLU(), nn.Dropout(<span class="hljs-number">0.5</span>),<br>        nn.Linear(<span class="hljs-number">4096</span>, <span class="hljs-number">10</span>))<br><br>conv_arch = ((<span class="hljs-number">1</span>, <span class="hljs-number">64</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">128</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">256</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">512</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">512</span>))<br>ratio = <span class="hljs-number">4</span><br>small_conv_arch = [(pair[<span class="hljs-number">0</span>], pair[<span class="hljs-number">1</span>] // ratio) <span class="hljs-keyword">for</span> pair <span class="hljs-keyword">in</span> conv_arch]<br>net = vgg(small_conv_arch)<br></code></pre></td></tr></table></figure>
+<h3 id="23-nin"><a class="markdownIt-Anchor" href="#23-nin"></a> 2.3 NiN</h3>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1312.4400.pdf">Network in network</a></p>
+<p>AlexNet提出使用深度卷积神经网络，VGG给出如何复用的构建卷积神经网络，VGG则是在这个基础上利用MLP对多通道输入和多通道输出进行操作，取代之前简单的加权方式，NiN利用这来对网络的扩大和深度。</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h6gn6t6xxmj20xl0u0dj3.jpg" srcset="/img/loading.gif" lazyload alt="image-20220923165759261" /></p>
+<h3 id="24-googlenet"><a class="markdownIt-Anchor" href="#24-googlenet"></a> 2.4 GoogLeNet</h3>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1409.4842.pdf">Going deeper with convolutions</a></p>
+<p>GoogLeNet借用NiN的思想，在它的基础上设置来inception块，用来实现多个卷积核对图形特征的提取</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h6gn7umg3uj212e0da3zz.jpg" srcset="/img/loading.gif" lazyload alt="image-20220923165859815" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 网络3.5 GoogLeNet</span><br><br><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">from</span> torch <span class="hljs-keyword">import</span> nn<br><span class="hljs-keyword">from</span> torch.nn <span class="hljs-keyword">import</span> functional <span class="hljs-keyword">as</span> F<br><br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Inception</span>(nn.Module):<br>    <span class="hljs-comment"># c1--c4是每条路径的输出通道数</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, in_channels, c1, c2, c3, c4, **kwargs</span>):<br>        <span class="hljs-built_in">super</span>(Inception, self).__init__(**kwargs)<br>        <span class="hljs-comment"># 线路1，单1x1卷积层</span><br>        self.p1_1 = nn.Conv2d(in_channels, c1, kernel_size=<span class="hljs-number">1</span>)<br>        <span class="hljs-comment"># 线路2，1x1卷积层后接3x3卷积层</span><br>        self.p2_1 = nn.Conv2d(in_channels, c2[<span class="hljs-number">0</span>], kernel_size=<span class="hljs-number">1</span>)<br>        self.p2_2 = nn.Conv2d(c2[<span class="hljs-number">0</span>], c2[<span class="hljs-number">1</span>], kernel_size=<span class="hljs-number">3</span>, padding=<span class="hljs-number">1</span>)<br>        <span class="hljs-comment"># 线路3，1x1卷积层后接5x5卷积层</span><br>        self.p3_1 = nn.Conv2d(in_channels, c3[<span class="hljs-number">0</span>], kernel_size=<span class="hljs-number">1</span>)<br>        self.p3_2 = nn.Conv2d(c3[<span class="hljs-number">0</span>], c3[<span class="hljs-number">1</span>], kernel_size=<span class="hljs-number">5</span>, padding=<span class="hljs-number">2</span>)<br>        <span class="hljs-comment"># 线路4，3x3最大汇聚层后接1x1卷积层</span><br>        self.p4_1 = nn.MaxPool2d(kernel_size=<span class="hljs-number">3</span>, stride=<span class="hljs-number">1</span>, padding=<span class="hljs-number">1</span>)<br>        self.p4_2 = nn.Conv2d(in_channels, c4, kernel_size=<span class="hljs-number">1</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        p1 = F.relu(self.p1_1(x))<br>        p2 = F.relu(self.p2_2(F.relu(self.p2_1(x))))<br>        p3 = F.relu(self.p3_2(F.relu(self.p3_1(x))))<br>        p4 = F.relu(self.p4_2(self.p4_1(x)))<br>        <span class="hljs-comment"># 在通道维度上连结输出</span><br>        <span class="hljs-keyword">return</span> torch.cat((p1, p2, p3, p4), dim=<span class="hljs-number">1</span>)<br><br>b1 = nn.Sequential(nn.Conv2d(<span class="hljs-number">1</span>, <span class="hljs-number">64</span>, kernel_size=<span class="hljs-number">7</span>, stride=<span class="hljs-number">2</span>, padding=<span class="hljs-number">3</span>),<br>                   nn.ReLU(),<br>                   nn.MaxPool2d(kernel_size=<span class="hljs-number">3</span>, stride=<span class="hljs-number">2</span>, padding=<span class="hljs-number">1</span>))<br><br>b2 = nn.Sequential(nn.Conv2d(<span class="hljs-number">64</span>, <span class="hljs-number">64</span>, kernel_size=<span class="hljs-number">1</span>),<br>                   nn.ReLU(),<br>                   nn.Conv2d(<span class="hljs-number">64</span>, <span class="hljs-number">192</span>, kernel_size=<span class="hljs-number">3</span>, padding=<span class="hljs-number">1</span>),<br>                   nn.ReLU(),<br>                   nn.MaxPool2d(kernel_size=<span class="hljs-number">3</span>, stride=<span class="hljs-number">2</span>, padding=<span class="hljs-number">1</span>))<br>b3 = nn.Sequential(Inception(<span class="hljs-number">192</span>, <span class="hljs-number">64</span>, (<span class="hljs-number">96</span>, <span class="hljs-number">128</span>), (<span class="hljs-number">16</span>, <span class="hljs-number">32</span>), <span class="hljs-number">32</span>),<br>                   Inception(<span class="hljs-number">256</span>, <span class="hljs-number">128</span>, (<span class="hljs-number">128</span>, <span class="hljs-number">192</span>), (<span class="hljs-number">32</span>, <span class="hljs-number">96</span>), <span class="hljs-number">64</span>),<br>                   nn.MaxPool2d(kernel_size=<span class="hljs-number">3</span>, stride=<span class="hljs-number">2</span>, padding=<span class="hljs-number">1</span>))<br>b4 = nn.Sequential(Inception(<span class="hljs-number">480</span>, <span class="hljs-number">192</span>, (<span class="hljs-number">96</span>, <span class="hljs-number">208</span>), (<span class="hljs-number">16</span>, <span class="hljs-number">48</span>), <span class="hljs-number">64</span>),<br>                   Inception(<span class="hljs-number">512</span>, <span class="hljs-number">160</span>, (<span class="hljs-number">112</span>, <span class="hljs-number">224</span>), (<span class="hljs-number">24</span>, <span class="hljs-number">64</span>), <span class="hljs-number">64</span>),<br>                   Inception(<span class="hljs-number">512</span>, <span class="hljs-number">128</span>, (<span class="hljs-number">128</span>, <span class="hljs-number">256</span>), (<span class="hljs-number">24</span>, <span class="hljs-number">64</span>), <span class="hljs-number">64</span>),<br>                   Inception(<span class="hljs-number">512</span>, <span class="hljs-number">112</span>, (<span class="hljs-number">144</span>, <span class="hljs-number">288</span>), (<span class="hljs-number">32</span>, <span class="hljs-number">64</span>), <span class="hljs-number">64</span>),<br>                   Inception(<span class="hljs-number">528</span>, <span class="hljs-number">256</span>, (<span class="hljs-number">160</span>, <span class="hljs-number">320</span>), (<span class="hljs-number">32</span>, <span class="hljs-number">128</span>), <span class="hljs-number">128</span>),<br>                   nn.MaxPool2d(kernel_size=<span class="hljs-number">3</span>, stride=<span class="hljs-number">2</span>, padding=<span class="hljs-number">1</span>))<br>b5 = nn.Sequential(Inception(<span class="hljs-number">832</span>, <span class="hljs-number">256</span>, (<span class="hljs-number">160</span>, <span class="hljs-number">320</span>), (<span class="hljs-number">32</span>, <span class="hljs-number">128</span>), <span class="hljs-number">128</span>),<br>                   Inception(<span class="hljs-number">832</span>, <span class="hljs-number">384</span>, (<span class="hljs-number">192</span>, <span class="hljs-number">384</span>), (<span class="hljs-number">48</span>, <span class="hljs-number">128</span>), <span class="hljs-number">128</span>),<br>                   nn.AdaptiveAvgPool2d((<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)),<br>                   nn.Flatten())<br><br>net = nn.Sequential(b1, b2, b3, b4, b5, nn.Linear(<span class="hljs-number">1024</span>, <span class="hljs-number">10</span>))<br></code></pre></td></tr></table></figure>
+<h3 id="25-resnet"><a class="markdownIt-Anchor" href="#25-resnet"></a> 2.5 ResNet</h3>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1512.03385">Deep Residual Learning for Image Recognition</a></p>
+<p>在之前介绍更深、更广的基础上，resnet更多的是解释如何提高神经网络的性能</p>
+<p>部分的数学基础，从学习理论的角度出发，如果模型的复杂程度逐渐增加，这样寻找之前的函数集合的范围是比较大，这样寻找到之后的结果是非常困难的，因此可以尝试将恒等映射转换成为包含数量本身和残差之间的关系</p>
+<p>借鉴GBDT中梯度提升的思想，残差问题在现实中往往更加容易优化，同时在模型为理想参数更容易捕捉恒等映射的细微波动，；在实际训练中，残差块中输入可以通过跨层数据线路更快的向前传播</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">from</span> torch <span class="hljs-keyword">import</span> nn<br><span class="hljs-keyword">from</span> torch.nn <span class="hljs-keyword">import</span> functional <span class="hljs-keyword">as</span> F<br><span class="hljs-keyword">from</span> d2l <span class="hljs-keyword">import</span> torch <span class="hljs-keyword">as</span> d2l<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Residual</span>(nn.Module):  <span class="hljs-comment">#@save</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, input_channels, num_channels,</span><br><span class="hljs-params">                 use_1x1conv=<span class="hljs-literal">False</span>, strides=<span class="hljs-number">1</span></span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        self.conv1 = nn.Conv2d(input_channels, num_channels,<br>                               kernel_size=<span class="hljs-number">3</span>, padding=<span class="hljs-number">1</span>, stride=strides)<br>        self.conv2 = nn.Conv2d(num_channels, num_channels,<br>                               kernel_size=<span class="hljs-number">3</span>, padding=<span class="hljs-number">1</span>)<br>        <span class="hljs-keyword">if</span> use_1x1conv:<br>            self.conv3 = nn.Conv2d(input_channels, num_channels,<br>                                   kernel_size=<span class="hljs-number">1</span>, stride=strides)<br>        <span class="hljs-keyword">else</span>:<br>            self.conv3 = <span class="hljs-literal">None</span><br>        self.bn1 = nn.BatchNorm2d(num_channels)<br>        self.bn2 = nn.BatchNorm2d(num_channels)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, X</span>):<br>        Y = F.relu(self.bn1(self.conv1(X)))<br>        Y = self.bn2(self.conv2(Y))<br>        <span class="hljs-keyword">if</span> self.conv3:<br>            X = self.conv3(X)<br>        Y += X<br>        <span class="hljs-keyword">return</span> F.relu(Y)<br>b1 = nn.Sequential(nn.Conv2d(<span class="hljs-number">1</span>, <span class="hljs-number">64</span>, kernel_size=<span class="hljs-number">7</span>, stride=<span class="hljs-number">2</span>, padding=<span class="hljs-number">3</span>),<br>                   nn.BatchNorm2d(<span class="hljs-number">64</span>), nn.ReLU(),<br>                   nn.MaxPool2d(kernel_size=<span class="hljs-number">3</span>, stride=<span class="hljs-number">2</span>, padding=<span class="hljs-number">1</span>))<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">resnet_block</span>(<span class="hljs-params">input_channels, num_channels, num_residuals,</span><br><span class="hljs-params">                 first_block=<span class="hljs-literal">False</span></span>):<br>    blk = []<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_residuals):<br>        <span class="hljs-keyword">if</span> i == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> first_block:<br>            blk.append(Residual(input_channels, num_channels,<br>                                use_1x1conv=<span class="hljs-literal">True</span>, strides=<span class="hljs-number">2</span>))<br>        <span class="hljs-keyword">else</span>:<br>            blk.append(Residual(num_channels, num_channels))<br>    <span class="hljs-keyword">return</span> blk<br>b2 = nn.Sequential(*resnet_block(<span class="hljs-number">64</span>, <span class="hljs-number">64</span>, <span class="hljs-number">2</span>, first_block=<span class="hljs-literal">True</span>))<br>b3 = nn.Sequential(*resnet_block(<span class="hljs-number">64</span>, <span class="hljs-number">128</span>, <span class="hljs-number">2</span>))<br>b4 = nn.Sequential(*resnet_block(<span class="hljs-number">128</span>, <span class="hljs-number">256</span>, <span class="hljs-number">2</span>))<br>b5 = nn.Sequential(*resnet_block(<span class="hljs-number">256</span>, <span class="hljs-number">512</span>, <span class="hljs-number">2</span>))<br>net = nn.Sequential(b1, b2, b3, b4, b5,<br>                    nn.AdaptiveAvgPool2d((<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)),<br>                    nn.Flatten(), nn.Linear(<span class="hljs-number">512</span>, <span class="hljs-number">10</span>))<br></code></pre></td></tr></table></figure>
+<h3 id="26-densenet"><a class="markdownIt-Anchor" href="#26-densenet"></a> 2.6 DenseNet</h3>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1608.06993.pdf">Densely Connected Convolutional Networks</a></p>
+<p>～还没看不重要捏</p>
+<h2 id="0x03-result"><a class="markdownIt-Anchor" href="#0x03-result"></a> 0x03 Result</h2>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h6goeu8sttj21430u0761.jpg" srcset="/img/loading.gif" lazyload alt="AlexNet" /></p>
+<h2 id="0x04-discussion"><a class="markdownIt-Anchor" href="#0x04-discussion"></a> 0x04 Discussion</h2>
+<p>卷积神经网络提取特征的基本在于特征的平移不变和缩放不变，在这个基础上利用互相关操作（错误的被称为卷积）在提取特征。同时在这个过程中围绕了如何构建深度卷积神经网络，主流的blakcbone给出自己自己的发展历史：</p>
+<ol>
+<li>lenet最早给出卷积神经网络的雏形</li>
+<li>alexnet从训练硬件、训练网络、训练数据、数据预处理、训练过程多个方面给出了自己的trick，为后面打下基础</li>
+<li>vgg围绕如何构建更深的网络，引入复用</li>
+<li>nin提出一个trick来构建更广的网络</li>
+<li>Googlenet在nin的基础上，受启发采用多个卷积核提取特征</li>
+<li>在前人构建好完整的网络的基础上，resnet给出如何保持网络稳定性的方法</li>
+<li>densenet还没有了解</li>
+</ol>
+<p>这个过程非常的有意思，可以看到别人是如何前进的。这些都归功李沐老师的总结！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MachineLearning/" class="category-chain-item">MachineLearning</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/D2L/">#D2L</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>动手学深度学习03_经典卷积神经网络实现</div>
+      <div>https://blog.tjdata.site/posts/d43999e4.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenxia</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/3e3a5c92.html" title="强化学习01_基本概念">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">强化学习01_基本概念</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/c3baf47e.html" title="动手学深度学习02_初等卷积神经LeNet实现">
+                        <span class="hidden-mobile">动手学深度学习02_初等卷积神经LeNet实现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://blog.tjdata.site/posts/d43999e4.html';
+          this.page.identifier = '/posts/d43999e4.html';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'chenxiablog' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
