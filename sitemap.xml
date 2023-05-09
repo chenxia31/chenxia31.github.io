@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.tjdata.site/posts/5a8a6c8d.html</loc>
+    <loc>https://blog.tjdata.site/posts/cd758988.html</loc>
     
     <lastmod>2023-05-09</lastmod>
     
@@ -164,7 +164,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/posts/f10c5200.html</loc>
+    <loc>https://blog.tjdata.site/posts/551748b9.html</loc>
     
     <lastmod>2022-10-17</lastmod>
     
@@ -173,7 +173,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/posts/551748b9.html</loc>
+    <loc>https://blog.tjdata.site/posts/f10c5200.html</loc>
     
     <lastmod>2022-10-17</lastmod>
     
@@ -218,7 +218,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/posts/ee1b4739.html</loc>
+    <loc>https://blog.tjdata.site/posts/1866a43d.html</loc>
     
     <lastmod>2022-10-17</lastmod>
     
@@ -227,7 +227,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/posts/1866a43d.html</loc>
+    <loc>https://blog.tjdata.site/posts/ee1b4739.html</loc>
     
     <lastmod>2022-10-17</lastmod>
     
@@ -479,7 +479,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/posts/61a92f70.html</loc>
+    <loc>https://blog.tjdata.site/posts/a32aa49a.html</loc>
     
     <lastmod>2022-10-17</lastmod>
     
@@ -488,7 +488,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/posts/a32aa49a.html</loc>
+    <loc>https://blog.tjdata.site/posts/61a92f70.html</loc>
     
     <lastmod>2022-10-17</lastmod>
     
@@ -533,15 +533,6 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/books/index.html</loc>
-    
-    <lastmod>2022-03-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.tjdata.site/404.html</loc>
     
     <lastmod>2022-03-20</lastmod>
@@ -560,7 +551,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/links/index.html</loc>
+    <loc>https://blog.tjdata.site/books/index.html</loc>
     
     <lastmod>2022-03-20</lastmod>
     
@@ -586,6 +577,15 @@
     <priority>0.6</priority>
   </url>
   
+  <url>
+    <loc>https://blog.tjdata.site/links/index.html</loc>
+    
+    <lastmod>2022-03-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
   <url>
     <loc>https://blog.tjdata.site/</loc>
@@ -596,6 +596,13 @@
 
   
   <url>
+    <loc>https://blog.tjdata.site/tags/AndrewWu/</loc>
+    <lastmod>2023-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.tjdata.site/tags/CS229/</loc>
     <lastmod>2023-05-09</lastmod>
     <changefreq>weekly</changefreq>
@@ -604,13 +611,6 @@
   
   <url>
     <loc>https://blog.tjdata.site/tags/Experiment/</loc>
-    <lastmod>2023-05-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.tjdata.site/tags/AndrewWu/</loc>
     <lastmod>2023-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -631,7 +631,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/Translation/</loc>
+    <loc>https://blog.tjdata.site/tags/git/</loc>
     <lastmod>2023-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -639,6 +639,13 @@
   
   <url>
     <loc>https://blog.tjdata.site/tags/paper-reading/</loc>
+    <lastmod>2023-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tjdata.site/tags/Translation/</loc>
     <lastmod>2023-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -708,14 +715,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/PersonPost/</loc>
+    <loc>https://blog.tjdata.site/tags/pandas/</loc>
     <lastmod>2023-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/pandas/</loc>
+    <loc>https://blog.tjdata.site/tags/PersonPost/</loc>
     <lastmod>2023-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -766,7 +773,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/categories/interest/</loc>
+    <loc>https://blog.tjdata.site/categories/baseline/</loc>
     <lastmod>2023-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -774,6 +781,20 @@
   
   <url>
     <loc>https://blog.tjdata.site/categories/CB/</loc>
+    <lastmod>2023-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tjdata.site/categories/Paper/</loc>
+    <lastmod>2023-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tjdata.site/categories/interest/</loc>
     <lastmod>2023-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -795,13 +816,6 @@
   
   <url>
     <loc>https://blog.tjdata.site/categories/macOS/</loc>
-    <lastmod>2023-05-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.tjdata.site/categories/Paper/</loc>
     <lastmod>2023-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -844,13 +858,6 @@
   
   <url>
     <loc>https://blog.tjdata.site/categories/%E8%98%91%E8%8F%87%E4%B9%A6/</loc>
-    <lastmod>2023-05-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.tjdata.site/categories/baseline/</loc>
     <lastmod>2023-05-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
