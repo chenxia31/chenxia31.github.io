@@ -60,7 +60,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"4ace08e3aba4620ee513a74cf9c779c1","google":"G-WBB268CYE1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"4ace08e3aba4620ee513a74cf9c779c1","google":"G-WBB268CYE1","gtag":"G-WBB268CYE1","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -100,6 +100,18 @@
     </script>
   
 
+  
+    <!-- Google gtag.js -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('https://www.googletagmanager.com/gtag/js?id=G-WBB268CYE1', function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-WBB268CYE1');
+        });
+      }
+    </script>
   
 
   
@@ -979,48 +991,6 @@
     
     <div class="category row nomargin-x">
       <a class="category-item collapsed
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="CNN"
-        id="heading-2435a45b85628172c5a47122144a7c67" role="tab" data-toggle="collapse" href="#collapse-2435a45b85628172c5a47122144a7c67"
-        aria-expanded="false"
-      >
-        CNN
-        <span class="list-group-count"></span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-        <a href="/categories/CNN/" class="category-count col-2 col-md-1 col-xm-1">
-          <i class="iconfont icon-articles"></i>
-          <span>1</span>
-        </a>
-      
-      <div class="category-collapse collapse " id="collapse-2435a45b85628172c5a47122144a7c67"
-           role="tabpanel" aria-labelledby="heading-2435a45b85628172c5a47122144a7c67">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/posts/d4d56670.html" title="paper02-2012-imagenet-classification-with-deep-convolutional-neural-networks"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">paper02-2012-imagenet-classification-with-deep-convolutional-neural-networks</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div class="category row nomargin-x">
-      <a class="category-item collapsed
           list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Optimizer"
         id="heading-7a865060b1a2be22d8c8a073670b2e0f" role="tab" data-toggle="collapse" href="#collapse-7a865060b1a2be22d8c8a073670b2e0f"
         aria-expanded="false"
@@ -1063,22 +1033,22 @@
     
     <div class="category row nomargin-x">
       <a class="category-item collapsed
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="homework"
-        id="heading-1658f7f069a5f7461736e847f22a8ce9" role="tab" data-toggle="collapse" href="#collapse-1658f7f069a5f7461736e847f22a8ce9"
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="CNN"
+        id="heading-2435a45b85628172c5a47122144a7c67" role="tab" data-toggle="collapse" href="#collapse-2435a45b85628172c5a47122144a7c67"
         aria-expanded="false"
       >
-        homework
+        CNN
         <span class="list-group-count"></span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-        <a href="/categories/homework/" class="category-count col-2 col-md-1 col-xm-1">
+        <a href="/categories/CNN/" class="category-count col-2 col-md-1 col-xm-1">
           <i class="iconfont icon-articles"></i>
           <span>1</span>
         </a>
       
-      <div class="category-collapse collapse " id="collapse-1658f7f069a5f7461736e847f22a8ce9"
-           role="tabpanel" aria-labelledby="heading-1658f7f069a5f7461736e847f22a8ce9">
+      <div class="category-collapse collapse " id="collapse-2435a45b85628172c5a47122144a7c67"
+           role="tabpanel" aria-labelledby="heading-2435a45b85628172c5a47122144a7c67">
         
         
           
@@ -1087,10 +1057,10 @@
     
       
       
-        <a href="/posts/eac26b.html" title="作业记录"
+        <a href="/posts/d4d56670.html" title="paper02-2012-imagenet-classification-with-deep-convolutional-neural-networks"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">作业记录</span>
+          <span class="category-post">paper02-2012-imagenet-classification-with-deep-convolutional-neural-networks</span>
         </a>
       
     
@@ -1147,48 +1117,6 @@
     
     <div class="category row nomargin-x">
       <a class="category-item collapsed
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="蘑菇书"
-        id="heading-50809f12f8cd9af4a175877e87ca51dd" role="tab" data-toggle="collapse" href="#collapse-50809f12f8cd9af4a175877e87ca51dd"
-        aria-expanded="false"
-      >
-        蘑菇书
-        <span class="list-group-count"></span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-        <a href="/categories/%E8%98%91%E8%8F%87%E4%B9%A6/" class="category-count col-2 col-md-1 col-xm-1">
-          <i class="iconfont icon-articles"></i>
-          <span>1</span>
-        </a>
-      
-      <div class="category-collapse collapse " id="collapse-50809f12f8cd9af4a175877e87ca51dd"
-           role="tabpanel" aria-labelledby="heading-50809f12f8cd9af4a175877e87ca51dd">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/posts/3e3a5c92.html" title="强化学习01_基本概念"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">强化学习01_基本概念</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div class="category row nomargin-x">
-      <a class="category-item collapsed
           list-group-item category-item-action col-10 col-md-11 col-xm-11" title="操作系统"
         id="heading-30d23ef4f49e85f37f54786ff984032c" role="tab" data-toggle="collapse" href="#collapse-30d23ef4f49e85f37f54786ff984032c"
         aria-expanded="false"
@@ -1217,6 +1145,90 @@
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">操作系统-01--基本概念</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="homework"
+        id="heading-1658f7f069a5f7461736e847f22a8ce9" role="tab" data-toggle="collapse" href="#collapse-1658f7f069a5f7461736e847f22a8ce9"
+        aria-expanded="false"
+      >
+        homework
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/homework/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>1</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-1658f7f069a5f7461736e847f22a8ce9"
+           role="tabpanel" aria-labelledby="heading-1658f7f069a5f7461736e847f22a8ce9">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/posts/eac26b.html" title="作业记录"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">作业记录</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="蘑菇书"
+        id="heading-50809f12f8cd9af4a175877e87ca51dd" role="tab" data-toggle="collapse" href="#collapse-50809f12f8cd9af4a175877e87ca51dd"
+        aria-expanded="false"
+      >
+        蘑菇书
+        <span class="list-group-count"></span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+        <a href="/categories/%E8%98%91%E8%8F%87%E4%B9%A6/" class="category-count col-2 col-md-1 col-xm-1">
+          <i class="iconfont icon-articles"></i>
+          <span>1</span>
+        </a>
+      
+      <div class="category-collapse collapse " id="collapse-50809f12f8cd9af4a175877e87ca51dd"
+           role="tabpanel" aria-labelledby="heading-50809f12f8cd9af4a175877e87ca51dd">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/posts/3e3a5c92.html" title="强化学习01_基本概念"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">强化学习01_基本概念</span>
         </a>
       
     
