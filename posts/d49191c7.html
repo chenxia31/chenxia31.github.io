@@ -16,24 +16,28 @@
   <meta name="author" content="chenxia">
   <meta name="keywords" content="">
   
-    <meta name="description" content="关于流程图的绘制中有很多工具，比如微软的visio 或者 PowerPoint、贝尔的Graphviz、Lucidchart、OmniGraffle、Draw.io、processOn、Latex的tikZ；但是这种基于图形界面的操作往往会受限于人本身的不精确导致不好看。所以希望借助代码生成流程图来尽可能保持协调一致的美观。">
+    <meta name="description" content="作为一枚INFJ，经常会对效率工具进行反思。今天看了一本和知识管理联系不大的《如何有效阅读一本书》，然后对自己现有的知识管理系统中备忘录+日历+提醒事项，配合ShortCut快速输入、Cubox聚集、Notion整理的一套系统进行整理和反思。给出三个核心的观点。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于JS的Mermaid使用教程">
-<meta property="og:url" content="https://blog.tjdata.site/posts/3be9bc5f.html">
+<meta property="og:title" content="知识管理的一些想法">
+<meta property="og:url" content="https://blog.tjdata.site/posts/d49191c7.html">
 <meta property="og:site_name" content="Chenxia&#39;s blog">
-<meta property="og:description" content="关于流程图的绘制中有很多工具，比如微软的visio 或者 PowerPoint、贝尔的Graphviz、Lucidchart、OmniGraffle、Draw.io、processOn、Latex的tikZ；但是这种基于图形界面的操作往往会受限于人本身的不精确导致不好看。所以希望借助代码生成流程图来尽可能保持协调一致的美观。">
+<meta property="og:description" content="作为一枚INFJ，经常会对效率工具进行反思。今天看了一本和知识管理联系不大的《如何有效阅读一本书》，然后对自己现有的知识管理系统中备忘录+日历+提醒事项，配合ShortCut快速输入、Cubox聚集、Notion整理的一套系统进行整理和反思。给出三个核心的观点。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-05-16T01:25:31.000Z">
-<meta property="article:modified_time" content="2023-05-16T03:28:41.541Z">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230517141343789.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230517143808590.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230517144317271.png">
+<meta property="article:published_time" content="2023-05-17T05:55:36.000Z">
+<meta property="article:modified_time" content="2023-05-17T06:48:17.380Z">
 <meta property="article:author" content="chenxia">
-<meta property="article:tag" content="chart">
+<meta property="article:tag" content="知识管理">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230517141343789.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>基于JS的Mermaid使用教程 - Chenxia&#39;s blog</title>
+  <title>知识管理的一些想法 - Chenxia&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -252,7 +256,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="基于JS的Mermaid使用教程"></span>
+            <span id="subtitle" data-typed-text="知识管理的一些想法"></span>
           
         </div>
 
@@ -263,8 +267,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-05-16 09:25" pubdate>
-          2023年5月16日 上午
+        <time datetime="2023-05-17 13:55" pubdate>
+          2023年5月17日 下午
         </time>
       </span>
     
@@ -275,7 +279,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.5k 字
+          2.6k 字
         
       </span>
     
@@ -286,7 +290,7 @@
         
         
         
-          29 分钟
+          22 分钟
         
       </span>
     
@@ -324,163 +328,97 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">基于JS的Mermaid使用教程</h1>
+            <h1 style="display: none">知识管理的一些想法</h1>
             
             
               <div class="markdown-body">
                 
-                <p>关于流程图的绘制中有很多工具，比如微软的visio 或者 PowerPoint、贝尔的Graphviz、Lucidchart、OmniGraffle、<a target="_blank" rel="noopener" href="http://Draw.io">Draw.io</a>、processOn、Latex的tikZ；但是这种基于图形界面的操作往往会受限于人本身的不精确导致不好看。所以希望借助代码生成流程图来尽可能保持协调一致的美观。</p>
+                <p>作为一枚INFJ，经常会对效率工具进行反思。今天看了一本和知识管理联系不大的《如何有效阅读一本书》，然后对自己现有的知识管理系统中备忘录+日历+提醒事项，配合ShortCut快速输入、Cubox聚集、Notion整理的一套系统进行整理和反思。给出三个核心的观点。</p>
 <span id="more"></span>
-<h2 id="0x01-使用教程"><a class="markdownIt-Anchor" href="#0x01-使用教程"></a> 0x01 使用教程</h2>
-<p>可以直接在Typora中使用，只需要输入即可</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">``` mermaid<br></code></pre></td></tr></table></figure>
-<p>什么是<a target="_blank" rel="noopener" href="https://mermaid.js.org/intro/">Mermaid</a>，按照官网的定义是<strong>基于JavaScript</strong>的图表工具，可以渲染受markdown启发的文本定义，用于动态创建和修改图表。其基本的语法结构包括：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs merm"># Diagrams definitions begin with a declaration of the diagram type<br>	# Define the blocks<br>	# Link the blocks<br>	<br></code></pre></td></tr></table></figure>
-<pre><code class=" mermaid">erDiagram
-          CUSTOMER &#125;|..|&#123; DELIVERY-ADDRESS : has
-          CUSTOMER ||--o&#123; ORDER : places
-          CUSTOMER ||--o&#123; INVOICE : &quot;liable for&quot;
-          DELIVERY-ADDRESS ||--o&#123; ORDER : receives
-          INVOICE ||--|&#123; ORDER : covers
-          ORDER ||--|&#123; ORDER-ITEM : includes
-          PRODUCT-CATEGORY ||--|&#123; PRODUCT : contains
-          PRODUCT ||--o&#123; ORDER-ITEM : &quot;ordered in&quot;
-
-</code></pre>
-<p>常见的表格可以分为：流程图Flowchart、顺序图Sequence Diagram、类图Class Diagram、状态图State Diagram、实体关系图Entity Relationship Diagram、甘特图Gantt、饼图Pie chart、需求图Requirement Diagram、GitGraph、C4C图、思维导图Mindmaps、时间线Timelines</p>
-<h2 id="0x02-流程图-flowchart"><a class="markdownIt-Anchor" href="#0x02-流程图-flowchart"></a> 0x02 流程图 Flowchart</h2>
-<p>流程图由节点 (Nodes)、形状 (Edges)、箭头 （Arrows）和线条（Lines）组成，应用示例</p>
-<pre><code class=" mermaid">flowchart 
-	id1(This is the text in the node1)
-	id2[This is the text in the node2]
-	db1[(database)]
-	id1 --&gt; id2
-	db1 --&gt; id1
+<h2 id="0x01-现有工具使用流程"><a class="markdownIt-Anchor" href="#0x01-现有工具使用流程"></a> 0x01 现有工具使用流程</h2>
+<p>对于现代互联网的工具的感受是，它无处不在，但是在光鲜亮丽的覆盖率之下反而更加暴露了各种信息交换不流畅的问题。你在Apple日历中设置的事项很难在安卓手机上看到，你在推特发的推文很难被同步到你的备忘录，你在豆瓣收藏的书籍也不会出现在亚马逊的购物中，你在PDF中做出的批注也难导出到你的Notion中…</p>
+<p>为了解决这些信息交流的问题，我们往往需要确定自己的工作流Workflow。通过自身的控制来更好的使用工具。当然当一个高效的工具出现的时候你也会开心的，比如看到Warp代替iTerm，时代毕竟是在发展的。电子工具的用途主要有三个：1. GTD日程管理、2. 信息收集、3. 信息处理</p>
+<pre><code class=" mermaid">graph
+classDef someclass fill:#f96
+	A[GTD : Get thing done]:::someclass
+	C(Calendar:Event)
+	R(Reminder:ToDo Schedule)
+	N(Notes)
+	C--&gt;A
+	R--&gt;A
+	N--&gt;A
+	N--&gt;C
+	N--&gt;R
 	
-</code></pre>
-<pre><code class=" mermaid">%% TB : top to bottom,TD
-%% BT: bottom to top
-%% RL: right to left
-%% LR: left to right
-
-flowchart LR
-  subgraph BT[Define of the nodes]
-      id1(圆角)
-      id2([更大的圆角])
-      id3[长方形]
-      id4[(数据库)]
-      id5((圆形))
-      id6&gt;what]
-      id7&#123;方形&#125;
-      id8&#123;&#123;角&#125;&#125;
-      id10[\梯形 Trapezoid alt/]
- 	end
- 	
- 	subgraph LR[define of the linkes]
- 	   id11[node1]
- 	   id12[node2]
- 	   id11 --&gt; id12
- 	   id11 --- id12
- 	   id11 -- Text ---id12
- 	   id11 ---|Text|id12
- 	   id11--&gt;|Text|id12
- 	   id11 -.-&gt; id12
- 	   id11 -. text .-&gt; id12
- 	   A == text ==&gt; id12
- 	   a --&gt;b &amp; c--&gt;d
- 	end
- 	
- 	subgraph LR
- 		B[start]
- 		C&#123;Is it?&#125;
- 		B --&gt;|yes|C
- 		C--&gt;D[rethink]
- 		D--&gt;B
- 		B--&gt;|No|E[End]
- 		E[perhaps?]
- 		
- 		
- 	end
+	B[知识收集 Cubox]:::someclass
+	W(Wechat Helper)
+	API(Cubox API)
+	ALF(Alfred)
+	S(Short Cut)
+	W--&gt;B
+	API--&gt;B
+	ALF--&gt;B
+	S--&gt;B
 	
-</code></pre>
-<h2 id="0x03-时序图-sequence-diagrams"><a class="markdownIt-Anchor" href="#0x03-时序图-sequence-diagrams"></a> 0x03 时序图 Sequence diagrams</h2>
-<p>时序图表示用户之间相互交流的过程的图表，其中的语法主要包括：参与者（Participant）、演员（Actor）、别名（Alias）、分组（Group and box）、信息（Arrows and lines）、激活（Activate）、备注（Notes）、循环（Loop）</p>
-<pre><code class=" mermaid">sequenceDiagram 
- 	participant A as Alice
-    participant B as Bob
-    participant J as John
-	A-&gt;&gt;B:hello John
-	B-&gt;&gt;J:Great!
-</code></pre>
-<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs diff">[Actor][Arrow][Actor]:Message Text<br><span class="hljs-deletion">-&gt; 实线</span><br><span class="hljs-deletion">--&gt; 没有箭头的点画线</span><br><span class="hljs-deletion">-&gt;&gt; 箭头线</span><br><span class="hljs-deletion">--&gt;&gt; 箭头点画线</span><br><span class="hljs-deletion">-X corss</span><br><span class="hljs-deletion">--X 点线带cross</span><br><span class="hljs-deletion">-）</span><br><span class="hljs-deletion">--）</span><br></code></pre></td></tr></table></figure>
-<pre><code class=" mermaid">
-sequenceDiagram
-    Alice-&gt;John: Hello John, how are you?
-    activate John
-    loop Every minute
-        John--&gt;Alice: Great!
-    end
-    deactivate John
+	NO[知识整理 Notion]:::someclass
+	DB(Database)
+	BD(Database2)
+	
+	DB--&gt;NO
+	BD--&gt;NO
+	
+	OUTPUT(Blog):::someclass
+	A--&gt;B--&gt;NO--&gt;OUTPUT
+	
 
 </code></pre>
-<p>初次之外顺序图还需要表示一些基本的逻辑概念，比如激活（Activate）、循环（Loop）、替代（Alt）、平行（Par）、关键区域（Critical）、Break、高亮显示（Rect）</p>
-<pre><code class=" mermaid">sequenceDiagram
-    participant Alice
-    participant John
-
-    rect rgb(191, 223, 255)
-    note right of Alice: Alice calls John.
-    Alice-&gt;&gt;+John: Hello John, how are you?
-    rect rgb(200, 150, 255)
-    Alice-&gt;&gt;+John: John, can you hear me?
-    John--&gt;&gt;-Alice: Hi Alice, I can hear you!
-    end
-    John--&gt;&gt;-Alice: I feel great!
-    end
-    Alice -&gt;&gt;+ John: Did you want to go to the game tonight?
-    John --&gt;&gt;- Alice: Yeah! See you there.
-
-
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230517141343789.png" srcset="/img/loading.gif" lazyload alt="总的知识管理" /></p>
+<p>接下来介绍一些原则：</p>
+<ol>
+<li>一元化原则：如果在这个地方找不到，那么其他地方也找不到</li>
+<li>避免无穷原则：收藏很简单，但是清空很难</li>
+<li>多思考，多输出：一件事情只有我们给别人能够讲清楚的时候，我们自己才能明白</li>
+</ol>
+<h2 id="0x02-一元化原则-gtd系统的可靠性"><a class="markdownIt-Anchor" href="#0x02-一元化原则-gtd系统的可靠性"></a> 0x02 一元化原则 – GTD系统的可靠性</h2>
+<p>GTD是在一本书中提出的概念，用于个人的任务管理的一种方法论。同样这里还会有其他很多的任务管理的方法。最核心的要素是Get thing done。那么如何知道自己做什么？什么时候去做呢？原书给出作者思考的过程，这里介绍我目前摸索的对于日常事务的分类方法和实践规则。</p>
+<p>首先事项根据主观和客观可以分为Calendar和Reminder，这也是两者之间的区别：</p>
+<ol>
+<li>Calendar：日历中发生的往往是一件Events（这也是macOS中的英文），它应该是一种不随个人意志发生的事情。比如国庆节、比如朋友的生日、比如上课、比如上课的DDL。这些事情的最大特点是发生完就结束了，不会有主动拖延这个概念。所以这个通常需要确定一个时间点</li>
+<li>Reminder：这个发生的是我们主观想去做的事情（Item），这些事项可以是“去买个便利贴”“完成某一件作业”“在DDL之前做完PPT”</li>
+</ol>
+<p>但是对于不同的提醒事项也可以进行分类，经过可以经验可以分为</p>
+<ol>
+<li>Schedule：按照时间排序。规划好时间的事情，比如“明天早上9点新建一个论文文件夹”。在之前建立系统的时候，假如schedule设置太多，往往会导致自己完不成而逐渐拖延，所以这里建议计划一个星期会比较好</li>
+<li>To Do List：按照优先级排序。这里是想做的，但是没有规划好时间的事情，比如说“看《奥本海默》”，这类事情往往需要构建一个优先级，当自己的Schedule做完的时候，可以从TODO中做起优先级高的事情</li>
+<li>Deadline：按照时间排序。这里往往是一件事情的结束。代表的是一个过程。比如“下周一交作业”，这个时候需要我们在“下周一”这个时间点完成作业，并提交，我们不可能等到下周一再去完成作业。所以这个建议设置Flag</li>
+</ol>
+<p>到此为止我们的GTD系统已经可以建立起来了，但是这个系统往往会受到冲击：</p>
+<ol>
+<li>不可靠性，收集在Calendar和Reminder中的事项并不完全。导致我们对系统的信任度不高，经常还会依靠自己的大脑来回忆事情。</li>
+<li>懒惰性，假如Schedule的东西太多，而自己不去完成，会导致系统的任务越来越多而崩溃</li>
+<li>缺乏激励性，没有办法给自己正反馈，导致系统维护困难。</li>
+</ol>
+<p>这里给出一个建议：在实践中我们要坚持一元化的原则，也就是在微信或者口头上获取一个事件，可以立马将其添加到自己的inbox，然后再对其分类整理。我们要充分信任自己的系统，因为GTD不仅是记录我们做了什么，还是一个帮助我们大脑记忆的系统。如果我们陷入回忆自己需要做什么的魔咒中，往往会消耗大量的精力和时间。</p>
+<pre><code class=" mermaid">graph
+ cal[Calendar]
+ re[Reminder]
+ E(Event sorted by time)
+ S(Schedule sorted by time)
+ T(To Do List sorted by priority)
+ D(DeadLine sorted by time)
+ cal --&gt; E
+ re--&gt;S
+ re--&gt;T
+ re--&gt;D
 </code></pre>
-<pre><code class=" mermaid">sequenceDiagram
-	participant C as Client
-	participant S as Server
-	autonumber
-	note left of C: 选择初始seq number=x&lt;br/&gt;发送客户端的TCP SYN段
-	C-&gt;&gt;S:SYNbit=1,Seq=X
-	note right of S:选择初始seq number=y&lt;br/&gt;发送服务端TCP SYN信息&lt;br/&gt;利用SYN+1作为回复
-	S-&gt;&gt;C:SYNbit=1,Seq=Y&lt;br/&gt;ACKbit=1,ACKnum=x+1
-	note left of C:收到SYNACK(x),确认服务器存在&lt;br/&gt;发送ACK回复SYNACK&lt;br/&gt;不包含client-to-server数据
-	C-&gt;&gt;S:ACKbit=1,ACKnum=y+1
-	note right of S:收到 ACK(y)&lt;br/&gt;确认用户存在
-		
-</code></pre>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/53374516">https://zhuanlan.zhihu.com/p/53374516</a></p>
-<h2 id="0x04-gitgraph"><a class="markdownIt-Anchor" href="#0x04-gitgraph"></a> 0x04 GitGraph</h2>
-<pre><code class=" mermaid">gitGraph
-	commit id: &quot;Set up folder&quot;
-	branch release
-	branch development
-	checkout development
-	commit
-	branch feature01
-	commit id:&quot;feature1 add&quot;
-	commit id:&quot;feature1 add2&quot;
-	checkout development
-	branch feature02
-	commit id:&quot;fixed feature2&quot;
-	checkout development
-	merge feature02
-	commit id:&quot;feature1 add3&quot;
-	checkout development
-	merge feature01
-	commit
-	checkout main
-	merge development tag:&quot;Beta1.0&quot;
-	checkout release
-	merge main tag:&quot;V1.0&quot;
-
-</code></pre>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230517143808590.png" srcset="/img/loading.gif" lazyload alt="GTD系统" /></p>
+<h2 id="0x03-避免无穷收藏cubox"><a class="markdownIt-Anchor" href="#0x03-避免无穷收藏cubox"></a> 0x03 避免无穷收藏：Cubox</h2>
+<p>互联网将知识串联在一起的后果是我们可以无限的滑动，我们永远看不完Google搜索的结果、看不完微博的帖子、看不完商品的简介…在知识管理也是这样。互联网带来的有用的知识也越来越多，当我们看到一个有意思的微信文章、或者诱人的博客、或者是B站大学的课程，往往会丢到自己的收藏夹中，然后不同软件中的收藏夹并不会互相沟通，唯一的共同点是逐渐增加但是从不清空。</p>
+<p>所以将收集箱填满只是起点，终点是让收集箱回归空的状态。同样为了遵循“一元化”原则，希望可以将所有的知识和自己的想法收集到一个地方。并不想发生在微信收藏看文章、在B站看视频、在微信读书读想读的书、在浏览器看自己的read list，这样的劣势是不能整理。仿佛看完之后就结束了。</p>
+<p>借助Cubox可以通过随机回顾来看自己曾经做过什么批注，可以将看完的东西分类放到架子（文件夹）中日后浏览，也可以将没有营养的归档或者删除。Review才是终点！</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230517144317271.png" srcset="/img/loading.gif" lazyload alt="Cubox 快捷指令" /></p>
+<h2 id="0x04-输出和all-in-onenotion"><a class="markdownIt-Anchor" href="#0x04-输出和all-in-onenotion"></a> 0x04 输出和All in one：Notion</h2>
+<p>首先Notion作为知识管理的终点站在于其开放，它具有和其他系统联合并开放API的fa</p>
 
                 
               </div>
@@ -499,7 +437,7 @@ sequenceDiagram
     
       <span class="category-chain">
         
-  <a href="/categories/Baseline/" class="category-chain-item">Baseline</a>
+  <a href="/categories/Memo/" class="category-chain-item">Memo</a>
   
   
 
@@ -514,7 +452,7 @@ sequenceDiagram
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/chart/">#chart</a>
+        <a href="/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/">#知识管理</a>
       
     </div>
   
@@ -526,8 +464,8 @@ sequenceDiagram
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>基于JS的Mermaid使用教程</div>
-      <div>https://blog.tjdata.site/posts/3be9bc5f.html</div>
+      <div>知识管理的一些想法</div>
+      <div>https://blog.tjdata.site/posts/d49191c7.html</div>
     </div>
     <div class="license-meta">
       
@@ -539,7 +477,7 @@ sequenceDiagram
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年5月16日</div>
+          <div>2023年5月17日</div>
         </div>
       
       
@@ -571,18 +509,12 @@ sequenceDiagram
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/d49191c7.html" title="知识管理的一些想法">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">知识管理的一些想法</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/cd758988.html" title="GIT管理和常见操作">
-                        <span class="hidden-mobile">GIT管理和常见操作</span>
+                      <a href="/posts/3be9bc5f.html" title="基于JS的Mermaid使用教程">
+                        <span class="hidden-mobile">基于JS的Mermaid使用教程</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -602,8 +534,8 @@ sequenceDiagram
     
       <script type="text/javascript">
         var disqus_config = function() {
-          this.page.url = 'https://blog.tjdata.site/posts/3be9bc5f.html';
-          this.page.identifier = '/posts/3be9bc5f.html';
+          this.page.url = 'https://blog.tjdata.site/posts/d49191c7.html';
+          this.page.identifier = '/posts/d49191c7.html';
         };
         Fluid.utils.loadComments('#disqus_thread', function() {
           var d = document, s = d.createElement('script');
