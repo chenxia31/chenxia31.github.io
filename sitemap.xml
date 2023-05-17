@@ -551,7 +551,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/books/index.html</loc>
+    <loc>https://blog.tjdata.site/categories/index.html</loc>
     
     <lastmod>2022-03-20</lastmod>
     
@@ -560,7 +560,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/categories/index.html</loc>
+    <loc>https://blog.tjdata.site/books/index.html</loc>
     
     <lastmod>2022-03-20</lastmod>
     
@@ -633,13 +633,6 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/git/</loc>
-    <lastmod>2023-05-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.tjdata.site/tags/%E6%9D%82%E8%B0%88/</loc>
     <lastmod>2023-05-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -647,14 +640,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/paper-reading/</loc>
-    <lastmod>2023-05-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.tjdata.site/tags/chart/</loc>
+    <loc>https://blog.tjdata.site/tags/git/</loc>
     <lastmod>2023-05-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -668,7 +654,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/Single/</loc>
+    <loc>https://blog.tjdata.site/tags/paper-reading/</loc>
     <lastmod>2023-05-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -682,7 +668,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</loc>
+    <loc>https://blog.tjdata.site/tags/Single/</loc>
     <lastmod>2023-05-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -703,14 +689,21 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/Pyomo/</loc>
+    <loc>https://blog.tjdata.site/tags/%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</loc>
     <lastmod>2023-05-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/D2L/</loc>
+    <loc>https://blog.tjdata.site/tags/chart/</loc>
+    <lastmod>2023-05-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tjdata.site/tags/Pyomo/</loc>
     <lastmod>2023-05-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -724,7 +717,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/nothing/</loc>
+    <loc>https://blog.tjdata.site/tags/D2L/</loc>
+    <lastmod>2023-05-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tjdata.site/tags/Django/</loc>
     <lastmod>2023-05-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -738,13 +738,6 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/PersonPost/</loc>
-    <lastmod>2023-05-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.tjdata.site/tags/%E8%98%91%E8%8F%87%E4%B9%A6/</loc>
     <lastmod>2023-05-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -752,7 +745,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/Django/</loc>
+    <loc>https://blog.tjdata.site/tags/PersonPost/</loc>
     <lastmod>2023-05-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -794,6 +787,13 @@
   </url>
   
   <url>
+    <loc>https://blog.tjdata.site/tags/nothing/</loc>
+    <lastmod>2023-05-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.tjdata.site/tags/network/</loc>
     <lastmod>2023-05-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -817,14 +817,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/categories/CS/</loc>
+    <loc>https://blog.tjdata.site/categories/Memo/</loc>
     <lastmod>2023-05-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/categories/Memo/</loc>
+    <loc>https://blog.tjdata.site/categories/CS/</loc>
     <lastmod>2023-05-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
