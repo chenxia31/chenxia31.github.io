@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>QuantumultX使用教程记录</title>
+    <link href="/posts/cc1a6fba.html"/>
+    <url>/posts/cc1a6fba.html</url>
+    
+    <content type="html"><![CDATA[<p>一直使用圈x作为我的代理软件，但是出现了一些问题，现在想总结一些圈x使用的方法。</p><span id="more"></span><h2 id="0x01-overview"><a class="markdownIt-Anchor" href="#0x01-overview"></a> 0x01 Overview</h2><p>圈X的功能有哪些？</p><ol><li>Proxy server，导入订阅连接，可以使用代理访问网站 [server local] [server remote]</li><li>Filter rules,设置对应的策略组和分流规则，对应[proxy] [filter_remote] [filter_local]</li><li>Rewriter rule，重写规则和MITM解密，主要用来去广告和重定向[rewrite] [mitm]</li></ol><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230524092006244.png" alt="image-20230524092006244" /></p><h2 id="0x02-proxy-server使用"><a class="markdownIt-Anchor" href="#0x02-proxy-server使用"></a> 0x02 Proxy server使用</h2><p>添加节点和订阅链接的方式有三种，一般使用2就足够了～</p><ol><li>通过Quantumult X 界面添加节点。setting-&gt;external proxy-&gt;add</li><li>通过Quantumult X 界面添加订阅。setting-&gt;external proxy-&gt;resources</li><li>手动修改配置文件添加节点，在配置文件中的[server_local]部分，setting-&gt;proxy file–&gt; edit</li></ol><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">trojan 节点写法</span><br>trojan=example.com:443, password=pwd, over-tls=true, tls-verification=false, fast-open=false, udp-relay=false, tag=节点名称<br><span class="hljs-meta prompt_"># </span><span class="language-bash">vmess 节点写法</span><br>vmess=example.com:443, method=chacha20-ietf-poly1305, password=pwd, obfs-host=example.com, obfs=wss, obfs-uri=/ws, tls-verification=true, fast-open=false, udp-relay=false, tag=节点名称<br></code></pre></td></tr></table></figure><p>在实际使用中可以分为all proxy、all direct、based on filter等</p><ol><li>All proxy：所有的网络请求都通过Proxy下选中的节点进行</li><li>All direct：所有的网络请求都不使用代理进行</li><li>Based on filter: 根据分流规则将网络请求进行分流，并通过策略组将分流规则传递来的网络请求进行转发</li></ol><h2 id="0x03-filter-rules-使用"><a class="markdownIt-Anchor" href="#0x03-filter-rules-使用"></a> 0x03 Filter rules 使用</h2><pre><code class=" mermaid">graphQ[request]P1[Based on filter]J[Filter=filter_local+filter_remote]P2[Direct]P3[Proxy1]P4[Proxy2]P5[Reject]Q--&gt;P1P1--&gt;JJ--&gt;P2J--&gt;P3J--&gt;P4J--&gt;P5</code></pre><p>当我们发送请求的时候，确定请求代理之后，根据Filter rules，来判断走哪些策略组。首先策略组分为static、available、robin和SSID，常见的Proxy设置在配置文件中的[proxy]中，对应的分流规则在[filter_local] 和 [filter_remote]</p><p>首先分流规则是根据匹配来选择对应的策略组的，这一点和clash等类似，比如通过域名来判断，添加的方式主要有：</p><ol><li>导入远程分流规则订阅，这里默认在proxyfile的[filter_remote]</li><li>自己本地撰写分流规则，这里默认在proxyfile的[filter_local]</li><li>利用抓包的方式来确定选择对应的策略组（因为我们通常不知道域名是什么qwq）activity–&gt;one row–&gt;filter–&gt;new filter–&gt;proxy</li></ol><p>这里当然可以去寻找一些现有的filter</p><h2 id="0x04-rewrite-rules"><a class="markdownIt-Anchor" href="#0x04-rewrite-rules"></a> 0x04 Rewrite rules</h2><p>上述其实实现了代理软件的基本功能，但是QuantumultX还提供了重写的过程，<strong>个人理解是将软件的请求重写调整</strong>，而不是简单的换一个服务器访问。</p><blockquote><p>一个简单的例子就是你访问www.baidu.com之后，它必然会返回一个网页，我们可以通过正则匹配的方式挑选出其中img的路径，并重定向到你自己的网址，这样就可以更换logo</p></blockquote><p>因此这里需要MITM解密和设置[rewrite]</p><p>还是看大佬的配置比较好</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>memo</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>proxyApp</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Torch文档阅读</title>
     <link href="/posts/5ef17af5.html"/>
     <url>/posts/5ef17af5.html</url>
