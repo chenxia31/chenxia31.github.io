@@ -16,26 +16,29 @@
   <meta name="author" content="chenxia">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一直使用圈x作为我的代理软件，但是出现了一些问题，现在想总结一些圈x使用的方法。">
+    <meta name="description" content="在学习Torch之际，正好结合沐神的《动手学深度学习》和CS229中的局部线性回归讲义实践一下！终于跑通了第一个属于自己的代码！！">
 <meta property="og:type" content="article">
-<meta property="og:title" content="QuantumultX使用教程记录">
-<meta property="og:url" content="https://blog.tjdata.site/posts/cc1a6fba.html">
+<meta property="og:title" content="CS229局部线性回归review和实现">
+<meta property="og:url" content="https://blog.tjdata.site/posts/994c246.html">
 <meta property="og:site_name" content="Chenxia&#39;s blog">
-<meta property="og:description" content="一直使用圈x作为我的代理软件，但是出现了一些问题，现在想总结一些圈x使用的方法。">
+<meta property="og:description" content="在学习Torch之际，正好结合沐神的《动手学深度学习》和CS229中的局部线性回归讲义实践一下！终于跑通了第一个属于自己的代码！！">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230524092006244.png">
-<meta property="article:published_time" content="2023-05-24T00:47:34.000Z">
-<meta property="article:modified_time" content="2023-05-24T02:01:51.464Z">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230531183236712.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230531183226036.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230531183343979.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230531183709870.png">
+<meta property="article:published_time" content="2023-05-31T10:29:14.000Z">
+<meta property="article:modified_time" content="2023-05-31T10:40:30.542Z">
 <meta property="article:author" content="chenxia">
-<meta property="article:tag" content="proxyApp">
+<meta property="article:tag" content="LSR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230524092006244.png">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230531183236712.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>QuantumultX使用教程记录 - Chenxia&#39;s blog</title>
+  <title>CS229局部线性回归review和实现 - Chenxia&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -254,7 +257,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="QuantumultX使用教程记录"></span>
+            <span id="subtitle" data-typed-text="CS229局部线性回归review和实现"></span>
           
         </div>
 
@@ -265,8 +268,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-05-24 08:47" pubdate>
-          2023年5月24日 早上
+        <time datetime="2023-05-31 18:29" pubdate>
+          2023年5月31日 晚上
         </time>
       </span>
     
@@ -277,7 +280,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          3.6k 字
         
       </span>
     
@@ -288,7 +291,7 @@
         
         
         
-          15 分钟
+          30 分钟
         
       </span>
     
@@ -326,66 +329,70 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">QuantumultX使用教程记录</h1>
+            <h1 style="display: none">CS229局部线性回归review和实现</h1>
             
             
               <div class="markdown-body">
                 
-                <p>一直使用圈x作为我的代理软件，但是出现了一些问题，现在想总结一些圈x使用的方法。</p>
+                <p>在学习Torch之际，正好结合沐神的《动手学深度学习》和CS229中的局部线性回归讲义实践一下！终于跑通了第一个属于自己的代码！！</p>
 <span id="more"></span>
-<h2 id="0x01-overview"><a class="markdownIt-Anchor" href="#0x01-overview"></a> 0x01 Overview</h2>
-<p>圈X的功能有哪些？</p>
+<h2 id="0x01-什么是线性回归"><a class="markdownIt-Anchor" href="#0x01-什么是线性回归"></a> 0x01 什么是线性回归？</h2>
+<p>在之前的CS229中，线性回归（Linear regression）作为机器学习的Hello world，让我们了解到学习模型（supervised learning algorithm）会包括几个部分：</p>
 <ol>
-<li>Proxy server，导入订阅连接，可以使用代理访问网站 [server local] [server remote]</li>
-<li>Filter rules,设置对应的策略组和分流规则，对应[proxy] [filter_remote] [filter_local]</li>
-<li>Rewriter rule，重写规则和MITM解密，主要用来去广告和重定向[rewrite] [mitm]</li>
+<li>数据集（dataset）</li>
+<li>假设（hypothesis）</li>
+<li>损失函数（loss function）</li>
+<li>优化方法（optimization method）</li>
 </ol>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230524092006244.png" srcset="/img/loading.gif" lazyload alt="image-20230524092006244" /></p>
-<h2 id="0x02-proxy-server使用"><a class="markdownIt-Anchor" href="#0x02-proxy-server使用"></a> 0x02 Proxy server使用</h2>
-<p>添加节点和订阅链接的方式有三种，一般使用2就足够了～</p>
+<p>详细可见 <a href="https://blog.tjdata.site/posts/7a22647b.html">cs229-01线性模型</a></p>
+<h2 id="0x02-什么是局部线性回归"><a class="markdownIt-Anchor" href="#0x02-什么是局部线性回归"></a> 0x02 什么是局部线性回归？</h2>
+<p>也就是给梯度一个权重</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230531183236712.png" srcset="/img/loading.gif" lazyload alt="LSR的描述" /></p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230531183226036.png" srcset="/img/loading.gif" lazyload alt="LSR图片示例" /></p>
+<h2 id="0x03-从零开始的代码实现"><a class="markdownIt-Anchor" href="#0x03-从零开始的代码实现"></a> 0x03 从零开始的代码实现</h2>
+<p>在了解算法的基础上，如何使用代码构建出来是另外一个方面。两者可以是互补的！<br />
+参照Tensorflow2.0 八股文的描述，我们将深度学习网络构建的过程也可以分为几个典型的步骤：</p>
 <ol>
-<li>通过Quantumult X 界面添加节点。setting-&gt;external proxy-&gt;add</li>
-<li>通过Quantumult X 界面添加订阅。setting-&gt;external proxy-&gt;resources</li>
-<li>手动修改配置文件添加节点，在配置文件中的[server_local]部分，setting-&gt;proxy file–&gt; edit</li>
+<li>构建dataset</li>
+<li>根据dataset生成不同的dataloader，方便后续批量梯度下降(batch gradient descent)</li>
+<li>建立Model（根据hypothesis）</li>
+<li>选择损失函数 loss function</li>
+<li>优化器选择</li>
+<li>超参数的设置 lr、epoch、batchsize</li>
+<li>学习过程，批量梯度下降</li>
+<li>评价指标，对于regression的分析常见的包括MSE、MAPE等等</li>
 </ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">trojan 节点写法</span><br>trojan=example.com:443, password=pwd, over-tls=true, tls-verification=false, fast-open=false, udp-relay=false, tag=节点名称<br><span class="hljs-meta prompt_"># </span><span class="language-bash">vmess 节点写法</span><br>vmess=example.com:443, method=chacha20-ietf-poly1305, password=pwd, obfs-host=example.com, obfs=wss, obfs-uri=/ws, tls-verification=true, fast-open=false, udp-relay=false, tag=节点名称<br></code></pre></td></tr></table></figure>
-<p>在实际使用中可以分为all proxy、all direct、based on filter等</p>
+<h3 id="31-定义数据集"><a class="markdownIt-Anchor" href="#31-定义数据集"></a> 3.1 定义数据集</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">gen_data</span>(<span class="hljs-params">w,b,num_examples</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;生成y=Xw+b的噪声&quot;&quot;&quot;</span><br>    <span class="hljs-comment"># dtype=float</span><br>    X = torch.normal(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,(num_examples,<span class="hljs-built_in">len</span>(w)),dtype=<span class="hljs-built_in">float</span>)<br>    y = torch.matmul(X,w)<br>    y += torch.normal(<span class="hljs-number">0</span>,<span class="hljs-number">0.01</span>,y.shape,dtype=<span class="hljs-built_in">float</span>)<br>    <span class="hljs-comment"># reshape的意义在于将vector变成为matrix，vector应该是N，而matrix是N*1</span><br>    <span class="hljs-keyword">return</span> X,y.reshape((-<span class="hljs-number">1</span>,<span class="hljs-number">1</span>))<br>true_w=torch.tensor([<span class="hljs-number">2</span>,-<span class="hljs-number">3.4</span>],dtype=<span class="hljs-built_in">float</span>)<br>true_b=<span class="hljs-number">4.2</span><br>features,labels=gen_data(true_w,true_b,<span class="hljs-number">1000</span>)<br>plt.scatter(features[:,<span class="hljs-number">1</span>],labels,<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230531183343979.png" srcset="/img/loading.gif" lazyload alt="数据集可视化" /></p>
+<h3 id="32-定义数据迭代"><a class="markdownIt-Anchor" href="#32-定义数据迭代"></a> 3.2 定义数据迭代</h3>
+<p>基于Python原生生成的迭代器虽然可以连续的获取不同的小批量，但是执行效率很低，因为此****要求将所有数据加载到内存中，并执行大量的随机内存访问****，所以通常深度学习框架会内置迭代器，用于处理存储在文件中的数据和数据流提供的数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> random<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">data_iter</span>(<span class="hljs-params">batch_size,features,labels</span>):<br>    num_examples = <span class="hljs-built_in">len</span>(features)<br>    indices = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(num_examples))<br>    <span class="hljs-comment"># 样本随机读取，没有特定的顺序</span><br>    random.shuffle(indices)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,num_examples,batch_size):<br>        batch_indices = torch.tensor(<br>            indices[i:<span class="hljs-built_in">min</span>(i+batch_size,num_examples)]<br>        )<br>        <span class="hljs-keyword">yield</span> features[batch_indices],labels[batch_indices]<br><br><span class="hljs-comment"># batchsize=10</span><br><span class="hljs-comment"># for X,y in data_iter(batch_size=batchsize,features=features,labels=labels):</span><br><span class="hljs-comment">#     &#x27;&#x27;&#x27;仅作为测试使用&#x27;&#x27;&#x27;</span><br><span class="hljs-comment">#     print(X,&#x27;\n&#x27;,y)</span><br><span class="hljs-comment">#     break</span><br></code></pre></td></tr></table></figure>
+<h2 id="33-定义模型"><a class="markdownIt-Anchor" href="#33-定义模型"></a> 3.3 定义模型</h2>
+<p>同时也能够返回对应参数的parameters的size，这里和教科书不一样，我们使用class的方式来建立新的模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">network</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-literal">None</span>:<br>        self.w=torch.normal(<span class="hljs-number">0</span>,<span class="hljs-number">0.01</span>,size=(<span class="hljs-number">2</span>,<span class="hljs-number">1</span>),requires_grad=<span class="hljs-literal">True</span>,dtype=<span class="hljs-built_in">float</span>)<br>        self.b=torch.zeros(<span class="hljs-number">1</span>,requires_grad=<span class="hljs-literal">True</span>,dtype=<span class="hljs-built_in">float</span>)<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">predict</span>(<span class="hljs-params">self,X</span>):<br>        <span class="hljs-keyword">return</span> torch.matmul(X,self.w)+self.b<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">parameters</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-string">&#x27;&#x27;&#x27;返回对应参数的size&#x27;&#x27;&#x27;</span><br>        <span class="hljs-keyword">return</span> [self.w,self.b]<br>model=network()<br></code></pre></td></tr></table></figure>
+<h2 id="34-定义损失函数"><a class="markdownIt-Anchor" href="#34-定义损失函数"></a> 3.4 定义损失函数</h2>
+<p>Local loss是局部损失函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_weight</span>(<span class="hljs-params">X,features</span>):<br>    <span class="hljs-string">&#x27;&#x27;&#x27;权重分析&#x27;&#x27;&#x27;</span><br>    diff = X.unsqueeze(-<span class="hljs-number">2</span>).unsqueeze(-<span class="hljs-number">2</span>)- features.unsqueeze(-<span class="hljs-number">2</span>)<br>    w = torch.exp(-diff**<span class="hljs-number">2</span>/<span class="hljs-number">0.000002</span>).squeeze(-<span class="hljs-number">2</span>).<span class="hljs-built_in">sum</span>(axis=(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>))<br>    <span class="hljs-keyword">return</span> w<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">square_loss</span>(<span class="hljs-params">y_hat,y</span>):<br>    <span class="hljs-keyword">return</span> (y_hat-y.reshape(y_hat.shape))**<span class="hljs-number">2</span>/<span class="hljs-number">2</span><br><span class="hljs-comment"># y_hat=model.predict(X)</span><br><span class="hljs-comment"># res=square_loss(y_hat,y)</span><br><span class="hljs-comment"># res.mean()</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">local_loss</span>(<span class="hljs-params">y_hat,y,X</span>):<br>    new_w=get_weight(X,features)<br>    <span class="hljs-keyword">return</span> new_w.reshape(shape=(-<span class="hljs-number">1</span>,<span class="hljs-number">1</span>))*(y_hat-y.reshape(y_hat.shape))**<span class="hljs-number">2</span>/<span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<h2 id="35-定义优化算法"><a class="markdownIt-Anchor" href="#35-定义优化算法"></a> 3.5 定义优化算法</h2>
+<p>在计算机求解优化算法的过程中，我们可以先想一下我们需要什么东西？</p>
+<p>按照梯度下降的方式来进行神经网络的优化过程中，必然需要知道parameters的size，之后是对参数更新之后的长度learning rate，依旧每次下降的batch-size</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sgd</span>(<span class="hljs-params">params,lr,batchsize</span>):<br>    <span class="hljs-string">&#x27;&#x27;&#x27;小批量随机梯度下降&#x27;&#x27;&#x27;</span><br>    <span class="hljs-comment"># model.eval() 和 with torch.node_grad()区别是什么</span><br>    <span class="hljs-comment"># model.eval()主要用于model的validation过程中，通知dropout和batchnorm层在train</span><br>    <span class="hljs-comment"># val模式之间切换</span><br>    <span class="hljs-comment"># with torch.no_grad()主要是停止autograd模块的工作，起到加速和节省显存的作用</span><br>    <span class="hljs-keyword">with</span> torch.no_grad(): <span class="hljs-comment">#??这是做什么的</span><br>        <span class="hljs-keyword">for</span> param <span class="hljs-keyword">in</span> params:<br>            param -= lr*param.grad/batchsize<br>            param.grad.zero_()<br></code></pre></td></tr></table></figure>
+<h2 id="36-定义超参数"><a class="markdownIt-Anchor" href="#36-定义超参数"></a> 3.6 定义超参数</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">lr = <span class="hljs-number">0.05</span><br>batchsize=<span class="hljs-number">10</span><br>num_epoches = <span class="hljs-number">4</span><br>net = network()<br>loss = square_loss<br></code></pre></td></tr></table></figure>
+<h2 id="37-开始训练"><a class="markdownIt-Anchor" href="#37-开始训练"></a> 3.7 开始训练</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_epoches):<br>    <span class="hljs-keyword">for</span> X,y <span class="hljs-keyword">in</span> data_iter(batch_size=batchsize,features=features,labels=labels):<br>        <span class="hljs-comment"># l = loss(net.predict(X),y)</span><br>        l = local_loss(net.predict(X),y,X)<br>        l.<span class="hljs-built_in">sum</span>().backward()<br>        sgd(net.parameters(),lr,batchsize)<br>    <span class="hljs-keyword">with</span> torch.no_grad():<br>        train_l=loss(net.predict(features),labels).mean()<br>        <span class="hljs-built_in">print</span>(train_l)<br></code></pre></td></tr></table></figure>
+<h2 id="38-评估模型"><a class="markdownIt-Anchor" href="#38-评估模型"></a> 3.8 评估模型</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">print</span>(net.w)<br></code></pre></td></tr></table></figure>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230531183709870.png" srcset="/img/loading.gif" lazyload alt="模型结果" /></p>
+<h1 id="0x04-几个注意的点"><a class="markdownIt-Anchor" href="#0x04-几个注意的点"></a> 0x04 几个注意的点</h1>
 <ol>
-<li>All proxy：所有的网络请求都通过Proxy下选中的节点进行</li>
-<li>All direct：所有的网络请求都不使用代理进行</li>
-<li>Based on filter: 根据分流规则将网络请求进行分流，并通过策略组将分流规则传递来的网络请求进行转发</li>
+<li>数据dtype最好设置float</li>
+<li>注意vector和matrix甚至tensor之间的区别</li>
+<li>在weight计算中的维度的变化来保证broadcasting</li>
+<li>with torch.no_grad( )和model.eval( )的区别</li>
+<li>令人惊喜的torch的broadcasting的功能！！</li>
 </ol>
-<h2 id="0x03-filter-rules-使用"><a class="markdownIt-Anchor" href="#0x03-filter-rules-使用"></a> 0x03 Filter rules 使用</h2>
-<pre><code class=" mermaid">graph
-Q[request]
-P1[Based on filter]
-J[Filter=filter_local+filter_remote]
-P2[Direct]
-P3[Proxy1]
-P4[Proxy2]
-P5[Reject]
-Q--&gt;P1
-P1--&gt;J
-J--&gt;P2
-J--&gt;P3
-J--&gt;P4
-J--&gt;P5
-</code></pre>
-<p>当我们发送请求的时候，确定请求代理之后，根据Filter rules，来判断走哪些策略组。首先策略组分为static、available、robin和SSID，常见的Proxy设置在配置文件中的[proxy]中，对应的分流规则在[filter_local] 和 [filter_remote]</p>
-<p>首先分流规则是根据匹配来选择对应的策略组的，这一点和clash等类似，比如通过域名来判断，添加的方式主要有：</p>
-<ol>
-<li>导入远程分流规则订阅，这里默认在proxyfile的[filter_remote]</li>
-<li>自己本地撰写分流规则，这里默认在proxyfile的[filter_local]</li>
-<li>利用抓包的方式来确定选择对应的策略组（因为我们通常不知道域名是什么qwq）activity–&gt;one row–&gt;filter–&gt;new filter–&gt;proxy</li>
-</ol>
-<p>这里当然可以去寻找一些现有的filter</p>
-<h2 id="0x04-rewrite-rules"><a class="markdownIt-Anchor" href="#0x04-rewrite-rules"></a> 0x04 Rewrite rules</h2>
-<p>上述其实实现了代理软件的基本功能，但是QuantumultX还提供了重写的过程，<strong>个人理解是将软件的请求重写调整</strong>，而不是简单的换一个服务器访问。</p>
-<blockquote>
-<p>一个简单的例子就是你访问www.baidu.com之后，它必然会返回一个网页，我们可以通过正则匹配的方式挑选出其中img的路径，并重定向到你自己的网址，这样就可以更换logo</p>
-</blockquote>
-<p>因此这里需要MITM解密和设置[rewrite]</p>
-<p>还是看大佬的配置比较好</p>
 
                 
               </div>
@@ -404,7 +411,7 @@ J--&gt;P5
     
       <span class="category-chain">
         
-  <a href="/categories/memo/" class="category-chain-item">memo</a>
+  <a href="/categories/ML-DL/" class="category-chain-item">ML&amp;DL</a>
   
   
 
@@ -419,7 +426,7 @@ J--&gt;P5
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/proxyApp/">#proxyApp</a>
+        <a href="/tags/LSR/">#LSR</a>
       
     </div>
   
@@ -431,8 +438,8 @@ J--&gt;P5
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>QuantumultX使用教程记录</div>
-      <div>https://blog.tjdata.site/posts/cc1a6fba.html</div>
+      <div>CS229局部线性回归review和实现</div>
+      <div>https://blog.tjdata.site/posts/994c246.html</div>
     </div>
     <div class="license-meta">
       
@@ -444,7 +451,7 @@ J--&gt;P5
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年5月24日</div>
+          <div>2023年5月31日</div>
         </div>
       
       
@@ -476,18 +483,12 @@ J--&gt;P5
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/994c246.html" title="CS229局部线性回归review和实现">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">CS229局部线性回归review和实现</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/5ef17af5.html" title="Torch文档阅读">
-                        <span class="hidden-mobile">Torch文档阅读</span>
+                      <a href="/posts/cc1a6fba.html" title="QuantumultX使用教程记录">
+                        <span class="hidden-mobile">QuantumultX使用教程记录</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -507,8 +508,8 @@ J--&gt;P5
     
       <script type="text/javascript">
         var disqus_config = function() {
-          this.page.url = 'https://blog.tjdata.site/posts/cc1a6fba.html';
-          this.page.identifier = '/posts/cc1a6fba.html';
+          this.page.url = 'https://blog.tjdata.site/posts/994c246.html';
+          this.page.identifier = '/posts/994c246.html';
         };
         Fluid.utils.loadComments('#disqus_thread', function() {
           var d = document, s = d.createElement('script');
