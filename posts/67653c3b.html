@@ -16,23 +16,17 @@
   <meta name="author" content="chenxia">
   <meta name="keywords" content="">
   
-    <meta name="description" content="好长时间没有刷题了，刷一刷二叉树的题目感觉又被打击了～ 从中可以看到分治的想法，虽然第一件事是利用动态规划求解的，但是本质的思想还是利用divide-and- conquer来找到其中的循环不变量 loop variant，来找到思路的。">
+    <meta name="description" content="摘要">
 <meta property="og:type" content="article">
 <meta property="og:title" content="有意思的两道二叉树的题目">
 <meta property="og:url" content="https://blog.tjdata.site/posts/67653c3b.html">
 <meta property="og:site_name" content="Chenxia&#39;s blog">
-<meta property="og:description" content="好长时间没有刷题了，刷一刷二叉树的题目感觉又被打击了～ 从中可以看到分治的想法，虽然第一件事是利用动态规划求解的，但是本质的思想还是利用divide-and- conquer来找到其中的循环不变量 loop variant，来找到思路的。">
+<meta property="og:description" content="摘要">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/uniquebstn3.jpg">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230712213141954.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/linked.jpg">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/tree1.jpg">
 <meta property="article:published_time" content="2023-07-12T13:16:48.000Z">
-<meta property="article:modified_time" content="2023-07-12T13:36:13.301Z">
+<meta property="article:modified_time" content="2023-07-12T13:16:48.337Z">
 <meta property="article:author" content="chenxia">
-<meta property="article:tag" content="力扣">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/uniquebstn3.jpg">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -280,7 +274,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.2k 字
+          4 字
         
       </span>
     
@@ -291,7 +285,7 @@
         
         
         
-          19 分钟
+          1 分钟
         
       </span>
     
@@ -334,45 +328,9 @@
             
               <div class="markdown-body">
                 
-                <p>好长时间没有刷题了，刷一刷二叉树的题目感觉又被打击了～</p>
-<p>从中可以看到分治的想法，虽然第一件事是利用动态规划求解的，但是本质的思想还是利用divide-and- conquer来找到其中的循环不变量 loop variant，来找到思路的。</p>
+                <p>摘要</p>
 <span id="more"></span>
-<h2 id="96-不同的二叉搜索树"><a class="markdownIt-Anchor" href="#96-不同的二叉搜索树"></a> <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/unique-binary-search-trees/">96. 不同的二叉搜索树</a></h2>
-<p>给你一个整数 <code>n</code> ，求恰由 <code>n</code> 个节点组成且节点值从 <code>1</code> 到 <code>n</code> 互不相同的 <strong>二叉搜索树</strong> 有多少种？返回满足题意的二叉搜索树的种数。</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/uniquebstn3.jpg" srcset="/img/loading.gif" lazyload alt="img" /></p>
-<p>看上去挺难的，但是仔细想一想，由于二叉搜索树的定义（满足一定的中序遍历）的条件，因此n节点的树必然和子树的序列有关。通过进一步的分析我们可以看出</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20230712213141954.png" srcset="/img/loading.gif" lazyload alt="image-20230712213141954" /></p>
-<p>所以对应的手段为</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">numTrees</span>(<span class="hljs-params">self, n: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:<br>        store = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>] <span class="hljs-comment">#f(0),f(1)</span><br>        <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span>:<br>            <span class="hljs-keyword">return</span> store[n]<br>        <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>,n+<span class="hljs-number">1</span>):<br>            s = m-<span class="hljs-number">1</span><br>            count = <span class="hljs-number">0</span><br>            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):<br>                count += store[i]*store[s-i]<br>            store.append(count)<br>        <span class="hljs-keyword">return</span> store[n]<br></code></pre></td></tr></table></figure>
-<h2 id="09-有序链表转换二叉搜索树"><a class="markdownIt-Anchor" href="#09-有序链表转换二叉搜索树"></a> <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/convert-sorted-list-to-binary-search-tree/">09. 有序链表转换二叉搜索树</a></h2>
-<p>给定一个单链表的头节点  head ，其中的元素 按升序排序 ，将其转换为高度平衡的二叉搜索树。</p>
-<p>本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差不超过 1。</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/linked.jpg" srcset="/img/loading.gif" lazyload alt="img" /></p>
-<p>来源：力扣（LeetCode）<br />
-链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/convert-sorted-list-to-binary-search-tree">https://leetcode.cn/problems/convert-sorted-list-to-binary-search-tree</a><br />
-著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
-<p>从题目中来看要实现有三个困难点：</p>
-<ol>
-<li>原始的数据结构是 link，相当于是一种base model（哭）</li>
-<li>需要调整之后的树首先为二叉搜索树（Binary search tree），需要满足的条件为中序遍历为从小到大的数组</li>
-<li>其次需要满足平衡的条件，也就是任意节点的高度差不能超过1</li>
-</ol>
-<p>首先自然可以利用快慢指针的方式来得到 Link中的中心节点，这样的中心节点自然是新建树的Root Node</p>
-<p>其次如何根据Root Node来生成左子树和右子树，由于平衡二叉搜索树的子树必然也是平衡二叉搜索树，因此可以将head-&gt;slow之间的 sub-Link 送入函数中，作为新建节点的子树，同时将 slow.next之后的 sub-Link 送入到节点的右边子树，作为新建节点的右子树。</p>
-<p>所以需要在之前利用快慢指针寻找 slow 中心的时候来对它进行切割</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">sortedListToBST</span>(<span class="hljs-params">self, head: <span class="hljs-type">Optional</span>[ListNode]</span>) -&gt; <span class="hljs-type">Optional</span>[TreeNode]:<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head:<br>            <span class="hljs-keyword">return</span> head<br>        pre,slow,fast = <span class="hljs-literal">None</span>,head,head<br>        <br>        <span class="hljs-keyword">while</span> fast <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>:<br>            fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span><br>            pre = slow<br>            slow = slow.<span class="hljs-built_in">next</span><br>        <br>        <span class="hljs-keyword">if</span> pre:<br>            pre.<span class="hljs-built_in">next</span> = <span class="hljs-literal">None</span><br>        node = TreeNode(slow.val)<br>        <span class="hljs-keyword">if</span> slow == fast:<br>            <span class="hljs-keyword">return</span> node<br>        node.left = self.sortedListToBST(head)<br>        node.right = self.sortedListToBST(slow.<span class="hljs-built_in">next</span>)<br>        <span class="hljs-keyword">return</span> node<br></code></pre></td></tr></table></figure>
-<h2 id="654-最大二叉树"><a class="markdownIt-Anchor" href="#654-最大二叉树"></a> <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-binary-tree/">654. 最大二叉树</a></h2>
-<p>给定一个不重复的整数数组 nums 。 最大二叉树 可以用下面的算法从 nums 递归地构建:</p>
-<p>创建一个根节点，其值为 nums 中的最大值。<br />
-递归地在最大值 左边 的 子数组前缀上 构建左子树。<br />
-递归地在最大值 右边 的 子数组后缀上 构建右子树。<br />
-返回 nums 构建的 最大二叉树 。</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/tree1.jpg" srcset="/img/loading.gif" lazyload alt="img" /></p>
-<p>来源：力扣（LeetCode）<br />
-链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-binary-tree">https://leetcode.cn/problems/maximum-binary-tree</a><br />
-著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
-<p>Recursive is all you need！</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"># Definition <span class="hljs-keyword">for</span> a binary tree node.<br># <span class="hljs-keyword">class</span> TreeNode:<br>#     def <span class="hljs-constructor">__init__(<span class="hljs-params">self</span>, <span class="hljs-params">val</span>=0, <span class="hljs-params">left</span>=None, <span class="hljs-params">right</span>=None)</span>:<br>#         self.<span class="hljs-keyword">val</span> = <span class="hljs-keyword">val</span><br>#         self.left = left<br>#         self.right = right<br><span class="hljs-keyword">class</span> Solution:<br>    def construct<span class="hljs-constructor">MaximumBinaryTree(<span class="hljs-params">self</span>, <span class="hljs-params">nums</span>: List[<span class="hljs-params">int</span>])</span> -&gt; Optional<span class="hljs-literal">[T<span class="hljs-identifier">reeNode</span>]</span>:<br>        # 左子树-root-右子树<br>        <span class="hljs-keyword">if</span> not nums:<br>            return None<br><br>        max_value = <span class="hljs-number">0</span><br>        max_index = <span class="hljs-number">0</span><br><br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(nums)):<br>            <span class="hljs-keyword">if</span> max_value &lt; nums<span class="hljs-literal">[<span class="hljs-identifier">i</span>]</span>:<br>                max_value = nums<span class="hljs-literal">[<span class="hljs-identifier">i</span>]</span><br>                max_index = i<br><br>        node = <span class="hljs-constructor">TreeNode(<span class="hljs-params">nums</span>[<span class="hljs-params">max_index</span>])</span><br>        node.left = self.construct<span class="hljs-constructor">MaximumBinaryTree(<span class="hljs-params">nums</span>[:<span class="hljs-params">max_index</span>])</span><br>        node.right = self.construct<span class="hljs-constructor">MaximumBinaryTree(<span class="hljs-params">nums</span>[<span class="hljs-params">max_index</span>+1:])</span><br>        return node<br></code></pre></td></tr></table></figure>
+<p>正文</p>
 
                 
               </div>
@@ -381,34 +339,6 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/CS/" class="category-chain-item">CS</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/%E5%8A%9B%E6%89%A3/">#力扣</a>
-      
-    </div>
   
 </div>
 
@@ -462,6 +392,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/posts/a77ab19e.html" title="EM算法HMM和CRF">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">EM算法HMM和CRF</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
