@@ -1,0 +1,888 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenxia">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="比赛的基本信息在之前的任务一中已经有所介绍，属于文本领域（Natural language processing，NLP）的分类任务，之前的方法是采用的是“抽取特征+分类器”的方式来实现的。这样的方法范式通常需要手动构造许多特征，并且需要较适应的分类器来训练，其中主要的困难点在于（1）手工构造的特征是否有效 （2）如何保证机器学习模型训练中的偏差-方差权衡。但是随着Attention范式的爆火，自">
+<meta property="og:type" content="article">
+<meta property="og:title" content="datawhale_NLP任务二">
+<meta property="og:url" content="https://blog.tjdata.site/posts/12d9621e.html">
+<meta property="og:site_name" content="Chenxia&#39;s blog">
+<meta property="og:description" content="比赛的基本信息在之前的任务一中已经有所介绍，属于文本领域（Natural language processing，NLP）的分类任务，之前的方法是采用的是“抽取特征+分类器”的方式来实现的。这样的方法范式通常需要手动构造许多特征，并且需要较适应的分类器来训练，其中主要的困难点在于（1）手工构造的特征是否有效 （2）如何保证机器学习模型训练中的偏差-方差权衡。但是随着Attention范式的爆火，自">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-21T06:33:47.000Z">
+<meta property="article:modified_time" content="2023-08-21T08:01:01.723Z">
+<meta property="article:author" content="chenxia">
+<meta property="article:tag" content="datawhale">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>datawhale_NLP任务二 - Chenxia&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"4ace08e3aba4620ee513a74cf9c779c1","google":"G-WBB268CYE1","gtag":"G-WBB268CYE1","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?4ace08e3aba4620ee513a74cf9c779c1";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+    <!-- Google Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('https://www.google-analytics.com/analytics.js', function() {
+          window.ga = window.ga || function() { (ga.q = ga.q || []).push(arguments) };
+          ga.l = +new Date;
+          ga('create', 'G-WBB268CYE1', 'auto');
+          ga('send', 'pageview');
+        });
+      }
+    </script>
+  
+
+  
+    <!-- Google gtag.js -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('https://www.googletagmanager.com/gtag/js?id=G-WBB268CYE1', function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-WBB268CYE1');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Chenxia's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenxia&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="datawhale_NLP任务二"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-21 14:33" pubdate>
+          2023年8月21日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          64 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">datawhale_NLP任务二</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>比赛的基本信息在之前的任务一中已经有所介绍，属于文本领域（Natural language processing，NLP）的分类任务，之前的方法是<a href="https://blog.tjdata.site/posts/29594cb7.html">采用的是“抽取特征+分类器”的方式来实现的</a>。这样的方法范式通常需要手动构造许多特征，并且需要较适应的分类器来训练，其中主要的困难点在于（1）手工构造的特征是否有效 （2）如何保证机器学习模型训练中的偏差-方差权衡。但是随着Attention范式的爆火，自动抽取文本特征成为困难，所以在Baseline中我们可以尝试使用BERT（Bidirectional encoder representations from transformers）来自动构造特征，但是和计算机视觉（Computer vision，CV）类似端到端（End-to-end）的思维总是很诱人，所以尝试利用“input+prompt”对训练集进行修改，同时对训练好的大模型进行微调（Fine-tuning）成为一种新的范式。</p>
+<p>本文将借助本次项目中提供的Topline代码（深度学习）进行解读。</p>
+<span id="more"></span>
+<h2 id="目录设计"><a class="markdownIt-Anchor" href="#目录设计"></a> 目录设计</h2>
+<p>Kaggle大神开源了一本 <a target="_blank" rel="noopener" href="https://docdrop.org/download_annotation_doc/AAAMLP-569to.pdf">《approaching any machine learning problem》</a>其中并不是介绍机器学习的各种数学原理，而更多的是从开发的角度、代码文件设计来介绍常见配置。感觉很像是Project profile，在讨论如何将Dirty work更好的组织起来。本次项目代码的路径设计中包括</p>
+<figure class="highlight ldif"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ldif"><span class="hljs-literal">-</span> checkpoints 模型训练的权重<br><span class="hljs-literal">-</span> dataset 存放数据集<br><span class="hljs-literal">-</span> evaluate_predictions 评估文件<br><span class="hljs-literal">-</span> models_input_files 存放模型输入文件<br><span class="hljs-literal">-</span> model_predictions 存放推理概率文件<br><span class="hljs-literal">-</span> premodels 预训练模型权重，config.json文件<br><span class="hljs-comment"># 以及各种src(.py)</span><br><span class="hljs-literal">-</span> data_process.py<br><span class="hljs-literal">-</span> models_training.py<br><span class="hljs-literal">-</span> evaluate_models.py<br><span class="hljs-literal">-</span> ensemble_and_submit.py<br></code></pre></td></tr></table></figure>
+<p>虽然之前的学习的过程中我们将深度学习总结为八股：data process、dataset and dataloader、models、loss function、optimizer、hyper-parameters、model train、model eval。但是从调库的角度，可以将其中的第二步～第七步看作一部分，通常可以从hugging face获取。</p>
+<h2 id="数据预处理"><a class="markdownIt-Anchor" href="#数据预处理"></a> 数据预处理</h2>
+<p>这一部分是将数据集划分为 ：训练集、验证集、测试集。不同数据集之间的区别是</p>
+<ul>
+<li>
+<p>训练集 train dataset：直接对于模型的参数进行调整的数据，直接影响梯度下降的结果</p>
+</li>
+<li>
+<p>验证集 validation dataset：可以通过在训练集和训练得到的模型在验证集中结果对比，来调整模型的超参数，直接影响超参数，间接影响模型结果</p>
+</li>
+<li>
+<p>测试集 test dataset：模型完全没有见过的数据，属于公平评价模型泛化能力的结果</p>
+</li>
+</ul>
+<p>难点在于将原始文本（Raw documentation）通过分词器（transformer.AutoTokenizer)转换成为 （输入id，注意力掩码，标记类型）（inputs_ids_list,attention_mask_list,token_tyope_ids_list）重点在于如何将文本表示成为向量形式。<a href="https://blog.tjdata.site/posts/2e4e1168.html">参考之前阅读李沐的</a>RNN教程中从零构建文本处理的代码，这一段的核心代码参考hugging face为：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-keyword">from</span> transformers import AutoTokenizer  # 导入AutoTokenizer类，用于文本分词<br>model_name = <span class="hljs-string">&#x27;roberta-base&#x27;</span><br><span class="hljs-comment"># 从模型实例中得到分词器</span><br>tokenizer = AutoTokenizer.from_pretrained(model_name,<br>																					<span class="hljs-attribute">max_length</span>=MAX_LENGTH,<br>																					<span class="hljs-attribute">cache_dir</span>=<span class="hljs-string">&#x27;./premodels/&#123;model_name&#125;_saved&#x27;</span>)<br><span class="hljs-comment"># 根据分词器构建标签</span><br>input_ids_list, attention_mask_list, token_type_ids_list = [], [], []<br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> tqdm(range(len(train[<span class="hljs-string">&#x27;content&#x27;</span>]))):  <br>    sample = train[<span class="hljs-string">&#x27;content&#x27;</span>][i]<br>     # 分词处理，使用最长优先方式截断<br>    tokenized = tokenizer(sample, <span class="hljs-attribute">truncation</span>=<span class="hljs-string">&#x27;longest_first&#x27;</span>) <br>    # 获取输入id，注意力掩码，标注类型并转换为torch对象<br>    input_ids, attention_mask = tokenized[<span class="hljs-string">&#x27;input_ids&#x27;</span>], tokenized[<span class="hljs-string">&#x27;attention_mask&#x27;</span>]<br>    input_ids, attention_mask = torch.tensor(input_ids), torch.tensor(attention_mask)  <br>    # 可能有的没有id，所以需要加一个try- except<br>    try:<br>        token_type_ids = tokenized[<span class="hljs-string">&#x27;token_type_ids&#x27;</span>]  # 获取标记类型ID<br>        token_type_ids = torch.tensor(token_type_ids)  # 转换为PyTorch张量<br>    except:<br>        token_type_ids = torch.zeros_like(input_ids)<br>    input_ids_list.append(input_ids)  # 将输入ID添加到列表中<br>    attention_mask_list.append(attention_mask)  # 将注意力掩码添加到列表中<br>    token_type_ids_list.append(token_type_ids)  # 将标记类型ID添加到列表中<br>    # 得到训练数据标签<br>    y_train.append(train[<span class="hljs-string">&#x27;label&#x27;</span>][i])  # 将训练数据的标签添加到列表中<br><br><span class="hljs-comment"># 同时为了保证向量维度大小一致，使用torch pad_sequence</span><br>  input_ids_tensor = pad_sequence(input_ids_list, <span class="hljs-attribute">batch_first</span>=<span class="hljs-literal">True</span>, <span class="hljs-attribute">padding_value</span>=0) <br>  attention_mask_tensor = pad_sequence(attention_mask_list, <span class="hljs-attribute">batch_first</span>=<span class="hljs-literal">True</span>, <span class="hljs-attribute">padding_value</span>=0) <br>  token_type_ids_tensor = pad_sequence(token_type_ids_list, <span class="hljs-attribute">batch_first</span>=<span class="hljs-literal">True</span>, <span class="hljs-attribute">padding_value</span>=0) <br>  <br><span class="hljs-comment"># 建立数据集</span><br>x_train = torch.stack([input_ids_tensor, attention_mask_tensor, token_type_ids_tensor], <span class="hljs-attribute">dim</span>=1)  <br>x_train = x_train.numpy()  <br><br><span class="hljs-comment"># 最后保存数据，这里转换成为numpy，不知道有没有其他格式</span><br>np.save(f<span class="hljs-string">&#x27;./models_input_files/x_train&#123;model_index&#125;.npy&#x27;</span>, x_train)  # 保存训练数据<br></code></pre></td></tr></table></figure>
+<h2 id="模型训练"><a class="markdownIt-Anchor" href="#模型训练"></a> 模型训练</h2>
+<p>这里的操作主要是加载数据、确定超参数、定义模型（从预训练）、模型训练。其中的核心在于加载数据、如何定义模型和如何从pretrain权重训练模型</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs ruby"><span class="hljs-keyword">class</span> <span class="hljs-symbol">opt:</span><br>	seed = <span class="hljs-number">42</span><br>	...<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Model</span>(nn.Module):<br>	<span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params"><span class="hljs-variable language_">self</span>,model_name</span>):<br>    <span class="hljs-variable language_">super</span>().__init__()<br>    <span class="hljs-comment"># 下载权重</span><br>    <span class="hljs-variable language_">self</span>.model = AutoModel.from_pretrained(model_name,cahe_dir=<span class="hljs-string">&#x27;../premodels/&#x27;</span>+model_name+<span class="hljs-string">&#x27;_saved&#x27;</span>)<br>    <span class="hljs-comment"># 获取现有模型的纬度</span><br>    config = AutoConfig.from_pretrained(model_name,cahe_dir=<span class="hljs-string">&#x27;../premodels/&#x27;</span>+model_name+<span class="hljs-string">&#x27;_saved&#x27;</span>)<br>    last_dim = config.hidden_size <span class="hljs-comment"># 最后一层的维度</span><br>    <br>    <span class="hljs-comment"># 基于最后的纬度开始一些参数的额设计</span><br>    <span class="hljs-keyword">if</span> opt.<span class="hljs-symbol">use_BCE:</span>out_size = <span class="hljs-number">1</span> <span class="hljs-comment"># 损失函数如果使用BCE,则输出大小为1</span><br>    <span class="hljs-keyword">else</span>          <span class="hljs-symbol">:out_size</span> = <span class="hljs-number">2</span> <span class="hljs-comment"># 否则则使用CE,输出大小为2</span><br>    feature_size = <span class="hljs-number">128</span> <span class="hljs-comment"># 设置特征的维度大小</span><br>    <span class="hljs-variable language_">self</span>.fc1 = nn.Linear(last_dim, feature_size) <span class="hljs-comment"># 全连接层1</span><br>    <span class="hljs-variable language_">self</span>.fc2 = nn.Linear(last_dim, feature_size) <span class="hljs-comment"># 全连接层2</span><br>    <span class="hljs-variable language_">self</span>.classifier = nn.Linear(feature_size, out_size) <span class="hljs-comment"># 分类器</span><br>    <span class="hljs-variable language_">self</span>.dropout = nn.Dropout(<span class="hljs-number">0.3</span>) <span class="hljs-comment"># Dropout层</span><br>	<br>	<span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params"><span class="hljs-variable language_">self</span>,x</span>):<br>		    input_ids, attention_mask, token_type_ids = x[<span class="hljs-symbol">:</span>,<span class="hljs-number">0</span>],x[<span class="hljs-symbol">:</span>,<span class="hljs-number">1</span>],x[<span class="hljs-symbol">:</span>,<span class="hljs-number">2</span>] <span class="hljs-comment"># 获取输入</span><br>        x = <span class="hljs-variable language_">self</span>.model(input_ids, attention_mask) <span class="hljs-comment"># 通过模型</span><br>        all_token     = x[<span class="hljs-number">0</span>] <span class="hljs-comment"># 全部序列分词的表征向量</span><br>        pooled_output = x[<span class="hljs-number">1</span>] <span class="hljs-comment"># [CLS]的表征向量+一个全连接层+Tanh激活函数</span><br>				<br>				<span class="hljs-comment"># 对于大模型的输出进行特征融合</span><br>        feature1 = all_token.mean(dim=<span class="hljs-number">1</span>) <span class="hljs-comment"># 对全部序列分词的表征向量取均值</span><br>        feature1 = <span class="hljs-variable language_">self</span>.fc1(feature1)    <span class="hljs-comment"># 再输入进全连接层，得到feature1</span><br>        feature2 = pooled_output      <span class="hljs-comment"># [CLS]的表征向量+一个全连接层+Tanh激活函数</span><br>        feature2 = <span class="hljs-variable language_">self</span>.fc2(feature2) <span class="hljs-comment"># 再输入进全连接层，得到feature2</span><br>        feature  = <span class="hljs-number">0.5</span>*feature1 + <span class="hljs-number">0.5</span>*feature2 <span class="hljs-comment"># 加权融合特征</span><br>        feature  = <span class="hljs-variable language_">self</span>.dropout(feature) <span class="hljs-comment"># Dropout</span><br>        x  = <span class="hljs-variable language_">self</span>.classifier(feature) <span class="hljs-comment"># 分类</span><br>        <span class="hljs-keyword">return</span> x<br>        <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">load_data</span>():<br>	返回dataset<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">model_pretrain</span>():<br>	<span class="hljs-comment"># 定义超参数</span><br>		model_save_dir = <br>		device = <br>		等<br>	<br>	<span class="hljs-comment"># 模型初始化</span><br>	model = <span class="hljs-variable constant_">MODEL</span>(model_name).to(device)<br>	<span class="hljs-comment"># 优化器初始化</span><br>	opt = torch.optim.AdamW(model.parameters(),lr=learning_rate,weight_decay=weight_decay)<br>	<span class="hljs-comment"># 损失函数</span><br>	loss_func = nn.CrossEntropy()<br>	<span class="hljs-comment"># 训练过程</span><br>	<span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> range(epoches):<br>		model.train()<br>		train_loss = <span class="hljs-number">0</span><br>		train_acc = <span class="hljs-number">0</span><br>		<span class="hljs-keyword">for</span> X,y <span class="hljs-keyword">in</span> <span class="hljs-symbol">train_loader:</span><br>				y_hat = model(X)<br>				loss = loss_func(y_hat,y)<br>				train_loss += loss.item()<br>				opt.zero_grad()<br>				loss.backward()<br>				opt.step()<br>				<span class="hljs-comment"># 计算acc</span><br>		每间隔一定轮次开始现实验证过程<br>		f1<br>		recall<br>		<span class="hljs-comment"># 保存最好的模型</span><br>		torch.save(model.<span class="hljs-keyword">module</span>.state_dict(),<span class="hljs-string">&#x27;&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="另外一种方式lora微调"><a class="markdownIt-Anchor" href="#另外一种方式lora微调"></a> 另外一种方式：Lora微调</h2>
+<p>这里更多的是对数据中增加一种prompt,核心代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 构建包括instruction、input、output的数据集</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(train_df)):<br>    <span class="hljs-comment"># 获取当前行的数据</span><br>    paper_item = train_df.loc[i]<br>    <span class="hljs-comment"># 创建一个字典，包含指令、输入和输出信息</span><br>    tmp = &#123;<br>    <span class="hljs-string">&quot;instruction&quot;</span>: <span class="hljs-string">&quot;Please judge whether it is a medical field paper according to the given paper title and abstract, output 1 or 0, the following is the paper title and abstract --&gt;&quot;</span>,<br>    <span class="hljs-string">&quot;input&quot;</span>: <span class="hljs-string">f&quot;title:<span class="hljs-subst">&#123;paper_item[<span class="hljs-number">1</span>]&#125;</span>,abstract:<span class="hljs-subst">&#123;paper_item[<span class="hljs-number">3</span>]&#125;</span>&quot;</span>,<br>    <span class="hljs-string">&quot;output&quot;</span>: <span class="hljs-built_in">str</span>(paper_item[<span class="hljs-number">5</span>])<br>  &#125;<br>    <span class="hljs-comment"># 将字典添加到结果列表中</span><br>    res.append(tmp)<br>    <br>导入所需的库和模块<br><span class="hljs-keyword">from</span> peft <span class="hljs-keyword">import</span> PeftModel<br><span class="hljs-keyword">from</span> transformers <span class="hljs-keyword">import</span> AutoTokenizer, AutoModel, GenerationConfig, AutoModelForCausalLM<br><br><span class="hljs-comment"># 定义预训练模型的路径</span><br>model_path = <span class="hljs-string">&quot;../chatglm2-6b&quot;</span><br>model = AutoModel.from_pretrained(model_path, trust_remote_code=<span class="hljs-literal">True</span>).half().cuda()<br>tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=<span class="hljs-literal">True</span>)<br><span class="hljs-comment"># 加载 label lora权重</span><br>model = PeftModel.from_pretrained(model, <span class="hljs-string">&#x27;./output/label_xfg&#x27;</span>).half()<br>model = model.<span class="hljs-built_in">eval</span>()<br><span class="hljs-comment"># 使用加载的模型和分词器进行聊天，生成回复</span><br>response, history = model.chat(tokenizer, <span class="hljs-string">&quot;你好&quot;</span>, history=[])<br>response<br></code></pre></td></tr></table></figure>
+<h2 id="one-more-thing"><a class="markdownIt-Anchor" href="#one-more-thing"></a> One more thing</h2>
+<p>为什么是Attention？</p>
+<p>这里<a href="https://blog.tjdata.site/posts/907ab853.html">借助自己笔记的理解</a>，所以attention是啥，如果利用QKV的角度来看比较复杂，如果从简单的回归问题角度来看它只是另外一种计算权重方式的函数。</p>
+<p>但是！attention的作用不仅局限于回归问题，它从seq问题中而来，解决的就是CNN或者RNN对于距离的敏感性。</p>
+<ul>
+<li>
+<p>就像CNN的感受野，对于单层感受野可能是固定好的（与kernel size、padding、step有关），但是多层累积中感受野是可以逐渐扩大的。但是CNN适用于图像的可能解释是一，图像的维度是固定size的（像素无论多大都是有限的）而</p>
+</li>
+<li>
+<p>RNN的感受野，借鉴被人的说法是取决于词元模型和hidden layer，但是由于hidden layer也是具有顺序的特征，它的感受野也不会传递的太远。</p>
+</li>
+<li>
+<p>attention利用attention socre对不同的key进行筛选，来得到一个足够远但是量不大的感受野。选择重要的数据。</p>
+</li>
+</ul>
+<p>警惕大模型？</p>
+<p>调用别人的模型可能很舒服，但要是完全端到端那么也太无力了，这里给出hugging face常见使用的代码片段</p>
+<ol>
+<li>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter1/3?fw=pt">Pipeline</a>: 需要良好的网络连接</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vbnet"><span class="hljs-keyword">from</span> transformers import pipeline<br>classifier = pipeline(<span class="hljs-comment">&#x27;sentiment-analysis&#x27;)</span><br>classfifier = (<span class="hljs-comment">&#x27;I have waiting for a hugging face course my whole life&#x27;)</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>模型特征提取：Tokenizer、Model、Pretrain</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">from</span> transformers <span class="hljs-keyword">import</span> AutoTokenizer,AutoModel<br># tokenizer<br>tokenizer = AutoTokenizer.from_pretrained(model_name)<br>input = tokenizer(raw_inputs, padding=<span class="hljs-keyword">True</span>, truncation=<span class="hljs-keyword">True</span>, return_tensors=&quot;pt&quot;)<br># model<br>model = AutoModel.from_pretrained(<span class="hljs-keyword">checkpoint</span>)<br># 增加自己的操作 post- process<br></code></pre></td></tr></table></figure>
+<p>Model除了Automodel还包括<code>*Model</code> (retrieve the hidden states)<code>*ForCausalLM</code> <code>*ForMaskedLM</code><br />
+<code>ForMultipleChoice</code> <code>*ForQuestionAnswering</code> <code>*ForSequenceClassification</code> <code>*ForTokenClassification</code></p>
+</li>
+<li>
+<p>大模型Finetune</p>
+<ol>
+<li><strong>大尺寸预训练</strong>：在这个阶段，模型在大规模的文本数据集上进行预训练。这是一个非监督学习的过程，模型需要预测在给定的文本序列中下一个词是什么。预训练的目标是让模型学会理解和生成人类语言的基本模式。</li>
+<li><strong>指令微调</strong>：在预训练之后，模型会在一个更小但专门针对特定任务的数据集上进行微调。这个数据集通常由人工生成，包含了模型需要学会的任务的特定指令。例如，如果我们想要让模型学会如何进行数学计算，我们就需要提供一些包含数学问题和对应解答的数据。</li>
+<li><strong>RLHF（Reinforcement Learning from Human Feedback）</strong>：这是一个强化学习过程，模型会根据人类提供的反馈进行学习和优化。首先，我们会收集一些模型的预测结果，并让人类评估这些结果的好坏。然后，我们会使用这些评估结果作为奖励，训练模型优化其预测性能。通过这种方式，模型可以学会生成更符合人类期望的结果。</li>
+</ol>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/memo/" class="category-chain-item">memo</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/datawhale/">#datawhale</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>datawhale_NLP任务二</div>
+      <div>https://blog.tjdata.site/posts/12d9621e.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenxia</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/29594cb7.html" title="datawhale_NLP任务一">
+                        <span class="hidden-mobile">datawhale_NLP任务一</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'https://blog.tjdata.site/posts/12d9621e.html';
+          this.page.identifier = '/posts/12d9621e.html';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'chenxiablog' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('mermaid' in window) {
+        mermaid.init();
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
