@@ -16,34 +16,26 @@
   <meta name="author" content="chenxia">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在疫情和定制公交的背景下，探讨如何促进人们可持续出行，也就是尽可能的转向定制公交，做出的主要贡献是研究了  通勤者在疫情中转向定制公交服务的意愿 根据问卷调查的方法确定了不同群体的模型偏好 为在疫情中促进公交服务提供潜在的政策建议  论文链接">
+    <meta name="description" content="根据CS188《Intro to AI》来对搜索策略进行一定的总结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PAPER01">
-<meta property="og:url" content="https://blog.tjdata.site/posts/fc444d3.html">
+<meta property="og:title" content="行为流派01_智能体与搜索">
+<meta property="og:url" content="https://blog.tjdata.site/posts/9c6b1465.html">
 <meta property="og:site_name" content="Chenxia&#39;s blog">
-<meta property="og:description" content="在疫情和定制公交的背景下，探讨如何促进人们可持续出行，也就是尽可能的转向定制公交，做出的主要贡献是研究了  通勤者在疫情中转向定制公交服务的意愿 根据问卷调查的方法确定了不同群体的模型偏好 为在疫情中促进公交服务提供潜在的政策建议  论文链接">
+<meta property="og:description" content="根据CS188《Intro to AI》来对搜索策略进行一定的总结">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h12bxflbqlj20gu0dq759.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h12bzt1rgsj20b80d6dg6.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h12c29hqbzj20860263yb.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h12c2ga8dgj209k01ot8j.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h12c4np489j207k01e0sj.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h12c7bxlcuj20g809sq3e.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h12c84m2saj20la08maaz.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h12c9jnuhzj20me0hwmye.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h12ca0j3b5j20li0h03zo.jpg">
-<meta property="article:published_time" content="2022-04-08T06:58:34.000Z">
-<meta property="article:modified_time" content="2023-05-13T13:50:03.168Z">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/Untitled.png">
+<meta property="article:published_time" content="2023-08-22T12:12:57.000Z">
+<meta property="article:modified_time" content="2023-08-22T12:26:14.640Z">
 <meta property="article:author" content="chenxia">
-<meta property="article:tag" content="paper_reading">
+<meta property="article:tag" content="CS188">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1h12bxflbqlj20gu0dq759.jpg">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/Untitled.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>PAPER01 - Chenxia&#39;s blog</title>
+  <title>行为流派01_智能体与搜索 - Chenxia&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -274,7 +266,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="PAPER01"></span>
+            <span id="subtitle" data-typed-text="行为流派01_智能体与搜索"></span>
           
         </div>
 
@@ -285,8 +277,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-04-08 14:58" pubdate>
-          2022年4月8日 下午
+        <time datetime="2023-08-22 20:12" pubdate>
+          2023年8月22日 晚上
         </time>
       </span>
     
@@ -297,7 +289,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k 字
+          4.4k 字
         
       </span>
     
@@ -308,7 +300,7 @@
         
         
         
-          15 分钟
+          37 分钟
         
       </span>
     
@@ -346,94 +338,173 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">PAPER01</h1>
+            <h1 style="display: none">行为流派01_智能体与搜索</h1>
             
             
               <div class="markdown-body">
                 
-                <p>在疫情和定制公交的背景下，探讨如何促进人们可持续出行，也就是尽可能的转向定制公交，做出的主要贡献是研究了</p>
-<ol>
-<li>通勤者在疫情中转向定制公交服务的意愿</li>
-<li>根据问卷调查的方法确定了不同群体的模型偏好</li>
-<li>为在疫情中促进公交服务提供潜在的政策建议</li>
-</ol>
-<p><a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S2046043021000836">论文链接</a></p>
+                <p>根据CS188《Intro to AI》来对搜索策略进行一定的总结</p>
 <span id="more"></span>
-<h2 id="01-引言和文献综述"><a class="markdownIt-Anchor" href="#01-引言和文献综述"></a> 01 引言和文献综述</h2>
-<p>首先大的背景是疫情，在疫情初期人们不可避免的受到政策和居家办公等影响在家，但是随着疫情慢慢结束，人们有着不可避免的出行需求，根据前人的研究，疫情前后出行的特点包括</p>
+<h2 id="0x01-智能体"><a class="markdownIt-Anchor" href="#0x01-智能体"></a> 0x01 智能体</h2>
+<p>在人工智能中，核心问题是创建一个理性的<strong>智能体(Rational agent)</strong>，是一个实体通过一些系列的<strong>动作(Actions)<strong>来实现目标或者是</strong>喜好(Goal or perferences),<strong>它存在于</strong>环境中（Environment）</strong>，智能体通过<strong>传感器（sensors）<strong>获取信息并驱动自己的</strong>动作（Actuators）</strong>。</p>
+<p>Reflex agent：仅仅根据现有来选择动作</p>
+<p>Planning agent：根据一系列的动作来确定现有状态下的动作</p>
+<p>定义一个任务通常会用到PEAS（评价指标，环境，动作，传感器）</p>
+<p>Performance Measure：指的是智能体需要提高的衡量指标</p>
+<p>Environment：总结影响智能体的因素</p>
+<p>Actions and Sensors：说明智能体如何对环境造成改变，同时如何获取信息</p>
+<p>特定的我们确定几类不同特征的任务：</p>
 <ol>
-<li>客流需求降低、货运需求提升</li>
-<li>出行使用私家车、自行车和步行升高；使用其他公共交通方式降低</li>
+<li>部分观察的任务(Partially observable environments) 或者 完全观察(Fully observation)</li>
+<li>随机过程(Stochastic) 或者 确定过程（Deterministic）</li>
+<li>多智能体环境（multi-agent）</li>
+<li>静态环境（static）或者动态环境（Dynamic）</li>
 </ol>
-<p>但是过度的私家车出行会具有交通拥堵、环境污染等问题，因此促进疫情可持续出行是十分有必要的，而定制公交（customized bus，CB）是典型的需求响应式公交（demand response transit，DRT），利用类似公交服务于具有相同出行点和目的地的乘客，它具有比私家车更环保、比传统公共交通成本更低、同时具有私密、灵活和接驳的特点，从疫情的角度可以有效的避免路上的交叉感染，</p>
-<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h12bxflbqlj20gu0dq759.jpg" srcset="/img/loading.gif" lazyload alt="image-20220408150845709" /></p>
-<p>从定制公交和疫情中人们出行行为变化的发展来看</p>
+<h2 id="0x02-搜索问题定义"><a class="markdownIt-Anchor" href="#0x02-搜索问题定义"></a> 0x02 搜索问题定义</h2>
+<p>搜索问题包括以下几个部分：</p>
 <ol>
-<li>定制公交的文献主要研究如何提升其服务水平，包括路径规划、车辆调度、服务质量等，没有研究定制公交具有吸引力的原因；因此可以研究疫情中定制公交如何影响人们的出行行为选择</li>
-<li>在疫情前后，人们的出行方式可能发生变化，其中设计到人口特征、政策和个人观念，因此研究疫情汇总人们出行行为偏好的改变</li>
+<li>State 在所给案例中的所有状态</li>
+<li>Action 在每个状态可取动作的集合</li>
+<li>Transition 在某一状态下采用动作得到的下一个状态</li>
+<li>Cost 从一个状态到另外一个状态的成本</li>
+<li>Start state 初始状态</li>
+<li>Goal test 判断是否到达最终的状态</li>
 </ol>
-<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h12bzt1rgsj20b80d6dg6.jpg" srcset="/img/loading.gif" lazyload alt="image-20220408151104821" /></p>
-<h2 id="02-方法和实验"><a class="markdownIt-Anchor" href="#02-方法和实验"></a> 02 方法和实验</h2>
-<p>因此本文使用调查问卷的方式，在问卷调查中主要分为三个部分：</p>
+<p>例如吃豆人Pathing和吃掉所有豆子Eat-all-dots问题之间的区别：</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/Untitled.png" srcset="/img/loading.gif" lazyload alt="搜索问题举例" /></p>
+<p>常见的表现形式为状态空间图和搜索树</p>
+<p>state space graphs and search trees</p>
+<p>状态空间图：用不同状态之间的转移关系来表示</p>
+<p>搜索树：以状态为节点，动作作为边，但是每个状态和节点不仅编码状态本身，还编码路径</p>
+<ul>
+<li>getNextState</li>
+<li>get Action</li>
+<li>get Action Cost</li>
+</ul>
+<p>我们只存储立即处理的state，并计算最新的状态</p>
+<h2 id="0x03-基本搜索normal-search"><a class="markdownIt-Anchor" href="#0x03-基本搜索normal-search"></a> 0x03 基本搜索（normal search）</h2>
+<p>一个标准的方式来寻找到轨迹（Plan），是从初始状态开始(getStartState)来到达最终状态（Goal state），同时维护可能的过程（Frontier），同时拓展我们的当前过程通过删除节点state为state- action- state。（称作strategy），当我们删除缩手的frontiers，我们得到最终的路径（path）</p>
+<p>这些搜索中具有一些基本属性：</p>
 <ol>
-<li>RP调查，是针对用户的真实场景进行提问，利用百度API爬取的通勤起终点步行、骑行、私家车、公交车、地铁和定制公交的时间、距离和费用等特征</li>
-<li>SP调查时在给定场景中对用户的行为进行判断，对调查用户在收费和速度不同的四种场景下转向定制公交的意愿特征分析；四种正交场景包括票价和旅行速度的差异</li>
-<li>基本的属性和社会学特征，包括性别、年龄、受教育程度、收入、是否有驾照、是否有私家车、是否有自行车/摩托车</li>
+<li>搜索的完整性 completeness</li>
+<li>搜索的最优性 optimality</li>
+<li>分枝因素</li>
+<li>最大深度</li>
+<li>最浅解的深度</li>
 </ol>
-<p>之后使用多类别逻辑回归和嵌套逻辑回归分析，它们于逻辑回归的区别在于，</p>
-<p><strong>逻辑回归</strong></p>
-<p>假设</p>
-<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h12c29hqbzj20860263yb.jpg" srcset="/img/loading.gif" lazyload alt="image-20220408151326904" /></p>
-<p>成本函数</p>
-<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h12c2ga8dgj209k01ot8j.jpg" srcset="/img/loading.gif" lazyload alt="image-20220408151338000" /></p>
-<p><strong>多类别逻辑回归</strong></p>
-<p>（ps：我觉得就是softmax regression），它受到不相关替代方案的独立性影响，会导致不同类别之间具有互斥性，因为我们暂时还不知道CB与其他交通方式是否具有相似性，导致不同类别之间具有互斥性</p>
-<p><strong>嵌套逻辑回归</strong></p>
-<p>允许某些备选模式之间存在相关性，放宽了不同类别之间的独立同分布的假设</p>
-<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h12c4np489j207k01e0sj.jpg" srcset="/img/loading.gif" lazyload alt="image-20220408151545063" /></p>
-<h2 id="03-结果和讨论"><a class="markdownIt-Anchor" href="#03-结果和讨论"></a> 03 结果和讨论</h2>
-<p>建立的模型为</p>
-<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h12c7bxlcuj20g809sq3e.jpg" srcset="/img/loading.gif" lazyload alt="image-20220408151819023" /></p>
-<p>根据假设检验判断NL并不显著，说明CB和其他交通方式有明显的差异，因此主要看MNL的结果就行</p>
-<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h12c84m2saj20la08maaz.jpg" srcset="/img/loading.gif" lazyload alt="image-20220408151904754" /></p>
-<ol>
-<li>
-<p>单程客制化票价系数为负（-0.1141）；定制巴士的出行时间对通勤者的出行方式选择概率产生负面影响（-1.3966）</p>
-</li>
-<li>
-<p>大多数模式的旅行时间系数为负。汽车的出行时间系数分别是步行和乘坐公共汽车的2.41倍和2.16倍</p>
-</li>
-<li>
-<p>受访者对公共汽车的进出距离和地铁的出口距离很敏感。地铁的出口距离影响较大（-1.12），而公交车的出口距离不明显（-0.3321）。</p>
-</li>
-</ol>
-<p>之后根据ASC，也就是受访者在不采取任何措施时候的取值，反映保持现状受访者的基准效用</p>
-<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h12c9jnuhzj20me0hwmye.jpg" srcset="/img/loading.gif" lazyload alt="image-20220408152026623" /></p>
-<p>Ø年轻人更愿意乘坐地铁和公共汽车通勤，对定制公交比较积极</p>
-<p>Ø中年人更喜欢乘坐定制公交出勤</p>
-<p>Ø中等收入倾向于不步行通勤</p>
-<p>Ø较高收入对私家车表现更高的偏好</p>
-<p>Ø高等教育对定制公交具有强烈的偏好</p>
-<p>Ø女性出行者更倾向于使用定制公交服务，比男性更讨厌步行和骑自行车</p>
-<p>Ø男性对不同通勤方式的偏好没有显著差异</p>
-<p><img src="https://tva1.sinaimg.cn/large/e6c9d24ely1h12ca0j3b5j20li0h03zo.jpg" srcset="/img/loading.gif" lazyload alt="image-20220408152053520" /></p>
-<p>Ø无驾照人群更倾向于定制公交，同时对私家车出行消极</p>
-<p>Ø有驾照人群对私家车出行和定制公交都积极</p>
-<p>Ø有车群体愿意开车通勤，但比没有车的人更愿意改乘定制巴士</p>
-<p>Ø有自行车的受访者使用自行车上班的可能性更高，但是定制公交对他们也很有吸引力</p>
-<p>Ø有自行车的受访者使用自行车上班的可能性更高，但是定制公交对他们也很有吸引力</p>
-<p>由上述给出的建议</p>
+<p>常见的无信息搜索包括：DFS、BFS、UCS</p>
+<p>常见的信息搜索包括；Greedy search and A star search</p>
+<p>后者相比较前者主要增加代价，代价的含义包括两个方面</p>
 <ol>
 <li>
-<p>从短期来看，公众愿意接受具有个人防护设备和疫情防控的基本用品的定制公交服务</p>
+<p>Estimation of distance to goal state，as the cost function may be the lower bound for the problem, the heuristics are typically solutions to relaxed problem(where some of the constraint  of the original problem have been removed)</p>
+<p>比如利用启发式的方法可以让PACMAN更加倾向于到达最终的目的地</p>
 </li>
 <li>
-<p>从长远来看，由于后 COVID-19 时期的汽车通勤者更愿意使用定制巴士，而定制巴士的出行时间是一个重要变量，政府应实施相关政策来推动这一转变。</p>
-</li>
-<li>
-<p>关于每个群体的特点，重要的是要考虑中年（31 至 36 岁）或受过高等教育（硕士和博士学位）/中等收入/没有执照或同伴，并拥有汽车和自行车。应该为这些群体设计具体的政策。票价折扣和补贴可以被认为是一个起点。</p>
+<p>Estimation of the empirical cost function</p>
 </li>
 </ol>
+<h2 id="0x04-约束问题constraint-satisfied-problem和回溯backtracking-search和local-search"><a class="markdownIt-Anchor" href="#0x04-约束问题constraint-satisfied-problem和回溯backtracking-search和local-search"></a> 0x04 约束问题（Constraint satisfied problem）和回溯（Backtracking search）和local search</h2>
+<p>之前的文章中介绍什么是规划问题（Planing problem），可以使用搜索策略（Search strategy）进行求解。对于另外一种问题可以描述为约束满足问题（Constraint satisfaction problems，CSP）是一类识别（Identification problem）</p>
+<blockquote>
+<p><strong>识别问题（Identification problem）：我们必须简单的识别最终的结果是否为目标状态</strong></p>
+<p>这个术语通常指在机器学习和人工智能中,系统需要从一组潜在的候选项中识别出正确的项目的任务。这类问题通常涉及模式识别,即从输入的数据中提取有意义的信息模式。</p>
+<p>一些常见的识别问题示例包括:</p>
+<ul>
+<li>图像识别:从图片中识别出特定对象或场景</li>
+<li>语音识别:从语音输入中识别出说话内容</li>
+<li>面部识别:从图片或视频中识别出特定人脸</li>
+<li>手写识别:识别手写输入的文字内容</li>
+<li>生物识别:通过指纹、声纹等生物特征识别个体身份</li>
+<li>文档分类:将文本文档分类到预定义的类别中</li>
+</ul>
+<p>识别问题通常需要构建合适的机器学习模型,然后使用大量带标签的训练数据对模型进行训练,使其能够对新输入进行可靠的识别与分类。同时还需要处理各种困难情况,如光线、角度、遮挡等对图像识别的影响,以提高模型的鲁棒性。</p>
+</blockquote>
+<p>三元组：</p>
+<ol>
+<li>variables，一系列的变量集合</li>
+<li>domain，不同变量可能存在的取值范围</li>
+<li>constraints，不同变量之间的约束关系</li>
+</ol>
+<p>例如：八皇后问题</p>
+<p>约束编程问题的求解方式是NP-hard问题，随着问题规模的扩大时间呈现指数型增加。我们可以将<strong>约束满足问题转换成为搜索问题：</strong></p>
+<p>state 为部分赋值（对CSP的可变赋值，其中一些变量被分配了值，而另一些变量没有）。</p>
+<p>successor function 输出所有状态，并分配一个新变量，目标测试验证所有变量都被分配，并在其测试的状态中满足所有约束。</p>
+<p>约束问题比之前的搜索问题具有更复杂的框架，因此可以尝试将上述公示和合适的启发式方法结合起来</p>
+<p>之前的文章中介绍什么是规划问题（Planing problem），可以使用搜索策略（Search strategy）进行求解。对于另外一种问题可以描述为约束满足问题（Constraint satisfaction problems，CSP）是一类识别（Identification problem）</p>
+<blockquote>
+<p><strong>识别问题（Identification problem）：我们必须简单的识别最终的结果是否为目标状态</strong></p>
+<p>这个术语通常指在机器学习和人工智能中,系统需要从一组潜在的候选项中识别出正确的项目的任务。这类问题通常涉及模式识别,即从输入的数据中提取有意义的信息模式。</p>
+<p>一些常见的识别问题示例包括:</p>
+<ul>
+<li>图像识别:从图片中识别出特定对象或场景</li>
+<li>语音识别:从语音输入中识别出说话内容</li>
+<li>面部识别:从图片或视频中识别出特定人脸</li>
+<li>手写识别:识别手写输入的文字内容</li>
+<li>生物识别:通过指纹、声纹等生物特征识别个体身份</li>
+<li>文档分类:将文本文档分类到预定义的类别中</li>
+</ul>
+<p>识别问题通常需要构建合适的机器学习模型,然后使用大量带标签的训练数据对模型进行训练,使其能够对新输入进行可靠的识别与分类。同时还需要处理各种困难情况,如光线、角度、遮挡等对图像识别的影响,以提高模型的鲁棒性。</p>
+</blockquote>
+<p>三元组：</p>
+<ol>
+<li>variables，一系列的变量集合</li>
+<li>domain，不同变量可能存在的取值范围</li>
+<li>constraints，不同变量之间的约束关系</li>
+</ol>
+<p>例如：八皇后问题</p>
+<p>约束编程问题的求解方式是NP-hard问题，随着问题规模的扩大时间呈现指数型增加。我们可以将<strong>约束满足问题转换成为搜索问题：</strong></p>
+<p>state 为部分赋值（对CSP的可变赋值，其中一些变量被分配了值，而另一些变量没有）。</p>
+<p>successor function 输出所有状态，并分配一个新变量，目标测试验证所有变量都被分配，并在其测试的状态中满足所有约束。</p>
+<p>约束问题比之前的搜索问题具有更复杂的框架，因此可以尝试将上述公示和合适的启发式方法结合起来</p>
+<p>map coloring problem : 给定一堆颜色，要求相邻的地区之间的颜色不能相等</p>
+<p>通常我们可以对约束进行分类：</p>
+<ol>
+<li>unary constraints 专有约束，在约束图中表示 点</li>
+<li>binary constraint：两个变量，在约束图中表示 边</li>
+<li>higher-order constraint：非常规</li>
+</ol>
+<p>另一方面，回溯搜索仅在变量值不违反任何约束的情况下为变量分配值，从而显著减少回溯。虽然回溯搜索是比深度优先搜索的野蛮强化的巨大改进，但通过过滤、变量/值排序和结构拓宽的进一步改进，我们仍然可以获得更多的速度收益。</p>
+<ul>
+<li>变量的取值范围已经是一个较大的进步</li>
+<li>Tricks1: 过滤（Filter）：</li>
+<li>Tricks2:变量排序（Variable or value ordering）
+<ul>
+<li>minimum remaining values，选择分配有效剩余值最少的变量</li>
+<li>least constraining value，从剩余未份配值的domain中选择prunes最少的值</li>
+</ul>
+</li>
+<li>Tricks3: 结构拓宽（Structural exploration）</li>
+</ul>
+<p>另外一种方法：本地搜索通过迭代的改进对一些值的随机分配开始，然后迭代的选择一个随机冲突变量，并对变量重新分配给违反约束最小的变量，直到不再存在约束违规，称为一种具有最小冲突启发式的策略</p>
+<ol>
+<li>爬山搜索 Hill-Climbing Search</li>
+<li>模拟退火搜索 Simulate annealing search</li>
+<li>遗传搜索 generic algorithm</li>
+</ol>
+<h2 id="0x05-游戏game-和对抗搜索adversarial-search-problem"><a class="markdownIt-Anchor" href="#0x05-游戏game-和对抗搜索adversarial-search-problem"></a> 0x05 游戏（Game） 和对抗搜索（Adversarial search problem）</h2>
+<p>在之前的搜索问题中，我们尝试解决他们高效并且最优的，利用不同的搜索方式。以及更加具有启发式的强大的搜索算法。但是在面临一些问题中搜索算法中会遇到对方的阻碍，这种情况下单纯的利用搜索策略。这一类新的问题通常可以被称为adversarial search problem，或者叫做游戏games。</p>
+<p>不同于传统搜索问题返回直接的答案，对抗搜索由于problem一直在发生变化，这样复杂的场景中往往要求我们返回一个策略（Strategy or policy），一个简单的对抗搜索问题包括一下策略：</p>
+<ol>
+<li>Initial state</li>
+<li>players ：每一轮属于谁的player</li>
+<li>actions，player可以实现的动作</li>
+<li>transition model 状态转移的结果</li>
+<li>terminal test</li>
+<li>terminal values</li>
+</ol>
+<p>可以使用</p>
+<ol>
+<li>Min-max搜索</li>
+<li>Alpha-beta搜索</li>
+<li>evaluation function</li>
+</ol>
+<h2 id="0x06-动态决策过程mdp和强化学习reinforcement-learning"><a class="markdownIt-Anchor" href="#0x06-动态决策过程mdp和强化学习reinforcement-learning"></a> 0x06 动态决策过程（MDP）和强化学习（Reinforcement learning）</h2>
+<p>～ to be continued</p>
+<p>参考链接：</p>
+<p><a target="_blank" rel="noopener" href="https://oi-wiki.org/search/">OI wiki：搜索部分简介</a></p>
+<p><a target="_blank" rel="noopener" href="https://inst.eecs.berkeley.edu/~cs188/fa22/">《CS188: Intro to atrificial intelligent》</a></p>
+<p>伯克利人工智能入门课按经典教材章节顺序授课,内容涵盖各主要领域;课程笔记通俗易懂,作业可在Gradescope平台完成实时测评,项目复现经典游戏,运用所学知识实现算法,使吃豆人在迷宫自由行动。</p>
 
                 
               </div>
@@ -452,7 +523,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Trans/" class="category-chain-item">Trans</a>
+  <a href="/categories/RL/" class="category-chain-item">RL</a>
   
   
 
@@ -467,7 +538,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/paper-reading/">#paper_reading</a>
+        <a href="/tags/CS188/">#CS188</a>
       
     </div>
   
@@ -479,8 +550,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>PAPER01</div>
-      <div>https://blog.tjdata.site/posts/fc444d3.html</div>
+      <div>行为流派01_智能体与搜索</div>
+      <div>https://blog.tjdata.site/posts/9c6b1465.html</div>
     </div>
     <div class="license-meta">
       
@@ -492,7 +563,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年4月8日</div>
+          <div>2023年8月22日</div>
         </div>
       
       
@@ -524,18 +595,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/4de165f7.html" title="Single01-设计模式">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Single01-设计模式</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/be2cd4f6.html" title="CS229-09--学习理论终章">
-                        <span class="hidden-mobile">CS229-09--学习理论终章</span>
+                      <a href="/posts/12d9621e.html" title="datawhale_NLP任务二">
+                        <span class="hidden-mobile">datawhale_NLP任务二</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -555,8 +620,8 @@
     
       <script type="text/javascript">
         var disqus_config = function() {
-          this.page.url = 'https://blog.tjdata.site/posts/fc444d3.html';
-          this.page.identifier = '/posts/fc444d3.html';
+          this.page.url = 'https://blog.tjdata.site/posts/9c6b1465.html';
+          this.page.identifier = '/posts/9c6b1465.html';
         };
         Fluid.utils.loadComments('#disqus_thread', function() {
           var d = document, s = d.createElement('script');
