@@ -632,7 +632,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/posts/cb0af509.html</loc>
+    <loc>https://blog.tjdata.site/posts/3f0d2081.html</loc>
     
     <lastmod>2022-10-17</lastmod>
     
@@ -641,7 +641,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/posts/3f0d2081.html</loc>
+    <loc>https://blog.tjdata.site/posts/cb0af509.html</loc>
     
     <lastmod>2022-10-17</lastmod>
     
@@ -668,7 +668,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/404.html</loc>
+    <loc>https://blog.tjdata.site/books/index.html</loc>
     
     <lastmod>2022-03-20</lastmod>
     
@@ -704,7 +704,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/books/index.html</loc>
+    <loc>https://blog.tjdata.site/404.html</loc>
     
     <lastmod>2022-03-20</lastmod>
     
@@ -722,14 +722,14 @@
 
   
   <url>
-    <loc>https://blog.tjdata.site/tags/CS229/</loc>
+    <loc>https://blog.tjdata.site/tags/AndrewWu/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/AndrewWu/</loc>
+    <loc>https://blog.tjdata.site/tags/CS229/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -764,7 +764,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/%E6%9D%82%E8%B0%88/</loc>
+    <loc>https://blog.tjdata.site/tags/Kaggle/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -779,13 +779,6 @@
   
   <url>
     <loc>https://blog.tjdata.site/tags/paper-reading/</loc>
-    <lastmod>2023-08-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.tjdata.site/tags/Kaggle/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -813,20 +806,6 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/Single/</loc>
-    <lastmod>2023-08-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.tjdata.site/tags/Review/</loc>
-    <lastmod>2023-08-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.tjdata.site/tags/proxyApp/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
@@ -834,7 +813,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</loc>
+    <loc>https://blog.tjdata.site/tags/Single/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -848,7 +827,21 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/Pyomo/</loc>
+    <loc>https://blog.tjdata.site/tags/%E6%9D%82%E8%B0%88/</loc>
+    <lastmod>2023-08-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tjdata.site/tags/Review/</loc>
+    <lastmod>2023-08-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tjdata.site/tags/%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -862,13 +855,6 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/nothing/</loc>
-    <lastmod>2023-08-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.tjdata.site/tags/document/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
@@ -876,14 +862,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/D2L/</loc>
-    <lastmod>2023-08-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.tjdata.site/tags/LeetCode/</loc>
+    <loc>https://blog.tjdata.site/tags/Pyomo/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -897,6 +876,27 @@
   </url>
   
   <url>
+    <loc>https://blog.tjdata.site/tags/nothing/</loc>
+    <lastmod>2023-08-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tjdata.site/tags/LeetCode/</loc>
+    <lastmod>2023-08-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tjdata.site/tags/D2L/</loc>
+    <lastmod>2023-08-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.tjdata.site/tags/Django/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
@@ -904,14 +904,21 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/PersonPost/</loc>
+    <loc>https://blog.tjdata.site/tags/pandas/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/pandas/</loc>
+    <loc>https://blog.tjdata.site/tags/Mac/</loc>
+    <lastmod>2023-08-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tjdata.site/tags/PersonPost/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -939,7 +946,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/tags/Mac/</loc>
+    <loc>https://blog.tjdata.site/tags/study/</loc>
+    <lastmod>2023-08-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tjdata.site/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -947,13 +961,6 @@
   
   <url>
     <loc>https://blog.tjdata.site/tags/CS188/</loc>
-    <lastmod>2023-08-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.tjdata.site/tags/study/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -968,13 +975,6 @@
   
   <url>
     <loc>https://blog.tjdata.site/tags/network/</loc>
-    <lastmod>2023-08-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.tjdata.site/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1004,13 +1004,6 @@
   </url>
   
   <url>
-    <loc>https://blog.tjdata.site/categories/Memo/</loc>
-    <lastmod>2023-08-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.tjdata.site/categories/Baseline/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
@@ -1026,6 +1019,13 @@
   
   <url>
     <loc>https://blog.tjdata.site/categories/baseline/</loc>
+    <lastmod>2023-08-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tjdata.site/categories/Memo/</loc>
     <lastmod>2023-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
