@@ -138,10 +138,10 @@ baidu_url_submit:
   xz_token: 'xxxxxx' ## 你的熊掌号 token
   xz_count: 10 ## 从所有的提交的数据当中选取最新的10条,该数量跟你的熊掌号而定
 
-# Deployment
-## Docs: https://hexo.io/docs/one-command-deployment
-deploy:
-  type: git
-  repo: <repository url> #https://github.com/libaiddd/zdy.github.io
-  branch: [branch]
-  message: Site updated
+# # Deployment
+# ## Docs: https://hexo.io/docs/one-command-deployment
+# deploy:
+#   type: git
+#   repo: <repository url> #https://github.com/libaiddd/zdy.github.io
+#   branch: [branch]
+#   message: Site updated
