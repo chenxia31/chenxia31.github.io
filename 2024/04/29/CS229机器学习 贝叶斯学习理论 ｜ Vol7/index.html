@@ -22,7 +22,7 @@
     <meta name="description" content="[Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）](https:&#x2F;&#x2F;blog.tjdata.site&#x2F;2022&#x2F;03&#x2F;19&#x2F;Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）&#x2F;) Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）blog.tjdata.site&#x2F;2022&#x2F;03&#x2F;19&#x2F;Andrew-Wu%20">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS229机器学习 贝叶斯学习理论 ｜ Vol7">
-<meta property="og:url" content="http://example.com/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA%20%EF%BD%9C%20Vol7/index.html">
+<meta property="og:url" content="https://blog.tjdata.site/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA%20%EF%BD%9C%20Vol7/index.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
 <meta property="og:description" content="[Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）](https:&#x2F;&#x2F;blog.tjdata.site&#x2F;2022&#x2F;03&#x2F;19&#x2F;Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）&#x2F;) Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）blog.tjdata.site&#x2F;2022&#x2F;03&#x2F;19&#x2F;Andrew-Wu%20">
 <meta property="og:locale" content="zh_CN">
@@ -75,7 +75,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -301,7 +301,7 @@
             
               <div class="markdown-body">
                 
-                <p>[Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）](<a target="_blank" rel="noopener" href="https://blog.tjdata.site/2022/03/19/Andrew-Wu">https://blog.tjdata.site/2022/03/19/Andrew-Wu</a> 基本理论01–贝叶斯学习（暨基本理论开篇）&#x2F;)</p>
+                <p>[Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）](<a href="https://blog.tjdata.site/2022/03/19/Andrew-Wu">https://blog.tjdata.site/2022/03/19/Andrew-Wu</a> 基本理论01–贝叶斯学习（暨基本理论开篇）&#x2F;)</p>
 <p>Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）blog.tjdata.site&#x2F;2022&#x2F;03&#x2F;19&#x2F;Andrew-Wu%20%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA01–%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AD%A6%E4%B9%A0%EF%BC%88%E6%9A%A8%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA%E5%BC%80%E7%AF%87%EF%BC%89&#x2F;</p>
 <h2 id="0x00-计算学习理论的开篇"><a href="#0x00-计算学习理论的开篇" class="headerlink" title="0x00 计算学习理论的开篇"></a>0x00 计算学习理论的开篇</h2><ul>
 <li>贝叶斯学习，贝叶斯推理提供来一种推理的概率方法，基于待考察的量遵循某种概率分布，且可根据这些概率及已观察到的数据进行推理得到最优的决策</li>
@@ -410,7 +410,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>CS229机器学习 贝叶斯学习理论 ｜ Vol7</div>
-      <div>http://example.com/2024/04/29/CS229机器学习 贝叶斯学习理论 ｜ Vol7/</div>
+      <div>https://blog.tjdata.site/2024/04/29/CS229机器学习 贝叶斯学习理论 ｜ Vol7/</div>
     </div>
     <div class="license-meta">
       

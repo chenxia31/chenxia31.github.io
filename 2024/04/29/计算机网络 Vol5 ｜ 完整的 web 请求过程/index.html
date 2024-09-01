@@ -22,7 +22,7 @@
     <meta name="description" content="摘要应用层协议 [计算机网络学习笔记 – 应用层协议](https:&#x2F;&#x2F;blog.tjdata.site&#x2F;2022&#x2F;06&#x2F;18&#x2F;计算机网络-02-Chapter02 应用层协议&#x2F;) 万维网 HTTP Proxy 电子游戏 SMTP POP3IMAP 局域网IP地址分配 DHCP 域名解析 DNS 网络下载 P2P 流媒体 CDN 运输层协议 [计算机网络学习笔记 – 运输层协议](htt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络 Vol5 ｜ 完整的 web 请求过程">
-<meta property="og:url" content="http://example.com/2024/04/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20Vol5%20%EF%BD%9C%20%E5%AE%8C%E6%95%B4%E7%9A%84%20web%20%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B/index.html">
+<meta property="og:url" content="https://blog.tjdata.site/2024/04/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20Vol5%20%EF%BD%9C%20%E5%AE%8C%E6%95%B4%E7%9A%84%20web%20%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B/index.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
 <meta property="og:description" content="摘要应用层协议 [计算机网络学习笔记 – 应用层协议](https:&#x2F;&#x2F;blog.tjdata.site&#x2F;2022&#x2F;06&#x2F;18&#x2F;计算机网络-02-Chapter02 应用层协议&#x2F;) 万维网 HTTP Proxy 电子游戏 SMTP POP3IMAP 局域网IP地址分配 DHCP 域名解析 DNS 网络下载 P2P 流媒体 CDN 运输层协议 [计算机网络学习笔记 – 运输层协议](htt">
 <meta property="og:locale" content="zh_CN">
@@ -73,7 +73,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -299,7 +299,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>应用层协议 [计算机网络学习笔记 – 应用层协议](<a target="_blank" rel="noopener" href="https://blog.tjdata.site/2022/06/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-02-Chapter02">https://blog.tjdata.site/2022/06/18/计算机网络-02-Chapter02</a> 应用层协议&#x2F;) 万维网 HTTP Proxy 电子游戏 SMTP POP3IMAP 局域网IP地址分配 DHCP 域名解析 DNS 网络下载 P2P 流媒体 CDN 运输层协议 [计算机网络学习笔记 – 运输层协议](<a target="_blank" rel="noopener" href="https://blog.tjdata.site/2022/06/24/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-03-Chapter03">https://blog.tjdata.site/2022/06/24/计算机网络-03-Chapter03</a> 运输层协议&#x2F;) UDP TCP 网络层协议 [计算机网络学习笔记 – 网络层协议](<a target="_blank" rel="noopener" href="https://blog.tjdata.site/2022/06/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-04-Chapter04">https://blog.tjdata.site/2022/06/28/计算机网络-04-Chapter04</a> 网络层协议&#x2F;) IP协议 - 数据层面 IP协议 - 控制层面 链路层协议 比较偏低层，不重视 以太网 物理层协议 完全底层，不重视 IEEE802.11</p>
+                <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>应用层协议 [计算机网络学习笔记 – 应用层协议](<a href="https://blog.tjdata.site/2022/06/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-02-Chapter02">https://blog.tjdata.site/2022/06/18/计算机网络-02-Chapter02</a> 应用层协议&#x2F;) 万维网 HTTP Proxy 电子游戏 SMTP POP3IMAP 局域网IP地址分配 DHCP 域名解析 DNS 网络下载 P2P 流媒体 CDN 运输层协议 [计算机网络学习笔记 – 运输层协议](<a href="https://blog.tjdata.site/2022/06/24/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-03-Chapter03">https://blog.tjdata.site/2022/06/24/计算机网络-03-Chapter03</a> 运输层协议&#x2F;) UDP TCP 网络层协议 [计算机网络学习笔记 – 网络层协议](<a href="https://blog.tjdata.site/2022/06/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-04-Chapter04">https://blog.tjdata.site/2022/06/28/计算机网络-04-Chapter04</a> 网络层协议&#x2F;) IP协议 - 数据层面 IP协议 - 控制层面 链路层协议 比较偏低层，不重视 以太网 物理层协议 完全底层，不重视 IEEE802.11</p>
 <h3 id="0x02-完整的使用过程"><a href="#0x02-完整的使用过程" class="headerlink" title="0x02 完整的使用过程"></a>0x02 完整的使用过程</h3><p>问题描述：在学校，学生是如何通过校园网链接到网络，然后下载<a target="_blank" rel="noopener" href="http://www.baidu.com的主页面的/">www.baidu.com的主页面的</a> 涉及到的协议：应用层的DHCP、DNS、HTTP；运输层的UDP；网络层的IP；链路层的以太网</p>
 <h3 id="2-1"><a href="#2-1" class="headerlink" title="2.1"></a>2.1</h3><ul>
 <li>User启动它的PC，可以使用一根以太网电缆或者WI-FI与学校的以太网交换机连接，学校的交换机也和学校的Router连接。   学校的Router与本地的ISP（可能是中国移动也有可能是其他的什么东西，原文中的历史comcast.net)连接，因此提供DNS服务，也就是说DNS服务器是在ISP的网络中</li>
@@ -362,7 +362,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>计算机网络 Vol5 ｜ 完整的 web 请求过程</div>
-      <div>http://example.com/2024/04/29/计算机网络 Vol5 ｜ 完整的 web 请求过程/</div>
+      <div>https://blog.tjdata.site/2024/04/29/计算机网络 Vol5 ｜ 完整的 web 请求过程/</div>
     </div>
     <div class="license-meta">
       

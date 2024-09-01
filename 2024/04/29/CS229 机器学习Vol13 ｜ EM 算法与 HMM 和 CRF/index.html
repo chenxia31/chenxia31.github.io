@@ -22,7 +22,7 @@
     <meta name="description" content="本文主要介绍EM算法，作为统计学习中可以通过迭代的方式估计含有隐变量模型的方法。同时给出两个典型的例子作为注释并给出相关代码的分析作为注解。 0x01 摘要（个人感悟）对于人工智能三大流派的分析，统计学习、神经网络和行为学习的一些新的感悟。首先统计学习依靠概率统计的知识建立起的模型和神经网络的范式并不完全一样，可能在模型、推理、优化等方面有名称的雷同但两者是完全不同的概念。同时以约束编程或者强化学">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS229 机器学习Vol13 ｜ EM 算法与 HMM 和 CRF">
-<meta property="og:url" content="http://example.com/2024/04/29/CS229%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0Vol13%20%EF%BD%9C%20EM%20%E7%AE%97%E6%B3%95%E4%B8%8E%20HMM%20%E5%92%8C%20CRF/index.html">
+<meta property="og:url" content="https://blog.tjdata.site/2024/04/29/CS229%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0Vol13%20%EF%BD%9C%20EM%20%E7%AE%97%E6%B3%95%E4%B8%8E%20HMM%20%E5%92%8C%20CRF/index.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
 <meta property="og:description" content="本文主要介绍EM算法，作为统计学习中可以通过迭代的方式估计含有隐变量模型的方法。同时给出两个典型的例子作为注释并给出相关代码的分析作为注解。 0x01 摘要（个人感悟）对于人工智能三大流派的分析，统计学习、神经网络和行为学习的一些新的感悟。首先统计学习依靠概率统计的知识建立起的模型和神经网络的范式并不完全一样，可能在模型、推理、优化等方面有名称的雷同但两者是完全不同的概念。同时以约束编程或者强化学">
 <meta property="og:locale" content="zh_CN">
@@ -79,7 +79,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -433,7 +433,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>CS229 机器学习Vol13 ｜ EM 算法与 HMM 和 CRF</div>
-      <div>http://example.com/2024/04/29/CS229 机器学习Vol13 ｜ EM 算法与 HMM 和 CRF/</div>
+      <div>https://blog.tjdata.site/2024/04/29/CS229 机器学习Vol13 ｜ EM 算法与 HMM 和 CRF/</div>
     </div>
     <div class="license-meta">
       

@@ -22,7 +22,7 @@
     <meta name="description" content="主要介绍演员评论家过程,从最基础的Policy Gradient中剖析如何拟合Policy Evaluation的部分，并推导得到Actor- Critic算法。可以看出从之前直观的Policy，到利用state- value或者action- state- value进行近似。这个过程中采样结果与理论推导的权衡贯穿理论推导过程。在这个基础上也会引来下一节Lecture07关于value func">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS285 深度强化学习 Vol6 ｜ Actor Critic">
-<meta property="og:url" content="http://example.com/2024/04/29/CS285%20%E6%B7%B1%E5%BA%A6%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%20Vol6%20%EF%BD%9C%20Actor%20Critic/index.html">
+<meta property="og:url" content="https://blog.tjdata.site/2024/04/29/CS285%20%E6%B7%B1%E5%BA%A6%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%20Vol6%20%EF%BD%9C%20Actor%20Critic/index.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
 <meta property="og:description" content="主要介绍演员评论家过程,从最基础的Policy Gradient中剖析如何拟合Policy Evaluation的部分，并推导得到Actor- Critic算法。可以看出从之前直观的Policy，到利用state- value或者action- state- value进行近似。这个过程中采样结果与理论推导的权衡贯穿理论推导过程。在这个基础上也会引来下一节Lecture07关于value func">
 <meta property="og:locale" content="zh_CN">
@@ -82,7 +82,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -315,7 +315,7 @@
 <p>∇𝜃𝐽(𝜃)&#x3D;1𝑁Σ𝑖&#x3D;1𝑁Σ𝑡&#x3D;1𝑇[∇𝜃𝑙𝑜𝑔𝜋𝜃(𝑎𝑖,𝑡|𝑠𝑖,𝑡)][Σ𝑡′&#x3D;𝑡𝑇𝑟(𝑠𝑡′𝑖,𝑎𝑡′𝑖)] </p>
 <p>&#x3D;∇𝜃𝐽(𝜃)&#x3D;1𝑁Σ𝑖&#x3D;1𝑁Σ𝑡&#x3D;1𝑇[∇𝜃𝑙𝑜𝑔𝜋𝜃(𝑎𝑖,𝑡|𝑠𝑖,𝑡)][𝑄^𝑖,𝑡] </p>
 <p>第三步：梯度上升</p>
-<h3 id="1-2-回顾梯度公式"><a href="#1-2-回顾梯度公式" class="headerlink" title="1.2 回顾梯度公式"></a>1.2 回顾梯度公式</h3><p>梯度公式中的log项目在REINFORCEMENT中已经详细推导过，相当于是LIkelihood的一种加权；而后面的 $𝑄^𝑖,𝑡$ 代表的是我们在轨迹 $𝜏𝑖$ 中时间t中状态 $𝑠𝑖,𝑡$ 采取 $𝑎𝑖,𝑡$ 所得到的后续state- action期望奖励（excepted reward）；下面是真实的reward to go，注意和采样时候的区别<a target="_blank" rel="noopener" href="https://blog.tjdata.site/posts/d30aca79.html">CS285_Lecture06_Actor_Critic_Algorithms</a>梯度公式中的log项目在REINFORCEMENT中已经详细推导过，相当于是LIkelihood的一种加权；而后面的 $𝑄^𝑖,𝑡$ 代表的是我们在轨迹$\tau_i$中时间t中状态 $𝑠𝑖,𝑡$ 采取 $𝑎𝑖,𝑡$ 所得到的后续state- action期望奖励（excepted reward）；下面是真实的reward to go，注意和采样时候的区别</p>
+<h3 id="1-2-回顾梯度公式"><a href="#1-2-回顾梯度公式" class="headerlink" title="1.2 回顾梯度公式"></a>1.2 回顾梯度公式</h3><p>梯度公式中的log项目在REINFORCEMENT中已经详细推导过，相当于是LIkelihood的一种加权；而后面的 $𝑄^𝑖,𝑡$ 代表的是我们在轨迹 $𝜏𝑖$ 中时间t中状态 $𝑠𝑖,𝑡$ 采取 $𝑎𝑖,𝑡$ 所得到的后续state- action期望奖励（excepted reward）；下面是真实的reward to go，注意和采样时候的区别<a href="https://blog.tjdata.site/posts/d30aca79.html">CS285_Lecture06_Actor_Critic_Algorithms</a>梯度公式中的log项目在REINFORCEMENT中已经详细推导过，相当于是LIkelihood的一种加权；而后面的 $𝑄^𝑖,𝑡$ 代表的是我们在轨迹$\tau_i$中时间t中状态 $𝑠𝑖,𝑡$ 采取 $𝑎𝑖,𝑡$ 所得到的后续state- action期望奖励（excepted reward）；下面是真实的reward to go，注意和采样时候的区别</p>
 <p>（理论）（理论𝑠𝑡𝑎𝑡𝑒−𝑎𝑐𝑡𝑖𝑜𝑛−𝑣𝑎𝑙𝑢𝑒）𝑄(𝑠𝑡,𝑎𝑡)&#x3D;Σ𝑡′&#x3D;𝑡𝑇𝐸𝜋𝜃[𝑟(𝑠𝑡′,𝑎𝑡′)|𝑠𝑡,𝑎𝑡] </p>
 <p>不要忘记我们的baseline，它可以起到降低方差的作用。我们可以将baseline加到REINFORCEMENT算法中。同时可以设置成为一个与状态有关的值，详细见上一个Lecture</p>
 <p>（理论）（理论𝑠𝑡𝑎𝑡𝑒−𝑣𝑎𝑙𝑢𝑒）𝑉(𝑠𝑡)&#x3D;𝐸𝑎𝑡−𝜋𝜃(𝑎𝑡|𝑠𝑡)𝑄(𝑠𝑡,𝑎𝑡) </p>
@@ -413,7 +413,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>CS285 深度强化学习 Vol6 ｜ Actor Critic</div>
-      <div>http://example.com/2024/04/29/CS285 深度强化学习 Vol6 ｜ Actor Critic/</div>
+      <div>https://blog.tjdata.site/2024/04/29/CS285 深度强化学习 Vol6 ｜ Actor Critic/</div>
     </div>
     <div class="license-meta">
       

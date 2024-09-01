@@ -22,7 +22,7 @@
     <meta name="description" content="在机器学习看到一半的过程中，对于之前学习的广义线性模型、高斯判别分析、支持向量机、决策树、多层感知器进行阶段性的总结，并尝试使用过去课程中可能存在例子来进行展示，最后利用Kaggle的实验来进行展示 如有侵权，可以删除；如有错误，欢迎提出 0x01基本模型1.1 GLM（logistic regression、linear regression、softmax regression）Andrew">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS229 机器学习 常用模型总结 ｜ Vol6">
-<meta property="og:url" content="http://example.com/2024/04/29/CS229%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93%20%EF%BD%9C%20Vol6/index.html">
+<meta property="og:url" content="https://blog.tjdata.site/2024/04/29/CS229%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93%20%EF%BD%9C%20Vol6/index.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
 <meta property="og:description" content="在机器学习看到一半的过程中，对于之前学习的广义线性模型、高斯判别分析、支持向量机、决策树、多层感知器进行阶段性的总结，并尝试使用过去课程中可能存在例子来进行展示，最后利用Kaggle的实验来进行展示 如有侵权，可以删除；如有错误，欢迎提出 0x01基本模型1.1 GLM（logistic regression、linear regression、softmax regression）Andrew">
 <meta property="og:locale" content="zh_CN">
@@ -76,7 +76,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -356,7 +356,7 @@
 <p>在线性不可分的情况，可以使用核机器（kernel function）来进行重新度量向量之间的非相似性</p>
 <p>在间隔划分中，可以通过设置软间隔的方式来允许有部分噪声点发生</p>
 <p>同时为了过拟合的风险，依旧可以增加模型复杂程度的项（term）</p>
-<h3 id="1-4-CART（Classfication-and-regression-tree）"><a href="#1-4-CART（Classfication-and-regression-tree）" class="headerlink" title="1.4 CART（Classfication and regression tree）"></a>1.4 CART（Classfication and regression tree）</h3><h3 id="1-5-ANN（Artificial-Neural-Network）决策树CART1-5-ANN（Artificial-Neural-Network）"><a href="#1-5-ANN（Artificial-Neural-Network）决策树CART1-5-ANN（Artificial-Neural-Network）" class="headerlink" title="1.5 ANN（Artificial Neural Network）决策树CART1.5 ANN（Artificial Neural Network）"></a>1.5 ANN（Artificial Neural Network）<a target="_blank" rel="noopener" href="https://blog.tjdata.site/2022/02/20/%E5%86%B3%E7%AD%96%E6%A0%91CART/">决策树CART</a>1.5 ANN（Artificial Neural Network）</h3><p>对于每个神经元包括两个部分，一个是接受前端的激活权重，另外一方面是自身的激活函数的选取</p>
+<h3 id="1-4-CART（Classfication-and-regression-tree）"><a href="#1-4-CART（Classfication-and-regression-tree）" class="headerlink" title="1.4 CART（Classfication and regression tree）"></a>1.4 CART（Classfication and regression tree）</h3><h3 id="1-5-ANN（Artificial-Neural-Network）决策树CART1-5-ANN（Artificial-Neural-Network）"><a href="#1-5-ANN（Artificial-Neural-Network）决策树CART1-5-ANN（Artificial-Neural-Network）" class="headerlink" title="1.5 ANN（Artificial Neural Network）决策树CART1.5 ANN（Artificial Neural Network）"></a>1.5 ANN（Artificial Neural Network）<a href="https://blog.tjdata.site/2022/02/20/%E5%86%B3%E7%AD%96%E6%A0%91CART/">决策树CART</a>1.5 ANN（Artificial Neural Network）</h3><p>对于每个神经元包括两个部分，一个是接受前端的激活权重，另外一方面是自身的激活函数的选取</p>
 <p>$线性连接：z^i&#x3D;w^ia^{i-1}+b^i$</p>
 <p>$激活输出：a^i&#x3D;g(z^i)$</p>
 <p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4ce75c932592dde7ff5bffc6dc133f2f_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
@@ -449,7 +449,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>CS229 机器学习 常用模型总结 ｜ Vol6</div>
-      <div>http://example.com/2024/04/29/CS229 机器学习 常用模型总结 ｜ Vol6/</div>
+      <div>https://blog.tjdata.site/2024/04/29/CS229 机器学习 常用模型总结 ｜ Vol6/</div>
     </div>
     <div class="license-meta">
       

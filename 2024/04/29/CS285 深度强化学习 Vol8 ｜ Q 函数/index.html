@@ -22,7 +22,7 @@
     <meta name="description" content="从Policy gradient，到Actor- critic，我们尝试丢弃policy，从AC到Q- iteration或者Q- learning我们彻底丢弃Policy，但是遇到不能收敛的问题。现在我们尝试改进Q- learning来实现想要的功能 0x01 Q- learning中的问题上次从理论的角度看出online Q iteration很难收敛，更直观的看待问题我们会发现有以下几点的原">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS285 深度强化学习 Vol8 ｜ Q 函数">
-<meta property="og:url" content="http://example.com/2024/04/29/CS285%20%E6%B7%B1%E5%BA%A6%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%20Vol8%20%EF%BD%9C%20Q%20%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:url" content="https://blog.tjdata.site/2024/04/29/CS285%20%E6%B7%B1%E5%BA%A6%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%20Vol8%20%EF%BD%9C%20Q%20%E5%87%BD%E6%95%B0/index.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
 <meta property="og:description" content="从Policy gradient，到Actor- critic，我们尝试丢弃policy，从AC到Q- iteration或者Q- learning我们彻底丢弃Policy，但是遇到不能收敛的问题。现在我们尝试改进Q- learning来实现想要的功能 0x01 Q- learning中的问题上次从理论的角度看出online Q iteration很难收敛，更直观的看待问题我们会发现有以下几点的原">
 <meta property="og:locale" content="zh_CN">
@@ -82,7 +82,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -388,7 +388,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>CS285 深度强化学习 Vol8 ｜ Q 函数</div>
-      <div>http://example.com/2024/04/29/CS285 深度强化学习 Vol8 ｜ Q 函数/</div>
+      <div>https://blog.tjdata.site/2024/04/29/CS285 深度强化学习 Vol8 ｜ Q 函数/</div>
     </div>
     <div class="license-meta">
       
