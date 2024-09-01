@@ -1,0 +1,897 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Sergev Levine的课讲强化学习我唯一听得懂不同强化学习究竟有哪些分类，同时是如何进行分类的。本次Lecture的目标是完善定义Definition与记号notation，并认清楚RL objective，并给出具体强化学习算法的总结。 0x01 Definition of a MDP1.1 Recap RL with imitation learning我们在之前的Lecture02-S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS285 深度强化学习 Vol4 ｜ 算法分类">
+<meta property="og:url" content="http://example.com/2024/04/29/CS285%20%E6%B7%B1%E5%BA%A6%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%20Vol4%20%EF%BD%9C%20%E7%AE%97%E6%B3%95%E5%88%86%E7%B1%BB/index.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="Sergev Levine的课讲强化学习我唯一听得懂不同强化学习究竟有哪些分类，同时是如何进行分类的。本次Lecture的目标是完善定义Definition与记号notation，并认清楚RL objective，并给出具体强化学习算法的总结。 0x01 Definition of a MDP1.1 Recap RL with imitation learning我们在之前的Lecture02-S">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8ecbf8f0ad9d5bebcfb620c8f024becf_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-2229125fd791c85648d0f7b1e4d3a7cb_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4f96e6878bf9e806d354c51ab2504101_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-eba8d554c179cb775de44d59f2b3499d_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-e0a0dbba567b571d018db0210a7df159_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0a3e980c1f1e1bef9f0cd2a40c852778_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8575301577bd433235ee89136e81a70f_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5424b86051eb599c62b0edf6482720b2_1440w.jpg">
+<meta property="article:published_time" content="2024-04-29T09:14:08.000Z">
+<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="CS285">
+<meta property="article:tag" content="强化学习">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="导论">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8ecbf8f0ad9d5bebcfb620c8f024becf_1440w.jpg">
+  
+  
+  
+  <title>CS285 深度强化学习 Vol4 ｜ 算法分类 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS285 深度强化学习 Vol4 ｜ 算法分类"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 17:14" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CS285 深度强化学习 Vol4 ｜ 算法分类</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Sergev Levine的课讲强化学习我唯一听得懂不同强化学习究竟有哪些分类，同时是如何进行分类的。本次Lecture的目标是完善定义Definition与记号notation，并认清楚RL objective，并给出具体强化学习算法的总结。</p>
+<h3 id="0x01-Definition-of-a-MDP"><a href="#0x01-Definition-of-a-MDP" class="headerlink" title="0x01 Definition of a MDP"></a>0x01 Definition of a MDP</h3><h3 id="1-1-Recap-RL-with-imitation-learning"><a href="#1-1-Recap-RL-with-imitation-learning" class="headerlink" title="1.1 Recap RL with imitation learning"></a>1.1 Recap RL with imitation learning</h3><p>我们在之前的<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/576779527/https://blog.tjdata.site/posts/7d84bcc6.html">Lecture02-<em>Supervised_Learning_of_Behavior</em></a>中认识了Notation，以及imitation learning的局限性，其中最重要的是需要一个专家智能体或者人工来提供数据。但是显然这是不可行的。所以首先我们需要认识到我们的任务应该是什么？或许我们不知道任务具体样子，但我们知道它和我们状态转变序列中的每一步的reward有关。</p>
+<p>举个例子，在我们observation&#x3D;看到红灯的情况下，action&#x3D;停车往往代表更高的reward，如果action&#x3D;开车闯过交叉口往往代表负的reward。</p>
+<h3 id="0x02-Definition-of-Reinforcement-learning-problem"><a href="#0x02-Definition-of-Reinforcement-learning-problem" class="headerlink" title="0x02 Definition of Reinforcement learning problem"></a>0x02 Definition of Reinforcement learning problem</h3><p>在之前的<a target="_blank" rel="noopener" href="https://blog.tjdata.site/posts/3e3a5c92.html">强化学习-基本概念</a>中已经给出MP、MDP、MRP的定义，这里给出CS285官方对于MDP和POMDP（Partial observation MDP，暂时不讨论）的记号</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8ecbf8f0ad9d5bebcfb620c8f024becf_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024165643496</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-2229125fd791c85648d0f7b1e4d3a7cb_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024165705565</p>
+<p>在强化学习过程中 state-observation- action- state转变中，我们可以将 （）（𝑠1,𝑎1,…,𝑠𝑇,𝑎𝑇） 标记为一个trajectory，不同轨迹的概率可以由下图表示；由于状态s1是随机变量，策略也会输出不同的值，因此这里通常是具有指数的trajectory，因此通常只能用采样的方法来近似的描述总体。</p>
+<p>𝑝𝜃(𝜏&#x3D;𝜏)&#x3D;𝑝(𝑠1)∏𝑖&#x3D;0𝑇𝜋𝜃(𝑎𝑡|𝑠𝑡)𝑝(𝑠𝑡+1|𝑠𝑡,𝑎𝑡) 如果我们知道所有可能的轨迹的概率，那么我们就能求解出我们策略对应的期望;很</p>
+<p>很不幸的是，在  的概率分布中，我们不知道$s_1$的分布，也不知道状态转移  ;但是我们想确定的是  ；所以我们需要一些知识来做演化，比如我们知道$(s_t,a_t)$是具有MP性质的，也就是</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4f96e6878bf9e806d354c51ab2504101_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024165732870</p>
+<p>那么我们的奖励期望就可以等价</p>
+<p>其中的  表示为状态动作的边缘概率分布。</p>
+<p>我们需要做的就是找到它其中的最大值，同样的对于场景中我们会简单的区分为有限场景与无限场景</p>
+<ol>
+<li>infinite horizon case，我们需要最终达到稳定分布（stationary distribution），也就是状态状态不发生改变，  ,这时候定义平均回报公式（无折扣）的目标函数为 1.</li>
+</ol>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-eba8d554c179cb775de44d59f2b3499d_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024165749396</p>
+<ol>
+<li>finite horizon case ,我们依旧需要 state- action marginal来求解</li>
+</ol>
+<p>Question：为什么我们需要期望？</p>
+<p>课程中给出的解答是在现实世界中的期望不连续的情况下，通过随机性和期望我们可以将其转变称为连续（smooth）的问题</p>
+<p>PS：个人看法除了上述之外，还有一个原因是RL中我们通常希望使用采样Sampling的方法来进行求解，因为我们不可能罗列出所有的可能性，而采样方法得到的往往是期望而不是积分式。因此在RL好的sampling方法也是很重要的。常见的有基于马尔可夫蒙特卡洛MCMC方法，在此基础上蒙地卡罗、重要性采样、基于能量采样、Gibbs采样等等奇奇怪怪的采样方式。</p>
+<h3 id="0x03-Anatomy-of-a-RL-algorithm"><a href="#0x03-Anatomy-of-a-RL-algorithm" class="headerlink" title="0x03 Anatomy of a RL algorithm"></a>0x03 Anatomy of a RL algorithm</h3><p>我们可以回顾一下监督学习的范式，对于dataset，我们会有一个假设hypothesis，之后我们可以在dataset中利用learning model来通过loss来optim假设中的param，然后得到我们的model，并可以evaluate。</p>
+<p>强化学习中的方式包括</p>
+<ol>
+<li>generate sample，与环境交互或者收集样本来得到基础数据</li>
+<li>fit a model或者estimate the return，我们可以直接拟合一个策略（用神经网络）；或者计算轨迹的奖励值（reward？Q？value？）来间接反应好的策略</li>
+<li>improve the policy，无论第二步我们采用的是什么方法，我们的最终目的是需要提升我们的policy</li>
+</ol>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-e0a0dbba567b571d018db0210a7df159_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024165819656</p>
+<h3 id="0x04-Brief-overview-of-RL-algorithm-types"><a href="#0x04-Brief-overview-of-RL-algorithm-types" class="headerlink" title="0x04 Brief overview of RL algorithm types"></a>0x04 Brief overview of RL algorithm types</h3><p>在step2中，我们天然的可以将RL算法分为两类，一类是是直接拟合policy的，一类是根据reward来间接反映policy的好坏。但是reward并不是容易计算的，所以我们会有reward、Q- function或者value - function</p>
+<h3 id="4-1-关于评价Policy的好坏"><a href="#4-1-关于评价Policy的好坏" class="headerlink" title="4.1 关于评价Policy的好坏"></a>4.1 关于评价Policy的好坏</h3><p>最直接的我们在0x02中已经定义好了，我们来展开计算它：</p>
+<p>如果继续写下去，我们会发现其中的“待定“是可以递归的写下去的，直到轨迹的最后，假设我们定义一种函数，名称为Q- function</p>
+<p>那么我们的期望奖励就成为</p>
+<p>更详细的定义Q- function：</p>
+<p>在MRP问题中我们会有一个状态价值的概念，同样我们这里可以由state-value- function，用来反应所有行为下的期望</p>
+<p>但是这样得到的Q有用吗？</p>
+<ol>
+<li>（Q- learning）这样我们可以通过改变$\pi_\theta$来改变总期望吗？答案是可以的，我们可以选择对应更大Q值的行为，虽然这不是数学上的描述，但是可以给我们直觉上的可能性。</li>
+<li>（Actor- critic）尽可能选择Q&gt;V的行为，因为V反应这个状态下所有action的平均值</li>
+</ol>
+<p>PS：这一段真是太棒了！！！</p>
+<h3 id="4-2-Types-of-RL-algorithm"><a href="#4-2-Types-of-RL-algorithm" class="headerlink" title="4.2 Types of RL algorithm"></a>4.2 Types of RL algorithm</h3><p>根据第二步fit model我们可以认为是model- based RL，通常包括</p>
+<ol>
+<li>planing；trajectory optimization、optimal control、MCTS</li>
+<li>improve a policy，back propagate gradients into the policy with tricks</li>
+<li>something else，dynamic programming，simulated experience for model-free leaner</li>
+<li>后面再说</li>
+</ol>
+<p>如果是evaluate return，我们可以认为是model- free RL，通常包括</p>
+<ol>
+<li>policy gradients，直接计算Objective和gradient</li>
+<li>value- based，通过平局value- function和Q- function来寻找比较好的方法</li>
+<li>actor- critic，通过评估现在的value function和Q- function，结合PG的想法来提升策略</li>
+</ol>
+<h3 id="4-3-why-so-many-algorithms？"><a href="#4-3-why-so-many-algorithms？" class="headerlink" title="4.3 why so many algorithms？"></a>4.3 why so many algorithms？</h3><p>模型本身有efficiency- stability；不同的assumption；以及不同问题的使用场景；正如ML中的variance-bias tradeoff，RL中通常是efficiency- stability trade-off</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0a3e980c1f1e1bef9f0cd2a40c852778_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024165833359</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8575301577bd433235ee89136e81a70f_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024165841658</p>
+<p>同时不同模型也会有不同的assumption，比如是否全观测，是否连续等</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5424b86051eb599c62b0edf6482720b2_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024165849690</p>
+<h3 id="4-4-example-of-algorithm"><a href="#4-4-example-of-algorithm" class="headerlink" title="4.4 example of algorithm"></a>4.4 example of algorithm</h3><p>具体的分类；后面在具体实现他们吧！</p>
+<ol>
+<li>model- based</li>
+<li>Dyna</li>
+<li>Guided policy search</li>
+<li>model - free</li>
+<li>Policy gradient</li>
+<li>REINFORCE（REward Increments&#x3D;nonnegative Factor<em>Offset Reinforcement</em>Characteristic+Eligibility）</li>
+<li>Natural Policy gradient</li>
+<li>Trust region policy optimization</li>
+<li>Value function fitting methods</li>
+<li>Q- learning，DQN</li>
+<li>Temporal difference learning</li>
+<li>Fitted value iteration</li>
+<li>Actor- critic algorithms</li>
+<li>Asynchronous advantage actor- critic</li>
+<li>Soft actor- critic（SAC）</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CS285/" class="print-no-link">#CS285</a>
+      
+        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="print-no-link">#强化学习</a>
+      
+        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="print-no-link">#深度学习</a>
+      
+        <a href="/tags/%E5%AF%BC%E8%AE%BA/" class="print-no-link">#导论</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS285 深度强化学习 Vol4 ｜ 算法分类</div>
+      <div>http://example.com/2024/04/29/CS285 深度强化学习 Vol4 ｜ 算法分类/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/29/CS285%20%E6%B7%B1%E5%BA%A6%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%20Vol6%20%EF%BD%9C%20Actor%20Critic/" title="CS285 深度强化学习 Vol6 ｜ Actor Critic">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS285 深度强化学习 Vol6 ｜ Actor Critic</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/29/CS285%20%E6%B7%B1%E5%BA%A6%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0Vol3%20%EF%BD%9C%20%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6/" title="CS285 深度强化学习Vol3 ｜ 整体框架">
+                        <span class="hidden-mobile">CS285 深度强化学习Vol3 ｜ 整体框架</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,869 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="目标是明白RL中的一些定义（definition）和记号（notation），主要是从MDP的定义，然后模仿学习（Imitation learning）和$\epsilon$-greedy 学习的角度介绍了强化学习中的case 0x01 Definition of Sequential decision problem1.1 概率论关于概率论的记号，与研一课程《应用统计》不一样。我猜想多是具有另外">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS285 动手学强化学习 Vol2 ｜ 行为克隆">
+<meta property="og:url" content="http://example.com/2024/04/29/CS285%20%E5%8A%A8%E6%89%8B%E5%AD%A6%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%20Vol2%20%EF%BD%9C%20%E8%A1%8C%E4%B8%BA%E5%85%8B%E9%9A%86/index.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="目标是明白RL中的一些定义（definition）和记号（notation），主要是从MDP的定义，然后模仿学习（Imitation learning）和$\epsilon$-greedy 学习的角度介绍了强化学习中的case 0x01 Definition of Sequential decision problem1.1 概率论关于概率论的记号，与研一课程《应用统计》不一样。我猜想多是具有另外">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a0d841a06baab792fc426f4fc43be778_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-38d4d39342882e3ac031339af4c04a6d_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-76fb851f4b6e2f3ab63a30888b9dd6dc_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-36f4115a54d2f615fcf2c58774f449ab_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7f16838a6bc80679b3114c0d64890f8a_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-19ae0ebf6d7173799524279d4076f973_1440w.jpg">
+<meta property="article:published_time" content="2024-04-29T09:14:06.000Z">
+<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="行为克隆">
+<meta property="article:tag" content="CS285">
+<meta property="article:tag" content="强化学习">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a0d841a06baab792fc426f4fc43be778_1440w.jpg">
+  
+  
+  
+  <title>CS285 动手学强化学习 Vol2 ｜ 行为克隆 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS285 动手学强化学习 Vol2 ｜ 行为克隆"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 17:14" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CS285 动手学强化学习 Vol2 ｜ 行为克隆</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>目标是明白RL中的一些定义（definition）和记号（notation），主要是从MDP的定义，然后模仿学习（Imitation learning）和$\epsilon$-greedy 学习的角度介绍了强化学习中的case</p>
+<h3 id="0x01-Definition-of-Sequential-decision-problem"><a href="#0x01-Definition-of-Sequential-decision-problem" class="headerlink" title="0x01 Definition of Sequential decision problem"></a><strong>0x01 Definition of Sequential decision problem</strong></h3><h3 id="1-1-概率论"><a href="#1-1-概率论" class="headerlink" title="1.1 概率论"></a>1.1 概率论</h3><p>关于概率论的记号，与研一课程《应用统计》不一样。我猜想多是具有另外的规定，这里引用从《Deep learning》（2015，Lan Goodfellow）中的说明：</p>
+<p>随机变量（random variable）是可以随机取不同值的变量，我们通常使用无格式字体（plain typeface）中的小写字母表示随机变量本身，用手写体中的小写字母表示随机变量能够取的值。$x_1,x_2$表示随机变量x可能的取值，对于向量（vector）的变量，我们通常用x，可能的取值为$x$。所以$p($x$&#x3D;x）$可以简写为$p(x)$</p>
+<h3 id="1-2-强化学习"><a href="#1-2-强化学习" class="headerlink" title="1.2 强化学习"></a>1.2 强化学习</h3><p>与强化学习典中典的：环境（Environment）与智能体（Agent）和动作（Action）三者交互类似，CS285课程同样以这样的例子作为开端，并利用概率图的方式来分析这个过程。</p>
+<ul>
+<li>（第一层）在草原这个环境中看到了某个东西，然后我们判别出来它是老虎，这个时候我们通常做出某个动作，但是我们的动作也会影响草原环境，进而影响老虎的动作</li>
+<li>（第二层），假设草原环境作为Environment，某个时间点的状态为State，我们作为Agent通过看认识这个状态得到Observation（老虎的概率为0.99，猫的概率为0.01），之后我们会根据Observation来采取Policy( $\pi_\theta(a_t|o_t)$)（如果是老虎，则逃跑概率&#x3D;0.9，当宠物&#x3D;0.1；如果是猫，则逃跑概率&#x3D;0.1，当宠物&#x3D;0.9）；之后我们的动作action结合现有的state会影响下一步的next-state</li>
+<li>(第三层）$s_t$得到$o_t$，之后根据策略得到$a_t&#x3D;\Pi_\theta(a_t|o_t)$,再影响下一步$s_{t+1}&#x3D;P(s_{t+1}|s_t,a_t)$；state — observation — action — next_state…</li>
+</ul>
+<p>在这个过程中我们会有几个疑问：</p>
+<ol>
+<li>智能体对环境是否是完全观测（fully observe），这直接会影响我们学习的策略，通常分为$\pi_\theta(a_t|s_t)或者\pi_\theta(o_t|s_t)$ ，经常会出错</li>
+<li>由图可以看出状态转移（state transit）是具有马尔可夫性质（Markov property），但是observation不一定、action也不一定、policy也不一定</li>
+<li>我们的objective还不确定</li>
+</ol>
+<p>在不明白目标情况下，不如去看一种简单的方式是如何学习的</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a0d841a06baab792fc426f4fc43be778_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024152834540</p>
+<p>PS：强化学习的记号通常认为是研究运筹或动态规划（Dynamic programming）的Richard Bellman和研究自动控制的Lev Pontryagin不同的发展。</p>
+<h3 id="0x02-Imitation-Learning"><a href="#0x02-Imitation-Learning" class="headerlink" title="0x02 Imitation Learning"></a><strong>0x02 Imitation Learning</strong></h3><p>在Lecture01中虽然对比了强化学习（reinforcement learning）与监督学习（supervised learning）之间的差别，但是我们依旧会发现两者之间相似的地方</p>
+<p><strong>给出一个state或者observation，来输出一个action</strong></p>
+<p>因此我们可以假设存在一个专家智能体，其策略可以看成最优策略，我们可以直接模仿这个专家在环境中交互状态动作（state，action）数据来训练一个policy，而不需要环境提供的reward，这样便是imitation learning研究的问题，不需要reward信号变可以达到一个专家策略，常用的方法分为</p>
+<ol>
+<li>Behaviour Cloning</li>
+<li>Inverse RL</li>
+<li>Generative Adversarial Imitation Learning，GAIL</li>
+</ol>
+<h3 id="2-1-Behaviour-cloning"><a href="#2-1-Behaviour-cloning" class="headerlink" title="2.1 Behaviour cloning"></a>2.1 Behaviour cloning</h3><p>输入$（s_t，a_t）$中的state作为样本输入，action作为标签，目标为</p>
+<p><strong>Does it ok? — No</strong></p>
+<p>在数据量较小的情况下，我们只能得到少量的专家数据作为训练，因此只有在数据集的分布下预测准确。但是因为我们不断经历state- observation- action- state的循环，并不是监督学习的一次终止，因此我们的每次偏差都会累积，产生复合物差（compounding error）的问题，导致差距来越来大而失败。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-38d4d39342882e3ac031339af4c04a6d_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>img</p>
+<p><strong>Does it ok？yes，but more data</strong></p>
+<p>但是在具有很多数据的情况下是可以实现的，比如*<strong>*</strong><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1604.07316"><strong>End to End Learning for Self-Driving Cars</strong></a><strong>文章中收集了足够多的数据来实现运行的稳定性</strong></p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-76fb851f4b6e2f3ab63a30888b9dd6dc_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024152923468</p>
+<p><strong>How we make it more offen？</strong></p>
+<p>我们分析之间之前不同 trajectory产生偏差的原因是由于$p_{data}(o_t)!&#x3D;p_{\pi_{\theta}}(o_t)$,因此我们希望用某种方式来保证，因此可以使用 DAgger（Dataset Aggregation）：</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-36f4115a54d2f615fcf2c58774f449ab_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024152938796</p>
+<p>但是第一点：人工标记本身就不可靠，因为我们在相同的场景下也会出现不同的行为，同时我们的动作会和一定的记忆有关；第二点我们在复杂场景中很难准确给出新的state的action，所以本质上我们依旧需要学习机器，我们需要序列学习的概念</p>
+<p>当然我们可以使用CNN+RNN的特点，他们依旧只是复杂的模仿学习，并没有解决分布不匹配的问题。总是我们用DAgger来解决这样的问题，依旧只是在特定场景下具有可能性。</p>
+<h3 id="0x03-A-little-bit-of-theory-for-imitation-learning"><a href="#0x03-A-little-bit-of-theory-for-imitation-learning" class="headerlink" title="0x03 A little bit of theory for imitation learning"></a><strong>0x03 A little bit of theory</strong> for imitation learning</h3><p><strong>可以不看，因为看不懂！</strong></p>
+<p>结合之前基本概念里的MRP（Markov reward process）我们可以理解reward，因此在一段轨迹中我们希望,首先我们定义cost</p>
+<p>同时cost反面等于奖励，也就是</p>
+<p>我们将真实的策略表示为$\pi^*_{\theta}(s)$，那么我们的奖励函数应该是</p>
+<p>$r(s,a)&#x3D;log p(a&#x3D;\pi^*_{\theta}(s))$y</p>
+<p>因此在采样错误率低于一定程度之下，我们可以得到</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7f16838a6bc80679b3114c0d64890f8a_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024152956985</p>
+<p>改进之后我们有需要其他的方式来学习，这种主要是生成模型了～</p>
+<h3 id="3-1-生成对抗模型学习（generative-adverbial-imitation-learning）"><a href="#3-1-生成对抗模型学习（generative-adverbial-imitation-learning）" class="headerlink" title="3.1 生成对抗模型学习（generative adverbial imitation learning）"></a>3.1 生成对抗模型学习（generative adverbial imitation learning）</h3><p>摘自<a target="_blank" rel="noopener" href="https://hrl.boyuai.com/chapter/3/%E6%A8%A1%E4%BB%BF%E5%AD%A6%E4%B9%A0">动手学强化学习</a></p>
+<p>（generative adversarial imitation learning，GAIL）是 2016 年由斯坦福大学研究团队提出的基于生成式对抗网络的模仿学习，它诠释了生成式对抗网络的本质其实就是模仿学习。GAIL 实质上是模仿了专家策略的占用度量即尽量使得策略在环境中的所有状态动作对的占用度量和专家策略的占用度量一致。为了达成这个目标，策略需要和环境进行交互，收集下一个状态的信息并进一步做出动作。这一点和 BC 不同，BC 完全不需要和环境交互。GAIL 算法中有一个判别器和一个策略，策略就相当于是生成式对抗网络中的<strong>生成器</strong>（generator），给定一个状态，策略会输出这个状态下应该采取的动作，而<strong>判别器</strong>（discriminator）将状态动作对作为输入，输出一个 0 到 1 之间的实数，表示判别器认为该状态动作对是来自智能体策略而非专家的概率。判别器的目标是尽量将专家数据的输出靠近 0，将模仿者策略的输出靠近 1，这样就可以将两组数据分辨开来。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-19ae0ebf6d7173799524279d4076f973_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221024153011985</p>
+<h3 id="0x04-总结"><a href="#0x04-总结" class="headerlink" title="0x04 总结"></a><strong>0x04 总结</strong></h3><p>Lecture02主要还是利用imitation learning介绍了</p>
+<ol>
+<li>监督学习用于强化学习的局限性</li>
+<li>强化学习的notation</li>
+</ol>
+<p>下一章是及其Fancy的强化学习方法的总结</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%A1%8C%E4%B8%BA%E5%85%8B%E9%9A%86/" class="print-no-link">#行为克隆</a>
+      
+        <a href="/tags/CS285/" class="print-no-link">#CS285</a>
+      
+        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="print-no-link">#强化学习</a>
+      
+        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="print-no-link">#深度学习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS285 动手学强化学习 Vol2 ｜ 行为克隆</div>
+      <div>http://example.com/2024/04/29/CS285 动手学强化学习 Vol2 ｜ 行为克隆/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/29/CS285%20%E6%B7%B1%E5%BA%A6%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0Vol3%20%EF%BD%9C%20%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6/" title="CS285 深度强化学习Vol3 ｜ 整体框架">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS285 深度强化学习Vol3 ｜ 整体框架</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%20Vol5%EF%BD%9C%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CRNN/" title="动手学深度学习 Vol5｜循环神经网络RNN">
+                        <span class="hidden-mobile">动手学深度学习 Vol5｜循环神经网络RNN</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

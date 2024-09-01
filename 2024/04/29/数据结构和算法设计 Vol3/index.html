@@ -1,0 +1,921 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="二叉树中三种遍历方式：前序遍历、后序遍历和中序遍历；在普通二叉搜索树中的搜索search、插入insert、删除remove中的算法效率或者说复杂度和树的深度有关。因此在树的等价交换和基本操作的基础上，提出了平衡二叉树（BBST，Balanced binary search tree）的概念，由此延伸得到AVL、伸展树（Splay tree）、B树、红黑树、KD-树的概念，并可以看到这些在实际生活">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构和算法设计 Vol3">
+<meta property="og:url" content="http://example.com/2024/04/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%20Vol3/index.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="二叉树中三种遍历方式：前序遍历、后序遍历和中序遍历；在普通二叉搜索树中的搜索search、插入insert、删除remove中的算法效率或者说复杂度和树的深度有关。因此在树的等价交换和基本操作的基础上，提出了平衡二叉树（BBST，Balanced binary search tree）的概念，由此延伸得到AVL、伸展树（Splay tree）、B树、红黑树、KD-树的概念，并可以看到这些在实际生活">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-e034dd6b3af2fa7a976adbb6b61ca50c_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-acad6074bf8ffd1f320a402499d4aa4c_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a22dbcfb4b387c3184bec913ea3f211c_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5d9253a7a9325895531537614c476ca3_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-953b2444f355cac74f23b59085acb090_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-cf8df58728c8ca6daf5e39e9a305684e_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4503e8914079cf613df6dd7a1b23740b_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b5608983626d2ddc209de34cfda228e8_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-eee0f2d5e3d18221f28f22575828bdd5_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-629e73c3dde09316fc07a5325b8b2d15_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a1e602f68196efaecacdfd80cc9e558e_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ebb252aab56216a47855577065619060_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5384ce42123e409bad5fc4f0d6a1e58b_1440w.jpg">
+<meta property="article:published_time" content="2024-04-29T08:38:44.000Z">
+<meta property="article:modified_time" content="2024-04-29T08:54:05.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="算法设计">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-e034dd6b3af2fa7a976adbb6b61ca50c_1440w.jpg">
+  
+  
+  
+  <title>数据结构和算法设计 Vol3 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构和算法设计 Vol3"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:38" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构和算法设计 Vol3</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>二叉树中三种遍历方式：前序遍历、后序遍历和中序遍历；在普通二叉搜索树中的搜索search、插入insert、删除remove中的算法效率或者说复杂度和树的深度有关。因此在树的等价交换和基本操作的基础上，提出了平衡二叉树（BBST，Balanced binary search tree）的概念，由此延伸得到AVL、伸展树（Splay tree）、B树、红黑树、KD-树的概念，并可以看到这些在实际生活中的应用。</p>
+<h2 id="0x01-二叉树的遍历traversal"><a href="#0x01-二叉树的遍历traversal" class="headerlink" title="0x01 二叉树的遍历traversal"></a>0x01 二叉树的遍历traversal</h2><p>对二叉树的访问可以抽象为如下形式：按照某种约定的次序，对节点访问且仅一次。遍历之于二叉树的意义，同样在于为相关算法的实现提供通用的框架，此外这一过程等效于将半线性的树形结构转换为线性结构，但是二叉树不在属于线性结构，因此遍历过程更为复杂。</p>
+<h3 id="1-1-递归式遍历-recursively-traversal"><a href="#1-1-递归式遍历-recursively-traversal" class="headerlink" title="1.1 递归式遍历 recursively traversal"></a>1.1 递归式遍历 recursively traversal</h3><p>二叉树本身并不具有天然的全局次序，故为实现遍历，首选需要在各节点与其孩子之间约定某种局部次序，从而间接定义全局次序。分为左（L，left）、右（R，right）、节点（R，root），因此分为VLR、LVR、LRV三中心选择，也就是先序遍历（preorder）、中序遍历（inorder）、后序遍历（postorder）</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-e034dd6b3af2fa7a976adbb6b61ca50c_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<ul>
+<li>先序遍历（preorder）</li>
+</ul>
+<p>首先核对X是不是空集，若x为空则直接退出</p>
+<p>若x非空，则按照先序遍历，优先访问根节点，然后访问左子树和右子树</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs scss">def <span class="hljs-built_in">travPre_R</span>(set,visit):<br>    <span class="hljs-built_in">if</span>(!x) return;<br>    <span class="hljs-built_in">visit</span>(x.data);<br>    <span class="hljs-built_in">travPre_R</span>(X.lc,visit)<br>    <span class="hljs-built_in">travPre_R</span>(x.rc,visit)<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-acad6074bf8ffd1f320a402499d4aa4c_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<ul>
+<li>中序遍历（inorder）</li>
+</ul>
+<p>各节点在中序遍历序列中</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a22dbcfb4b387c3184bec913ea3f211c_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<ul>
+<li>后序遍历（postorder）</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5d9253a7a9325895531537614c476ca3_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>递归遍历算法和迭代遍历算法都需要渐进的线性时间，而且相对而言，前者更加简明；但是迭代算法的时间和空间复杂度的常系数相比较递归更小，同时从迭代遍历完成可以加深对相关过程和技巧的理解</p>
+<h3 id="1-2-递归式遍历-recursively-traversal"><a href="#1-2-递归式遍历-recursively-traversal" class="headerlink" title="1.2 递归式遍历 recursively traversal"></a>1.2 递归式遍历 recursively traversal</h3><p>比较难，但可以加深理解</p>
+<p>先序遍历可以分解为两段，沿着最左侧通路自上而下的访问各节点，以及自底向上遍历的对应右子树</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-953b2444f355cac74f23b59085acb090_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h3 id="1-3-一些算法的实现"><a href="#1-3-一些算法的实现" class="headerlink" title="1.3 一些算法的实现"></a>1.3 一些算法的实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Definition for a binary tree node.</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, val=<span class="hljs-number">0</span>, left=<span class="hljs-literal">None</span>, right=<span class="hljs-literal">None</span></span>):<br>        <span class="hljs-variable language_">self</span>.val = val<br>        <span class="hljs-variable language_">self</span>.left = left<br>        <span class="hljs-variable language_">self</span>.right = right<br><br><span class="hljs-comment"># 题目debug地址：https://leetcode-cn.com/problems/binary-tree-inorder-traversal/</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">inorderTraversal</span>(<span class="hljs-params">self, root</span>):<br>        <span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">        题目描述：给定一个二叉树的根节点root，返回它的中序遍历</span><br><span class="hljs-string">        二叉树的遍历分为深度遍历和广度遍历</span><br><span class="hljs-string">        深度遍历分为前序、中序和后序三种遍历方法</span><br><span class="hljs-string">        - 前序，根节点、左子树、右子树</span><br><span class="hljs-string">        - 中序，左子树、根节点、右子树</span><br><span class="hljs-string">        - 后序，左子树、右子树、根节点</span><br><span class="hljs-string">        广度遍历就是常说的层次遍历的方法</span><br><span class="hljs-string"></span><br><span class="hljs-string"></span><br><span class="hljs-string">        :param root:</span><br><span class="hljs-string">        :return:</span><br><span class="hljs-string">        &#x27;&#x27;&#x27;</span><br>        stack,ret=[],[]<br>        <span class="hljs-comment"># 设计一个栈作为中间变量</span><br>        <span class="hljs-comment"># ret为最终结果</span><br>        cur=root <span class="hljs-comment"># 初始化最初的值为cur</span><br>        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">or</span> cur:<br>            <span class="hljs-comment"># 当stack为空并且cur为空停止，也就是所有都遍历完，同时也不存在左子树</span><br>            <span class="hljs-keyword">if</span> cur:<br>                <span class="hljs-comment"># 如果当前节点非空，则取这个节点到stack中</span><br>                <span class="hljs-comment"># 将当前节点设置为节点的left node</span><br>                stack.append(cur)<br>                cur=cur.left<br>            <span class="hljs-keyword">else</span>:<br>                <span class="hljs-comment"># 如果stack非空，但是当前节点为空。说明遍历到最左边的</span><br>                <span class="hljs-comment"># 取当前节点的上一个</span><br>                cur=stack.pop()<br>                ret.append(cur.val)<br>                cur=cur.right<br>        <span class="hljs-keyword">return</span> ret<br></code></pre></td></tr></table></figure>
+
+<h2 id="0x02-二叉搜索树（Binary-Search-tree"><a href="#0x02-二叉搜索树（Binary-Search-tree" class="headerlink" title="0x02 二叉搜索树（Binary Search tree)"></a>0x02 二叉搜索树（Binary Search tree)</h2><p>二叉搜索树是满足顺序性的二叉树</p>
+<blockquote>
+<p> 任一节点r的左右子树中，所有的节点（若存在）均不大于（不小于）r 为回避边界情况，暂定假设所有节点不想等，因此可以简化为 任意节点r的左（右）子树中，所有的节点（若存在）均小于（大于）r </p>
+</blockquote>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-cf8df58728c8ca6daf5e39e9a305684e_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>从本章开始，讨论的重点将逐步转向查找技术，实际上在之前的章节已经就此做过一些讨论，比如在vector和list等结果中，已经给出了对应的ADT结构，但是遗憾的是这种接口的效率无法令人满意。</p>
+<p>比如vector向量模版，针对无序和有序向量的查找提供了find()和search（）接口。前者的实现策略是将目标对象与向量存放的对象逐个对比，硬刺需要O(n)时间，后者利用二分查找策略可以确保O(logN)时间内完成单次查找，但是一旦向量本身需要修改，无论是插入还是删除，在最坏情况下每次需要O（n）的时间。</p>
+<p>所以对于线性结构来说，既要求对象集合的组成可以高效率地动态调整，同时也要求能够高效率查找，lInear data structure很难胜任，<strong>那么高效率的动态修改和高效率的静态查找能否同时兼顾，如有可能又应该采用什么样的数据结构？</strong></p>
+<p>之后两章希望逐步了解其中的故事，涉及到的数据结构种类比较多，按照基本和高级两章分别进行讲解</p>
+<blockquote>
+<p> 本章首先介绍树式查找的总体构思、基本算法以及数据结构，通过对二分查找策略的抽象与推广来定义并实现二叉搜索树（Binary search tree)结构，虽然在最坏情况下渐进时间复杂度与之前并无实质性改变，但是这给出来一种基于半线性的树形结构。 之后提出理想平衡和适度平衡等概念，并相应引入和实现AVL树这种典型的平衡二叉搜索树（Balanced binary search tree)，借助精巧的平衡调整算法，AVL树可以保证即使在最坏情况下，单次动态修改和静态查找也可以在O(logN)的时间内完成，在之后的选择中给出balanced m-way search trees </p>
+</blockquote>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4503e8914079cf613df6dd7a1b23740b_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h3 id="2-1-查找算法（Search）"><a href="#2-1-查找算法（Search）" class="headerlink" title="2.1 查找算法（Search）"></a>2.1 查找算法（Search）</h3><p>采用减而治之的思路与策略，执行的过程可以描述为</p>
+<p>从树根出发，逐步缩小查找范围，直到发现目标或缩小到空树。节点的插入和删除操作，都需要首先调用查找算法，并根据查找结果确定后序的处理方式，因此这里引用方式传递子树根节点，为后续操作提供必要的信息</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b5608983626d2ddc209de34cfda228e8_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>效率：在二叉搜索树的每一层，查找算法至多访问一个节点，且只需常数时间，因此总体所需要时间应线性正比于查找路径的长度，或最终返回节点的深度，在最坏的情况下可以达到\omiga n的复杂度；由此我们得到汽水，若要控制单次查找在最坏情况下的运行时间，需要从二叉搜索树的高度入手，后面讨论的平衡二叉搜索树正是基于这个思路的改进</p>
+<h3 id="2-2-插入算法（Insert）"><a href="#2-2-插入算法（Insert）" class="headerlink" title="2.2 插入算法（Insert）"></a>2.2 插入算法（Insert）</h3><p>一般在二叉搜索树中插入新节点e的过程，可以描述为函数insert(): 它的过程是首先调用search() 查找e，如果返回位置非空，则说明已有雷同节点从，插入操作失败，否则x必然是_hot节点的某一个空孩子，于是创建这个孩子并存入e，之后更新全树的规模记录，并调用updateHeightAbove（）来更新x和历代祖先的高度</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-eee0f2d5e3d18221f28f22575828bdd5_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p><strong>效率</strong>： 主要小孩在对算法search()和updateHeightAbove()的调用，时间复杂度同样取决与新节点的深度，在最坏情况下不超过全树的高度</p>
+<h3 id="2-3-删除算法（Remove）"><a href="#2-3-删除算法（Remove）" class="headerlink" title="2.3 删除算法（Remove）"></a>2.3 删除算法（Remove）</h3><p>从二叉搜索树中删除节点，首先需要调用BST::search（）来判断目标点是否的确存在树中，如果存在则需要返回其位置，方能对其进行具体实施删除操作，在删除的过程中分为单分支情况和双分支情况</p>
+<p><strong>效率</strong>： 删除操作所需要的时间主要消耗在对search()、succ（）和updateHeightAbove（） 的调用，在树中的任何高度，它们都至多消耗O（1）时间，故总体的渐进时间复杂度也不会超过全树的高度</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-629e73c3dde09316fc07a5325b8b2d15_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h2 id="0x03-平衡二叉搜索树（Balanced-binary-search-tree）"><a href="#0x03-平衡二叉搜索树（Balanced-binary-search-tree）" class="headerlink" title="0x03 平衡二叉搜索树（Balanced binary search tree）"></a>0x03 平衡二叉搜索树（Balanced binary search tree）</h2><h3 id="3-1-树高和性能"><a href="#3-1-树高和性能" class="headerlink" title="3.1 树高和性能"></a>3.1 树高和性能</h3><p>根据对二叉搜索树的实现与分析，search()、insert()和remove（）等主要接口的运行时间，均线性正比于二叉搜索树的高度，在最坏情况下，二叉搜索树可能彻底退化为列表，此时查找效率甚至会降低O(n)，因此如果不能有效控制树高，实际性能比之前的向量和列表并没有明显的区别。</p>
+<p>为了描述出现这种最坏的情况的概率，这里使用平均复杂度的概念来看二叉搜索树的性能，使用两种常见的随机统计口径来进行分析</p>
+<ul>
+<li>随机生成(randomly generated)，在这种情况下可以看出二叉搜索树的平均高度为\Omega(LogN)</li>
+<li>随机组成(randomly composed)， 平均查找长度为 \Omega(\Sqrt(N))</li>
+</ul>
+<p><strong>对比两种情况，可以看出两种不同的统计口径中对于平衡二叉树的统计次数的重叠，在第一种平衡中会越是平衡的树越会被统计多次，因此相对而言，按照后面口径多得到的估计值更加可信。</strong></p>
+<h3 id="3-2-理想平衡和适度平衡"><a href="#3-2-理想平衡和适度平衡" class="headerlink" title="3.2 理想平衡和适度平衡"></a>3.2 理想平衡和适度平衡</h3><p>在之前看对于二叉树（Binary tree）的基本操作，比如search()、insert（）、remove（）的性能主要取决与树的高度，因此在节点数目固定的情况下，应当尽可能的降低高度，也就是尽可能的让兄弟子树的高度彼此接近，让全树更加平衡，比如对于包含n节点的二叉树，最理想的情况是高度为log_2N,这种就是理想平衡的情况；但是适当放松要求可以让我们得到比较好的效果，也就是适度平衡。</p>
+<p>比如将树高限制在渐进不超过O(logN),相比较严格的理想平衡二叉树会更加放松，这里介绍的AVL树、伸展树、红黑树、KD树等都属于适度平衡的类别，因此也可以归纳为平衡二叉搜索树（Balanced binary search tree）</p>
+<p><strong>平衡二叉搜索树的适度平衡性就是通过对树中每一个局部增加某种限制条件来保证的，</strong></p>
+<p>比如在红黑树中，从树根到叶节点的通路总是包含一样多的黑节点；</p>
+<p>比如在AVL树中，兄弟节点的高度相差不过1</p>
+<p>这种限制条件设定是非常精妙的，除了适度平衡性，还具有局部性</p>
+<ol>
+<li>经过单次动态修改操作后，至多之后O（logN）处局部不在满足限制条件</li>
+<li>可以在O(logN)的时间内，让这O（logN）处局部乃至全树重新满足限制条件</li>
+</ol>
+<p>由此来让失去平衡的二叉搜索树，必然可以迅速转换称为一颗等价的平衡二叉搜索树，等价二叉搜索树之间的转换过程称为等价交换</p>
+<h3 id="3-3-等价交换"><a href="#3-3-等价交换" class="headerlink" title="3.3 等价交换"></a>3.3 等价交换</h3><p>首先定义等价，也就是中序遍历相同的二叉树之间是等价的，这种特点可以概括为“上下可变，左右不乱”</p>
+<p>虽然二叉搜索树可以转换为理想平衡的完全二叉树，但是这种转换也是需要时间的，如何实现这种局部失衡的调整的同时来保证修复的速度？</p>
+<h3 id="3-4-旋转调整"><a href="#3-4-旋转调整" class="headerlink" title="3.4 旋转调整"></a>3.4 旋转调整</h3><p>最基本的修复手段就是通过围绕特定节点的选装来实现等价前提下的局部拓扑调整，也就是单旋和双旋，zig和zag</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a1e602f68196efaecacdfd80cc9e558e_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>zig和zag均属于局部操作，仅涉及常熟个节点及其之间的链接关系，故可以在常数时间内完成，在后面实现各种二叉搜索数平衡化算法是支撑性的基本操作。</p>
+<h2 id="0x04-平衡二叉搜索树（BBST，Balanced-binary-search-tree）的总结"><a href="#0x04-平衡二叉搜索树（BBST，Balanced-binary-search-tree）的总结" class="headerlink" title="0x04 平衡二叉搜索树（BBST，Balanced binary search tree）的总结"></a>0x04 平衡二叉搜索树（BBST，Balanced binary search tree）的总结</h2><p>本来直接看AVL的，但是由于太难了，不如在此对这一类的平衡二叉搜索树做一个总结，防止以后概念的混淆，同时在学习这些BBST的时候要注意基本概念产生的树的深度和算法（基本操作insert()、remove()、search() 之间的关</p>
+<ul>
+<li>AVL树，平衡二叉树之一，应用相对其他数据结构比较少，windows对进程地址空间的管理用到了AVL；由G. M. Adelson-Velsky和E. M. Landis不1962年収明[36] ，并以他们名字的首字母命名</li>
+<li>伸展树（Splay tree），按照“最常用者优先”的启发式策略，引入并实现伸展树，；由D. D. Sleator和R. E. Tarjan亍1985年发明</li>
+<li>B、B-、B+树，平衡多路查找树（查找路径不只两个），主要用在文件系统以及数据库中做索引等</li>
+<li>红黑树，广泛应用在C++STL中，比如map和set、Java的TreeMap</li>
+<li>KD-树结构，在四叉树（quadtree）和八叉树（octree）的一般性推广，是在计算几何类问题的求解的模式</li>
+</ul>
+<h3 id="4-1-AVL树"><a href="#4-1-AVL树" class="headerlink" title="4.1 AVL树"></a>4.1 AVL树</h3><p>在二叉查找树中，任一节点对应的两棵子树的最大高度差为 1，这样的二叉查找树称为平衡二叉树</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ebb252aab56216a47855577065619060_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>特点：</p>
+<p>尽管可以保证最坏情况下的单次操作速度，但需在节点中嵌入平衡因子等标识；更重要的是，删除操作之后的重平衡可能需做多 达(logn)次旋转，从而频繁地导致全树整体拓扑结构的大幅度变化。</p>
+<p>保持树平衡的目的是可以控制查找、插入和删除在平均和最坏情况下的时间复杂度都是O(log n)，相比普通二叉树最坏情况的时间复杂度是 O(n) ，AVL树把最坏情况的复杂度控制在可接受范围，非常合适对算法执行时间敏感类的应用。</p>
+<h3 id="4-2-伸展树（Splay-tree）"><a href="#4-2-伸展树（Splay-tree）" class="headerlink" title="4.2 伸展树（Splay tree）"></a>4.2 伸展树（Splay tree）</h3><p>1）刚刚被访问过的节点，极有可能在不久之后再次被访问到</p>
+<p>2）将被访问的下一节点，极有可能就处于不久之前被访问过的某个节点的附近</p>
+<p>特点：</p>
+<p>伸展树实现简便、无需修改节点 结构、分摊复杂度低，但可惜最坏情况下的单次操作需要(n)时间，故难以适用于核电站、医 院等对可靠性和稳定性要求极高的场合。</p>
+<h3 id="4-3-B、B-、B-树"><a href="#4-3-B、B-、B-树" class="headerlink" title="4.3 B、B-、B+树"></a>4.3 B、B-、B+树</h3><p>为此，需要充分利用磁盘之类外部存储器的另一特性：就时间成本而言，读取物理地址连续 的一千个字节，与读取单个字节几乎没有区别。既然外部存储器更适宜于批量式访问，不妨通过 时间成本相对极低的多次内存操作，来替代时间成本相对极高的单次外存操作。相应地，需要将 通常的二叉搜索树，改造为多路搜索树在中序遍历的意义下，这也是一种等价变换。</p>
+<p>特点：</p>
+<p>B树是所有节点的平衡因子均等于0的多路查找树（AVL树是平衡因子不大于 1 的二路查找树）。B 树节点可以保存多个数据，使得 B 树可以不用像 AVL 树那样为了保持平衡频繁的旋转节点。B树的多路的特性，降低了树的高度，所以B树相比于平衡二叉树显得矮胖很多。B树非常适合保存在磁盘中的数据读取，因为每次读取都会有一次磁盘IO，高度降低减少了磁盘IO的次数。</p>
+<h3 id="4-4-红黑树"><a href="#4-4-红黑树" class="headerlink" title="4.4 红黑树"></a>4.4 红黑树</h3><p>为此首先需在AVL树“适度平衡”标准的基础上，进一步放宽条件。实际上，红黑树 所采用的“适度平衡”标准，可大致表述为：任一节点左、右子树的高度，相差不得超过两倍</p>
+<p>特点：</p>
+<p>而节点的路径长度决定着对节点的查询效率，这样我们确保了，最坏情况下的查找、插入、删除操作的时间复杂度不超过O(log n)，并且有较高的插入和删除效率。</p>
+<h3 id="4-5-KD-树结构"><a href="#4-5-KD-树结构" class="headerlink" title="4.5 KD-树结构"></a>4.5 KD-树结构</h3><p>需要在理解多维查询的基础上查询</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5384ce42123e409bad5fc4f0d6a1e58b_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>循着上一节采用平衡二叉搜索树实现一维查询的构思，可以将待查询的二维点集组织为所谓 的kd-树（kd-tree）⑥结构。在任何的维度下，kd-树都是一棵递归定义的平衡二叉搜索树。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" class="category-chain-item">程序设计</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="print-no-link">#数据结构</a>
+      
+        <a href="/tags/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1/" class="print-no-link">#算法设计</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构和算法设计 Vol3</div>
+      <div>http://example.com/2024/04/29/数据结构和算法设计 Vol3/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80%20Vol4/" title="数据结构和算法基础 Vol4">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构和算法基础 Vol4</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/" title="操作系统导论">
+                        <span class="hidden-mobile">操作系统导论</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

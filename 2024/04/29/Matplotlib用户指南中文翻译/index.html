@@ -1,0 +1,883 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="用户指南   这份辅导指南包括最基本的使用方法和最好的训练帮助你开始使用matplotlib 12import matplotlib.pyplot as pltimport numpy as np  入门例子Matplotlib将你的图片在FIgure中绘制：包括一个或多个Axes（坐标轴，包括x-y坐标、极坐标、3D坐标） 最简单的是利用pyplot.subplots来创建一个包含坐标轴Axes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Matplotlib用户指南中文翻译">
+<meta property="og:url" content="http://example.com/2024/04/29/Matplotlib%E7%94%A8%E6%88%B7%E6%8C%87%E5%8D%97%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/index.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="用户指南   这份辅导指南包括最基本的使用方法和最好的训练帮助你开始使用matplotlib 12import matplotlib.pyplot as pltimport numpy as np  入门例子Matplotlib将你的图片在FIgure中绘制：包括一个或多个Axes（坐标轴，包括x-y坐标、极坐标、3D坐标） 最简单的是利用pyplot.subplots来创建一个包含坐标轴Axes">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3f7a90d412c61140e284529bd9edc0e2_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3f7a90d412c61140e284529bd9edc0e2_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-6cc5f2a20abd152c33aa45c6e1ab6cf6_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0039e23b44d9d1f634e25d034ad84168_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-59d0aace4e3f02c44744e6e5d96041c0_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-09e5141f6ff37b540dc7b48b000b98e3_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ed86111ea70044065f6746f7f4185670_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-e474c7e51beb325e6da552f1841138a5_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-743bc3c98ed3dc19c21230ac9301b26c_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4fc83de3e86baa034ec57623ee0f488c_1440w.png">
+<meta property="article:published_time" content="2024-04-29T08:09:05.000Z">
+<meta property="article:modified_time" content="2024-04-29T08:35:38.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="matplotlib">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3f7a90d412c61140e284529bd9edc0e2_1440w.png">
+  
+  
+  
+  <title>Matplotlib用户指南中文翻译 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Matplotlib用户指南中文翻译"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:09" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Matplotlib用户指南中文翻译</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>用户指南  </p>
+<p>这份辅导指南包括最基本的使用方法和最好的训练帮助你开始使用matplotlib</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs elm"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br></code></pre></td></tr></table></figure>
+
+<h2 id="入门例子"><a href="#入门例子" class="headerlink" title="入门例子"></a><strong>入门例子</strong></h2><p>Matplotlib将你的图片在<strong>FIgure</strong>中绘制：包括一个或多个Axes（坐标轴，包括x-y坐标、极坐标、3D坐标） 最简单的是利用<a target="_blank" rel="noopener" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots">pyplot.subplots</a>来创建一个包含坐标轴Axes的Figure，然后可以用<a target="_blank" rel="noopener" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.plot.html#matplotlib.axes.Axes.plot">Axes.plot</a>的方式绘制数据</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">fig</span>,ax=plt.subplots() #创建一个figure，包含一个坐标轴<br><span class="hljs-attribute">ax</span>.plot([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>])<span class="hljs-meta"></span><br><span class="hljs-meta">[&lt;matplotlib.lines.Line2D at 0x1270552e0&gt;]</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3f7a90d412c61140e284529bd9edc0e2_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>在一些其他的绘图语言或者工具中并不要求你创建一个坐标轴，比如Matlab中，直接使用plot。</p>
+<p>事实上，你可以同样实现在Matplotlib：对于任意一个Axes的绘图方法，都会有对应的方式在matplotlib.pyplot模块中让你可以在现有的坐标中中绘制。比如上面可以换写成：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">plt</span>.plot([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>])<span class="hljs-meta"></span><br><span class="hljs-meta">[&lt;matplotlib.lines.Line2D at 0x12727e400&gt;]</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3f7a90d412c61140e284529bd9edc0e2_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h2 id="Figure的组成"><a href="#Figure的组成" class="headerlink" title="Figure的组成"></a><strong>Figure的组成</strong></h2><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-6cc5f2a20abd152c33aa45c6e1ab6cf6_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h3 id="Figure"><a href="#Figure" class="headerlink" title="Figure"></a><strong>Figure</strong></h3><blockquote>
+<p>完整的Figure包括坐标轴Axes的所有字类，少量的特殊特质（title、figure legend等），以及绘图各种图形元素，其中创建Figure中至少要包含一个坐标轴</p>
+</blockquote>
+<p>可以用以下的方法创建Figure和Axes同时，也可以之后添加坐标轴来实现更加复杂的布局</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-attribute">fig</span>=plt.figure() #没有坐标轴的Figure<br>fig,<span class="hljs-attribute">ax</span>=plt.subplots() # 一个坐标轴的Figure<br>fig,<span class="hljs-attribute">axs</span>=plt.subplots(2,2) #四个坐标轴的Figure<br>&lt;Figure size 432x288 with 0 Axes&gt;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0039e23b44d9d1f634e25d034ad84168_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-59d0aace4e3f02c44744e6e5d96041c0_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h3 id="坐标轴Axes"><a href="#坐标轴Axes" class="headerlink" title="坐标轴Axes"></a><strong>坐标轴Axes</strong></h3><blockquote>
+<p>这就是认识到关于绘图plot的地方，这是数据空间的绘制区域。一个给定的Figure可能包含很多Axes，但是一个Axes必须包含在一个Figure中 每个二维坐标轴具有两个Axis对象，具有以下的功能：</p>
+</blockquote>
+<ul>
+<li>axes.Axes.set_xlim(   )</li>
+<li>axes.Axes.set_ylim(   )</li>
+<li>axes.Axes.set_title(   )</li>
+<li>axes.Axes.set_xlabel(   )</li>
+<li>axes.Axes.set_ylabel(   )</li>
+</ul>
+<h3 id="单根轴axis"><a href="#单根轴axis" class="headerlink" title="单根轴axis"></a><strong>单根轴axis</strong></h3><blockquote>
+<p>用于控制数据的上下限，数据的刻度ticks，以及对应刻度的名称ticklabels</p>
+</blockquote>
+<h2 id="object-oriented-interface-和-pyplot-interface"><a href="#object-oriented-interface-和-pyplot-interface" class="headerlink" title="object- oriented interface 和 pyplot interface"></a><strong>object- oriented interface 和 pyplot interface</strong></h2><p>在matplotlib中主要存在两种方式</p>
+<ul>
+<li>一种是制定特定的Figures和axes，之后在其中添加各种方法method（object- oriented）</li>
+<li>一种是依赖于pyplot，来管理figure和axes，利用pyplot- function来绘制（pyplot ）</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-attribute">x</span>=np.linspace(0,2,100)<br>fig,<span class="hljs-attribute">ax</span>=plt.subplots()<br>ax.plot(x,x,<span class="hljs-attribute">label</span>=<span class="hljs-string">&#x27;linear&#x27;</span>)<br>ax.plot(x,x*<span class="hljs-number">*2</span>,<span class="hljs-attribute">label</span>=<span class="hljs-string">&#x27;quad&#x27;</span>)<br>ax.plot(x,x*<span class="hljs-number">*3</span>,<span class="hljs-attribute">label</span>=<span class="hljs-string">&#x27;cubic&#x27;</span>)<br>ax.set_xlabel(<span class="hljs-string">&#x27;x label&#x27;</span>)<br>ax.set_ylabel(<span class="hljs-string">&#x27;y label&#x27;</span>)<br>ax.set_title(<span class="hljs-string">&#x27;Simple&#x27;</span>)<br>ax.legend()<br>&lt;matplotlib.legend.Legend at 0x1273fe850&gt;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-09e5141f6ff37b540dc7b48b000b98e3_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-attribute">x</span>=np.linspace(0,2,100)<br>plt.plot(x,x,<span class="hljs-attribute">label</span>=<span class="hljs-string">&#x27;linear&#x27;</span>)<br>plt.plot(x,x*<span class="hljs-number">*2</span>,<span class="hljs-attribute">label</span>=<span class="hljs-string">&#x27;quad&#x27;</span>)<br>plt.plot(x,x*<span class="hljs-number">*3</span>,<span class="hljs-attribute">label</span>=<span class="hljs-string">&#x27;cubic&#x27;</span>)<br>plt.xlabel(<span class="hljs-string">&#x27;x label&#x27;</span>)<br>plt.ylabel(<span class="hljs-string">&#x27;y label&#x27;</span>)<br>plt.title(<span class="hljs-string">&#x27;simple&#x27;</span>)<br>plt.legend()<br>&lt;matplotlib.legend.Legend at 0x127487760&gt;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ed86111ea70044065f6746f7f4185670_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>在matplotlib的官方教程中实例的实现方法中均包含其中两个方法，但是希望使用者可以选择其中的一个然后坚持使用它，这样才能熟练掌握，而不是将两者混淆。</p>
+<p>通常我们建议在jupyter notebook等即时可见中使用pyplot，而在脚本环境中使用oo方式</p>
+<blockquote>
+<p>Note from pylab import *这个方式已经被弃用了，这种方式现在并不鼓励使用，所以请删除</p>
+</blockquote>
+<h2 id="Backends-后段"><a href="#Backends-后段" class="headerlink" title="Backends 后段"></a><strong>Backends 后段</strong></h2><p>什么是backends？</p>
+<p>现在许多网站上大量的文档都存在“backend”这个词，许多新学者可能会被专用名词弄混淆。matplotlib旨在利用不同的backend得到不同的输出，不同的人使用不同的手段使用matplotlib，这种通过后端来交互、嵌入到其他用户图形接口中、web应用场景、批处理脚本中应用场景</p>
+<p>为了支持这些特殊场景，matplotlib可以设置不同的输出，这些设置变成为backedns</p>
+<ul>
+<li>第一种是user interface backends（PyQt&#x2F;PySide, PyGObject, Tkinter, wxPython, or macOS&#x2F;Cocoa）</li>
+<li>一种是输出格式 hardcopy backends（PNG, SVG, PDF, PS; also referred to as “non-interactive backends”）</li>
+</ul>
+<h2 id="第一种作为和其他系统的接口一般使用频率不大"><a href="#第一种作为和其他系统的接口一般使用频率不大" class="headerlink" title="第一种作为和其他系统的接口一般使用频率不大"></a>第一种作为和其他系统的接口一般使用频率不大</h2><p>制定图片格式并保存</p>
+<ul>
+<li>matplotlib.pyplot.savefig(‘filename’)</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs stylus">import numpy as np<br>import matplotlib<span class="hljs-selector-class">.pyplot</span> as plt<br><br>plt<span class="hljs-selector-class">.ion</span>()<br><span class="hljs-keyword">for</span> <span class="hljs-selector-tag">i</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>):<br>    plt<span class="hljs-selector-class">.plot</span>(np<span class="hljs-selector-class">.random</span><span class="hljs-selector-class">.rand</span>(<span class="hljs-number">10</span>))<br>    plt<span class="hljs-selector-class">.show</span>()<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-e474c7e51beb325e6da552f1841138a5_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-743bc3c98ed3dc19c21230ac9301b26c_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4fc83de3e86baa034ec57623ee0f488c_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" class="category-chain-item">程序设计</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Python/" class="print-no-link">#Python</a>
+      
+        <a href="/tags/matplotlib/" class="print-no-link">#matplotlib</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Matplotlib用户指南中文翻译</div>
+      <div>http://example.com/2024/04/29/Matplotlib用户指南中文翻译/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E9%98%85%E8%AF%BBintroduction%20to%20algorithms%E9%A1%BA%E5%BA%8F/" title="阅读introduction to algorithms顺序">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">阅读introduction to algorithms顺序</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E7%90%86%E5%B7%A5%E7%A7%91%E5%AD%A6%E7%94%9F%E4%BD%BF%E7%94%A8%20iPadPro2018%20%E7%9A%84%E6%80%BB%E7%BB%93/" title="理工科学生使用iPad Pro（2018）的总结">
+                        <span class="hidden-mobile">理工科学生使用iPad Pro（2018）的总结</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,898 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="集成学习是通过构建并结合多个学习器来完成学习任务，有时候也被称为多分类系统（multi- classifier system）、基于委员会的学习（committee based learning）等等之类的，在其中主要面临基本学习器的选择和训练过程，我们希望学习器可以在相同的数据集上训练，但是得到的最终的弱学习器最好的是相互独立的，这样才能提高我们最高算法的准确程度。 集成学习成立的基础是：基学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS229机器学习 集成学习 ｜ Vol8">
+<meta property="og:url" content="http://example.com/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%20%EF%BD%9C%20Vol8/index.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="集成学习是通过构建并结合多个学习器来完成学习任务，有时候也被称为多分类系统（multi- classifier system）、基于委员会的学习（committee based learning）等等之类的，在其中主要面临基本学习器的选择和训练过程，我们希望学习器可以在相同的数据集上训练，但是得到的最终的弱学习器最好的是相互独立的，这样才能提高我们最高算法的准确程度。 集成学习成立的基础是：基学习">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-52e362c38d83416ff5093fc9b7787116_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-16fc7815c5999f8082ba609838ca8c8a_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-25e39256fe8cd4502ade8a5a9c79d2f1_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-fed68e0739c70d75816dc16bb49a5d81_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7f7de7b989d0324742edb836942ed50d_1440w.jpg">
+<meta property="article:published_time" content="2024-04-29T08:38:37.000Z">
+<meta property="article:modified_time" content="2024-04-29T08:54:05.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="CS229">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-52e362c38d83416ff5093fc9b7787116_1440w.jpg">
+  
+  
+  
+  <title>CS229机器学习 集成学习 ｜ Vol8 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS229机器学习 集成学习 ｜ Vol8"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:38" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CS229机器学习 集成学习 ｜ Vol8</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>集成学习是通过构建并结合多个学习器来完成学习任务，有时候也被称为多分类系统（multi- classifier system）、基于委员会的学习（committee based learning）等等之类的，在其中主要面临基本学习器的选择和训练过程，我们希望学习器可以在相同的数据集上训练，但是得到的最终的弱学习器最好的是相互独立的，这样才能提高我们最高算法的准确程度。</p>
+<p>集成学习成立的基础是：基学习器的误差相互独立，因此这也是我们在集成方法中需要尽可能的去实现的，因此本文从基本的方法和以决策树作为一系列基学习器开始</p>
+<h2 id="0x01-引言"><a href="#0x01-引言" class="headerlink" title="0x01 引言"></a>0x01 引言</h2><p>在任何应用中，我们都可以使用多个学习算法汇总的一个，使用确定的算法都在一组<strong>基本假设</strong>，并训练得到影响最终学习器的超参数，因此可以尝试使用构建多个彼此不同的学习器，尽可能的减少它们之间误差的相关性来通过某种策略的组合来提升模型的效果，如何构建不同的学习器？</p>
+<ol>
+<li>使用不同的算法和数据集，比如使用参数化的逻辑回归和非参数化的决策树模型，这样多算法的学习器之间的误差是可能独立的；对于相同的参数化的模型也可以采用不同的超参数，比如对于K-means算法可以在不同的算法选择不同的k值；同样对于不同的算法模型中选择不同的数据集是也可以产生不同的学习器，因此可以使用自助法等构建彼此相互独立数据集的基础上来训练得到不同的算法模型</li>
+<li>使用一些特殊的策略，包括但不限于：平均法（averaging）、投票法（voting）、学习法（learning）</li>
+<li>使用一些特殊的策略，包括但不限于：bagging（典型模型：随机森林random forest）和boosting（典型模型：Adaboost、GB）</li>
+</ol>
+<h2 id="0x02-集成学习-–-不同的模型"><a href="#0x02-集成学习-–-不同的模型" class="headerlink" title="0x02  集成学习 – 不同的模型"></a>0x02  集成学习 – 不同的模型</h2><p>比较简单，看0x01引言–第一点</p>
+<h2 id="0x03-集成学习–-不同的策略"><a href="#0x03-集成学习–-不同的策略" class="headerlink" title="0x03 集成学习– 不同的策略"></a>0x03 集成学习– 不同的策略</h2><p>3.1 平均法averaging（回归器）</p>
+<p>对于数值型常用的结合策略是平均法，又可以分为简单平均法（simple average）和加权平均法（weighted average）</p>
+<p>虽然看名字可能就知道这个代表是什么，但是对于加权平均法其中最重要的是权重的确定，或许可以根据多元高斯分布来确定由近及远的权重、可以根据专家打分的德尔菲法、可以有迷糊的一致性矩阵计算得到的AHP、Kalman filter中检测和状态转移的估计等得到的权重，无论是何种方法最重要的是可以得到一个令自己满意、顶得住别人argue的处理方法</p>
+<p>加权平均方法被用于集成学习可以被看作是集成学习研究的基本出发点，对给定的基学习器，不同的学习方法可以视作通过不同的方式来确定加权平均法中的基学习器的权重。</p>
+<p>3.2 投票法voting（分类器）</p>
+<p>投票的方式本质上和回归的平均法是类似的，但是因为class是可以数清楚的，因此可以分为绝对多数投票法（majority voting）、相对多数投票法（plurality voting）、加权投票法（weighed voting）、</p>
+<p>3.3 学习法</p>
+<p>当训练数据很多的时候，一种更为强大的结合策略是使用学习法，通过另外一种学习器来进行结合</p>
+<p>stacking是学习法的典型代表，在这里将个体学习称为初级学习器，用于结合的学习器称为次级学习器或者元学习器（meta- learner），stacking先从初始数据集和中训练得到初级学习器，然后“生成“一个新的数据集来训练次级学习器，在这个新的数据集中，初级学习器的输出被当作样例来输入特征，而初始样本的标记被当作样例标记，这里的假设是初级学习器是使用不同学习算法得到的不同的模型，参考周志华-《机器学习》代码</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-52e362c38d83416ff5093fc9b7787116_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>可以看出，其中的次级学习算法可以看出是一种自适应adaptive的权重调整方法，同时这种权重是通过一个学习器来训练得到的，抛弃其中的数学原理不谈，这里常用的包括多响应线性回归Multi- response Linear regression和贝叶斯模型平均Bayes Model AVeraging BMA等效果较好</p>
+<h2 id="0x04-集成学习–-特殊的概念"><a href="#0x04-集成学习–-特殊的概念" class="headerlink" title="0x04 集成学习– 特殊的概念"></a>0x04 集成学习– 特殊的概念</h2><p>在集成学习中最晦涩的就是boosting和bagging（bootstrap aggregating）两种方法</p>
+<h3 id="4-1-bagging（有放回称为bagging、无放回的称为pasting）"><a href="#4-1-bagging（有放回称为bagging、无放回的称为pasting）" class="headerlink" title="4.1 bagging（有放回称为bagging、无放回的称为pasting）"></a>4.1 bagging（有放回称为bagging、无放回的称为pasting）</h3><p>同样是根据希望的得到不同基训练模型，因此我们可以对相同的学习器来赋予不同的训练集来得到不同的模型，但是由于数据集是有限的，因此如果数据集完全隔离开，这样训练得到的学习器必然是不好的（或者说是不够好的），如果我们想尽可能的好的得到独立同时效果也好的学习模型，[可以参考之前对模型评估](<a target="_blank" rel="noopener" href="https://blog.tjdata.site/2022/02/25/Andrew">https://blog.tjdata.site/2022/02/25/Andrew</a> Wu-番外02-机器学习的实验设计&#x2F;)中的样本的自助法选择（bootstrap sampling）来得到相互独立数据集得到的不同学习模型；在此基础上得到的结果可以使用<strong>简单平均策略</strong>或者<strong>简单投票</strong>来得到最终的结果</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-16fc7815c5999f8082ba609838ca8c8a_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>从bias&#x3D;variance的角度来看，bagging主要集中在降低方差 </p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-25e39256fe8cd4502ade8a5a9c79d2f1_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h3 id="4-2-boosting"><a href="#4-2-boosting" class="headerlink" title="4.2 boosting"></a>4.2 boosting</h3><p>是一类可以将弱学习器提升为强学习器的算法，这种算法的工作机制类似：先从初始训练集训练得到一个基学习器，再根据基学习器的表现对训练样本分布进行调整，使得先前基学习器做错的训练样本再后续受到跟多关注，然后基于调整后的样本分布是的先前基学习器做错的训练样本再后续收到更多的关注，然后使用基于调整后的样本分布来训练下一个基学习器，如此重复进行，直到基学习器数目达到来事先制定的值，最终将这些基学习器进行加权结合</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-fed68e0739c70d75816dc16bb49a5d81_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>从bias- variance的角度来看，boosting主要集中在降低偏差</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7f7de7b989d0324742edb836942ed50d_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>（这里感觉书上讲的还是比较模糊的，主要在后面的实际例子中看）</p>
+<h3 id="4-3-bagging和boosting的区别"><a href="#4-3-bagging和boosting的区别" class="headerlink" title="4.3 bagging和boosting的区别"></a>4.3 bagging和boosting的区别</h3><ol>
+<li>从样本选择角度</li>
+<li>从样本的权重</li>
+<li>从预测函数的权重</li>
+<li>从计算的角度</li>
+</ol>
+<h2 id="0x05-实际例子"><a href="#0x05-实际例子" class="headerlink" title="0x05 实际例子"></a>0x05 实际例子</h2><h3 id="5-1-投票法"><a href="#5-1-投票法" class="headerlink" title="5.1 投票法"></a>5.1 投票法</h3><p>一个比较简单的例子</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment">## 集成学习需要得到的是不相关的预测器</span><br><span class="hljs-comment"># 可以使用不同的学习器</span><br><span class="hljs-comment"># 可以使用不同的数据来训练得到不同的学习器</span><br><span class="hljs-comment"># 一些特殊的方法bagging和boosting</span><br><span class="hljs-comment">#%%</span><br><span class="hljs-keyword">from</span> sklearn.datasets import make_moons<br><span class="hljs-keyword">from</span> sklearn.model_selection import train_test_split<br>x,<span class="hljs-attribute">y</span>=make_moons(n_samples=100,noise=0.25)<br>x_train,x_val,y_train,<span class="hljs-attribute">y_val</span>=train_test_split(x,y,test_size=0.2)<br><span class="hljs-comment">#%%</span><br><span class="hljs-comment">## vote</span><br><span class="hljs-keyword">from</span> sklearn.ensemble import RandomForestClassifier<br><span class="hljs-keyword">from</span> sklearn.ensemble import VotingClassifier<br><span class="hljs-keyword">from</span> sklearn.linear_model import LogisticRegression<br><span class="hljs-keyword">from</span> sklearn.svm import SVC<br><br><span class="hljs-comment">#%%</span><br><span class="hljs-attribute">lr_clf</span>=LogisticRegression()<br><span class="hljs-attribute">rnd_clf</span>=RandomForestClassifier()<br><span class="hljs-attribute">svm_clf</span>=SVC()<br><span class="hljs-comment">#%%</span><br><span class="hljs-attribute">voting_clf</span>=VotingClassifier(estimators=[(<span class="hljs-string">&#x27;lr&#x27;</span>,lr_clf),(<span class="hljs-string">&#x27;rf&#x27;</span>,rnd_clf),(<span class="hljs-string">&#x27;svc&#x27;</span>,svm_clf),],<span class="hljs-attribute">voting</span>=<span class="hljs-string">&#x27;hard&#x27;</span>)<br><span class="hljs-comment">#%%</span><br>voting_clf.fit(x_train,y_train)<br><span class="hljs-keyword">from</span> sklearn.metrics import accuracy_score<br><span class="hljs-keyword">for</span> clf <span class="hljs-keyword">in</span> (lr_clf,rnd_clf,svm_clf,voting_clf):<br>    clf.fit(x_train,y_train)<br>    <span class="hljs-attribute">y_pred</span>=clf.predict(x_val)<br>    <span class="hljs-built_in">print</span>(accuracy_score(y_val,y_pred))<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-2-随机森林-random-forest（based-on-bagging）"><a href="#5-2-随机森林-random-forest（based-on-bagging）" class="headerlink" title="5.2 随机森林 random forest（based on bagging）"></a>5.2 随机森林 random forest（based on bagging）</h3><p>随机森林就是使用许多个决策树来集成得到最终的结果，论文最早发布与1997年的如下，他是如何将有放回的抽样应用到决策树CART中的呢？（这或许是随机森林学习的重点），以及具体的实践方法，其中的数学原理可能比较困难</p>
+<p>Paper：<a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1023/A:1010933404324">Amit, Y., &amp; Geman, D. (1997). Shape quantization and recognition with randomized trees. Neural computation, 9(7), 1545-1588.</a></p>
+<p>API:<a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">sklearn.ensemble.RandomForestClassifier</a></p>
+<p>回顾之前关于实现<a target="_blank" rel="noopener" href="https://blog.tjdata.site/2022/02/20/Andrew-Wu%E5%9F%BA%E6%9C%AC%E6%A8%A1%E5%9E%8B03-%E5%86%B3%E7%AD%96%E6%A0%91CART/">决策树模型的过程</a>，它是一个很简单的过程，一种采用递归思想的算法，在不考虑最终停止的条件，它总是从现有的特征集中选择最好的特征来进行模型的分割，然后删除这个特征进行下一次递归，那么随机森林在这个过程中做了什么优化呢？</p>
+<ol>
+<li>样本的角度，在训练决策树中并不选择所有的样本训练，利用bootstrap的方法来有放回的抽取数据集来训练不同的决策树（decision tree）</li>
+<li>特征的角度，传统的decision tree由上述的描述可以看出它实际上是一种没有放回抽样（why？），那么随机森林的改进就是每次不删除特征集，而是随机选择一定属性的特征（比如原始特征集的10%）来选择其中最佳的特征来进行模型的分割一直到不能再分裂为止</li>
+</ol>
+<p>模型的优点</p>
+<ol>
+<li>有可以做出高纬度的数据、并且不用降纬，不需要做特征选择</li>
+<li>可以判断特征的重要程度、特征之间的相互影响</li>
+<li>训练速度可以很快，做成一种并行处理的方法</li>
+<li>对于不均衡的数据可以平衡误差</li>
+</ol>
+<p>模型的缺点</p>
+<ol>
+<li>被证明在某些noise比较大的分类或回归问题中会产生过拟合</li>
+<li>对于不同取之的属性的数据，取值划分较多的属性会对随机森林产生更大的影响，所以随机森林在这种数据上产生的属性权重是不可信的</li>
+</ol>
+<h3 id="5-3-Adaboost（based-on-boosting，short-for-adaptive-boosting）"><a href="#5-3-Adaboost（based-on-boosting，short-for-adaptive-boosting）" class="headerlink" title="5.3 Adaboost（based on boosting，short for adaptive boosting）"></a>5.3 Adaboost（based on boosting，short for adaptive boosting）</h3><p>自适应增强学习Adaboost是如何将boosting的方法使用在训练的过程中呢？总的来看它考虑如何通过更加规则（而不是随机）的方式来得到更加有效的基学习器的训练，并采用一定的策略来加权所有的预测</p>
+<p>Paper：<a target="_blank" rel="noopener" href="https://www.face-rec.org/algorithms/Boosting-Ensemble/decision-theoretic_generalization.pdf">Freund, Y., &amp; Schapire, R. E. (1997). A decision-theoretic generalization of on-line learning and an application to boosting. Journal of computer and system sciences, 55(1), 119-139.</a></p>
+<p>API：<a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html">sklearn.ensemble.AdaBoostClassifier</a></p>
+<p>Adaboost的算法可以简述为三个步骤：</p>
+<ol>
+<li>初始化数据集，这里保证数据集中的每个样本的数据的权重是相同的</li>
+<li>在第N次的训练中，得到原始标签和模型的输出，如果预测是正确的那么在下一次训练中需要降低它的权重、如果预测是错误的则需要提升它的权重，在进行N+1学习器的训练</li>
+<li>在综合最终的结果就是对每个阶段的学习器进行加权平均，如何加权呢？根据正确率来判断，正确率高的权重大</li>
+</ol>
+<p>模型的优点：这里参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/41536315">https://zhuanlan.zhihu.com/p/41536315</a></p>
+<ol>
+<li>很好的利用弱分类器进行级联cascade</li>
+<li>可以将不同的分类算法作为弱分类器</li>
+<li>AdaBoost具有很高的精度</li>
+<li>可以充分考虑每个分类器的权重（也就是加权平均中权的选择合理）</li>
+</ol>
+<p>模型的缺点：</p>
+<ol>
+<li>模型的迭代次数不好设计，可以使用交叉验证来进行确定</li>
+<li>数据不平衡导致分类精度下降</li>
+<li>由于不能并行训练，因此计算时间比较长</li>
+</ol>
+<h3 id="5-4-GB（gradient-boosting，based-on-boosting-and-slightly-bagging）"><a href="#5-4-GB（gradient-boosting，based-on-boosting-and-slightly-bagging）" class="headerlink" title="5.4 GB（gradient boosting，based on boosting and slightly bagging）"></a>5.4 GB（gradient boosting，based on boosting and slightly bagging）</h3><p>有一点复杂2022-03-28还没有完全搞清楚梯度提升（gradient boosting），其算法实现主要分为XGBoost和LightGBM，从boosting算法的角度是必须串行计算的，但是在工程的实际应用中可以使用一些<strong>稀奇古怪</strong> 的方法来反复使用其中的一些东西来并行计算提高计算效率</p>
+<p>Paper：<a target="_blank" rel="noopener" href="http://luthuli.cs.uiuc.edu/~daf/courses/Opt-2017/Papers/2699986.pdf">Friedman, J. H. (2001). Greedy function approximation: a gradient boosting machine. Annals of statistics, 1189-1232.</a></p>
+<p>一些工业化的实现：</p>
+<p>lightGBM：<a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper/2017/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">https://proceedings.neurips.cc/paper/2017/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf</a></p>
+<p>XGBoost：<a target="_blank" rel="noopener" href="https://www.kdd.org/kdd2016/papers/files/rfp0697-chenAemb.pdf">Chen, T., &amp; Guestrin, C. (2016, August). Xgboost: A scalable tree boosting system. In Proceedings of the 22nd acm sigkdd international conference on knowledge discovery and data mining (pp. 785-794).</a></p>
+<p><strong>存疑</strong>：GBDT（采用decision tree作为基学习器的GB算法）的核心是学习之前每棵树结论和的残差，这个残差就是一个加预测值后能得到的真实值的累加量，这里相比Adaboost的优点</p>
+<ol>
+<li>与Adaboost算法不同的是，梯度提升在迭代每一步构建一个能够沿着梯度最陡的方向降低损失来弥补现有模型的不足</li>
+<li>经典的Adaboost的算法只能采用指数损失函数的二分类学习任务，而梯度提升可以通过不同的可微损失函数来处理各类学习任务（multi-class、regression、rank）</li>
+<li>Adaboost中对异常点比较敏感，而梯度提升算法通过引入bagging的思想、正则化可以提升robust</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="print-no-link">#机器学习</a>
+      
+        <a href="/tags/CS229/" class="print-no-link">#CS229</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS229机器学习 集成学习 ｜ Vol8</div>
+      <div>http://example.com/2024/04/29/CS229机器学习 集成学习 ｜ Vol8/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA%E6%80%BB%E7%BB%93%20%EF%BD%9CVol9/" title="CS229机器学习 学习理论总结 ｜Vol9">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS229机器学习 学习理论总结 ｜Vol9</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/29/zotero%20%E6%96%87%E7%8C%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/" title="zotero 文献管理实战">
+                        <span class="hidden-mobile">zotero 文献管理实战</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

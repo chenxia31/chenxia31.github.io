@@ -1,0 +1,963 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在应用层我们可以解释数据传输的目的、在运输层分析可以看出两个主机进程之间逻辑通信、在本次的网络层将涉及主机与主机之间的通信服务是如何实现的。由于网络层的复杂性，其可以分为数据层面和控制层面。 0x01 运输层overview假设从H1向H2转送信息  H1中的网络层取得来自于H1运输层的报文段，将每个报文段封装成一个数据报，然后向相邻路由器R1发送数据， 在网络中经过多个路由器的转发和控制，到达接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络 Vol4 ｜ 网络层协议">
+<meta property="og:url" content="http://example.com/2024/04/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20Vol4%20%EF%BD%9C%20%E7%BD%91%E7%BB%9C%E5%B1%82%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="在应用层我们可以解释数据传输的目的、在运输层分析可以看出两个主机进程之间逻辑通信、在本次的网络层将涉及主机与主机之间的通信服务是如何实现的。由于网络层的复杂性，其可以分为数据层面和控制层面。 0x01 运输层overview假设从H1向H2转送信息  H1中的网络层取得来自于H1运输层的报文段，将每个报文段封装成一个数据报，然后向相邻路由器R1发送数据， 在网络中经过多个路由器的转发和控制，到达接">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ebed608b9c5291b117a61b30d80b1e71_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-9a5ed44fb2d5310ac9b15c4f09cd34e0_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-34f3a8e09cc2b824110415ea6a36a920_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5bc238a749b53544103f694aca367258_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c9e704fe4f780c176e3f54f2534ff665_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-f267f2d0a0ae085421d2eb45ec5f472a_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-876d5895df299a9ee96cac23a5c2ca0a_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ac47b57633fdade989eef483214d55e7_1440w.jpg">
+<meta property="article:published_time" content="2024-04-29T08:56:00.000Z">
+<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="计算机网络">
+<meta property="article:tag" content="网络层">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ebed608b9c5291b117a61b30d80b1e71_1440w.png">
+  
+  
+  
+  <title>计算机网络 Vol4 ｜ 网络层协议 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算机网络 Vol4 ｜ 网络层协议"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:56" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">计算机网络 Vol4 ｜ 网络层协议</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在应用层我们可以解释数据传输的目的、在运输层分析可以看出两个主机进程之间逻辑通信、在本次的网络层将涉及主机与主机之间的通信服务是如何实现的。由于网络层的复杂性，其可以分为数据层面和控制层面。</p>
+<h3 id="0x01-运输层overview"><a href="#0x01-运输层overview" class="headerlink" title="0x01 运输层overview"></a>0x01 运输层overview</h3><p>假设从H1向H2转送信息 </p>
+<p>H1中的网络层取得来自于H1运输层的报文段，将每个报文段封装成一个数据报，然后向相邻路由器R1发送数据， 在网络中经过多个路由器的转发和控制，到达接收方的路由器；</p>
+<p>在网络的过程中每台路由器的功能是从输入链路向输出链路的转变；控制层面是协调本地的路由器转发动作，然后整个过程的数据报沿着origin和end主机之间的路由器路径进行主机之间端到端传送。 </p>
+<p>在接收方主机H2收到来自相邻路由器的R2的数据报，提取出运输层的数据段，并将其上交给H2的运输层，在传递给应用层</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ebed608b9c5291b117a61b30d80b1e71_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>转发（forwarding）：指的将分组从一个输入链路接口转移到适当的输出链路接口的路由本地工作</p>
+<p>路由选择（routing）：确定分组从origin到end次的网络范围处理过程</p>
+<p>转发表（forwarding table）：路由器检查到达分组首部的一个或多个字段值，进而实现这些首部值在其转发表中索引，通过这种方法来转发分组</p>
+<p>转发表制定的方法？？</p>
+<ol>
+<li>传统方法，路由器中物理存在的所有转发表的内容是由人类网络操作员直接配置的</li>
+<li>SDN方法，远程控制器计算和分发转发表来供每台路由器选择；这个需要设计在具有高可靠性和冗余性的远程数据中心，由IDP或者第三方管理。此时路由器和远程控制器之间的通信通过软件定义网络（software defined networking，SDN）来控制</li>
+</ol>
+<h3 id="0x02-运输层分析"><a href="#0x02-运输层分析" class="headerlink" title="0x02 运输层分析"></a>0x02 运输层分析</h3><p>我们可以用开阔的视野来专注于我们引入的新东西并考虑网络层可能提供的不同类型的服务；在这样一个复杂的情况中可能存在的问题包括：</p>
+<ol>
+<li>运输层如何将多个分组交付给目的地？</li>
+<li>运输层之后是否可以保持顺序？</li>
+<li>发送两个分组和接收分组的时间间隔相同吗？</li>
+<li>网络层如何提供拥塞的信息给运输层？</li>
+<li>在发送主机和接收主机之间连接运输层通道的抽象特性是什么？</li>
+<li>&#x3D;&#x3D;&#x3D;</li>
+</ol>
+<p>这些答案都是对网络层提供的服务模型进行描述所决定。网络服务模型（network service model）定义数据分组在分送与接收端系统之间端到端的运输特性</p>
+<p>我们<strong>首先</strong>考虑网络层所能提供可能的服务：</p>
+<ol>
+<li>确保交付，该服务确保分组将最终到达目的地</li>
+<li>时延上界，在特定的主机与主机之间的最大延迟</li>
+<li>有序分组交付，确保分组按照发送顺序到达目的地</li>
+<li>确保最小带宽，模仿发送和接收按照特定速率传输链路</li>
+<li>安全性，网络层能够在源加密所有数据报，并在目的地解密这些分组</li>
+<li>以及一些其他的方式</li>
+</ol>
+<p>但是！因特网的网络层只提供一种服务，尽力而为服务（best- effort service）；其他的网络体系结构定义和实现了超过因特网尽力而为服务的服务模型，例如ATM网络体系实现了确保顺序恶化时间延迟、有边界时延迟的确保足校带宽、以及一些继承服务体系结构提供端到端的时延保证。但是因特网这种尽力而为的服务模型已经被证明足够好。</p>
+<p>后面我们将讨论：</p>
+<ul>
+<li>路由器内部硬件操作，包括输入和输出分组、内部交换机制以及分组排队和调度 </li>
+<li>传统的ip转发，其中分组基于它们的目的IP地址转发到输出端口，将学习到IP寻址</li>
+</ul>
+<p>以及更近一步的一般转发，基于大量首部值来转发到输出端口</p>
+<p>转发和交换两个术语；约定</p>
+<ul>
+<li>分组交换机：指的是一台通用分组交换，根据分组首部字段的值，从输入链路转移到输出分组 </li>
+<li>链路层交换机：根据链路帧中的字段值做出转发决定 </li>
+<li>路由器（router）：其他的分组交换机称为路由器，基于网络层的数据报中的首部字段值做出转发决定</li>
+</ul>
+<h3 id="0x03-路由器工作原理"><a href="#0x03-路由器工作原理" class="headerlink" title="0x03 路由器工作原理"></a>0x03 路由器工作原理</h3><ol>
+<li>输入端口（input port）（硬件）</li>
+<li>执行进入 物理链路的物理层功能</li>
+<li>链路远端的数据链路层交互来执行数据链路层功能</li>
+<li>输入端口需要执行查找功能</li>
+<li>对于控制分组从输入端口转发到路由选择处理器</li>
+<li>交换结构（switch）（硬件）</li>
+<li>将路由器的输入端口连接到输出端口</li>
+<li>网络路由器内部网络</li>
+<li>输出端口（output port）（硬件）</li>
+<li>存储从交换结构接收的分组，并执行必要的链路层和物理层功能</li>
+<li>路由选择处理器（router select process）</li>
+<li>传统控制，执行路由选择协议、维护路由选择表与关联链路状态信息</li>
+<li>SDN控制，与远程控制器通信、输入输出端口安装表项</li>
+</ol>
+<p>为什么路由器需要使用硬件实现？比如10Gpbs和64字节为单位的IP数据报，其输入端口在另一个数据报到达之间只有51.2ns来处理数据报，如果N各端口结合在一块线路卡上，数据处理速率必须以N倍速率来运行，远远超过软件实现的速率；数据层面以ms或者s的方面运行，执行包括路由选择协议、上下线路响应、远程控制通信和执行管理功能</p>
+<p>在深入讨论路由器内部细节之前，我们需要明确路由器处理需要什么信息？</p>
+<ol>
+<li>有目的地转发</li>
+<li>通用转发</li>
+</ol>
+<h3 id="3-1-输入端口处理和基于目的地转发"><a href="#3-1-输入端口处理和基于目的地转发" class="headerlink" title="3.1  输入端口处理和基于目的地转发"></a>3.1  输入端口处理和基于目的地转发</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-9a5ed44fb2d5310ac9b15c4f09cd34e0_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20220628112516078</p>
+<ol>
+<li>线路端接</li>
+<li>数据链路处理（协议、拆封）</li>
+<li>查找、转发、排队</li>
+<li>交换结构</li>
+</ol>
+<p>首先看出一个最基本的例子，路由器的输入端口分为四条链路，我们不必对路由器的映射包括40亿可能存在的地址；我们可以设置不同的匹配原则来进行交换，但是由于IP地址编码的存在，我们需要使用最大前缀匹配规则（longest prefix matching rule）来进行匹配</p>
+<p>在转发表确定的此技术，查找是简单的，也就是实现硬件逻辑下的最大前缀IP，但是在Gpbs速率下，这种查找必须在ns执行，因此必须要用硬件执行查找、还需要对大型转发表使用超出简单线性搜索技术，硬件常时间DRAM、SRAM、TCAM等</p>
+<p>确定分组的输出端口，该分组能够发送进入交换结构，如果其他分组正在使用，我们在进入交换结构时候暂时阻塞，因此一个被阻塞的分组必须在输入端口出排队，并等待稍后被及时调度来通过交换结构</p>
+<ol>
+<li>必须出现物理层和链路层处理</li>
+<li>必须检查分组的版本号、检验和以及寿命字段，并且重写这两个字段</li>
+<li>必须更新用户网络管理的计数器</li>
+</ol>
+<p>匹配+动作</p>
+<h3 id="3-2-交换"><a href="#3-2-交换" class="headerlink" title="3.2  交换"></a>3.2  交换</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-34f3a8e09cc2b824110415ea6a36a920_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20220628112544656</p>
+<p>三种交换技术</p>
+<ol>
+<li>内存交换</li>
+<li>总线交换</li>
+<li>互联网络交换</li>
+</ol>
+<h3 id="3-3-输出端口处理"><a href="#3-3-输出端口处理" class="headerlink" title="3.3 输出端口处理"></a>3.3 输出端口处理</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5bc238a749b53544103f694aca367258_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20220628112552623</p>
+<h3 id="3-4-排队分析"><a href="#3-4-排队分析" class="headerlink" title="3.4 排队分析"></a>3.4 排队分析</h3><p>在输入端口和输出端口都会出现排队的现象，当路由器的缓存空间耗尽的时候就会出现丢包的现象</p>
+<p>那么在什么情况下（输入速率、N和交换速率）在多少的时候会出现拥堵？如何缓解拥堵现象？</p>
+<ol>
+<li>输入排队：线路前部阻塞（HOL head of the line）</li>
+<li>输出排队，弃尾（drop tail）、以及提供主动队列管理（active queue management，AQM算法）、随机早期检测（Random Early Detection，RED）</li>
+</ol>
+<h3 id="3-5-分组调度"><a href="#3-5-分组调度" class="headerlink" title="3.5  分组调度"></a>3.5  分组调度</h3><p>排队的分组如何经输出链路传输的问题，这里存在一些基本的规则</p>
+<ol>
+<li>先进先出</li>
+<li>优先权排序 priority queuing</li>
+<li>循环排序规则 round robin queueing discipline</li>
+</ol>
+<h3 id="0x04-网络层协议-–-网际协议（IPv4、IPv6）"><a href="#0x04-网络层协议-–-网际协议（IPv4、IPv6）" class="headerlink" title="0x04 网络层协议 – 网际协议（IPv4、IPv6）"></a>0x04 网络层协议 – 网际协议（IPv4、IPv6）</h3><h3 id="4-1-IPv4数据报格式"><a href="#4-1-IPv4数据报格式" class="headerlink" title="4.1 IPv4数据报格式"></a>4.1 IPv4数据报格式</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c9e704fe4f780c176e3f54f2534ff665_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20220628112708344</p>
+<p>关键字段分析</p>
+<ol>
+<li>版本号</li>
+<li>首部长度</li>
+<li>服务类型TOS</li>
+<li>数据报长度，因为该字节为16bit，所以IP数据报理论长度为65536；但是一般很少超过1500</li>
+<li>标识、标志、片偏移，与IP分区有关，但是IPv6不允许分组</li>
+<li>寿命TTL，time to live</li>
+<li>协议，比如6标识TCP、17表示UDP；协议号类似运输层报文段中端口号字段起到的作用</li>
+<li>首部检验和</li>
+<li>源和目标IP地址</li>
+<li>选项，意味着IP首部允许被拓展</li>
+<li>数据，有效载荷，处理TCP、UDP还包括ICMP等协议</li>
+</ol>
+<h3 id="4-2-IPv4数据报切片"><a href="#4-2-IPv4数据报切片" class="headerlink" title="4.2 IPv4数据报切片"></a>4.2 IPv4数据报切片</h3><p>网络层下面的链路层的不同，其承载网络分组的长度也不同，有的协议能承载大数据报、有的协议只能承载小的分组。比如以太网不能超过1500字节、某些广域网不能超过576字节，这个被称为最大传送单元（Maximum Transmission Unit，MTU）</p>
+<p>为了保证在所以的链路中都可以传输，我们需要将IP数据报中的数据分片成多个较小的IP数据报，用单独的链路层帧（Frame）来封装这些较小的IP数据报，然后通过输出链路发送这些帧，每个较小的数据报称为片（Fragment）</p>
+<h3 id="4-3-IPv4编址"><a href="#4-3-IPv4编址" class="headerlink" title="4.3 IPv4编址"></a>4.3 IPv4编址</h3><p>在讨论IP编址之前，我们简要了解主机与路由器接入网络的方法，一台主机通常只有一条链路连接到网络，当主机中的IP想发送一个数据报，他就需要在该链路发送，这件称为接口（interface）；路由器由于是网络中的设置，因此具有多个接口；同时因为主机和路由器都可以发送和接收IP数据报，因此都需要拥有自己的iP地址，从技术上说，IP地址与一个接口相关联，而不是与包括该接口的主机或路由器相关联</p>
+<p>IPv4采用点分十进制记法，比如192.168.0.1</p>
+<p>在全球因特网中每台主机和路由器上的每个接口都必须有全球唯一的IP地址（在NAT后面的接口除外），这些地址不能随意自由选择</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-f267f2d0a0ae085421d2eb45ec5f472a_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20220628112808159</p>
+<p>互联这主机接口和路由器接口形成一个子网（subnet），IP编址为这个子网分配一个地址，223.1.1.0&#x2F;24.称为子网掩码（network mask）</p>
+<p>因特网的地址分配策略为无类别域间路由选择（Classless interDomain routing，CIDR）将子网寻址概念化为a.b.c.d&#x2F;x 构成IP地址的网络部分；网络中剩余的32-x比特被认为是用于区分该组织内部设置的，其中的额所有的设备具有相同的前缀</p>
+<p>在CIDR被采用之前，IP地址的网络部分为选址为8、16、24比特，称为分类编址（classful addressing），称为A、B和C类网络，但是C类网络只能使用254台、B类可以65534太多了</p>
+<p>特殊的IP地址，255.255.255.255为IP广播地址，该数据交付给同一个网络的所有主机</p>
+<p>在详学习IP编址，我们需要知道主机或者子网最初是如何得到地址的</p>
+<p>第一步：获取地址，可以从ISP获得、ISP从因特网名字和编号分配机构（Internet corporation for assigned Names and Numbers，ICANN）管理，其还管理DNS服务器</p>
+<p>第二部，主机与路由器接口分配IP地址，系统管理员通常手工配置IP地址，主机地址也可以手动配置但是通常使用动态主机配置协议（Dynamic Host configuration，DHCP），允许主机自动获取一个IP地址，允许主机每次和网络连接的时候都会获得一个相同的IP地址或者临时的IP地址</p>
+<h3 id="4-4-地址转换与通信过程"><a href="#4-4-地址转换与通信过程" class="headerlink" title="4.4 地址转换与通信过程"></a>4.4 地址转换与通信过程</h3><p>对于家庭网络等专用网络（private network）和具有专用地址的地域（realm with private address），其中的IP地址只有在专用网络中才有作用；但是在专用网中至少需要有一个公网IP地址的设备，此时这个路由器是如何获取自己的iP地址的？使用的是ISP提供的DHCP服务</p>
+<p>之间通信的过程是这样的：</p>
+<p>专用网10.0.01:3345想和公网IP的128.119.40.186:80进行通信；专用网中的公网IP路由器为138.76.29.7，这个时候可以将专用网和公网IP路由器新增一个映射，10.0.0.1:3345和128.76.29.7:5001（5001任意），然后数据通过128.76.29.7：5001和128.119.40.186：80进行通信，路由器负责两者之间的转换，同时路由的NAT协议支持超过60000个并行连接</p>
+<p>NAT协议的批评者指出：</p>
+<ol>
+<li>路由器或者设备是用来进行进程寻址、而不是主机寻址的，这种违规用法在运行家庭网络中的服务器会出现问题；这里需要NAT穿越（traversal）或者通用即插即用（Universal Plug and play，UPnP协议）</li>
+<li>违反了主机之间应当直接对话的原则</li>
+</ol>
+<h3 id="4-5-IPv6"><a href="#4-5-IPv6" class="headerlink" title="4.5 IPv6"></a>4.5 IPv6</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-876d5895df299a9ee96cac23a5c2ca0a_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20220628112904862</p>
+<h3 id="0x05-控制层面"><a href="#0x05-控制层面" class="headerlink" title="0x05 控制层面"></a>0x05 控制层面</h3><p>其中算法过于硬核，这里不做介绍，可以看出转发表的制作分为两种</p>
+<ol>
+<li>预先物理设置</li>
+<li>由SDN来软件控制</li>
+</ol>
+<p>软件控制面临集中还是分散的区别、面临静态路由和动态路由、面临负载敏感或迟钝的问题</p>
+<h3 id="0x06-实际应用和感悟"><a href="#0x06-实际应用和感悟" class="headerlink" title="0x06 实际应用和感悟"></a>0x06 实际应用和感悟</h3><h3 id="6-1-一个实际的例子"><a href="#6-1-一个实际的例子" class="headerlink" title="6.1 一个实际的例子"></a>6.1 一个实际的例子</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ac47b57633fdade989eef483214d55e7_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20220628113107112</p>
+<h3 id="6-2-一些实际的应用"><a href="#6-2-一些实际的应用" class="headerlink" title="6.2 一些实际的应用"></a>6.2 一些实际的应用</h3><p>ssh连接远程主机</p>
+<p>搭建自己的webdav云盘</p>
+<p>开放自己的MC服务器</p>
+<p>利用腾讯云服务器实现内网穿透</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" class="category-chain-item">计算机科学</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="print-no-link">#计算机网络</a>
+      
+        <a href="/tags/%E7%BD%91%E7%BB%9C%E5%B1%82/" class="print-no-link">#网络层</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算机网络 Vol4 ｜ 网络层协议</div>
+      <div>http://example.com/2024/04/29/计算机网络 Vol4 ｜ 网络层协议/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%20Vol5/" title="数据结构和算法设计 Vol5">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构和算法设计 Vol5</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20Vol3%20%EF%BD%9C%20%E8%BF%90%E8%BE%93%E5%B1%82%E5%8D%8F%E8%AE%AE/" title="计算机网络 Vol3 ｜ 运输层协议">
+                        <span class="hidden-mobile">计算机网络 Vol3 ｜ 运输层协议</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

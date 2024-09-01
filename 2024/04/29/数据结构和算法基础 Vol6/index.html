@@ -1,0 +1,886 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="数据结构、算法思想，具体问题的设计能力，以及一些黑话也是有必要的，比如双指针、滑动窗口、单调栈、优先队列等 0x01 堆栈的基本知识堆栈（Stack）简称为栈。一种线性表数据结构，是一种只允许在表的一端进行插入和删除操作的线性表。 我们把栈中允许插入和删除的一端称为 「栈顶（top）」；另一端则称为 「栈底（bottom）」 。当表中没有任何数据元素时，称之为 「空栈」。 主要操作分为插入和删除操">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构和算法基础 Vol6">
+<meta property="og:url" content="http://example.com/2024/04/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80%20Vol6/index.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="数据结构、算法思想，具体问题的设计能力，以及一些黑话也是有必要的，比如双指针、滑动窗口、单调栈、优先队列等 0x01 堆栈的基本知识堆栈（Stack）简称为栈。一种线性表数据结构，是一种只允许在表的一端进行插入和删除操作的线性表。 我们把栈中允许插入和删除的一端称为 「栈顶（top）」；另一端则称为 「栈底（bottom）」 。当表中没有任何数据元素时，称之为 「空栈」。 主要操作分为插入和删除操">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-15a438bf4f94a4ccb7586d82ce694b13_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-20252b09ed3a25c8f958da2fa8ef0321_1440w.jpg">
+<meta property="article:published_time" content="2024-04-29T08:56:02.000Z">
+<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="算法基础">
+<meta property="article:tag" content="堆栈">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-15a438bf4f94a4ccb7586d82ce694b13_1440w.jpg">
+  
+  
+  
+  <title>数据结构和算法基础 Vol6 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构和算法基础 Vol6"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:56" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构和算法基础 Vol6</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>数据结构、算法思想，具体问题的设计能力，以及一些黑话也是有必要的，比如双指针、滑动窗口、单调栈、优先队列等</p>
+<h3 id="0x01-堆栈的基本知识"><a href="#0x01-堆栈的基本知识" class="headerlink" title="0x01 堆栈的基本知识"></a>0x01 堆栈的基本知识</h3><p><strong>堆栈（Stack）</strong>简称为栈。一种线性表数据结构，是一种只允许在表的一端进行插入和删除操作的线性表。</p>
+<p>我们把栈中允许插入和删除的一端称为 <strong>「栈顶（top）」；</strong>另一端则称为 <strong>「栈底（bottom）」</strong> 。当表中没有任何数据元素时，称之为 <strong>「空栈」。</strong></p>
+<p>主要操作分为插入和删除操作，分别是入栈操作和出栈操作。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-15a438bf4f94a4ccb7586d82ce694b13_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20220708221924230</p>
+<p>让我们来设计一个堆栈，对一个非直观的数据结构掌握的最好方法是用基本的数据结构来实现它，参照：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/min-stack/"><strong>T155 最小栈设计</strong></a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MinStack</span>:<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-variable language_">self</span>.stack=[]<br>        <span class="hljs-variable language_">self</span>.topPointer=-<span class="hljs-number">1</span><br>        <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">min</span>=[]<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, val: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-literal">None</span>:<br>        <span class="hljs-variable language_">self</span>.stack.append(val)<br>        <span class="hljs-variable language_">self</span>.topPointer+=<span class="hljs-number">1</span><br>        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.topPointer==<span class="hljs-number">0</span>:<br>            <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">min</span>.append(val)<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-keyword">if</span> val&lt;<span class="hljs-variable language_">self</span>.<span class="hljs-built_in">min</span>[-<span class="hljs-number">1</span>]:<br>                <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">min</span>.append(val)<br>            <span class="hljs-keyword">else</span>:<br>                <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">min</span>.append(<span class="hljs-variable language_">self</span>.<span class="hljs-built_in">min</span>[-<span class="hljs-number">1</span>])<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-literal">None</span>:<br>        <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">min</span>.pop()<br>        <span class="hljs-variable language_">self</span>.stack.pop()<br>        <span class="hljs-variable language_">self</span>.topPointer-=<span class="hljs-number">1</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">top</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack[-<span class="hljs-number">1</span>]<br></code></pre></td></tr></table></figure>
+
+<h3 id="0x02-堆栈的基本作用"><a href="#0x02-堆栈的基本作用" class="headerlink" title="0x02 堆栈的基本作用"></a>0x02 堆栈的基本作用</h3><p>与其说堆栈是一种数据结构，它更多的是一种设计算法的技巧（如果单纯从算法的角度来说），当然在实际硬件中也存在由于硬件的限制（比如磁带）导致顺序的问题。</p>
+<p>从算法的角度来说，堆栈具有的作用</p>
+<ul>
+<li>使用堆栈可以很方便的保存和取用信息，因此长被用作算法和程序中的辅助存储结构，临时保存信息，供后面操作中使用。</li>
+<li>例如：操作系统中的函数调用栈，浏览器中的前进、后退功能。</li>
+<li>堆栈的后进先出规则，可以保证特定的存取顺序。</li>
+<li>例如：翻转一组元素的顺序、铁路列车车辆调度。</li>
+</ul>
+<h3 id="0x03-堆栈的题目"><a href="#0x03-堆栈的题目" class="headerlink" title="0x03 堆栈的题目"></a>0x03 堆栈的题目</h3><h3 id="3-1-有效的括号"><a href="#3-1-有效的括号" class="headerlink" title="3.1 有效的括号"></a>3.1 有效的括号</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/valid-parentheses/">T20 有效的括号</a></p>
+<p>一个非常经典的题目，算是堆栈的先入后出的典型的应用</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">class</span> Solution:<br>    <span class="hljs-keyword">def</span> isValid(self, s: str) -&gt; bool:<br>        <span class="hljs-keyword">if</span> (len(s)%<span class="hljs-number">2</span>==<span class="hljs-number">1</span>):<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span><br><br>        flagStack=[]<br>        pair=&#123;<span class="hljs-string">&#x27;)&#x27;</span>:<span class="hljs-string">&#x27;(&#x27;</span>,<span class="hljs-string">&#x27;&#125;&#x27;</span>:<span class="hljs-string">&#x27;&#123;&#x27;</span>,<span class="hljs-string">&#x27;]&#x27;</span>:<span class="hljs-string">&#x27;[&#x27;</span>&#125;<br>        <span class="hljs-keyword">for</span> <span class="hljs-keyword">char</span> in s:<br>            <span class="hljs-keyword">if</span> len(flagStack)!=<span class="hljs-number">0</span>:<br>                <span class="hljs-keyword">if</span> <span class="hljs-keyword">char</span> in pair and flagStack[-<span class="hljs-number">1</span>]==pair[<span class="hljs-keyword">char</span>]:<br>                    flagStack.<span class="hljs-keyword">pop</span>()<br>                <span class="hljs-keyword">else</span>: <br>                    flagStack.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">char</span>)<br>            <span class="hljs-keyword">else</span>:<br>                flagStack.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">char</span>)<br><br>        <span class="hljs-keyword">if</span> flagStack:<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span><br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-2-基本计算器II"><a href="#3-2-基本计算器II" class="headerlink" title="3.2 基本计算器II"></a>3.2 基本计算器II</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/basic-calculator-ii/">T227 基本计算器II</a></p>
+<p>重点思想是将每个元素，都看成num在option的后面，但是逐个取出num和option；z这里没有考虑 到python的字符串操作功能</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs routeros">s Solution:<br>    def calculate(self, s: str) -&gt; int:<br>        <span class="hljs-attribute">size</span>=len(s)<br>        stack=[]<br>        <span class="hljs-attribute">op</span>=<span class="hljs-string">&#x27;+&#x27;</span><br>        <span class="hljs-attribute">index</span>=0<br>        <span class="hljs-attribute">num</span>=<span class="hljs-string">&#x27;&#x27;</span><br>        <span class="hljs-keyword">while</span>(index&lt;size):<br><br>            <span class="hljs-keyword">if</span> s[index] <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;+-*/&#x27;</span>:<br>                # 如果是运算符<br>                <span class="hljs-attribute">num</span>=<span class="hljs-string">&#x27;&#x27;</span><br>                <span class="hljs-attribute">op</span>=s[index]<br>                index+=1<br>            <span class="hljs-keyword">else</span>:<br>                # 需要将num取出来<br>                <span class="hljs-keyword">while</span>(index&lt;size <span class="hljs-keyword">and</span> s[index] <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;+-*/&#x27;</span>):<br>                    num+=s[index]<br>                    index+=1<br>                <span class="hljs-attribute">num</span>=int(num)<br>                <span class="hljs-keyword">if</span> <span class="hljs-attribute">op</span>==&#x27;+&#x27;:<br>                    stack.append(num)<br>                elif <span class="hljs-attribute">op</span>==&#x27;-&#x27;:<br>                    stack.append(-num)<br>                elif <span class="hljs-attribute">op</span>==&#x27;*&#x27;:<br>                    <span class="hljs-attribute">top</span>=stack.pop()<br>                    stack.append(top*num)<br>                elif <span class="hljs-attribute">op</span>==&#x27;/&#x27;:<br>                    <span class="hljs-attribute">top</span>=stack.pop()<br>                    stack.append(int(top/num))<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-3-逆波兰表达式求值"><a href="#3-3-逆波兰表达式求值" class="headerlink" title="3.3 逆波兰表达式求值"></a>3.3 逆波兰表达式求值</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/evaluate-reverse-polish-notation/">T150 逆波兰表达式求值</a></p>
+<p>思路和T227差不多</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">class</span> Solution:<br>    <span class="hljs-keyword">def</span> evalRPN(self, tokens: List[str]) -&gt; <span class="hljs-keyword">int</span>:<br>        numStack=[]<br>        <span class="hljs-keyword">for</span> <span class="hljs-keyword">char</span> in tokens:<br>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">char</span> in <span class="hljs-string">&#x27;+-*/&#x27;</span>:<br>                # 取出来前两个数字<br>                num1=numStack.<span class="hljs-keyword">pop</span>()<br>                num2=numStack.<span class="hljs-keyword">pop</span>()<br>                <span class="hljs-keyword">if</span> <span class="hljs-keyword">char</span>==<span class="hljs-string">&#x27;+&#x27;</span>:<br>                    numStack.<span class="hljs-keyword">append</span>(num1+num2)<br>                elif <span class="hljs-keyword">char</span>==<span class="hljs-string">&#x27;-&#x27;</span>:<br>                    numStack.<span class="hljs-keyword">append</span>(num2-num1)<br>                elif <span class="hljs-keyword">char</span>==<span class="hljs-string">&#x27;*&#x27;</span>:<br>                    numStack.<span class="hljs-keyword">append</span>(num1*num2)<br>                <span class="hljs-keyword">else</span>:<br>                    numStack.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">int</span>(num2/num1))<br>            <span class="hljs-keyword">else</span>:<br>                numStack.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">int</span>(<span class="hljs-keyword">char</span>))<br>        <span class="hljs-keyword">return</span> numStack.<span class="hljs-keyword">pop</span>()<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-4-字符串解码"><a href="#3-4-字符串解码" class="headerlink" title="3.4 字符串解码"></a>3.4 字符串解码</h3><p>用这个栈来记录当前的元素，如果为】就向后一直搜寻到【，得到num和str，来反复</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">class</span> Solution:<br>    <span class="hljs-keyword">def</span> decodeString(self, s: str) -&gt; str:<br>        elementStack=[]<br>        temp=<span class="hljs-string">&#x27;&#x27;</span><br>        num=<span class="hljs-string">&#x27;&#x27;</span><br>        <span class="hljs-keyword">for</span> <span class="hljs-keyword">char</span> in s:<br>            elementStack.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">char</span>)<br>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">char</span>==<span class="hljs-string">&#x27;]&#x27;</span>:<br>                # 提取字符串<br>                elementStack.<span class="hljs-keyword">pop</span>()<br>                <span class="hljs-keyword">while</span>(elementStack[-<span class="hljs-number">1</span>]!=<span class="hljs-string">&#x27;[&#x27;</span>):<br>                    top=elementStack.<span class="hljs-keyword">pop</span>()<br>                    temp+=top[::-<span class="hljs-number">1</span>]<br>                elementStack.<span class="hljs-keyword">pop</span>()<br>                <span class="hljs-keyword">while</span>(len(elementStack)&gt;<span class="hljs-number">0</span> and elementStack[-<span class="hljs-number">1</span>].isdigit()):<br>                    num+=elementStack.<span class="hljs-keyword">pop</span>()<br>                # 新的字符<br>                <span class="hljs-keyword">for</span> i in range(<span class="hljs-keyword">int</span>(num[::-<span class="hljs-number">1</span>])):<br>                    elementStack.<span class="hljs-keyword">append</span>(temp[::-<span class="hljs-number">1</span>])<br>                num=<span class="hljs-string">&#x27;&#x27;</span><br>                temp=<span class="hljs-string">&#x27;&#x27;</span><br>        res=<span class="hljs-string">&#x27;&#x27;</span><br>        <span class="hljs-keyword">for</span> e in elementStack:<br>            res+=e<br>        <span class="hljs-keyword">return</span> res<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-5-验证栈序列"><a href="#3-5-验证栈序列" class="headerlink" title="3.5 验证栈序列"></a>3.5 验证栈序列</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/validate-stack-sequences/">T946 验证栈序列</a></p>
+<p>感觉这个就非常考验思维能力，因为pushed和popped相当于为逆反操作，因此可以翻归来按照堆栈的方式继续</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">validateStackSequences</span>(<span class="hljs-params">self, pushed: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>], popped: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-built_in">bool</span>:<br>        <span class="hljs-comment"># 和括号一样的</span><br>        <span class="hljs-comment"># 既然pushed和popped都是按照stack的规则</span><br>        <span class="hljs-comment"># 反过来也可以用stack的规则来进行排序</span><br>        j=<span class="hljs-number">0</span><br>        stack=[]<br>        j=<span class="hljs-number">0</span><br>        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> pushed:<br>            stack.append(p)<br>            <span class="hljs-keyword">while</span>(stack <span class="hljs-keyword">and</span> stack[-<span class="hljs-number">1</span>]==popped[j]):<br>                stack.pop()<br>                j+=<span class="hljs-number">1</span><br>        <span class="hljs-keyword">return</span> j==<span class="hljs-built_in">len</span>(pushed)<br></code></pre></td></tr></table></figure>
+
+<h3 id="0x04-单调栈（Monotone-stack）基础知识"><a href="#0x04-单调栈（Monotone-stack）基础知识" class="headerlink" title="0x04 单调栈（Monotone stack）基础知识"></a>0x04 单调栈（Monotone stack）基础知识</h3><p>单调栈只是具有更强限制的栈，它需要人为设置规则（设置递增或者递减）的单调栈，由此可以实现的目的为：【可以在常数时间内找到一定数组内的最大值或者最小值；同时精简删除一些无用的信息】，所以在算法设计上需要更加巧妙。</p>
+<p>通常可以分为单调递增栈和单调递减栈，这个顺序和什么是栈顶、什么是栈底一样很难让人理清楚顺序，因此只需要考虑在单调栈中栈的大小顺序是单调的，由此可以设计进出栈的顺序，以单调递增栈为例：</p>
+<ul>
+<li>假设当前进栈元素为 x，如果 x 比栈顶元素小，则直接入栈。</li>
+<li>否则从栈顶开始遍历栈中元素，把小于 x 或者等于 x 的元素弹出栈，直到遇到一个大于 x 的元素为止，然后再把 x 压入栈中。</li>
+</ul>
+<h3 id="0x05-单调栈的使用场景"><a href="#0x05-单调栈的使用场景" class="headerlink" title="0x05 单调栈的使用场景"></a>0x05 单调栈的使用场景</h3><p>网上有很多博客，也有很多的教学视频，这里摘选一些总结的，单调栈主要解决的问题为：</p>
+<ol>
+<li>左侧第一个比当前元素大的元素</li>
+<li>左侧第一个比当前元素小的元素</li>
+<li>右侧第一个比当前元素大的元素</li>
+<li>右侧第一个比当前元素小的元素</li>
+</ol>
+<p>在实际的应用中，需要先将实际问题抽象称为上述的四种问题，再利用单调栈求解，有点过于抽象了，结合问题来看会好一点</p>
+<h3 id="5-1-寻找左侧第一个比当前元素大的元素"><a href="#5-1-寻找左侧第一个比当前元素大的元素" class="headerlink" title="5.1 寻找左侧第一个比当前元素大的元素"></a>5.1 寻找左侧第一个比当前元素大的元素</h3><p>从左到右遍历元素，构造单调递增栈（从栈顶到栈底递增）：一个元素左侧第一个比它大的元素就是将其「插入单调递增栈」时的栈顶元素。如果插入时的栈为空，则说明左侧不存在比当前元素大的元素。</p>
+<h3 id="5-2-寻找左侧第一个比当前元素小的元素"><a href="#5-2-寻找左侧第一个比当前元素小的元素" class="headerlink" title="5.2 寻找左侧第一个比当前元素小的元素 #"></a>5.2 寻找左侧第一个比当前元素小的元素 <a target="_blank" rel="noopener" href="https://algo.itcharge.cn/03.Stack/02.Monotone-Stack/01.Monotone-Stack/#22-%E5%AF%BB%E6%89%BE%E5%B7%A6%E4%BE%A7%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%AF%94%E5%BD%93%E5%89%8D%E5%85%83%E7%B4%A0%E5%B0%8F%E7%9A%84%E5%85%83%E7%B4%A0">#</a></h3><p>从左到右遍历元素，构造单调递减栈（从栈顶到栈底递减）：一个元素左侧第一个比它小的元素就是将其「插入单调递减栈」时的栈顶元素。如果插入时的栈为空，则说明左侧不存在比当前元素小的元素。</p>
+<h3 id="5-3-寻找右侧第一个比当前元素大的元素"><a href="#5-3-寻找右侧第一个比当前元素大的元素" class="headerlink" title="5.3 寻找右侧第一个比当前元素大的元素 #"></a>5.3 寻找右侧第一个比当前元素大的元素 <a target="_blank" rel="noopener" href="https://algo.itcharge.cn/03.Stack/02.Monotone-Stack/01.Monotone-Stack/#23-%E5%AF%BB%E6%89%BE%E5%8F%B3%E4%BE%A7%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%AF%94%E5%BD%93%E5%89%8D%E5%85%83%E7%B4%A0%E5%A4%A7%E7%9A%84%E5%85%83%E7%B4%A0">#</a></h3><p>从左到右遍历元素，构造单调递增栈（从栈顶到栈底递增）：一个元素右侧第一个比它大的元素就是将其「弹出单调递增栈」时即将插入的元素。如果该元素没有被弹出栈，则说明右侧不存在比当前元素大的元素。</p>
+<p>从右到左遍历元素，构造单调递增栈（从栈顶到栈底递增）：一个元素右侧第一个比它大的元素就是将其「插入单调递增栈」时的栈顶元素。如果插入时的栈为空，则说明右侧不存在比当前元素大的元素。</p>
+<h3 id="5-4-寻找右侧第一个比当前元素小的元素"><a href="#5-4-寻找右侧第一个比当前元素小的元素" class="headerlink" title="5.4 寻找右侧第一个比当前元素小的元素 #"></a>5.4 寻找右侧第一个比当前元素小的元素 <a target="_blank" rel="noopener" href="https://algo.itcharge.cn/03.Stack/02.Monotone-Stack/01.Monotone-Stack/#24-%E5%AF%BB%E6%89%BE%E5%8F%B3%E4%BE%A7%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%AF%94%E5%BD%93%E5%89%8D%E5%85%83%E7%B4%A0%E5%B0%8F%E7%9A%84%E5%85%83%E7%B4%A0">#</a></h3><ul>
+<li>从左到右遍历元素，构造单调递减栈（从栈顶到栈底递减）：一个元素右侧第一个比它小的元素就是将其「弹出单调递减栈」时即将插入的元素。如果该元素没有被弹出栈，则说明右侧不存在比当前元素小的元素。</li>
+<li>从右到左遍历元素，构造单调递减栈（从栈顶到栈底递减）：一个元素右侧第一个比它小的元素就是将其「插入单调递减栈」时的栈顶元素。如果插入时的栈为空，则说明右侧不存在比当前元素小的元素。</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stata">def 递增栈(nums):<br>    <span class="hljs-keyword">stack</span>=[]<br>    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:<br>        <span class="hljs-keyword">while</span> <span class="hljs-keyword">stack</span> and num&gt;=<span class="hljs-keyword">stack</span>[-1]:<br>            <span class="hljs-keyword">stack</span>.pop()<br>        <span class="hljs-keyword">stack</span>.<span class="hljs-keyword">append</span>(num)<br></code></pre></td></tr></table></figure>
+
+<h3 id="0x06-单调栈的实际应用"><a href="#0x06-单调栈的实际应用" class="headerlink" title="0x06 单调栈的实际应用"></a>0x06 单调栈的实际应用</h3><h3 id="6-1-下一个更大元素I"><a href="#6-1-下一个更大元素I" class="headerlink" title="6.1 下一个更大元素I"></a>6.1 下一个更大元素I</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/next-greater-element-i/">T496 下一个更大元素 I</a></p>
+<p>这个很符合单调栈使用的场景的，所以主要是需要熟悉单调栈求解问题的方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">nextGreaterElement</span>(<span class="hljs-params">self, nums1: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>], nums2: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]:<br>        <span class="hljs-comment"># 第二种使用单调递增栈，因为nums1是num2的子集，所以可以遍历nums2</span><br>        <span class="hljs-comment"># 构造单调递增栈，求出nums2每个元素右侧下一个最大的元素，然后存储在哈希表中</span><br>        <span class="hljs-comment"># </span><br>        <span class="hljs-comment"># 【具体做法】</span><br>        <span class="hljs-comment"># res存储答案，使用stack表示单调递增栈，使用哈希表num-map存储nums2中比下一个当前</span><br>        <span class="hljs-comment"># 元素大的数值，当前数值：下一个比当前元素大的数值</span><br>        <span class="hljs-comment"># </span><br>        <span class="hljs-comment"># 遍历nums2，对于当前元素，如果小则入栈，如果元素大则一直出栈，出栈元素是第一个大</span><br>        <span class="hljs-comment"># 于当前元素值的元素</span><br>        <span class="hljs-comment"># </span><br>        <span class="hljs-comment"># 遍历玩数组nums2周，建立好哈希表之后，遍历数组1</span><br>        <span class="hljs-comment"># </span><br>        <span class="hljs-comment"># 从num-map中取出对应的值</span><br>        res=[]<br>        stack=[]<br>        num_map=<span class="hljs-built_in">dict</span>()<br><br>        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums2:<br>            <span class="hljs-keyword">while</span>(stack) <span class="hljs-keyword">and</span> num&gt;stack[-<span class="hljs-number">1</span>]:<br>                num_map[stack[-<span class="hljs-number">1</span>]]=num<br>                stack.pop()<br>            stack.append(num)<br>            <span class="hljs-built_in">print</span>(stack)<br><br>        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums1:<br>            res.append(num_map.get(num,-<span class="hljs-number">1</span>))<br>        <span class="hljs-keyword">return</span> res<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-2-下一个更大元素II"><a href="#6-2-下一个更大元素II" class="headerlink" title="6.2 下一个更大元素II"></a>6.2 下一个更大元素II</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/next-greater-element-ii/">T503 下一个更大元素II</a></p>
+<p>和上面一样，遍历两次就好了</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs vim">class Solution:<br>    def nextGreaterElements(self, nums: List[<span class="hljs-keyword">int</span>]) -&gt; List[<span class="hljs-keyword">int</span>]:<br>        <span class="hljs-keyword">res</span>=[]<br>        stack=[]<br>        temp=[-<span class="hljs-number">1</span> <span class="hljs-keyword">for</span> _ in <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums))]<br>        stack_index=[]<br>        <span class="hljs-keyword">for</span> i in <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)*<span class="hljs-number">2</span>):<br>            <span class="hljs-keyword">while</span> stack <span class="hljs-built_in">and</span> nums[i%<span class="hljs-built_in">len</span>(nums)]&gt;stack[-<span class="hljs-number">1</span>]:<br>                <span class="hljs-built_in">index</span>=stack_index.<span class="hljs-keyword">pop</span>()<br>                stack.<span class="hljs-keyword">pop</span>()<br>                temp[<span class="hljs-built_in">index</span>]=nums[i%<span class="hljs-built_in">len</span>(nums)]<br>            stack_index.<span class="hljs-keyword">append</span>(i%<span class="hljs-built_in">len</span>(nums))<br>            stack.<span class="hljs-keyword">append</span>(nums[i%<span class="hljs-built_in">len</span>(nums)])<br>        <span class="hljs-keyword">return</span> temp<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-3-每日温度"><a href="#6-3-每日温度" class="headerlink" title="6.3 每日温度"></a>6.3 每日温度</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/daily-temperatures/">T739 每日温度</a></p>
+<p>也是单调栈解题的常规思路</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    <span class="hljs-function">def <span class="hljs-title">dailyTemperatures</span><span class="hljs-params">(temperatures)</span>:</span><br><span class="hljs-function">        # 因为等价于找第i元素后，高于这个元素的index之差</span><br><span class="hljs-function">        # 可以考虑使用一个stack来记录递减元素的下标</span><br><span class="hljs-function">        size=</span><span class="hljs-built_in">len</span>(temperatures)<br>        ans=[<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> _ in <span class="hljs-built_in">range</span>(size)]<br>        stack=[]<br>        <span class="hljs-keyword">for</span> i in <span class="hljs-built_in">range</span>(size):<br>            <span class="hljs-keyword">while</span>( stack <span class="hljs-keyword">and</span> temperatures[i]&gt;temperatures[stack[<span class="hljs-number">-1</span>]]):<br>                index=stack.<span class="hljs-built_in">pop</span>()<br>                ans[index]=i-index<br>            stack.<span class="hljs-built_in">append</span>(i)<br>        <span class="hljs-keyword">return</span> ans<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-20252b09ed3a25c8f958da2fa8ef0321_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20220708222328976</p>
+<h3 id="6-4-股票时间跨度"><a href="#6-4-股票时间跨度" class="headerlink" title="6.4 股票时间跨度"></a>6.4 股票时间跨度</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/online-stock-span/">T901 股票价格跨度</a></p>
+<p>单调栈可以存储值，也可以存储对应的下标</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">StockSpanner</span>:<br>    <span class="hljs-comment"># 小于或等于今天价格的最大连续日数</span><br>    <span class="hljs-comment"># 等价于求解左侧最近的一次大于价格的日数</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br><br>        <span class="hljs-variable language_">self</span>.stack=[]<br>        <span class="hljs-variable language_">self</span>.day=[]<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next</span>(<span class="hljs-params">self, price: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:<br>        dayT=<span class="hljs-number">1</span><br>        <span class="hljs-keyword">while</span>(<span class="hljs-variable language_">self</span>.stack <span class="hljs-keyword">and</span> price&gt;=<span class="hljs-variable language_">self</span>.stack[-<span class="hljs-number">1</span>]):<br>            dayT+=<span class="hljs-variable language_">self</span>.day.pop()<br>            <span class="hljs-variable language_">self</span>.stack.pop()<br>        <span class="hljs-variable language_">self</span>.day.append(dayT)<br>        <span class="hljs-variable language_">self</span>.stack.append(price)<br>        <span class="hljs-keyword">return</span> dayT<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-5-去除重复字母"><a href="#6-5-去除重复字母" class="headerlink" title="6.5 去除重复字母"></a>6.5 去除重复字母</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-duplicate-letters/">T316 去除重复字母</a></p>
+<p>这一题看上去是和单调栈没有关系的，这里就需要将现实问题转换称为单调栈的问题；首先结果的字典序最小，就是尽可能的将a放到b前面、c放到d前面，因此我们每次遍历的时候需要对应字符放入结果并排序。但是我们要警惕后面是否还剩字符，因此就需要先遍历字符串中字符对应的数量，然后在遍历删除的时候根据字符串是否有剩余来决定删不删字符。amazing！</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs axapta"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:<br>    def removeDuplicateLetters(self, s: <span class="hljs-built_in">str</span>) -&gt; <span class="hljs-built_in">str</span>:<br>        <span class="hljs-meta"># 首先需要统计各种字符串出现的次数</span><br>        <span class="hljs-meta"># 对s进行遍历</span><br>        <span class="hljs-meta"># 要求字典序最小，也就是a要尽可能在b前面，b要尽可能在c前面</span><br>        <span class="hljs-meta"># 这就需要用单调栈来约束，但是需要注意单调栈中元素是否存在</span><br>        charMap=dict()<br>        resStack=[]<br><br>        <span class="hljs-keyword">for</span> <span class="hljs-built_in">char</span> <span class="hljs-keyword">in</span> s:<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">char</span> <span class="hljs-keyword">in</span> charMap:<br>                charMap[<span class="hljs-built_in">char</span>]+=<span class="hljs-number">1</span><br>            <span class="hljs-keyword">else</span>:<br>                charMap[<span class="hljs-built_in">char</span>]=<span class="hljs-number">1</span><br><br>        <span class="hljs-keyword">for</span> <span class="hljs-built_in">char</span> <span class="hljs-keyword">in</span> s:<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">char</span> not <span class="hljs-keyword">in</span> resStack:<br>                <span class="hljs-meta"># 如果不在resStack中,我需要设置一个尽可能小的序列</span><br>                <span class="hljs-meta"># 同时需要保证还有数</span><br>                <span class="hljs-keyword">while</span> resStack and <span class="hljs-built_in">char</span>&lt;resStack[<span class="hljs-number">-1</span>] and charMap[resStack[<span class="hljs-number">-1</span>]]&gt;<span class="hljs-number">0</span>:<br>                    resStack.pop()<br>                resStack.append(<span class="hljs-built_in">char</span>)<br>                charMap[<span class="hljs-built_in">char</span>]-=<span class="hljs-number">1</span><br>            <span class="hljs-keyword">else</span>:<br>                charMap[<span class="hljs-built_in">char</span>]-=<span class="hljs-number">1</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-keyword">join</span>(resStack)<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-6-最短无序连续子数组"><a href="#6-6-最短无序连续子数组" class="headerlink" title="6.6 最短无序连续子数组"></a>6.6 最短无序连续子数组</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shortest-unsorted-continuous-subarray/">T581 最短无序子数组</a></p>
+<p>同样的这个需要先分析问题，我们需要找到什么，隐含的就是序列一定是先递增、然后乱序、然后递增，这个第一个递增序列的最大值是后面的最小值、第二个递增序列的最小值是后面的最大值；由此就可以用单调栈的方式来求解问题</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs vim">class Solution:<br>    def findUnsortedSubarray(self, nums: List[<span class="hljs-keyword">int</span>]) -&gt; <span class="hljs-keyword">int</span>:<br>        # 如果必然存在这样的一个数组，那么肯定是单调递增，然后***、然后单调递增<br>        # 从小到大，找到左边界<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(nums)&lt;<span class="hljs-number">2</span>:<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>        stack=[]<br>        size=<span class="hljs-built_in">len</span>(nums)<br>        <span class="hljs-keyword">left</span>=size-<span class="hljs-number">1</span><br>        <span class="hljs-keyword">right</span>=<span class="hljs-number">0</span><br>        <span class="hljs-keyword">for</span> i in <span class="hljs-built_in">range</span>(size):<br>            <span class="hljs-keyword">while</span>(stack <span class="hljs-built_in">and</span> nums[i]&lt;nums[stack[-<span class="hljs-number">1</span>]]):<br>                <span class="hljs-keyword">left</span>=<span class="hljs-built_in">min</span>(<span class="hljs-keyword">left</span>,stack.<span class="hljs-keyword">pop</span>())<br>            stack.<span class="hljs-keyword">append</span>(i)<br>        stack[:]=[]<br>        <span class="hljs-keyword">for</span> i in <span class="hljs-built_in">range</span>(size-<span class="hljs-number">1</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">1</span>):<br>            <span class="hljs-keyword">while</span>(stack <span class="hljs-built_in">and</span> nums[i]&gt;nums[stack[-<span class="hljs-number">1</span>]]):<br>                <span class="hljs-keyword">right</span>=<span class="hljs-built_in">max</span>(<span class="hljs-keyword">right</span>,stack.<span class="hljs-keyword">pop</span>())<br>            stack.<span class="hljs-keyword">append</span>(i)<br><br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">right</span>-<span class="hljs-keyword">left</span>+<span class="hljs-number">1</span>&gt;<span class="hljs-number">0</span>:<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">right</span>-<span class="hljs-keyword">left</span>+<span class="hljs-number">1</span><br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" class="category-chain-item">程序设计</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="print-no-link">#数据结构</a>
+      
+        <a href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="print-no-link">#算法基础</a>
+      
+        <a href="/tags/%E5%A0%86%E6%A0%88/" class="print-no-link">#堆栈</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构和算法基础 Vol6</div>
+      <div>http://example.com/2024/04/29/数据结构和算法基础 Vol6/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80%20Vol7/" title="数据结构和算法基础 Vol7">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构和算法基础 Vol7</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%20Vol5/" title="数据结构和算法设计 Vol5">
+                        <span class="hidden-mobile">数据结构和算法设计 Vol5</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

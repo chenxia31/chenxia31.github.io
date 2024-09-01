@@ -1,0 +1,875 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Andrew Wu–番外参数方法和非参数方法blog.tjdata.site&#x2F;2022&#x2F;02&#x2F;13&#x2F;Andrew%20Wu–%E7%95%AA%E5%A4%96%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%9E%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95&#x2F; [An">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS229机器学习 参数方法和非参数方法 ｜ Vol3">
+<meta property="og:url" content="http://example.com/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%9E%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95%20%EF%BD%9C%20Vol3/index.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="Andrew Wu–番外参数方法和非参数方法blog.tjdata.site&#x2F;2022&#x2F;02&#x2F;13&#x2F;Andrew%20Wu–%E7%95%AA%E5%A4%96%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%9E%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95&#x2F; [An">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-29T08:09:19.000Z">
+<meta property="article:modified_time" content="2024-04-29T08:55:20.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="CS229">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>CS229机器学习 参数方法和非参数方法 ｜ Vol3 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS229机器学习 参数方法和非参数方法 ｜ Vol3"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:09" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CS229机器学习 参数方法和非参数方法 ｜ Vol3</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Andrew Wu–番外参数方法和非参数方法blog.tjdata.site&#x2F;2022&#x2F;02&#x2F;13&#x2F;Andrew%20Wu–%E7%95%AA%E5%A4%96%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%9E%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95&#x2F;</p>
+<p>[Andrew Wu–番外参数方法和非参数方法](<a target="_blank" rel="noopener" href="https://blog.tjdata.site/2022/02/13/Andrew">https://blog.tjdata.site/2022/02/13/Andrew</a> Wu–番外参数方法和非参数方法&#x2F;)</p>
+<p>在初步了解了线性模型之后，总结一下算法的共性</p>
+<p>（材料来自网络，可能会侵权）</p>
+<h2 id="0X00-引言"><a href="#0X00-引言" class="headerlink" title="0X00 引言"></a>0X00 引言</h2><p>（实验讨论如何在使用概率对不确定性建模，留个坑之后再说，如何作出最优决策）现在考虑如何从给定的训练集中估计这些概率，从分类和回归的参数方法开始</p>
+<p>参数方法，这里假设样本取自服从已知模型的某个分布（eg.高斯分布），模型定义在有效统计量（eg. 方差和均值），一旦从样本中估计参数就知道了整个分布，方法主要分为最大似然估计（maximum likelihood estimation）、贝叶斯估计（Bayes‘ estimator）等</p>
+<p>参数方法的优点：将估计概率密度、判别式或者回归函数问题归结成为少量参数值</p>
+<p>参数方法的缺点：假设并不是总是整理的，并且不成立会导致较大的误差</p>
+<p>非参数方法（nonparametric estimation）：算法使用合适的距离度量，从训练集中找出相似的实例，并且由他们插值得到正确的输出（assumption：世界是平稳的，并且无论是密度、判别式还是回归函数都能缓慢变化，相似的例子意味这相似的事物）</p>
+<p>基本概念</p>
+<p>密度估计（density estimation）</p>
+<p>密度估计是估计$p(x)$的一般情况，在分类中，其中估计密度是能够计算后验概率$P(C_i&#x2F;x)$并做决策的类密度$P(x&#x2F;C_i) and P(C_i)$；在回归中，估计的密度是 :$P(y|x)$</p>
+<h2 id="0X01-参数方法"><a href="#0X01-参数方法" class="headerlink" title="0X01 参数方法"></a>0X01 参数方法</h2><h2 id="01-1-method—最大似然估计（MLE，maximum-likelihood-estimation）"><a href="#01-1-method—最大似然估计（MLE，maximum-likelihood-estimation）" class="headerlink" title="01-1 method—最大似然估计（MLE，maximum likelihood estimation）"></a>01-1 method—最大似然估计（MLE，maximum likelihood estimation）</h2><h3 id="已知"><a href="#已知" class="headerlink" title="已知"></a>已知</h3><p>样本参数，多个独立同分布（i.i.d）的样本集：${x^t}_{t&#x3D;1}^m$，同时假设样本都是<strong>某个定义在参数$\theta$的已知概率密度族中抽取的实例：</strong></p>
+<p>$$ x^i\in p(x|\theta) $$</p>
+<h3 id="求"><a href="#求" class="headerlink" title="求"></a>求</h3><p>最感兴趣是找到参数$\theta$</p>
+<h3 id="解答："><a href="#解答：" class="headerlink" title="解答："></a>解答：</h3><p>因为每个样本是独立分布的，所以给定参数$\theta$,样本的似然likelihood是单点似然的乘积：</p>
+<p>为了简化计算，将乘积转换为求和，并且假设某种密度族（eg. 之前的exp family）进一步简化计算量</p>
+<p>常见的似然函数是convex的，所以直接求导就行了</p>
+<h3 id="eg："><a href="#eg：" class="headerlink" title="eg："></a>eg：</h3><p>关于指数族的推导</p>
+<h2 id="01-2-method—最大后验估计（MAP，maximum-A-posterior）"><a href="#01-2-method—最大后验估计（MAP，maximum-A-posterior）" class="headerlink" title="01-2 method—最大后验估计（MAP，maximum A posterior）"></a>01-2 method—最大后验估计（MAP，maximum A posterior）</h2><h3 id="已知-1"><a href="#已知-1" class="headerlink" title="已知"></a>已知</h3><p>在MLE的likelihood基础上，我们又知道了参数$\theta$的先验prior分布</p>
+<p>$$ p(\theta) $$</p>
+<h3 id="求-1"><a href="#求-1" class="headerlink" title="求"></a>求</h3><p>在此基础上我们依旧希望得到最佳的参数$\theta$</p>
+<h3 id="解"><a href="#解" class="headerlink" title="解"></a>解</h3><p>根据贝叶斯规则，后验密度posterior density,告诉我们在看到样本之后$\theta$的可能取值：</p>
+<p>在正常情况下，知道了$p(\theta|X)$，之后想要估计x则：</p>
+<p>$$ p(x|X)&#x3D;\int p(x,\theta|X)d \theta=\int p(x|\theta,X)p(\theta|X)d\theta=\int p(x|\theta)p(\theta|X)d \theta $$</p>
+<p>所以知道了$p(\theta|X)$就知道了关于分布的一切，但是这个积分比较困难，因此为了用简便，我们希望将$p(\theta|X)$看成一个常数：</p>
+<p>$$ \theta_{MAP}&#x3D;argmax_{\theta}p(\theta|X) $$</p>
+<h2 id="01-3-method—贝叶斯估计（Bayesian-estimation）"><a href="#01-3-method—贝叶斯估计（Bayesian-estimation）" class="headerlink" title="01-3 method—贝叶斯估计（Bayesian estimation）"></a>01-3 method—贝叶斯估计（Bayesian estimation）</h2><p>和MAP相似，但是对于$\theta$ 处理并不是最大值，而是均值</p>
+<p>$$ \theta_{bayes}&#x3D;E(\theta|X) $$</p>
+<h2 id="01-4-example—参数估计"><a href="#01-4-example—参数估计" class="headerlink" title="01-4 example—参数估计"></a>01-4 example—参数估计</h2><p>我们假设</p>
+<p>由此知道了</p>
+<p>似然函数  </p>
+<p>先验参数  </p>
+<p>由此得到  </p>
+<h3 id="01-5-discussion-—讨论"><a href="#01-5-discussion-—讨论" class="headerlink" title="01-5 discussion —讨论"></a>01-5 discussion —讨论</h3><ul>
+<li>MAP和贝叶斯估计都将整个后验密度归约到单个点且损失信息，除非后验单峰的且这些点周围有一个窄峰，但是随着计算能力的提高蛮可以使用蒙特卡洛或者近似方法来计算整个积分</li>
+<li>（bias｜variance dilemma），常见的解决方法</li>
+<li>交叉验证 cross-validation训练看损失函数的“拐点”</li>
+<li>正则化regularization：E&#x3D;数据上误差+a*模型复杂度</li>
+<li>正则化另外一个角度：E&#x3D;训练误差+a*偏差的乐观项，利用AIC（Akaike‘s information criterion）和BIC（Bayesian information criterion）</li>
+<li>结构风险最小化（SRM，structural risk minimization）将模型集合按照复杂程度（随机变量的个数，或者VC维）排序一次训练</li>
+<li>最小描述长度（minimum description length，MDL），利用信息论中的kolmogorov复杂度度量</li>
+</ul>
+<h2 id="0X02-半参数方法"><a href="#0X02-半参数方法" class="headerlink" title="0X02 半参数方法"></a>0X02 半参数方法</h2><p>待定</p>
+<h2 id="0X03-非参数方法"><a href="#0X03-非参数方法" class="headerlink" title="0X03 非参数方法"></a>0X03 非参数方法</h2><p>不同的非参数方法会定义不同相似性 or 或者不同的定义插值的方法，在非参数模型中不存在单个全局模型，需要时需要有局部模型只收到邻近训练实例的影响</p>
+<p>常见的机器学习中非参数方法又被称为instance-based或者memory-based方法</p>
+<h3 id="03-1-密度估计"><a href="#03-1-密度估计" class="headerlink" title="03-1 密度估计"></a>03-1 密度估计</h3><ul>
+<li>直方图估计 histogram</li>
+<li>质朴估计 naive estimator</li>
+<li>核估计 kernel estimator</li>
+<li>k最近邻估计 k-nearest neighbor，k-nn</li>
+</ul>
+<p>K-NN算法</p>
+<blockquote>
+<p> 1 计算测试对象到训练集中每个对象的距离 2 按照距离的远近排序  3 选取与当前测试对象最近的k的训练对象，作为该测试对象的邻居  4 统计这k邻居的类别频率  5 选择k个邻居中频率最高的类别，作为测试对象的类别 </p>
+</blockquote>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">import</span> matplotlib.pyplot as plt<br><span class="hljs-keyword">import</span> seaborn as sns<br><span class="hljs-keyword">import</span> numpy as np<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">knn</span>:<br>    def load<span class="hljs-title class_ inherited__">Dataset</span>(<span class="hljs-keyword">self</span>,filename):<br>        # 借用<span class="hljs-title class_ inherited__">SVM的数据集，但是这里使用numpy返回np</span>.array数据<br>        data<span class="hljs-title class_ inherited__">Mat</span> = [];<br>        label<span class="hljs-title class_ inherited__">Mat</span> = []<br>        fr = <span class="hljs-keyword">open</span>(filename)<br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> fr.readlines():  # 逐行读取，滤除空格等<br>            line<span class="hljs-title class_ inherited__">Arr</span> = line.strip().split(&#x27;\t&#x27;)<br>            data<span class="hljs-title class_ inherited__">Mat</span>.append([float(line<span class="hljs-title class_ inherited__">Arr</span>[0]), float(line<span class="hljs-title class_ inherited__">Arr</span>[1])])  # 添加数据<br>            label<span class="hljs-title class_ inherited__">Mat</span>.append(float(line<span class="hljs-title class_ inherited__">Arr</span>[2]))  # 添加标签<br>        data<span class="hljs-title class_ inherited__">Mat</span>=np.array(data<span class="hljs-title class_ inherited__">Mat</span>)<br>        <span class="hljs-keyword">self</span>.data<span class="hljs-title class_ inherited__">Mat</span>=data<span class="hljs-title class_ inherited__">Mat</span><br>        <span class="hljs-keyword">self</span>.label<span class="hljs-title class_ inherited__">Mat</span>=label<span class="hljs-title class_ inherited__">Mat</span><br><br>    def  visual<span class="hljs-title class_ inherited__">Dataset</span>(<span class="hljs-keyword">self</span>):<br>        sns.scatterplot(<span class="hljs-keyword">self</span>.data<span class="hljs-title class_ inherited__">Mat</span>[:, 0],<span class="hljs-keyword">self</span>.data<span class="hljs-title class_ inherited__">Mat</span>[:, 1],hue=<span class="hljs-keyword">self</span>.label<span class="hljs-title class_ inherited__">Mat</span>)<br>        plt.show()<br><br>    def predict(<span class="hljs-keyword">self</span>,input,k):<br>        def distance(point):<br>            points=np.tile(point,(<span class="hljs-keyword">self</span>.data<span class="hljs-title class_ inherited__">Mat</span>.shape[0],1))<br>            dis=np.linalg.norm(points - <span class="hljs-keyword">self</span>.data<span class="hljs-title class_ inherited__">Mat</span>,axis=1)<br>            <span class="hljs-keyword">return</span> dis<br>        dis=distance(input)<br>        target=np.array(<span class="hljs-keyword">self</span>.label<span class="hljs-title class_ inherited__">Mat</span>)[np.argsort(dis)&lt;k]<br>        <span class="hljs-keyword">if</span> sum(target)&gt;0:<br>            <span class="hljs-keyword">return</span> 1<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-keyword">return</span> -1<br><br><span class="hljs-keyword">if</span> __name__ == &#x27;__main__&#x27;:<br>    model=knn()<br>    model.load<span class="hljs-title class_ inherited__">Dataset</span>(&#x27;<span class="hljs-title class_ inherited__">CS229_2018autumn</span>/<span class="hljs-title class_ inherited__">ProblemSet</span>(课后作业）/code<span class="hljs-title class_ inherited__">Byhand</span>/datasets/test<span class="hljs-title class_ inherited__">Set</span>.txt&#x27;)<br>    model.visual<span class="hljs-title class_ inherited__">Dataset</span>()<br>    example=[0,0]<br>    print(model.predict(example,6))<br></code></pre></td></tr></table></figure>
+
+<h3 id="03-2-分类"><a href="#03-2-分类" class="headerlink" title="03-2 分类"></a>03-2 分类</h3><p>上次的SVM算法</p>
+<p>优点：</p>
+<ul>
+<li>解决高维特征的分类问题和回归问题很有效,在特征维度大于样本数时依然有很好的效果。</li>
+<li>仅仅使用一部分支持向量来做超平面的决策，无需依赖全部数据。</li>
+<li>有大量的核函数可以使用，从而可以很灵活的来解决各种非线性的分类回归问题。</li>
+<li>样本量不是海量数据的时候，分类准确率高，泛化能力强。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>如果特征维度远远大于样本数，则SVM表现一般。</li>
+<li>SVM在样本量非常大，核函数映射维度非常高时，计算量过大，不太适合使用。</li>
+<li>非线性问题的核函数的选择没有通用标准，难以选择一个合适的核函数。</li>
+<li>SVM对缺失数据敏感。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/" class="category-chain-item">数据科学</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="print-no-link">#机器学习</a>
+      
+        <a href="/tags/CS229/" class="print-no-link">#CS229</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS229机器学习 参数方法和非参数方法 ｜ Vol3</div>
+      <div>http://example.com/2024/04/29/CS229机器学习 参数方法和非参数方法 ｜ Vol3/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20%E5%86%B3%E7%AD%96%E6%A0%91%20%EF%BD%9C%20Vol4/" title="CS229机器学习 决策树 ｜ Vol4">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS229机器学习 决策树 ｜ Vol4</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E5%A5%87%E6%96%87%E5%85%B1%E8%B5%8F-%E5%A4%8D%E6%9D%82%E5%9C%BA%E6%99%AF%E7%9A%84%E5%AF%86%E9%9B%86%E4%BA%BA%E7%BE%A4%E8%AE%A1%E6%95%B0/" title="奇文共赏-复杂场景的密集人群计数">
+                        <span class="hidden-mobile">奇文共赏-复杂场景的密集人群计数</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

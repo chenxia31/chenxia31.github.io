@@ -1,0 +1,849 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文主要介绍在Centos7上的cplex安装，以及在python3.7和python3.8中的pythonAPI的调用，⚠️Cplex是一个单独的软件cplex studio、在python中的库为cplex，同时在此基础上封装的更面向对象的有docplex 注意 不同版本对cplex的要求，12.10官方支持python3.6和3.7，也可以通过修改版本验证文件来在python3.8使用！ 更">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CPLEX 安装指南">
+<meta property="og:url" content="http://example.com/2024/04/29/CPLEX%20%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="本文主要介绍在Centos7上的cplex安装，以及在python3.7和python3.8中的pythonAPI的调用，⚠️Cplex是一个单独的软件cplex studio、在python中的库为cplex，同时在此基础上封装的更面向对象的有docplex 注意 不同版本对cplex的要求，12.10官方支持python3.6和3.7，也可以通过修改版本验证文件来在python3.8使用！ 更">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0ff286604f1bd4116bed2eade167df4f_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-24a65f36c12eaed0cf5e988e3483c107_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-966cc875ea7331ca473619556bff9619_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b0cf308e581e156bb48c875a8548de14_1440w.png">
+<meta property="article:published_time" content="2024-04-29T08:09:24.000Z">
+<meta property="article:modified_time" content="2024-04-29T08:35:38.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0ff286604f1bd4116bed2eade167df4f_1440w.png">
+  
+  
+  
+  <title>CPLEX 安装指南 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CPLEX 安装指南"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:09" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CPLEX 安装指南</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文主要介绍在Centos7上的cplex安装，以及在python3.7和python3.8中的pythonAPI的调用，⚠️Cplex是一个单独的软件cplex studio、在python中的库为cplex，同时在此基础上封装的更面向对象的有docplex</p>
+<p>注意 不同版本对cplex的要求，12.10官方支持python3.6和3.7，也可以通过修改版本验证文件来在python3.8使用！</p>
+<p>更新链接：<a target="_blank" rel="noopener" href="https://drive.google.com/file/d/14nnCQiNPJ4tEejqj5uJ2seiPDyN4N3xJ/view?pli=1">https://drive.google.com/file/d/14nnCQiNPJ4tEejqj5uJ2seiPDyN4N3xJ/view?pli=1</a></p>
+<h2 id="0x01简介"><a href="#0x01简介" class="headerlink" title="0x01简介"></a>0x01简介</h2><p>Cplex是IBM公司开发的一款商业版的优化引擎，主要分为：</p>
+<ol>
+<li>免费版（在python3.6～3.7可以直接pip安装）</li>
+<li>付费版，价格比较贵</li>
+<li>教育版，需要申请，但由于IBM并不重视网速较慢，因此可以用别人的安装包</li>
+</ol>
+<p>Cplex专门用于求解大规模的线性规划（LP）、二次规划（QP）、带约束的二次规划（QCQP）、二阶锥规划（SOCP）等四类基本问题，以及相应的混合整数规划（MIP）问题。</p>
+<p>这里是官网的一些简介</p>
+<p>IBM Docs<a target="_blank" rel="noopener" href="http://www.ibm.com/docs/en/icos/12.8.0.0?topic=cplex-setting-up-python-api">www.ibm.com/docs/en/icos/12.8.0.0?topic=cplex-setting-up-python-api</a></p>
+<h3 id="0x02-安装Cplex-studio-（centos7）"><a href="#0x02-安装Cplex-studio-（centos7）" class="headerlink" title="0x02 安装Cplex studio （centos7）"></a>0x02 安装Cplex studio （centos7）</h3><p>安装包：</p>
+<p><a target="_blank" rel="noopener" href="https://drive.google.com/file/d/14nnCQiNPJ4tEejqj5uJ2seiPDyN4N3xJ/view?usp=sharingdrive.google.com/file/d/14nnCQiNPJ4tEejqj5uJ2seiPDyN4N3xJ/view?usp=sharing">https://drive.google.com/file/d/14nnCQiNPJ4tEejqj5uJ2seiPDyN4N3xJ/view?usp=sharingdrive.google.com/file/d/14nnCQiNPJ4tEejqj5uJ2seiPDyN4N3xJ/view?usp=sharing</a></p>
+<p>安装JDK（属于基础环节配置，网上有很多教程）</p>
+<p>参考这份博客</p>
+<p><a target="_blank" rel="noopener" href="https://www.timberkito.com/?p=12">CentOS 7 安装JDK 1.8 环境教程</a></p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-comment">#查看云端yum库中支持安装的JDK库</span><br>yum search <span class="hljs-keyword">java|grep </span><span class="hljs-keyword">jdk</span><br><span class="hljs-keyword"></span><span class="hljs-comment">#选择版本安装JDK</span><br>yum <span class="hljs-keyword">install </span>-y <span class="hljs-keyword">java-1.8.0-openjdk*</span><br><span class="hljs-keyword"></span><span class="hljs-comment">#安装完成后是否成功</span><br><span class="hljs-keyword">java </span>-version<br></code></pre></td></tr></table></figure>
+
+<p>创建安装包的目录（推荐在&#x2F;tmp在存储，作为暂存文件）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 创建目录</span><br><span class="hljs-built_in">mkdir</span> cplex<br><span class="hljs-comment"># 先上传文件到这个目录中</span><br><span class="hljs-comment"># 设置权限</span><br><span class="hljs-built_in">chmod</span> u=rwx,g=rwx,o=rx cplex_studio1210.linux-x86-64.bin <br><span class="hljs-comment">#开始安装</span><br> ./cplex_studio1210.linux-x86-64.bin <br><span class="hljs-comment"># 1. 语言选择English</span><br><span class="hljs-comment"># 2. 软件介绍</span><br><span class="hljs-comment"># 3. 协议介绍</span><br><span class="hljs-comment"># 4. 安装路径，推荐，也可以自己设置</span><br>/toot/cplex/cplex<br><span class="hljs-comment"># 5. 安装python引擎？确认就完事了</span><br><span class="hljs-comment"># 6. 是否收集用户数据</span><br><span class="hljs-comment"># 7. 安装成功</span><br></code></pre></td></tr></table></figure>
+
+<p>配置环境变量</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs elixir">vi  ~/.bashrc <br><span class="hljs-comment"># vim编辑器基本操作：insert插入、：wq保存退出</span><br><span class="hljs-comment"># 在最后一行加入下列</span><br>export <span class="hljs-title class_">PATH</span>=<br><span class="hljs-variable">$PATH</span><span class="hljs-symbol">:/root/cplex/cplex/cplex/bin/x86-</span><span class="hljs-number">64_</span>linux/<br><span class="hljs-symbol">:/root/cplex/cplex/cpoptimizer/bin/x86-</span><span class="hljs-number">64_</span>linux/<br><span class="hljs-comment"># 保存退出后，保存文件</span><br>source ~/.bashrc<br><span class="hljs-comment"># 测试是否安装成功</span><br>cplex -c read /root/cplex/cplex/cplex/examples/data/afiro.mps<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0ff286604f1bd4116bed2eade167df4f_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>成功✅</p>
+<h2 id="0x03-python中的使用"><a href="#0x03-python中的使用" class="headerlink" title="0x03 python中的使用"></a>0x03 python中的使用</h2><p>按照官网的说法是在cplex的目录下面找到set up.pyl来安装</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-24a65f36c12eaed0cf5e988e3483c107_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">python</span> setup.<span class="hljs-keyword">py</span> install<br><span class="hljs-keyword">python</span> setup.<span class="hljs-keyword">py</span> install --home yourPythonPackageshome/cplex<br></code></pre></td></tr></table></figure>
+
+<p>出现一大堆，也没有报错，但是就是import不了，所以我们可以自己将cplex中已经生成的python的cplex包复制粘贴到我们需要对应的python的site-package下，conda下的</p>
+<p>在Anaconda-envs-【conda name】-lib-【python-vesion】</p>
+<p>可以将cplex中的cplex&#x2F;cplex&#x2F;cplex&#x2F;python&#x2F;python&#x2F;3.7&#x2F;[系统]&#x2F;cplex目录；复制到conda的python的site- package下。这次测试的是root&#x2F;anaconda3&#x2F;envs&#x2F;[conda name]&#x2F;lib&#x2F;python3.8&#x2F;site-package&#x2F;里就行了</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-966cc875ea7331ca473619556bff9619_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>官方支持python3.6、python3.7</p>
+<p>但是并不支持python3.8，可以在cplex包里面找到内置函数&#x2F;_internal中找到&#x2F;_p ycplex_platform.py来修改，可能会有风险，更改需要谨慎</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># ------------------------------------------------------------------------------</span><br><span class="hljs-comment"># Licensed Materials - Property of IBM</span><br><span class="hljs-comment"># 5725-A06 5725-A29 5724-Y48 5724-Y49 5724-Y54 5724-Y55 5655-Y21</span><br><span class="hljs-comment"># Copyright IBM Corporation 2008, 2019. All Rights Reserved.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># US Government Users Restricted Rights - Use, duplication or</span><br><span class="hljs-comment"># disclosure restricted by GSA ADP Schedule Contract with</span><br><span class="hljs-comment"># IBM Corp.</span><br><span class="hljs-comment"># ------------------------------------------------------------------------------</span><br><span class="hljs-string">&quot;&quot;&quot;Imports the shared library on supported platforms.&quot;&quot;&quot;</span><br><br><span class="hljs-keyword">import</span> platform<br><br><span class="hljs-keyword">from</span> sys <span class="hljs-keyword">import</span> version_info<br><br>ERROR_STRING = <span class="hljs-string">&quot;CPLEX 12.10.0.0 is not compatible with this version of Python.&quot;</span><br><br><span class="hljs-keyword">if</span> platform.system() <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;Darwin&#x27;</span>, <span class="hljs-string">&#x27;Linux&#x27;</span>, <span class="hljs-string">&#x27;AIX&#x27;</span>, <span class="hljs-string">&#x27;Windows&#x27;</span>, <span class="hljs-string">&#x27;Microsoft&#x27;</span>):<br>    <span class="hljs-keyword">if</span> version_info &lt; (<span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">0</span>):<br>        <span class="hljs-keyword">raise</span> Exception(ERROR_STRING)<br>    <span class="hljs-keyword">elif</span> version_info &lt; (<span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">0</span>):<br>        <span class="hljs-keyword">from</span> cplex._internal.py36_cplex12100 <span class="hljs-keyword">import</span> *<br>    <span class="hljs-keyword">elif</span> version_info &lt; (<span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>):<br>        <span class="hljs-keyword">from</span> cplex._internal.py37_cplex12100 <span class="hljs-keyword">import</span> *<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">raise</span> Exception(ERROR_STRING)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;The CPLEX Python API is not supported on this platform.&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>后续安装docplex</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">pip <span class="hljs-keyword">install</span> DOcplex<br></code></pre></td></tr></table></figure>
+
+<h3 id="0x04-测试"><a href="#0x04-测试" class="headerlink" title="0x04 测试"></a>0x04 测试</h3><p>来简单的测试一下，求解这种问题</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b0cf308e581e156bb48c875a8548de14_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>求解模型</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs prolog">from docplex.mp.model import <span class="hljs-symbol">Model</span>  #导出库，只用这一个就够了<br>model = <span class="hljs-symbol">Model</span>() #创建模型<br>var_list = [i for i in range(<span class="hljs-number">0</span>, <span class="hljs-number">7</span>)] #创建列表<br><span class="hljs-symbol">X</span> = model.binary_var_list(var_list, lb=<span class="hljs-number">0</span>, name=<span class="hljs-string">&#x27;X&#x27;</span>) #创建变量列表<br>#设定目标函数<br>model.maximize(<span class="hljs-number">11</span>* <span class="hljs-symbol">X</span>[<span class="hljs-number">0</span>] + <span class="hljs-number">9</span> * <span class="hljs-symbol">X</span>[<span class="hljs-number">1</span>] + <span class="hljs-number">29</span> * <span class="hljs-symbol">X</span>[<span class="hljs-number">2</span>]+<span class="hljs-number">9</span>* <span class="hljs-symbol">X</span>[<span class="hljs-number">3</span>]+<span class="hljs-number">21</span>*<span class="hljs-symbol">X</span>[<span class="hljs-number">4</span>]+<span class="hljs-number">31</span>*<span class="hljs-symbol">X</span>[<span class="hljs-number">5</span>]+<span class="hljs-number">22</span>*<span class="hljs-symbol">X</span>[<span class="hljs-number">6</span>])  <br>#添加约束条件<br>model.add_constraint(<span class="hljs-symbol">X</span>[<span class="hljs-number">0</span>]+<span class="hljs-symbol">X</span>[<span class="hljs-number">1</span>]+<span class="hljs-symbol">X</span>[<span class="hljs-number">2</span>] &lt;= <span class="hljs-number">2</span>)<br>model.add_constraint(<span class="hljs-symbol">X</span>[<span class="hljs-number">3</span>] + <span class="hljs-symbol">X</span>[<span class="hljs-number">4</span>] &gt;=<span class="hljs-number">1</span>)<br>model.add_constraint(<span class="hljs-symbol">X</span>[<span class="hljs-number">5</span>] + <span class="hljs-symbol">X</span>[<span class="hljs-number">6</span>] &gt;=<span class="hljs-number">1</span>)<br>model.add_constraint(<span class="hljs-number">10</span>* <span class="hljs-symbol">X</span>[<span class="hljs-number">0</span>] + <span class="hljs-number">8</span>* <span class="hljs-symbol">X</span>[<span class="hljs-number">1</span>] + <span class="hljs-number">20</span> * <span class="hljs-symbol">X</span>[<span class="hljs-number">2</span>]+<span class="hljs-number">5</span>* <span class="hljs-symbol">X</span>[<span class="hljs-number">3</span>]+<span class="hljs-number">13</span>*<span class="hljs-symbol">X</span>[<span class="hljs-number">4</span>]+<span class="hljs-number">22</span>*<span class="hljs-symbol">X</span>[<span class="hljs-number">5</span>]+<span class="hljs-number">10</span>*<span class="hljs-symbol">X</span>[<span class="hljs-number">6</span>] &lt;=<span class="hljs-number">60</span>)<br>sol = model.solve() #求解模型<br>print(sol)  #打印结果<br></code></pre></td></tr></table></figure>
+
+<p>结果</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs routeros">solution <span class="hljs-keyword">for</span>: docplex_model1<br>objective: 94<br><span class="hljs-attribute">X_0</span>=1<br><span class="hljs-attribute">X_3</span>=1<br><span class="hljs-attribute">X_4</span>=1<br><span class="hljs-attribute">X_5</span>=1<br><span class="hljs-attribute">X_6</span>=1<br></code></pre></td></tr></table></figure>
+
+<p>over！！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" class="category-chain-item">计算机科学</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CPLEX 安装指南</div>
+      <div>http://example.com/2024/04/29/CPLEX 安装指南/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA%20%EF%BD%9C%20Vol7/" title="CS229机器学习 贝叶斯学习理论 ｜ Vol7">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS229机器学习 贝叶斯学习理论 ｜ Vol7</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/29/CS229%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93%20%EF%BD%9C%20Vol6/" title="CS229 机器学习 常用模型总结 ｜ Vol6">
+                        <span class="hidden-mobile">CS229 机器学习 常用模型总结 ｜ Vol6</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

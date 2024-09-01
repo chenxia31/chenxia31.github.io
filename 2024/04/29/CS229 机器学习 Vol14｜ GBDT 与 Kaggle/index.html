@@ -1,0 +1,933 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="回顾说明是基于树的集成学习，同时给出基本的随机森林和Adaboost解释，以及GBDT的两种工程实现XGboost和lightGBM的介绍，并用实际的Kaggle例子解释使用。 0x01 树（Tree）与集成学习（Ensemble learning）1.1 什么是决策树在之前的文章已经提到过 决策树CART与手撕代码，决策树是一类基于分治思想的非参数的机器学习方法。通过自上而下的树形拆分对数据进行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS229 机器学习 Vol14｜ GBDT 与 Kaggle">
+<meta property="og:url" content="http://example.com/2024/04/29/CS229%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20Vol14%EF%BD%9C%20GBDT%20%E4%B8%8E%20Kaggle/index.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="回顾说明是基于树的集成学习，同时给出基本的随机森林和Adaboost解释，以及GBDT的两种工程实现XGboost和lightGBM的介绍，并用实际的Kaggle例子解释使用。 0x01 树（Tree）与集成学习（Ensemble learning）1.1 什么是决策树在之前的文章已经提到过 决策树CART与手撕代码，决策树是一类基于分治思想的非参数的机器学习方法。通过自上而下的树形拆分对数据进行">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4afc2dc91d34afcd40f07efa8660d7cf_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-745dce26ece095f986302d2fbc1e48f7_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-6a9423b6abec15579c7c5b8d6a91a8ee_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-bf2a3f8490d6f2949b112d655babc749_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-25d2edaa2b27d841f0fb55655183652e_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a5e065000e17e239404a67aaf63a98d9_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8bdf6f18fd668f7b93010da6b95ce304_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-f9ad5490f92279f0e4363cd736756c02_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-1242c47a37d093bed5faee17ab25164c_1440w.png">
+<meta property="article:published_time" content="2024-04-29T11:17:22.000Z">
+<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="梯度提升树">
+<meta property="article:tag" content="面试技巧">
+<meta property="article:tag" content="Kaggle 比赛">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4afc2dc91d34afcd40f07efa8660d7cf_1440w.png">
+  
+  
+  
+  <title>CS229 机器学习 Vol14｜ GBDT 与 Kaggle - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS229 机器学习 Vol14｜ GBDT 与 Kaggle"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 19:17" pubdate>
+          2024年4月29日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CS229 机器学习 Vol14｜ GBDT 与 Kaggle</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>回顾说明是基于树的集成学习，同时给出基本的随机森林和Adaboost解释，以及GBDT的两种工程实现XGboost和lightGBM的介绍，并用实际的Kaggle例子解释使用。</p>
+<h3 id="0x01-树（Tree）与集成学习（Ensemble-learning）"><a href="#0x01-树（Tree）与集成学习（Ensemble-learning）" class="headerlink" title="0x01 树（Tree）与集成学习（Ensemble learning）"></a>0x01 树（Tree）与集成学习（Ensemble learning）</h3><h3 id="1-1-什么是决策树"><a href="#1-1-什么是决策树" class="headerlink" title="1.1 什么是决策树"></a>1.1 什么是决策树</h3><p>在之前的文章已经提到过 <a target="_blank" rel="noopener" href="https://blog.tjdata.site/posts/a32aa49a.html">决策树CART与手撕代码</a>，决策树是一类基于分治思想的非参数的机器学习方法。通过自上而下的树形拆分对数据进行分类，作为一类最简单的最基础的监督学习模型可以被用于分类和回归问题。决策的过程分为</p>
+<ol>
+<li>特征选择</li>
+<li>树的构造</li>
+<li>树的建枝，为了避免过拟合</li>
+</ol>
+<p>所谓构造准则是在选择分支的时候如何确定规则取值？我们可以使用某种不纯度（Impurity）度量方式，来比较分支前的集合和分支之后子集度量之和来选择不纯度下降最大的特征作为区分。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4afc2dc91d34afcd40f07efa8660d7cf_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>特征选择过程</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ID3</td>
+<td>最大信息增益</td>
+<td>倾向于选择取值多的特征；对样本缺失值敏感</td>
+<td>离散，分类</td>
+</tr>
+<tr>
+<td>C4.5</td>
+<td>最大信息增益比</td>
+<td>对于ID3的正则化，避免选择取值多的特征</td>
+<td>离散连续，分类</td>
+</tr>
+<tr>
+<td>CART</td>
+<td>Gini或者最小平方差</td>
+<td>最终形成二叉树</td>
+<td>离散连续，分类和回归</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-什么是集成学习"><a href="#1-2-什么是集成学习" class="headerlink" title="1.2 什么是集成学习"></a>1.2 什么是集成学习</h3><p>在之前的 <a target="_blank" rel="noopener" href="https://blog.tjdata.site/posts/2cac3df3.html">学习理论 — 集成学习</a>中我们介绍了我们可以尝试训练不同的模型并将他们共同输出来得到最终的结果，潜在的假设在于集成多个训练的结果可以达到超过原有单个模型的效果。其中集中方式主要分为：</p>
+<ol>
+<li>使用算法训练得到不同的模型</li>
+<li>将不同模型输出的结果通过平均、投票或者学习（Stacking）的方式来得到（MOE）</li>
+<li>在学习规则中使用不同的策略集中，Boosting（串行）、Bagging（并行）</li>
+</ol>
+<p>这里主要解释两种不同的策略</p>
+<p>Bagging，主要是设计不同的基训练模型，对于同一个训练集我们如何训练得到不同的模型？一种简单的方式是分割数据集，但是这样对于样本的利用率并不高。是否存在一种方式可以重复利用样本但是不同学习器之间存在训练分布的差异。这个时候可以使用之前在模型评价中的自助采样（bootstrap）方法来选择不同的数据样本或者选择不同的特征。</p>
+<p>Boosting，主要是将上一模型的输出继续进行学习，有点类似残差学习的概念，或者resent的想法来弥补之前算法的缺陷，在其中通常是设计如何选择之后采样的权重。</p>
+<h3 id="1-3-随机森林和AdaBoost"><a href="#1-3-随机森林和AdaBoost" class="headerlink" title="1.3 随机森林和AdaBoost"></a>1.3 随机森林和AdaBoost</h3><p>给出两种不同的例子，一种是基于Bagging的随机森林</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-745dce26ece095f986302d2fbc1e48f7_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>随机森林</p>
+<p>一种是基于boosting的Adaboost，通过输出错误分类数据的权重来影响下一个决策树的学习</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-6a9423b6abec15579c7c5b8d6a91a8ee_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Adaboost</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-bf2a3f8490d6f2949b112d655babc749_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Adaboost伪代码</p>
+<h3 id="0x02-梯度提升树（Gradient-boosting-tree）"><a href="#0x02-梯度提升树（Gradient-boosting-tree）" class="headerlink" title="0x02 梯度提升树（Gradient boosting tree）"></a>0x02 梯度提升树（Gradient boosting tree）</h3><h3 id="2-1-什么是梯度提升树"><a href="#2-1-什么是梯度提升树" class="headerlink" title="2.1 什么是梯度提升树"></a>2.1 什么是梯度提升树</h3><p>梯度提升（Gradient boosting）是一类方法，思想主要是使用残差进行下一段的学习，最终的结果为所有的树的结果加和。其是基于经验损失函数的负梯度来构建新的决策树，同时在决策树构建完成之后进行剪枝</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-25d2edaa2b27d841f0fb55655183652e_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Boosting模型：GBDT原理介绍| 机器学习算法技术分享</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a5e065000e17e239404a67aaf63a98d9_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Gradient boost</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stylus">from sklearn<span class="hljs-selector-class">.ensemble</span> import AdaBoostClassifier<br>clf = <span class="hljs-built_in">AdaBoostClassifier</span>(n_estimators=<span class="hljs-built_in">len</span>(X_train),random_state=<span class="hljs-number">42</span>)<br>clf<span class="hljs-selector-class">.fit</span>(X_train, y_train)<br>y_pred = clf<span class="hljs-selector-class">.predict</span>(X_test)<br>from sklearn<span class="hljs-selector-class">.metrics</span> import accuracy_score<br><span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-string">&#x27;Accuracy: &#x27;</span>, accuracy_score(y_test, y_pred)</span></span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-2-Xgboost"><a href="#2-2-Xgboost" class="headerlink" title="2.2 Xgboost"></a>2.2 Xgboost</h3><p>作为GBDT工程化的行驶，相比较GBDT直接使用差分，Xgboost对损失函数进行了二阶泰勒展开，并加入正则化项目来保证整体的最优解，用来权衡目标函数的下降和模型的复杂度来避免过拟合</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs routeros">import xgboost as xgb<br>xgb_model = xgb.XGBClassifier(<span class="hljs-attribute">objective</span>=<span class="hljs-string">&quot;binary:logistic&quot;</span>, <span class="hljs-attribute">random_state</span>=42)<br>xgb_model.fit(X_train, y_train)<br>y_pred = xgb_model.predict(X_test)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Accuracy: &#x27;</span>, accuracy_score(y_test, y_pred))<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-3-LightGBM"><a href="#2-3-LightGBM" class="headerlink" title="2.3 LightGBM"></a>2.3 LightGBM</h3><p>作为另外一种GBDT工程化实现的方式，其具有更快的训练速度、效率、低内存的使用和更好的性能，更容易训练在大型文件夹中。其主要用到了两种非常独特的方法</p>
+<ul>
+<li>单边梯度采样，Gradient-based on side sampling，利用数学证明是可行的</li>
+</ul>
+<p>不同的数据实例在计算信息增益时具有不同的功能。梯度大的实例（即培训不足的示例）将为信息获取做出更多贡献。GOSS保留具有大梯度（例如，大于预定义阈值或顶部百分位数）的实例，并且仅随机删除具有小梯度的实例，以保持信息增益估计的准确性。这种处理可以导致比均匀随机抽样更准确的增益估计，具有相同的目标采样率，特别是当信息增益值范围很大时。</p>
+<ul>
+<li>特征捆绑，Exclusive feature bundling technique</li>
+</ul>
+<p>高维数据通常非常稀疏，这为我们提供了设计一种几乎无损的方法来减少特征数量的可能性。具体来说，在稀疏特征空间中，许多特征是相互排斥的，即它们从不同时使用非零值。独家功能可以安全地捆绑到单个功能中（称为独家功能包）。因此，直方图构建的复杂性从O（数据×特征）变为O（数据×捆绑），而bundle&lt;&lt;特征。因此，在不影响准确性的情况下，提高了培训框架的速度。</p>
+<p>怎么说呢？这些在使用的过程中通常并不会使用到。其中非常有意思的为了压缩信息，会使用直方图的方式来聚集数据和离散数据。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8bdf6f18fd668f7b93010da6b95ce304_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>lightGBM伪代码</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-keyword">from</span> sklearn.metrics import log_loss, roc_auc_score<br><span class="hljs-comment"># Set parameters</span><br>params = &#123;<br>    <span class="hljs-string">&#x27;boosting_type&#x27;</span>: <span class="hljs-string">&#x27;gbdt&#x27;</span>,<br>    <span class="hljs-string">&#x27;objective&#x27;</span>: <span class="hljs-string">&#x27;binary&#x27;</span>,<br>    <span class="hljs-string">&#x27;metric&#x27;</span>: &#123;<span class="hljs-string">&#x27;binary_logloss&#x27;</span>, <span class="hljs-string">&#x27;auc&#x27;</span>&#125;,<br>    <span class="hljs-string">&#x27;num_leaves&#x27;</span>: 31,<br>    <span class="hljs-string">&#x27;learning_rate&#x27;</span>: 0.05,<br>    <span class="hljs-string">&#x27;feature_fraction&#x27;</span>: 0.9,<br>    <span class="hljs-string">&#x27;bagging_fraction&#x27;</span>: 0.8,<br>    <span class="hljs-string">&#x27;bagging_freq&#x27;</span>: 5,<br>    <span class="hljs-string">&#x27;verbose&#x27;</span>: 0<br>&#125;<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Start training...&#x27;</span>)<br><span class="hljs-comment"># train</span><br>gbm = lgb.train(params, train_data, <span class="hljs-attribute">num_boost_round</span>=20, <span class="hljs-attribute">valid_sets</span>=test_data, <span class="hljs-attribute">early_stopping_rounds</span>=5)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Save model...&#x27;</span>)<br><span class="hljs-comment"># save model to file</span><br>gbm.save_model(<span class="hljs-string">&#x27;model.txt&#x27;</span>)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Start predicting...&#x27;</span>)<br><span class="hljs-comment"># predict</span><br>y_pred = gbm.predict(X_test, <span class="hljs-attribute">num_iteration</span>=gbm.best_iteration)<br><span class="hljs-comment"># eval</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;The logloss of prediction is:&#x27;</span>, log_loss(y_test, y_pred))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;The auc of prediction is:&#x27;</span>, roc_auc_score(y_test, y_pred))<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Plot feature importances...&#x27;</span>)<br><span class="hljs-comment"># feature importances</span><br>ax = lgb.plot_importance(gbm)<br>ax = lgb.plot_importance(gbm,<span class="hljs-attribute">title</span>=<span class="hljs-string">&#x27;Feature importance&#x27;</span>, <span class="hljs-attribute">xlabel</span>=<span class="hljs-string">&#x27;Feature importance&#x27;</span>, <span class="hljs-attribute">ylabel</span>=<span class="hljs-string">&#x27;Features&#x27;</span>, figsize=(10, 10))<br>plt.show()<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-4-解释性"><a href="#2-4-解释性" class="headerlink" title="2.4 解释性"></a>2.4 解释性</h3><p>对于tree-based模型最直观的是可以输出树作为最终结果，在树的节点上我们可以给出计算结果，包括：</p>
+<ol>
+<li>Feature importance，基于之前的不纯度指标，或者特征节点的分裂次数来计算</li>
+<li>Shap，是可以计算出Tree-based模型的系数的一种方法，但是比较麻烦</li>
+<li>Null importance，参考统计学中的一个基本假设。如果一个特征被随机数代替之后结果并没有出现明显差异，说明这个特征并没有什么用。称为洗牌（permutation）</li>
+</ol>
+<h3 id="0x03-实例：M5-Forecasting-Accuracy"><a href="#0x03-实例：M5-Forecasting-Accuracy" class="headerlink" title="0x03 实例：M5-Forecasting-Accuracy"></a>0x03 实例：M5-Forecasting-Accuracy</h3><h3 id="3-1-问题描述"><a href="#3-1-问题描述" class="headerlink" title="3.1 问题描述"></a>3.1 问题描述</h3><p>Kaggle 比赛地址：<a target="_blank" rel="noopener" href="https://www.kaggle.com/competitions/m5-forecasting-accuracy/data?select=sales_train_evaluation.csv">M5-Forecasting-Accuracy</a></p>
+<p>原始数据项目地址：<a target="_blank" rel="noopener" href="https://mofc.unic.ac.cy/m5-competition/">MOFC</a></p>
+<p>数据主要为美国三个州、十个商店、3490个商品的销售数据，数据描述包括：</p>
+<ol>
+<li>日历文件（Calendar），给出week下标、星期、日、月、年、事件1名称、事件1类型、事件2名称、事件2类型、三个州是否允许商品券购买</li>
+<li>销售数据（Sales-train），给出每个产品每天的销售量、分类、商品、状态和日期</li>
+<li>销售价格（Sell-price），对应日期商品的价格</li>
+</ol>
+<p>最终的考核指标除了单个商品销售数量的预测，还包括不同层级聚合后的结果评价（比如三个州商品总和预测精度等等。</p>
+<h3 id="3-2-特征工程"><a href="#3-2-特征工程" class="headerlink" title="3.2 特征工程"></a>3.2 特征工程</h3><p>首先对于单个商品来看，是一个时间序列处理问题，主要是采用原有数据特征来分析。从销售事件序列上来看我们可以采集滞后项目（Lag）、季节特征（season）；从日历中我们可以设计天特征、事件类型等特征；从价格中我们设计价格特征等等。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-keyword">import</span> seaborn <span class="hljs-keyword">as</span> sns<br><br><span class="hljs-comment"># 日历包括：日期、week id、weekday、month、year、event name、type、second event name、type、是否允许购买CA、TX、WI</span><br><span class="hljs-comment">#  Supply nutrition assistance program SNAP 是否允许食品券购买</span><br>df_calendar = pd.read_csv(<span class="hljs-string">&#x27;../../data/m5-forecasting-accuracy/calendar.csv&#x27;</span>)<br><span class="hljs-comment"># 30490个产品，每个产品每天的销售量，departure id、分类id、商店id、状态id、日期、销售量</span><br><span class="hljs-comment"># 总共3090类产品、10个商店、3个州、每个商店的类别</span><br>df_sales_train_validation = pd.read_csv(<span class="hljs-string">&#x27;../../data/m5-forecasting-accuracy/sales_train_validation.csv&#x27;</span>)<br><span class="hljs-comment"># sell prices 包括：商店id、产品id、日期、价格</span><br>df_sell_prices = pd.read_csv(<span class="hljs-string">&#x27;../../data/m5-forecasting-accuracy/sell_prices.csv&#x27;</span>)<br>df_sample_submission = pd.read_csv(<span class="hljs-string">&#x27;../../data/m5-forecasting-accuracy/sample_submission.csv&#x27;</span>)<br><br><span class="hljs-comment"># 构建特征工程</span><br><span class="hljs-comment"># 1. 价格特征</span><br>d_cols = [c <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> df_sales_train_validation.columns <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;d_&#x27;</span> <span class="hljs-keyword">in</span> c] <span class="hljs-comment"># sales data columns</span><br>x = df_sales_train_validation[d_cols].copy()<br><br>target_day = <span class="hljs-number">1914</span><br><br><span class="hljs-comment">#使用历史数据中最后的7天构造特征</span><br>local_range = <span class="hljs-number">7</span><br><br><span class="hljs-comment"># 由于使用前1913天的数据预测第1914天，历史数据与预测目标的距离只有1天，因此predict_distance=1</span><br>predict_distance = <span class="hljs-number">1</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_local_features</span>(<span class="hljs-params">target_day, predict_distance</span>):<br>    local_features = pd.DataFrame()<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(local_range):<br>        local_features[<span class="hljs-string">&#x27;l_&#x27;</span>+<span class="hljs-built_in">str</span>(i + <span class="hljs-number">1</span>)] = x[<span class="hljs-string">&#x27;d_&#x27;</span>+<span class="hljs-built_in">str</span>(target_day - i - predict_distance)].astype(<span class="hljs-built_in">float</span>)<br>    l_cols = [<span class="hljs-string">&#x27;l_&#x27;</span>+<span class="hljs-built_in">str</span>(i + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(local_range)]<br>    <span class="hljs-keyword">return</span> local_features[l_cols]<br><br><span class="hljs-built_in">print</span>(get_local_features(target_day,predict_distance))<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_local_accumulated_feature</span>(<span class="hljs-params">target_day, predict_distance</span>):<br>    local_accumulated_feature = pd.DataFrame()<br>    local_accumulated_feature[<span class="hljs-string">&#x27;la_1&#x27;</span>] = x[<span class="hljs-string">&#x27;d_&#x27;</span>+<span class="hljs-built_in">str</span>(target_day - predict_distance)].astype(<span class="hljs-built_in">float</span>)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, local_range):<br>        local_accumulated_feature[<span class="hljs-string">&#x27;la_&#x27;</span>+<span class="hljs-built_in">str</span>(i + <span class="hljs-number">1</span>)] = x[<span class="hljs-string">&#x27;d_&#x27;</span>+<span class="hljs-built_in">str</span>(target_day - i - predict_distance)].astype(<span class="hljs-built_in">float</span>) +\<br>            local_accumulated_feature[<span class="hljs-string">&#x27;la_&#x27;</span> + <span class="hljs-built_in">str</span>(i)]<br>    la_cols = [<span class="hljs-string">&#x27;la_&#x27;</span>+<span class="hljs-built_in">str</span>(i + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(local_range)]<br>    <span class="hljs-keyword">return</span> local_accumulated_feature[la_cols]<br><br>get_local_accumulated_feature(target_day, predict_distance)<br><br>tx = x[d_cols[::-<span class="hljs-number">1</span>]].cumsum(axis=<span class="hljs-number">1</span>)<br>used_history_distances = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">14</span>, <span class="hljs-number">21</span>, <span class="hljs-number">28</span>, <span class="hljs-number">42</span>, <span class="hljs-number">56</span>]<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_accumulated_features</span>(<span class="hljs-params">target_day, predict_distance</span>):<br>    long_term_features = pd.DataFrame()<br>    <span class="hljs-keyword">for</span> distance <span class="hljs-keyword">in</span> used_history_distances:<br>        long_term_features[<span class="hljs-string">&#x27;la_&#x27;</span> + <span class="hljs-built_in">str</span>(distance)] = tx[<span class="hljs-string">&#x27;d_&#x27;</span> + <span class="hljs-built_in">str</span>(target_day - distance - predict_distance + <span class="hljs-number">1</span>)].astype(<span class="hljs-built_in">float</span>)<br>    la_cols = [<span class="hljs-string">&#x27;la_&#x27;</span> + <span class="hljs-built_in">str</span>(distance) <span class="hljs-keyword">for</span> distance <span class="hljs-keyword">in</span> used_history_distances]<br>    <span class="hljs-keyword">return</span> long_term_features[la_cols]<br><br>get_accumulated_features(target_day, predict_distance)<br><br><span class="hljs-comment"># 构建周期特征</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_period_sale</span>(<span class="hljs-params">target_day, predict_distance</span>):<br>    period = <span class="hljs-number">7</span><br>    i_start = (predict_distance + period - <span class="hljs-number">1</span>) // period<br>    period_sale = pd.DataFrame()<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">8</span>):<br>        cur_day = target_day - (i + i_start) * period<br>        period_sale[<span class="hljs-string">&#x27;p_&#x27;</span>+<span class="hljs-built_in">str</span>(i + <span class="hljs-number">1</span>)] = x[<span class="hljs-string">&#x27;d_&#x27;</span> + <span class="hljs-built_in">str</span>(cur_day)].astype(<span class="hljs-built_in">float</span>)<br>    <span class="hljs-keyword">return</span> period_sale<br><br>get_period_sale(target_day, predict_distance)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_period_features</span>(<span class="hljs-params">target_day, predict_distance</span>):<br>    tx_period = get_period_sale(target_day, predict_distance)<br>    tx_period = tx_period.cumsum(axis=<span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">return</span> tx_period<br><br>get_period_features(target_day, predict_distance)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_history_features</span>(<span class="hljs-params">target_day, predict_distance</span>):<br>    <span class="hljs-keyword">return</span> pd.concat([get_accumulated_features(target_day, predict_distance),<br>                      get_period_features(target_day, predict_distance)], axis=<span class="hljs-number">1</span>)<br><br>get_history_features(target_day, predict_distance)<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-f9ad5490f92279f0e4363cd736756c02_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>特征构造思路</p>
+<h3 id="3-3-训练与调参"><a href="#3-3-训练与调参" class="headerlink" title="3.3 训练与调参"></a>3.3 训练与调参</h3><p>默认参数包括</p>
+<p>估计类型boosting: ‘gbdt’</p>
+<p>学习模版objective：‘regression‘</p>
+<p>评价指标metric：’rmse‘</p>
+<p>由于集成模型中的参数比较多，调参力度可能比较大。以lightGBM的params为例子，参考知乎中的文章，可以使用</p>
+<ol>
+<li>经验参数：学习率（learning rate）、集成的迭代次数（n_estimator）、节点分裂的最小增益(min_split_gain)、叶子上最小数据量(min_child_sample)、叶子上最小的hessian和(min_child_weight)</li>
+<li>模型最大的深度(max_depth)、叶子节点数量(num_leaves)、正则化参数(reg_alpha,reg_lambda)，数据采样（subsample or bagging_fraction，colsample_bytree or feature_fraction)</li>
+</ol>
+<p>具体调整参数过程可以参考【6】</p>
+<h3 id="0x04-总结"><a href="#0x04-总结" class="headerlink" title="0x04 总结"></a>0x04 总结</h3><h3 id="4-1-经典偏差方差权衡"><a href="#4-1-经典偏差方差权衡" class="headerlink" title="4.1 经典偏差方差权衡"></a>4.1 经典偏差方差权衡</h3><p>对于模型的效果评价分为偏差（Bias）和方差（Variance），其中偏差反映的是模型的准确程度，比如说GT是1，偏差预测的结果为（2.1，2.2，1.9），这种属于高偏差，低方差，说明模型是欠拟合，此时模型还没有学习到模型背后的假设。而当GT是（1.2，1.3），模型的预测结果为（1.2，1.3）说明模型具有低偏差但是具有高方差，说明此时模型不仅学习到了假设同时也包含了噪声，导致过拟合</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-1242c47a37d093bed5faee17ab25164c_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>modelcomplexity</p>
+<p>在集成学习如何解决 bias- variance tradeoff</p>
+<p>bagging and variance：</p>
+<p>通过学习的方式，可以看出bagging方式训练了很多模型，但是并没有显著的提高模型的效果，所以有可能所有的模型的效果并不是很好，但是通过大数定律来提高集成模型的效果，也就是减少模型的variance</p>
+<p>boosting and bias：</p>
+<p>boosting的方式也就是在不断的学习残差或者梯度的过程，是在不断的减少模型的bias</p>
+<h3 id="4-2-如何学习"><a href="#4-2-如何学习" class="headerlink" title="4.2 如何学习"></a>4.2 如何学习</h3><p>获取模型算法的设计过程无关，但是前期的特征工程和对比分析也非常有意思！</p>
+<p>[<a target="_blank" rel="noopener" href="https://microsoft.github.io/ai-edu/%E5%AE%9E%E8%B7%B5%E6%A1%88%E4%BE%8B/B16-%E5%9F%BA%E4%BA%8ELightGBM%E7%9A%84%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E9%A2%84%E6%B5%8B/">1]基于LightGBM的时间序列预测</a></p>
+<p>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/531784901">2]LightGBM回归预测模型构建</a></p>
+<p>[<a target="_blank" rel="noopener" href="https://www.kaggle.com/discussions/general/264327">3What is Light GBM? Advantages &amp; Disadvantages? Light GBM vs XGBoost?]</a></p>
+<p>[<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/lightgbm-light-gradient-boosting-machine/">4]LightGBM</a></p>
+<p>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/376485485">5]lightGBM调参教程</a></p>
+<p>[<a target="_blank" rel="noopener" href="https://www.cnblogs.com/bjwu/p/9307344.html">6]非常棒的调参过程</a></p>
+<p>[<a target="_blank" rel="noopener" href="https://www.section.io/engineering-education/ensemble-bias-var/">7]Bias and variance</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" class="print-no-link">#梯度提升树</a>
+      
+        <a href="/tags/%E9%9D%A2%E8%AF%95%E6%8A%80%E5%B7%A7/" class="print-no-link">#面试技巧</a>
+      
+        <a href="/tags/Kaggle-%E6%AF%94%E8%B5%9B/" class="print-no-link">#Kaggle 比赛</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS229 机器学习 Vol14｜ GBDT 与 Kaggle</div>
+      <div>http://example.com/2024/04/29/CS229 机器学习 Vol14｜ GBDT 与 Kaggle/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%92%8C%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80%20Vol9/" title="数据分析和算法基础 Vol9">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据分析和算法基础 Vol9</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80%20vol8/" title="数据结构和算法基础 vol8">
+                        <span class="hidden-mobile">数据结构和算法基础 vol8</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

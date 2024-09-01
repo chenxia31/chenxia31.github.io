@@ -1,0 +1,1022 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Chenlong&#39;s blog">
+<meta property="og:url" content="http://example.com/page/8/index.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="chenlongxu">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Stay hungry,stay foolish"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%9E%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95%20%EF%BD%9C%20Vol3/" target="_self">
+          CS229机器学习 参数方法和非参数方法 ｜ Vol3
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%9E%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95%20%EF%BD%9C%20Vol3/" target="_self">
+        <div>
+          Andrew Wu–番外参数方法和非参数方法blog.tjdata.site&#x2F;2022&#x2F;02&#x2F;13&#x2F;Andrew%20Wu–%E7%95%AA%E5%A4%96%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95%E5%92%8C%E9%9D%9E%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95&#x2F; [An
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-29 16:09" pubdate>
+              2024-04-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/" class="category-chain-item">数据科学</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">#机器学习</a>
+            
+              <a href="/tags/CS229/">#CS229</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/29/%E5%A5%87%E6%96%87%E5%85%B1%E8%B5%8F-%E5%A4%8D%E6%9D%82%E5%9C%BA%E6%99%AF%E7%9A%84%E5%AF%86%E9%9B%86%E4%BA%BA%E7%BE%A4%E8%AE%A1%E6%95%B0/" target="_self">
+          奇文共赏-复杂场景的密集人群计数
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/29/%E5%A5%87%E6%96%87%E5%85%B1%E8%B5%8F-%E5%A4%8D%E6%9D%82%E5%9C%BA%E6%99%AF%E7%9A%84%E5%AF%86%E9%9B%86%E4%BA%BA%E7%BE%A4%E8%AE%A1%E6%95%B0/" target="_self">
+        <div>
+          之前创新项目中文献综述在选修课作业中完善，同时借鉴经典综述文章，完成一篇中文“四不像”，就当是杂谈了  摘要：复杂场景的密集人群计数在治安防控、交通管制、集会管理等方面起到重要的作用，可以为管理者提供有效及时的信息。从21篇中文文献和43篇英文文献中总结出密集人群计数中面临的主要问题有：拥挤、遮挡、重复和复杂光照环境带来的影响，并从传统的基于手工提取特征的密集计数到基于卷积神经网络的高级特征提取
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-29 16:09" pubdate>
+              2024-04-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BA%A4%E9%80%9A%E5%B7%A5%E7%A8%8B/" class="category-chain-item">交通工程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%AC%E7%A7%91%E5%9B%BD%E5%88%9B/">#本科国创</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20SVM%20%7C%20vol2/" target="_self">
+          CS229机器学习 SVM | vol2
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20SVM%20%7C%20vol2/" target="_self">
+        <div>
+          讨论一种不同的线性分类和回归方法，每种学习算法都具有不同的归纳偏倚，做不同的假设，定义不同的目标函数，因此可能找到不同的模型 Support Vector Machine 0x01 引言支持向量机使用Vapnik原则   不要在解决实际问题之前把解决一个更复杂的问题作为第一步（vapnik，1995）   训练后，线性模型的参数（权重向量）可以用训练集的一个子集表示，这个子集称为支持向量suppo
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-29 16:09" pubdate>
+              2024-04-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/" class="category-chain-item">数据科学</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">#机器学习</a>
+            
+              <a href="/tags/CS229/">#CS229</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%20%7C%20vol1/" target="_self">
+          CS229机器学习广义线性模型 | vol1
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/29/CS229%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%20%7C%20vol1/" target="_self">
+        <div>
+          根据Andrew wu 机器学习的监督学习的第一部分总结 0x01 引言机器学习的定义：  对于某类任务task和性能度量performance，如果一个计算机程序在task上以performance衡量的性能随着经验experience而自我完善，那么我们称这个计算机程序在从experience中学习  机器学习的方法在不同领域中以不同的方式逐渐发展到共通的状态，从统计学习中从特殊到一般的inf
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-29 16:09" pubdate>
+              2024-04-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/" class="category-chain-item">数据科学</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">#机器学习</a>
+            
+              <a href="/tags/CS229/">#CS229</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/29/Mitchell%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BB%E5%90%8E%E5%8F%8D%E6%80%9D/" target="_self">
+          Mitchell 机器学习读后反思
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/29/Mitchell%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BB%E5%90%8E%E5%8F%8D%E6%80%9D/" target="_self">
+        <div>
+          ✈️ 任何错误联系📮：chenxia31@outlook.com    书籍的相关基本信息如下👇，我所读的版本的出版年份2009.06，从时间上来看里面的内容相对比较传统， 机器学习导论（原书第2版）book.douban.com&#x2F;subject&#x2F;25881740&#x2F;  从中也可以看出作者对于机器学习的一些理解，作者从监督学习、贝叶斯决策理论、参数方法、多元方法、
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-29 16:09" pubdate>
+              2024-04-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">#机器学习</a>
+            
+              <a href="/tags/Mitchell/">#Mitchell</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/29/Mitchell%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BB%E5%90%8E%E6%84%9F/" target="_self">
+          Mitchell 机器学习读后感
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/29/Mitchell%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BB%E5%90%8E%E6%84%9F/" target="_self">
+        <div>
+          ✈️ 讨论机器学习在统计学、模式识别、神经网络、人工智能、信号处理等不同领域的应用，主要内容包括监督学习、贝叶斯决策理论、参数方法、多元方法、维度规约、非参数方法、决策树、线性判别式、多层感知器、隐马尔可夫、组合多学习期以及增强学习等 https://book.douban.com/subject/25881740/book.douban.com/subject/25881740/ [机器学
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-29 16:09" pubdate>
+              2024-04-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">#机器学习</a>
+            
+              <a href="/tags/Mitchell/">#Mitchell</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/29/%E9%98%85%E8%AF%BBintroduction%20to%20algorithms%E9%A1%BA%E5%BA%8F/" target="_self">
+          阅读introduction to algorithms顺序
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/29/%E9%98%85%E8%AF%BBintroduction%20to%20algorithms%E9%A1%BA%E5%BA%8F/" target="_self">
+        <div>
+          一下是原文地址 ，仅翻译其中的英文部分，供参考，这是目录  如何正确地撸《算法导论》？1562 赞同 · 43 评论回答 第一章 作为兴趣阅读，可以跳过 第二章 2.1 insertion sort ，这是最基础的内容，实际上最好可以了解所有主要的排序算法 2.2 Analysis of Algorithms 除了导言部分都需要知道 2.3 Designing Algorithms 包含merge
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-29 16:09" pubdate>
+              2024-04-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" class="category-chain-item">程序设计</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/">#算法导论</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/29/Matplotlib%E7%94%A8%E6%88%B7%E6%8C%87%E5%8D%97%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/" target="_self">
+          Matplotlib用户指南中文翻译
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/29/Matplotlib%E7%94%A8%E6%88%B7%E6%8C%87%E5%8D%97%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/" target="_self">
+        <div>
+          用户指南   这份辅导指南包括最基本的使用方法和最好的训练帮助你开始使用matplotlib 12import matplotlib.pyplot as pltimport numpy as np  入门例子Matplotlib将你的图片在FIgure中绘制：包括一个或多个Axes（坐标轴，包括x-y坐标、极坐标、3D坐标） 最简单的是利用pyplot.subplots来创建一个包含坐标轴Axes
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-29 16:09" pubdate>
+              2024-04-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" class="category-chain-item">程序设计</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Python/">#Python</a>
+            
+              <a href="/tags/matplotlib/">#matplotlib</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/29/%E7%90%86%E5%B7%A5%E7%A7%91%E5%AD%A6%E7%94%9F%E4%BD%BF%E7%94%A8%20iPadPro2018%20%E7%9A%84%E6%80%BB%E7%BB%93/" target="_self">
+          理工科学生使用iPad Pro（2018）的总结
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/29/%E7%90%86%E5%B7%A5%E7%A7%91%E5%AD%A6%E7%94%9F%E4%BD%BF%E7%94%A8%20iPadPro2018%20%E7%9A%84%E6%80%BB%E7%BB%93/" target="_self">
+        <div>
+          2020款iPad pro昨天上线，相比较2018款iPad Pro的主要提升有：  A12X处理器升级A12Z 后置摄像头的升级 增加探测雷达 支持更多WiFi频段（WiFi-6？）   官网上参数对比 由于个人是学生，对于摄像头的要求仅仅是用来拍ppt，一般拍照没有太大需求（但是相信Apple的硬件和算法，前几天A12X加持下的人像模式惊到我了）。 下面我想说明一下个人用iPad Pro 11
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-29 14:54" pubdate>
+              2024-04-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%B0%88/" class="category-chain-item">生活杂谈</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/04/29/%E5%B7%A5%E7%A7%91%E7%94%9F%E4%BD%BF%E7%94%A8Macbook%20air-M1%E4%BD%BF%E7%94%A8%E6%84%9F%E5%8F%97/" target="_self">
+          工科生使用Macbook air-M1使用感受
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/04/29/%E5%B7%A5%E7%A7%91%E7%94%9F%E4%BD%BF%E7%94%A8Macbook%20air-M1%E4%BD%BF%E7%94%A8%E6%84%9F%E5%8F%97/" target="_self">
+        <div>
+          Abstract从一个工科生的角度，在使用三个月的M1版本的MacBook air同之前的y7000的使用做出对比，得出需求中的日常部分可以提高使用体验，在专业需求中可能会无法满足特殊需求，但是具有自己的差异性优势。 目录：  自身背景和所持硬件、之前y7000的软件配置 MacBook air的使用体验 刚刚使用，外观篇 初步体验，浅度使用（自带软件的思考） 深度使用，mac的优点和不足 one
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-04-29 16:02" pubdate>
+              2022-04-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%B0%88/" class="category-chain-item">生活杂谈</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Apple/">#Apple</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/7/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/#board">6</a><a class="page-number" href="/page/7/#board">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/#board">9</a><a class="extend next" rel="next" href="/page/9/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

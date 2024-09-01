@@ -1,0 +1,895 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="初始强化学习最难的地方在于晦涩的专业词汇以及复杂的数学推导；同时深度强化学习并不是强化学习的终点，在这个过程中依旧需要human在其中扮演的地方。这里浅薄看蘑菇书来了解。主要作为了解强化学习的基本概念，希望从随机过程出发，来给出强化学习中智能体agent与环境 env之间的基本概念 0x01 随机过程的基础概率论和应用统计是研究概率论中多个随机事件所构成的具有一般性规律的学科；而随机过程则是对这个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS285 深度强化学习 Vol1 ｜ 基本概念">
+<meta property="og:url" content="http://example.com/2024/04/29/CS285%20%E6%B7%B1%E5%BA%A6%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%20Vol1%20%EF%BD%9C%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="初始强化学习最难的地方在于晦涩的专业词汇以及复杂的数学推导；同时深度强化学习并不是强化学习的终点，在这个过程中依旧需要human在其中扮演的地方。这里浅薄看蘑菇书来了解。主要作为了解强化学习的基本概念，希望从随机过程出发，来给出强化学习中智能体agent与环境 env之间的基本概念 0x01 随机过程的基础概率论和应用统计是研究概率论中多个随机事件所构成的具有一般性规律的学科；而随机过程则是对这个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a8e283e4093bbf799726b3d53a8e3986_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-2a7bb6b705e17efd979e214a92d425f7_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ff43b46c8d01f592a86c35f166ac2493_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b3c3404e0dd9231f2584b6ebedcd1eaf_1440w.png">
+<meta property="og:image" content="https://pica.zhimg.com/80/v2-5a00345aa837a5d7641513eff8fae762_1440w.png?source=d16d100b">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-fc6cd1cf1a397b72cb6a791f328b352f_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8e7ac501e53cfff71e32f8caef5da84a_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-1ce7e41f2f475a4f754d5ac1496e917a_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-29b80bae0bdeb4686b984a55a27b73f4_1440w.png">
+<meta property="article:published_time" content="2024-04-29T09:14:03.000Z">
+<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="CS285">
+<meta property="article:tag" content="强化学习">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a8e283e4093bbf799726b3d53a8e3986_1440w.png">
+  
+  
+  
+  <title>CS285 深度强化学习 Vol1 ｜ 基本概念 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS285 深度强化学习 Vol1 ｜ 基本概念"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 17:14" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CS285 深度强化学习 Vol1 ｜ 基本概念</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>初始强化学习最难的地方在于晦涩的专业词汇以及复杂的数学推导；同时深度强化学习并不是强化学习的终点，在这个过程中依旧需要human在其中扮演的地方。这里浅薄看<a target="_blank" rel="noopener" href="https://datawhalechina.github.io/easy-rl/#/">蘑菇书来了解</a>。主要作为了解强化学习的基本概念，希望从随机过程出发，来给出强化学习中智能体agent与环境 env之间的基本概念</p>
+<h3 id="0x01-随机过程的基础"><a href="#0x01-随机过程的基础" class="headerlink" title="0x01 随机过程的基础"></a>0x01 随机过程的基础</h3><p>概率论和应用统计是研究概率论中多个随机事件所构成的具有一般性规律的学科；而随机过程则是对这个过程进行描述。</p>
+<h3 id="1-1-马尔可夫过程-MP-Markov-process"><a href="#1-1-马尔可夫过程-MP-Markov-process" class="headerlink" title="1.1 马尔可夫过程 MP- Markov process"></a>1.1 马尔可夫过程 MP- Markov process</h3><p>马尔可夫性质指的是一个随机过程在给定现在状态和所有过去状态的情况下，未来分布概率仅依赖于当前的状态；也就是在知道当前的状态，将来与未来是独立的</p>
+<p>𝑃(𝑋𝑇+1&#x3D;𝑥𝑡+1|𝑋0&#x3D;𝑥0,𝑥1&#x3D;𝑥1,…,𝑋𝑇&#x3D;𝑥𝑡)&#x3D;𝑃(𝑋𝑇+1&#x3D;𝑥𝑡+1|𝑋𝑇&#x3D;𝑥𝑡) </p>
+<p>如果一个随机过程是离散的，可以被称为马尔可夫链（Markov chain）</p>
+<p>在这个过程中我们看到不同状态之间的概率转换</p>
+<h3 id="1-2-马尔可夫奖励过程-MRP-Markov-reward-process"><a href="#1-2-马尔可夫奖励过程-MRP-Markov-reward-process" class="headerlink" title="1.2 马尔可夫奖励过程-MRP- Markov reward- process"></a>1.2 马尔可夫奖励过程-MRP- Markov reward- process</h3><p>在上述马尔可夫链的基础上，我们引入一个新的概念：</p>
+<p>奖励- reward function：是一个期望，表示我们到达某个过程能够获得的最大的奖励，通常用horizon表示有个回合的长度，那么在奖励的基础上我们可以得到随机过程序列的回报</p>
+<p>回报- return $G_t&#x3D;r_{t+1}+\gamma<em>r_{t+2}+\gamma^2</em>r_{t+3}+…$</p>
+<p>这里的$\gamma$代表折扣系数；这个位置是表示这个一系列的随机过程所带来的回报，但是通常为收敛会规定 回报- return的长度来；在回报- return的基础上我们可以得到每个状态- state的价值- value；也就是回报- return的期望就是价值</p>
+<p>𝑉(𝑆𝑇)&#x3D;𝐸(𝐺𝑇|𝑆𝑇&#x3D;𝑠𝑡) </p>
+<p>这里有待讨论，感觉和高中物理中的万有引力与势能很相似</p>
+<p>关于价值- value的求解会有很多方法</p>
+<ol>
+<li>利用定义，遍历多种状态得到value</li>
+<li>利用蒙特卡洛MC随机采样的方法</li>
+<li>利用Bellman equation得到解析解</li>
+<li>其他的方法，比如TD learning等</li>
+</ol>
+<h3 id="1-25关于MRP贝尔曼方程求解"><a href="#1-25关于MRP贝尔曼方程求解" class="headerlink" title="1.25关于MRP贝尔曼方程求解"></a>1.25关于MRP贝尔曼方程求解</h3><p>太菜了，所以用手写，这样我们看出MRP重点是在知道转移概率P和各状态奖励reward以及折扣因子$\gamma$的基础上，求解出状态的价值（用不同的方法）</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a8e283e4093bbf799726b3d53a8e3986_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-2a7bb6b705e17efd979e214a92d425f7_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ff43b46c8d01f592a86c35f166ac2493_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h3 id="1-3-马尔可夫决策过程-MDP-Markov-decision-process"><a href="#1-3-马尔可夫决策过程-MDP-Markov-decision-process" class="headerlink" title="1.3 马尔可夫决策过程-MDP-Markov- decision- process"></a>1.3 马尔可夫决策过程-MDP-Markov- decision- process</h3><p>MRP在MP中增加来 “奖励reward、回报return和价值value”，MDP则是继续在MRP的基础中增加动作项目action</p>
+<p>这里的$\pi$称为是策略，在这个基础上，下一个状态应该取决于当前的状态和动作</p>
+<p>同样 奖励reward 的定义也会更加复杂</p>
+<p>2022-09-30 这部分后面就不太懂啦～～未完待续</p>
+<h3 id="1-4-举个例子"><a href="#1-4-举个例子" class="headerlink" title="1.4 举个例子"></a>1.4 举个例子</h3><p>计算状态</p>
+<p>比如状态空间包括{wechat；class1;class2;class3;sleep;pass;pub}</p>
+<p>之间的状态概率为</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b3c3404e0dd9231f2584b6ebedcd1eaf_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>不同状态的reward是</p>
+<p><img src="https://pica.zhimg.com/80/v2-5a00345aa837a5d7641513eff8fae762_1440w.png?source=d16d100b" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>利用贝尔曼方程就可以得到最终的value结果</p>
+<h3 id="1-5-MDP的核心问题"><a href="#1-5-MDP的核心问题" class="headerlink" title="1.5 MDP的核心问题"></a>1.5 MDP的核心问题</h3><p>虽然2022-09-30还没有搞懂MDP的数学过程，但是可以看出起核心的问题包括</p>
+<p>【预测】与【控制】</p>
+<p>预测就是给出 state、action、P、R与policy来得到每个状态的value</p>
+<p>控制就是给出state、action、P、R来得到value与policy</p>
+<p>在求解中常分为 策略迭代policy- iteration与价值迭代 value- iteration</p>
+<p>细节后面在了解</p>
+<h3 id="0x02-强化学习概述"><a href="#0x02-强化学习概述" class="headerlink" title="0x02 强化学习概述"></a>0x02 强化学习概述</h3><p>最经典就是这样的图，强化学习的过程可以看作是实际化的MDP过程；我们可以知道我们将问题分为 智能体agent与环境env两部分；状态state与奖励reward由env给出；agent会根据状态与奖励来实现不同的动作action（动作序列也就是需要学习的策略policy），再得到下一个状态以及当前状态得到的奖励</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-fc6cd1cf1a397b72cb6a791f328b352f_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h3 id="0x03-强化学习与监督学习"><a href="#0x03-强化学习与监督学习" class="headerlink" title="0x03 强化学习与监督学习"></a>0x03 强化学习与监督学习</h3><h3 id="3-1-监督学习"><a href="#3-1-监督学习" class="headerlink" title="3.1 监督学习"></a>3.1 监督学习</h3><ul>
+<li>我们首先假设我们有大量被标注的数据，假设之间满足同分布，之间是没有关联的。在这个基础上我们训练我们的模型（比如一个分类器），我们可能通过将标签信息传递给神经网络，当神经网络做出错误的预测的时候我们会给他一个错误的反馈，我们利用这个错误写出一个 损失函数 loss- function，通过 反向传播 back propagate来训练</li>
+<li>假设1:输出的数据应该是没有关联的</li>
+<li>假设2:我们需要告诉学习正确的标签是什么，这样它可以通过正确的标签来修正自己的预测</li>
+</ul>
+<h3 id="3-2-强化学习"><a href="#3-2-强化学习" class="headerlink" title="3.2 强化学习"></a>3.2 强化学习</h3><ul>
+<li>在强化学习中，监督学习的上述的两个假设都不满足</li>
+<li>每个frame之间具有非常强的连续性，同时没有iid</li>
+<li>强化学习中得到的训练数据是一个玩游戏的序列，我们将这个序列放进网络、希望网络输出一些动作，在这个问题中我们并没有标签来说明现在这个动作是正确的还是i错误的，必须等到游戏结束才能知道，因此这里我们面临 [[延迟奖励delayed- reward]] 的问题</li>
+</ul>
+<h3 id="3-3-区别总结"><a href="#3-3-区别总结" class="headerlink" title="3.3 区别总结"></a>3.3 区别总结</h3><ul>
+<li>第一点，强化学习输入的样本是序列数据，不是iid</li>
+<li>第二点，学习器并没有告诉我们每一步正确的动作应该是什么，学习器需要自己去发现那细微动作可以带来最多的奖励</li>
+<li>第三点，智能体获得自己能力的过程就是 [[不断试错探索trial-and-error- exploration]]的过程， 探索exploration 和 利用exploitation</li>
+<li>第四点，在强化学习过程中并没有非常强的 监督者supervisor ，只有 [[奖励信号reward- signal]]，并且具有 [[延迟奖励delayed- reward]] 的情况</li>
+</ul>
+<h3 id="0x04-序列决策"><a href="#0x04-序列决策" class="headerlink" title="0x04 序列决策"></a>0x04 序列决策</h3><h3 id="4-1-奖励-reward的定义"><a href="#4-1-奖励-reward的定义" class="headerlink" title="4.1 奖励 reward的定义"></a>4.1 奖励 reward的定义</h3><p>是环境给的一种 [[标量反馈信号-scalar-feedback-signal]]，这种信号显示智能体在某一步才去某个策略的表现如何</p>
+<h3 id="4-2-序列过程描述"><a href="#4-2-序列过程描述" class="headerlink" title="4.2 序列过程描述"></a>4.2 序列过程描述</h3><p>强化学习中一个重要的课题就是近期奖励和远期奖励的权衡，也就是如何让智能体可以获得更多的远期奖励</p>
+<p>在与环境的交互过程中， [[智能体agent]] 会获得很多 [[观测observation]] ，针对每个 [[观测observation]] ， [[智能体agent]]会采取一个 [[动作action]]，然后获得 [[奖励reward]]，所以这样的序列是</p>
+<p>[[智能体agent]]在采取当前动作的时候会依赖之前得到的历史，因此可以将整个学习的[[状态state]]看作是这个历史的函数</p>
+<h3 id="4-3-观测-observation-与-状态state区别"><a href="#4-3-观测-observation-与-状态state区别" class="headerlink" title="4.3 观测 observation 与 状态state区别"></a>4.3 观测 observation 与 状态state区别</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8e7ac501e53cfff71e32f8caef5da84a_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h3 id="4-4-动作action"><a href="#4-4-动作action" class="headerlink" title="4.4 动作action"></a>4.4 动作action</h3><p>分为离散与连续</p>
+<h3 id="4-5-智能体分类"><a href="#4-5-智能体分类" class="headerlink" title="4.5 智能体分类"></a>4.5 智能体分类</h3><p>第一种分类：</p>
+<ol>
+<li>基于policy划分；随机与确定</li>
+<li>基于value- function；value或Q函数</li>
+<li>模型model；模型决定下一步的状态，状态取决于当前的状态以及当前采取的动作，由 [[状态转移概率]]和 [[奖励函数]]组成</li>
+</ol>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-1ce7e41f2f475a4f754d5ac1496e917a_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>第二种分类：</p>
+<ol>
+<li>基于价值的智能体</li>
+<li>基于策略的智能体</li>
+<li>演员评论员智能体</li>
+</ol>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-29b80bae0bdeb4686b984a55a27b73f4_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CS285/" class="print-no-link">#CS285</a>
+      
+        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="print-no-link">#强化学习</a>
+      
+        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="print-no-link">#深度学习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS285 深度强化学习 Vol1 ｜ 基本概念</div>
+      <div>http://example.com/2024/04/29/CS285 深度强化学习 Vol1 ｜ 基本概念/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%20Vol4%20%EF%BD%9C%20Attention%E6%9C%BA%E5%88%B6/" title="动手学深度学习 Vol4 ｜ Attention机制">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">动手学深度学习 Vol4 ｜ Attention机制</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/29/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0Vol3%20%EF%BD%9C%20%E7%BB%8F%E5%85%B8%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%9E%E7%8E%B0/" title="动手学深度学习Vol3 ｜ 经典卷积神经网络实现">
+                        <span class="hidden-mobile">动手学深度学习Vol3 ｜ 经典卷积神经网络实现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
