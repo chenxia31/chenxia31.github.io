@@ -1,0 +1,1041 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="之前创新项目中文献综述在选修课作业中完善，同时借鉴经典综述文章，完成一篇中文“四不像”，就当是杂谈了  摘要：复杂场景的密集人群计数在治安防控、交通管制、集会管理等方面起到重要的作用，可以为管理者提供有效及时的信息。从21篇中文文献和43篇英文文献中总结出密集人群计数中面临的主要问题有：拥挤、遮挡、重复和复杂光照环境带来的影响，并从传统的基于手工提取特征的密集计数到基于卷积神经网络的高级特征提取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="奇文共赏-复杂场景的密集人群计数">
+<meta property="og:url" content="https://blog.tjdata.site/posts/9313437b.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="之前创新项目中文献综述在选修课作业中完善，同时借鉴经典综述文章，完成一篇中文“四不像”，就当是杂谈了  摘要：复杂场景的密集人群计数在治安防控、交通管制、集会管理等方面起到重要的作用，可以为管理者提供有效及时的信息。从21篇中文文献和43篇英文文献中总结出密集人群计数中面临的主要问题有：拥挤、遮挡、重复和复杂光照环境带来的影响，并从传统的基于手工提取特征的密集计数到基于卷积神经网络的高级特征提取">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-af160c484ecb71c9e164663e3dd3c98f_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-df8ab63ef435318917404071f0532c4f_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-06d6f3008ba34c4b4ba49c78ee19591b_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-546324b3ed2707766c0852a43c50e0c3_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-19c750cebb320d9ff6dc2152d9917fb7_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a0c404c728af02575c1ba83ba7589aaf_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-748bede72fc46b67fa55891ec772550e_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-d9b5fdbe40facc5d2c244ab6f304596a_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-d607641a7b74cbf3982f2e4e4ac40590_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-bc367d0cc612a1b3cb50154b280d3518_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5f0bb82724f2f70ca2f7e03844184e24_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-f142609ab0d13dde2f0d39cd94a7c9dc_1440w.jpg">
+<meta property="article:published_time" content="2024-04-29T08:09:18.000Z">
+<meta property="article:modified_time" content="2024-04-29T08:35:38.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="本科国创">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-af160c484ecb71c9e164663e3dd3c98f_1440w.jpg">
+  
+  
+  
+  <title>奇文共赏-复杂场景的密集人群计数 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="奇文共赏-复杂场景的密集人群计数"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:09" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          70 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">奇文共赏-复杂场景的密集人群计数</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>之前创新项目中文献综述在选修课作业中完善，同时借鉴经典综述文章，完成一篇中文“四不像”，就当是杂谈了</p>
+</blockquote>
+<h2 id="摘要："><a href="#摘要：" class="headerlink" title="摘要："></a>摘要：</h2><p>复杂场景的密集人群计数在治安防控、交通管制、集会管理等方面起到重要的作用，可以为管理者提供有效及时的信息。从21篇中文文献和43篇英文文献中总结出密集人群计数中面临的主要问题有：拥挤、遮挡、重复和复杂光照环境带来的影响，并从传统的基于手工提取特征的密集计数到基于卷积神经网络的高级特征提取的方式分别介绍。总的检测方式划分为基于检测、基于回归和基于密度估计的方式，在之后基于卷积神经网络中对改进方向进行主要可以分为针对网络结构、针对输入数据集和针对训练过程。最后总结复杂场景的密集人群计数后面的方向主要分为数据集的更新、注意力机制和对抗生成的密度估计方式更新、损失函数及训练方式的转变三个有意思的场景。</p>
+<p><strong>Abstract.</strong></p>
+<p>Dense crowd counting in complex scenes plays an important role in security prevention and control, traffic control, and assembly management, and can provide managers with effective and timely information. The main difficulties faced in dense crowd counting are summarized from 21 Chinese literature and 43 English literature: crowding, occlusion, repetition and the impact from complex lighting environment, and are described separately from the traditional dense counting based on manual feature extraction to the advanced feature extraction based on convolutional neural network, and the total detection is classified into detection-based, regression-based and density estimation-based methods, after The classification of improvement direction in convolutional neural network based can be mainly divided into for network structure, for input data set and for training process. Finally summarize the complex scenario of dense population counting behind the direction is mainly divided into three interesting scenarios of update of dataset, update of attention mechanism and adversarial generation of density estimation approach, loss function and transformation of training approach.</p>
+<h2 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h2><p>随着城市化水平的提高与人口规模的日益扩大，大量密集场景隐藏着诸多安全隐含，因此人群计数研究十分有必要，可以在预警规划、公共管理等领域发挥着重要的作用，备受学术界和工业界关注。截止2020年，我国二线以上城市城镇率超过了70%，城市圈与都市圈的逐渐扩大加速了城市人口的增长，导致节假日、周末等时间居民出行率出现了爆炸式的增长，为公共交通、城市应急等方面带来了巨大安全问题。</p>
+<h2 id="数据集介绍"><a href="#数据集介绍" class="headerlink" title="数据集介绍"></a>数据集介绍</h2><p>随着基于深度学习方法的人群技术算法的不断研究，人群数据集也逐渐收到研究者的重视，越来越多的与视频相关的人群数据集提出并收到广泛关注，常见的数据集包括：(Zhang et al. 2016)提出的shanghaiTech数据集、Idrees et al. (2013)提出的UCF_CC_50数据集、(Sindagi, Yasarla, and Patel 2020)提出的JHU-CROWD++数据集、(Wang et al. 2021)提出NWPU-Crowd数据集，以下对常见的数据集作出介绍，这些数据集在图片数量和分辨率、拍摄角度与场景、人群拥挤程度甚至光照强度方面各不相同，共同点是均提供了人头位置的标记信息，以下是对数据集的简要介绍：</p>
+<p>表格 2‑1:人群计数不同数据集的统计结果</p>
+<table>
+<thead>
+<tr>
+<th>数据集</th>
+<th>图片数量</th>
+<th>训练集&#x2F;测试集</th>
+<th>平均分辨率</th>
+<th>计数统计</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>总计</td>
+<td>最小值</td>
+<td>平均</td>
+<td>最大值</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>SHT_A</td>
+<td>482</td>
+<td>300&#x2F;182</td>
+<td>589*868</td>
+<td>241677</td>
+<td>33</td>
+<td>501</td>
+<td>3139</td>
+</tr>
+<tr>
+<td>SHT_B</td>
+<td>716</td>
+<td>400&#x2F;316</td>
+<td>768*1024</td>
+<td>88488</td>
+<td>9</td>
+<td>123</td>
+<td>578</td>
+</tr>
+<tr>
+<td>UCF_CC</td>
+<td>50</td>
+<td>1201&#x2F;334</td>
+<td>2013*2902</td>
+<td>63974</td>
+<td>94</td>
+<td>1279</td>
+<td>4543</td>
+</tr>
+<tr>
+<td>JHU_CROWD++</td>
+<td>4372</td>
+<td>2722&#x2F;1600</td>
+<td>910*1430</td>
+<td>1251642</td>
+<td>49</td>
+<td>815</td>
+<td>12865</td>
+</tr>
+<tr>
+<td>NWPU-Crowd</td>
+<td>5109</td>
+<td></td>
+<td>2311*3383</td>
+<td>2133238</td>
+<td>0</td>
+<td>418</td>
+<td>20033</td>
+</tr>
+</tbody></table>
+<p>ShanghaiTech数据集根据采用方式不同将数据集划分为part-A和part-B两部分，SHT-A是在互联网上随机选取的人群图像，而SHT-B来源于上海街头的摄像头拍摄，相比分布较为稀疏、场景较为固定。</p>
+<p>  UCF_CC_50数据集均是从互联网下载的灰度图像，具有人群极度密集且尺度变化较小的特点，大量数据仅具备头部特征，行人间遮挡严重等特点。</p>
+<p>JHU- Crowd++数据集中包含不同环境下的人群图片，该数据集对不同人群环境进行分类计算性能，其中分为五种不同类别：低密度类、中密度类、高密度类、困难类和总体类</p>
+<p>NWPU- Crowd作为目前最大且最具有挑战性的人群技术数据集之一，该数据集出了数据量大和规模分布广泛之外，还引入351个与人群场景相似但并没有行人的负样本，该数据集不公布测试集图片，研究人员需要通过在线评估网站提供计数文档从而获得测试集的公开评估结果。</p>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>应用一是安全监控，在体育场馆、旅游景点、地铁站中广泛使用视频监控摄像头进行安全保障可以使得此类场景下的人群监控变得更加容易，但是传统的监控网络会因设计限制而无法处理高密度人群，因此在人群计数的多人数处理中可以和(Chaker, Al Aghbari, and Junejo 2017)异常行为检测现挂钩。</p>
+<p>应用二在灾难引导中，比如大型体育馆、音乐会或者公众集会等方面，(董大鹏 and 丁宁 2021)和(谭家磊 et al. 2021)给出相仿真政策建议</p>
+<p>​    应用三在公共场所规划中，在大型体育、音乐集会等场所通常面临由于人数过多的造成的踩踏风险，因此可以利用密集计数(郑超毅 2021)和(曾婷婷 2021)的方法来讨论相关的场景布设的合理程度。</p>
+<p>综上，在智能图像处理任务中人群计数具有重要的作用，近几年，诸多相关研究成果被提出并在计数任务上取得了良好的性能，但是此任务仍然面临许多挑战。</p>
+<h2 id="应用挑战"><a href="#应用挑战" class="headerlink" title="应用挑战"></a>应用挑战</h2><p>从文献(钮嘉铭 and 杨宇 2021)中可以看出复杂场景的人群计数面临的主要困难由聚集、遮挡、重复和畸变等因素。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-af160c484ecb71c9e164663e3dd3c98f_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>图表 2‑4：复杂场景中面临的问题</p>
+<p>聚集：指的是两个个体在视频中组合成一个形似一个个体的像素区域</p>
+<p>遮挡：指的是一个个体被其他个体遮挡而无法从视频中看到</p>
+<p>重复：指的是个体在不同摄像区域中被重复计数</p>
+<p>畸变：由于光近大远小的因素导致距离摄像头角度和距离不同的个体图像特征不相似</p>
+<h2 id="检测方法"><a href="#检测方法" class="headerlink" title="检测方法"></a>检测方法</h2><p>根据(郝晓亮 2021)中的总结，随着计算机视觉领域的发展，针对人群技术的研究逐渐增多，越来越多的工作关注于对图像中的人群或者人群密度分布进行估计，现有的人群技术研究根据特征的提取方式不同分为两类：</p>
+<p>其一是基于传统方法的计数算法</p>
+<p>其二是基于卷积神经网络的计算方法</p>
+<p>随着特征提取的方式的转变，相关研究从基于人为设计的手工特征提取逐渐转向基于检测或者回归的方式来统计图像中的人数，今年来得益于卷积神经网路在线检测和分类等任务上的成功应用，此类方法也被逐渐用于计数任务来提取特征，并获得大幅度的性能提升。</p>
+<h2 id="密集人群计数方法分类"><a href="#密集人群计数方法分类" class="headerlink" title="密集人群计数方法分类"></a>密集人群计数方法分类</h2><p>传统的方法从特征提取出发，主要分为基于检测、基于回归和基于密度图的方法对复杂场景的人群密度进行检测，其中</p>
+<p>基于检测的方式主要为利用人的特征来检测每个人的个数，这种存在的问题在密集场景中性能不强；</p>
+<p>基于回归的方式主要是利用图片中的特征数量和人的数量做回归分析来得到人群密度，存在的问题是无法检测出图片中人的位置；</p>
+<p>基于密度图的方式为将图片和密度图作为联系，可以在提取出密度图的同时保留数据的空间特征，精度更高同时应用场景更多；</p>
+<p>但是由于人手工提取特征在信息上的局限性，性能都不是特别高，因此开始逐渐转向基于卷积神经网络的特征自动提取的方式所取代</p>
+<h2 id="传统特征提取方法"><a href="#传统特征提取方法" class="headerlink" title="传统特征提取方法"></a>传统特征提取方法</h2><p>在早期研究中，大量的工作利用检测来进行技术，通过检测图片中行人个数来估计人数，大多数最初的研究都集中在检测框架上，整体思路是采用滑动窗口检测器来检测场景中的人，并利用此信息来计算人数，检测通常分为利用整体或者采用局部信息。整体检测过程较为简单，但是由于在高密度人群容易受到遮挡等问题的影响，研究者提过提取人体的局部特征来检测特定身体部分解决问题。</p>
+<p>常见的手工提取特征的方式如Haar 小波变换、形状特征、梯度直方图与纹理特征等手工提取的方式被应用到人群特征的检测中，之后利用支持向量机、Adaboost或随机森林等方法来进行学习达到检测的目的，(Felzenszwalb et al. 2009)提取人群图像中的头部特征、(Sabzmeydani and Mori 2007)提取人群图像中的头部特征来完成技术，(Li et al. 2008)首次采用来分割算法划分人群图像，利用前景信息提取HOG特征建立头肩检测器来统计人数，而(Wu and Nevatia 2005)提出轮廓导向的特征提取方法来建立身体检测器。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-df8ab63ef435318917404071f0532c4f_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>图表 3‑1：局部特征的人群检测方法</p>
+<p>在人体特征的方法中，采用椭圆体构成的3D形状对人类济宁建模，并使用随机过程来估计最能解释场景的前景和背景的分类，(Ge and Collins 2009)构建增强分类器来估计指定区域的人数，通过使用灵活使用的形状模式进一步拓展这一想法。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-06d6f3008ba34c4b4ba49c78ee19591b_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>图表 3‑2：前景和背景分离的方法</p>
+<p>为了解决人群密度检测中视频中不可避免存在的遮挡的问题，基于回归的方法之际建立手工提取的特征到图像人数之间的映射来完成计数任务。这种方法主要包括手工提取特征和训练回归模型。常用到的包括纹理特征、边缘特征、灰度生成矩阵（GLCM）以及HOG特征等，而常用于人体回归的方法包括线性回归、贝叶斯回归、高斯过程回归、岭回归等方法，来实现低密度人群计数的功能。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-546324b3ed2707766c0852a43c50e0c3_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>图表 3‑3：基于回归的人群密度检测</p>
+<p>但是同样在高密度中由于受到遮挡、畸变等因素的影响，依旧会出现性能下降的过程，(Idrees et al. 2013)提出从不同角度提取不同特征，从尺度不变特征变换（SIFT）、头部检测以及傅立叶分析等不同角度提取特征，利用不同特征表示的信息权重甲醛计算人数，从而在密集场景中解决计数问题。但是由于具有场景局限性，回归方式提取的特征无法反应人群的空间分布，(朱宇斌 2021)提出一种基于相似性度量的人群密度方法，但只能用于解决当前场景中的计数问题，从而降低了算法的实用性。</p>
+<p>为了弥补检测方式的性能问题和回归问题中检测空间无法识别的问题，基于密度估计的方式可以有效的使用图像中的空间问题，避免学习检测和定位单个对象的任务困难，学习密度图的问题被程式化的划分为正则化风险二次成本的最小化函数，(Lempitsky and Zisserman 2010)提出学习局部补丁特征和相应对象密度图之间的线性映射，(Pham et al. 2015)提出学习局部补丁特征和密度图之间的非线性映射，使用来自多个图像块的随机森林回归来投票选择多个目标对象的密度来学习非线性映射，但是由于这样计算量较大，提出了快速的DE-VOC方法，提出了基于子空间的快速密度估计方法学习，利用了图像与其在各自特征空间中对应的密度图之间的关系，对图像块的特征空间进行聚类，在最近的一种方法中，(Xu and Qiu 2016)提出通过使用更广泛和更丰富的特征来提高人群密度估计的性能、同时由于早期方法中很难处理非常高纬度的特征，因此使用随机森林作为回归模型，来进行特征的回归分析，降低计算消耗同时提高性能</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-19c750cebb320d9ff6dc2152d9917fb7_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>图表 3‑5：用于预测人数的随机投影森林模型框架</p>
+<h2 id="基于卷积神经网络的方法概述"><a href="#基于卷积神经网络的方法概述" class="headerlink" title="基于卷积神经网络的方法概述"></a>基于卷积神经网络的方法概述</h2><p>伴随着硬件技术的提升与深度学习技术的进步，诸多计算机视觉任务性能得到大幅度提升，在目标检测、图像分类、语义分割等任务中卷积神经网络（CNN）,因此CNN也同样被大量用于计数任务。但究其本质而言和传统方法中基于检测、基于回归和基于密度图的方法并没有太大的区别，其学习非线性函数的能力可以帮助更好的选择满足计算机视觉中相关的任务。(Ilyas, Shahzad, and Kim 2020)中指出基于CNN的人群计数的一般性流程，通过一个通用的CNN-CC（CNN- Crowd counting）来解决复杂环境中遮挡、低可见性、对象和对象之间变化以及不同视角导致的尺度变化的问题，在基于CNN的人群计数中主要分为两部，意识通过CNN来进行密度估计得到真实密度GTD，另一个通过比较估计值和真实值来进行比较和损失函数的计算。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a0c404c728af02575c1ba83ba7589aaf_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>图表 3‑6：基于CNN的人群计数的流程</p>
+<h2 id="基于CNN的人群计数分类"><a href="#基于CNN的人群计数分类" class="headerlink" title="基于CNN的人群计数分类"></a>基于CNN的人群计数分类</h2><p>基于CNN的人群计数的分类中，(Sindagi and Patel 2018)中将区分为网络结果和训练方式的结果，之后(Ilyas, Shahzad, and Kim 2020)扩充至对于不同输入数据集的分类，主要包括</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-748bede72fc46b67fa55891ec772550e_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>图表 4‑1：不同CNN-CC分类</p>
+<p>从网络结构来看，网络可以分为基本的卷积神经网络、关注上下文的卷积神经网络、动态尺度变化的卷积神经网络、多任务框架的卷积神经网络；从输入的数据集可以分为基于鸟瞰和基于透视两类；从训练方式分为感知框和整张图片的训练。</p>
+<h2 id="基于网络结构"><a href="#基于网络结构" class="headerlink" title="基于网络结构"></a>基于网络结构</h2><p>(Fu et al. 2015)首先提出通过优化的卷积神经网络（ConvNet）来估计人群密度，同时使用级联分类器对判别性特征进行分类，参考(Mundhenk et al. 2016)中提出的一种基于初始层计数的残差学习方法，通过将图像区域划分为重叠的块进行图像识别，用来减少MSE，(Wang et al. 2015)中基于CNN结合负样本来削弱建筑物和树木等背景的影响来得到更好的性能。(Hu et al. 2016)在卷积神经网络提取特征的基础上利用人群密度和人群速度来学习人群特征并进行计数，特殊的(Walach and Wolf 2016)利用分层Adaboost和选择性采样的方法来提高数据集准确性并减少处理时间。(翁佳鑫 and 仝明磊 2021)引入Unet++为基础的膨胀卷积神经网络，(贾奇麟, 段其微, and 徐源 2021)使用yolo目标检测框架来进行密集人群计数。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-d9b5fdbe40facc5d2c244ab6f304596a_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>图表 4‑2：基本卷积神经网络识别方法</p>
+<p>但是由于该类网络在大多数情况下主要关注密度估计而不是人群计数，本质上是基于检测的方法，其仍然改变不来在高度遮挡和不同视角场景下表现不佳的情况。</p>
+<p>在之后的网络结构的发展中，利用图像的局部和视频中的上下文信息来提高计数准确性的网络成为context-CNN-CC，该类别的计数需要上下文信息的应用，(Chattopadhyay et al. 2017)提出来对于日常对象的想法，考虑到关联子化的新想法，(Zhang et al. 2019)引入注意力机制来对人群计数中头部可能出现的高概率位置进行预测同时利用多尺度特征用于抑制非头部区域，(郝晓亮 et al. 2021)利用高级网络提取的予以信息和底层网络提取的人群尺度细节信息相结合来得到高质量的人群密度图，(Li, Zhang, and Chen 2018)利用CNN和用可扩展内核代替赤化来提高密度图的质量，同时结合各种拥挤场景中组合上下文信息，为了更好的使用相关信息，(孟月波 et al. 2021)同时在注意力机制引导的空间注意力透视（PSA）方式对图像多视角信息进行有效信息编码来获取特征图的空间上下文信息，(Han et al. 2017)利用卷积神经网络—马尔可夫场来用于静态图像中的人群计数，为了满足不同密度场景下模型的使用情况，(Wang, Shao, et al. 2018)提出通用框架中由三个网络结构组成，一个密度自适应网络来识别低密度或者高密度，另外两个网络负责计数，之后为了处理不同尺度和角度的数据，(Liu, Wang, et al. 2018)提出了深度循环空间感知网络来使用空间转换器来进行计数，并处理上述中产生的问题。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-d607641a7b74cbf3982f2e4e4ac40590_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>图表 4‑3：context-CNN-CC举例</p>
+<p>之后的scale-CNN-CC计数用来表示在图片尺度变化过程中对于网络的鲁棒性和准确性的改变，尺度变化意味着不同视角引起的分辨率变化，这种技术在提高高度和遮挡场景的准确性方面发挥着至关重要的作用，(郭爱心 et al. 2020)针对人群计数中多尺度变化和背景干扰引入特征金字塔构成多尺度特征融合骨干网络来解决人群多尺度变化问题，(Liu, Lis, et al. 2018)提出了一种几何感知的人群密度估计方法，用一个显式模型来处理透视失真效应，之后引入神经网络进行改善，(Boominathan, Kruthiventi, and Babu 2016)提出一个浅层神经网络和深层神经网络来有效捕捉高级语义和低级特征，用来准确估计尺度变化条件下的人群密度，(Onoro-Rubio and López-Sastre 2016)提出来两种方法来解决图像中的人群外观和尺度变化，首先利用计数CNN将图像外观映射到密度图中，之后利用多批量多尺度的特征进行密度估计，(杜培德 and 严华 2021)提出一种基于多尺度融合网络和空间注意力模块对特征图进行校准和在融合提高网络精度，(Shi et al. 2018)提出一种具有聚合特征向量的多尺度多任务人群计数算法，多尺度特征基本上被组合成为一个单一的向量来进行优化，(Cao et al. 2018)提出来一种基于编码器和解码器的CNN来降低计算复杂度，同时使用更简单的尺度感知网络SANet来解决尺度变化问题，同时利用转置卷积用来提高密度图的质量，之后(Wang, Zha, et al. 2018)引入对抗生成网络来成功解决图像转换来生成最佳的密度图，更大的池化繁为可以有利于捕捉多尺度范围来降低计算成本同时利用级联提高计数准确性。(蒋俊 et al. 2021)使用不同卷积核提取不同空间特征来对密度图积分求和得到人群数量</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-bc367d0cc612a1b3cb50154b280d3518_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>图表 4‑4：基于GAN的scale-CNN-CC</p>
+<p>多任务综合从特征信息和尺度变化等内容，(王良聪 et al. 2021)提出来一种基于空间—通道双注意力模块和多尺度特征融合的小尺寸人群计数网络，(罗凡波 et al. 2020)利用多尺度卷积神经网络来对视频中可能存在异常聚集进行预测，(郝晓亮 2021)利用空洞卷积特征融合来提升网络的密度感知能力提升计数精度。特殊的，(郭华平 et al. 2021)在考虑传统CNN只考虑到密度图到人群图的映射，而没有考虑到密度图到人群图的映射而影响性能，因此提出基于卷积神经网络的对偶模型（DualCNN）来提高模型将人群图映射为密度图准确性。</p>
+<h2 id="基于输入数据集"><a href="#基于输入数据集" class="headerlink" title="基于输入数据集"></a>基于输入数据集</h2><p>输入数据集按照设置的位置分类可以为鸟瞰图和基于透视图的计数，鸟瞰图主要是利用无人机航拍得到的结果，比如(Xie, Noble, and Zisserman 2018)利用两个具有最大感受野的卷积回归网络来克服检测目标聚集和重叠的现象。</p>
+<p>另一方面更常见的为在不同尺度不同视角变化下的密集人群计数，最初的(‘<Crowd Counting by Adapting Convolutional Neural Networks with Side Information.pdf>‘  ; Kang, Dhar, and Chan 2016)中提出利用自适应的CNN来透视信息，通过使用不同的卷积滤波器权重来对当前的图像进行调整可以有效提取透视信息，</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5f0bb82724f2f70ca2f7e03844184e24_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>图表 4‑5：不同卷积核对于透视信息的提取</p>
+<p>之后(Zhao et al. 2017)提出一种透视嵌入反卷积网络来模拟透视失真的不同大小的行人和利用不同内核参数的位置感知高斯函数来获得GTD，同时通过改变过滤器的深度来有助于形成平滑和准确的密度图。(Yao et al. 2017)通过使用CNN和LSTM的深度空间回归模型DSRM，首先利用CNN提取高级特征，使用LSTM结构使用相邻区域的空间信息来提高计数精度，有利于减少透视失真。</p>
+<h2 id="基于训练过程"><a href="#基于训练过程" class="headerlink" title="基于训练过程"></a>基于训练过程</h2><p>基于训练过程主要是针对图片中一部分区域加上滑动窗口进行检测或利用整张图片进行检测。</p>
+<p>滑动窗口检测中这些计数在密度图分辨率质量提高且不能受到影响的应用中非常有用，最初的(Paul Cohen et al. 2017)提出一种受到初始网络启发的深度CNN，使用较小的网络来估计感受对象中的数量，之后利用基于回归的方式来估计高密度区域和利用基于检测的方式来估计密集人群，之后滑动窗口主要使用近景和远景分离的方式进行计数，(Xu et al. 2019)提出来一种基于信息深度的引导式人群计数方法Digcrowd来处理高密度和不同视角的图像，更进一步的(Shami et al. 2018)使用头部检测器来发现不同大小的人头，之后利用SVM分类器对拥挤和不拥挤的窗口进行分类，(Sam, Surya, and Babu)考虑在低、中、高图像块上训练三个回归器，并提出一种switch CNN来将窗口定向特定的回归器来解决任何密度变化问题。可以在目标图像上一次采用检测和回归，用来提高网络预测精度，此外还能够提取关于网络边缘和颜色的低级信息进行迭代过滤。</p>
+<p>在完整照片的识别中最初(Marsden et al. 2017)提出残差学习架构Resnet来利用多目标计数研究人群计数和密度级别分类，之后(Marsden et al. 2016)在上述基础上通过解决图像中的尺度变化和高密度问题来提出用于人群计数的FCN，通过改变CNN中感受野的不同来获得最终计数，也有(史劲霖 et al. 2021)通过残差神经网络作为细特征提取、VGG-16作为粗特征提取来完成对小目标、多尺度的密集人群特征检测，之后(Sindagi and Patel 2017)利用判别特征来处理图像内的高级密度变化，即提供密度估计的高级先验来改进网络性能。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-f142609ab0d13dde2f0d39cd94a7c9dc_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>图表 4‑6：多任务级联的CNN</p>
+<p>训练过程中也有对损失函数进行调整，如(张宇倩 et al. 2021)通过引入SSIM的损失函数来比较估计人数密度图和真值的局部相关性和基于回归人数的损失函数用于比较估计人群数量与真实人数之间的差异来提高网络训练的准确度，在(陈薪羽 et al. 2021)中对多尺度的卷积神经网络的训练过程的参数更新方法作出建议。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>面对复杂场景的密集人群计数在公共空间人流引导、大型集会中为管理者面向群众客流引导起到有效的建议，目前有效的大型数据集中从数量和分辨率上相比较以前均有所提高，随着而来的是特征提取方法和建模手段的不断提高，复杂场景的人群计数面临的主要困难有重复、遮挡、畸变以及周围环境的光照环境的影响，因此从传统的基于人工特征提取的方式逐渐走向基于神经网络的特征提取方式，但是究其手段主要可以分为基于检测、基于回归和基于密度估计的方式。</p>
+<p>在基于神经网络的方式的后续进展中，本文主要介绍了对于模型网络结构的改变、对于模型输入集的改变和对于模型训练过程的改变三种方式，其中对于神经网络结构的改变中可以分为基本的检测网络、上下文感知、多尺度变换和多任务的神经网络结构。因此对于复杂场景密集人群计数的发展可能有：</p>
+<ol>
+<li>更全面、更细致的数据集的出现，在数据集量增大的同时，正样本和负样本的数据以及不同场景的数据会尽可能的完善</li>
+<li>以注意力机制和对抗生成网络中有利于利用图像或者是视频的空间和时间信息，双向卷积让人不仅关注从现实场景到密度图的转换，也让人更重视从密度图到真实人群计数的转换</li>
+<li>不同损失函数和训练方式的转变，在有限的数据集和网络结构的情况，定义不同的损失函数有助于模型生长的方向性。</li>
+</ol>
+<ul>
+<li>参考文献</li>
+<li>曾婷婷. 2021. ‘人性化设计思路在公共建筑设计中的应用’, 智能城市, 7: 32-33.</li>
+<li>陈薪羽, 刘明哲, 任俊, and 汤影. 2021. ‘基于三列卷积神经网络的参数异步更新算法’, 计算机应用: 1-11.</li>
+<li>董大鹏, and 丁宁. 2021. ‘疫情防控下地铁站内应急疏散实景模拟研究’, 现代计算机: 150-55.</li>
+<li>杜培德, and 严华. 2021. ‘基于多尺度空间注意力特征融合的人群计数网络’, 计算机应用, 41: 537-43.</li>
+<li>郭爱心, 夏殷锋, 王大为, and 芦宾. 2020. ‘一种抗背景干扰的多尺度人群计数算法’, 计算机工程: 1-10.</li>
+<li>郭华平, 王锐, 王敬, 孙艳歌, 李健, and 李萌. 2021. ‘面向人群计数的对偶卷积神经网络’, 信阳师范学院学报(自然科学版), 34: 650-54.</li>
+<li>郝晓亮. 2021. ‘基于多尺度融合的复杂场景人群计数算法研究’, 硕士, 中国科学技术大学.</li>
+<li>郝晓亮, 杨倩倩, 夏殷锋, 彭思凡, and 殷保群. 2021. ‘基于上下文特征重聚合网络的人群计数’, 信息技术与网络安全, 40: 59-65.</li>
+<li>贾奇麟, 段其微, and 徐源. 2021. ‘基于多尺度目标检测的人群计数深度方法与系统设计’, 科学技术创新: 15-16.</li>
+<li>蒋俊, 龙波, 高明亮, and 邹国锋. 2021. ‘一种基于多尺度融合卷积神经网络的人群计数方法’, 科学技术与工程, 21: 234-39.</li>
+<li>罗凡波, 王平, 徐桂菲, 雷勇军, and 范烊. 2020. ‘基于多尺度卷积神经网络的人群聚集异常预测’, 计算机工程与科学, 42: 2223-32.</li>
+<li>孟月波, 陈宣润, 刘光辉, and 徐胜军. 2021. ‘多特征信息融合的人群密度估计方法’, 激光与光电子学进展, 58: 276-87.</li>
+<li>钮嘉铭, and 杨宇. 2021. ‘基于CNN的人群计数与密度估计研究综述’, 软件导刊, 20: 247-52.</li>
+<li>史劲霖, 周良辰, 闾国年, and 林冰仙. 2021. ‘基于残差神经网络改进的密集人群计数方法’, 地球信息科学学报, 23: 1537-47.</li>
+<li>谭家磊, 刘海力, 陈云飞, and 武玉梁. 2021. ‘基于Anylogic的某高铁客运站人群疏散设施优化研究’, 安全, 42: 13-19.</li>
+<li>王良聪, 吴晓红, 陈洪刚, 何小海, 潘建, and 赵威. 2021. ‘基于多尺度及双注意力机制的小尺寸人群计数’, 智能计算机与应用, 11: 59-64.</li>
+<li>翁佳鑫, and 仝明磊. 2021. ‘基于卷积神经网络的多尺度融合特征图在人群密度估计中的应用’, 上海电力大学学报, 37: 94-98.</li>
+<li>张宇倩, 李国辉, 雷军, and 何嘉宇. 2021. ‘FF-CAM:基于通道注意机制前后端融合的人群计数’, 计算机学报, 44: 304-17.</li>
+<li>郑超毅. 2021. ‘住宅建筑设计中的公共空间设计分析’, 中国建筑装饰装修: 34-35.</li>
+<li>朱宇斌. 2021. ‘基于相似性度量的人群计数方法’, 电脑知识与技术, 17: 179-80.</li>
+<li>Boominathan, Lokesh, Srinivas SS Kruthiventi, and R Venkatesh Babu. 2016. “Crowdnet: A deep convolutional network for dense crowd counting.” In Proceedings of the 24th ACM international conference on Multimedia, 640-44.</li>
+<li>Cao, Xinkun, Zhipeng Wang, Yanyun Zhao, and Fei Su. 2018. “Scale aggregation network for accurate and efficient crowd counting.” In Proceedings of the European Conference on Computer Vision (ECCV), 734-50.</li>
+<li>Chaker, Rima, Zaher Al Aghbari, and Imran N Junejo. 2017. ‘Social network model for crowd anomaly detection and localization’, Pattern Recognition, 61: 266-81.</li>
+<li>Chattopadhyay, Prithvijit, Ramakrishna Vedantam, Ramprasaath R Selvaraju, Dhruv Batra, and Devi Parikh. 2017. “Counting everyday objects in everyday scenes.” In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, 1135-44.</li>
+<li>‘<Crowd Counting by Adapting Convolutional Neural Networks with Side Information.pdf>‘.</li>
+<li>Felzenszwalb, Pedro F, Ross B Girshick, David McAllester, and Deva Ramanan. 2009. ‘Object detection with discriminatively trained part-based models’, IEEE Transactions on Pattern Analysis and Machine Intelligence, 32: 1627-45.</li>
+<li>Fu, Min, Pei Xu, Xudong Li, Qihe Liu, Mao Ye, and Ce Zhu. 2015. ‘Fast crowd density estimation with convolutional neural networks’, Engineering Applications of Artificial Intelligence, 43: 81-88.</li>
+<li>Ge, Weina, and Robert T Collins. 2009. “Marked point processes for crowd counting.” In 2009 IEEE Conference on Computer Vision and Pattern Recognition, 2913-20. IEEE.</li>
+<li>Han, Kang, Wanggen Wan, Haiyan Yao, and Li Hou. 2017. ‘Image crowd counting using convolutional neural network and markov random field’, Journal of Advanced Computational Intelligence and Intelligent Informatics, 21: 632-38.</li>
+<li>Hu, Yaocong, Huan Chang, Fudong Nian, Yan Wang, and Teng Li. 2016. ‘Dense crowd counting from still images with convolutional neural networks’, Journal of Visual Communication and Image Representation, 38: 530-39.</li>
+<li>Idrees, Haroon, Imran Saleemi, Cody Seibert, and Mubarak Shah. 2013. “Multi-source multi-scale counting in extremely dense crowd images.” In Proceedings of the IEEE conference on computer vision and pattern recognition, 2547-54.</li>
+<li>Ilyas, Naveed, Ahsan Shahzad, and Kiseon Kim. 2020. ‘Convolutional-Neural Network-Based Image Crowd Counting: Review, Categorization, Analysis, and Performance Evaluation’, Sensors, 20: 43.</li>
+<li>Kang, Di, Debarun Dhar, and Antoni B Chan. 2016. ‘Crowd counting by adapting convolutional neural networks with side information’, arXiv preprint arXiv:1611.06748.</li>
+<li>Lempitsky, Victor, and Andrew Zisserman. 2010. ‘Learning to count objects in images’, Advances in neural information processing systems, 23: 1324-32.</li>
+<li>Li, Min, Zhaoxiang Zhang, Kaiqi Huang, and Tieniu Tan. 2008. “Estimating the number of people in crowded scenes by mid based foreground segmentation and head-shoulder detection.” In 2008 19th international conference on pattern recognition, 1-4. IEEE.</li>
+<li>Li, Yuhong, Xiaofan Zhang, and Deming Chen. 2018. “Csrnet: Dilated convolutional neural networks for understanding the highly congested scenes.” In Proceedings of the IEEE conference on computer vision and pattern recognition, 1091-100.</li>
+<li>Liu, Lingbo, Hongjun Wang, Guanbin Li, Wanli Ouyang, and Liang Lin. 2018. ‘Crowd counting using deep recurrent spatial-aware network’, arXiv preprint arXiv:1807.00601.</li>
+<li>Liu, Weizhe, Krzysztof Lis, Mathieu Salzmann, and Pascal Fua. 2018. ‘Geometric and physical constraints for head plane crowd density estimation in videos’, CoRR abs&#x2F;1803.08805.</li>
+<li>Marsden, Mark, Kevin McGuinness, Suzanne Little, and Noel E O’Connor. 2016. ‘Fully convolutional crowd counting on highly congested scenes’, arXiv preprint arXiv:1612.00220.</li>
+<li>———. 2017. “Resnetcrowd: A residual deep learning architecture for crowd counting, violent behaviour detection and crowd density level classification.” In 2017 14th IEEE international conference on advanced video and signal based surveillance (AVSS), 1-7. IEEE.</li>
+<li>Mundhenk, T Nathan, Goran Konjevod, Wesam A Sakla, and Kofi Boakye. 2016. “A large contextual dataset for classification, detection and counting of cars with deep learning.” In European Conference on Computer Vision, 785-800. Springer.</li>
+<li>Onoro-Rubio, Daniel, and Roberto J López-Sastre. 2016. “Towards perspective-free object counting with deep learning.” In European conference on computer vision, 615-29. Springer.</li>
+<li>Paul Cohen, Joseph, Genevieve Boucher, Craig A Glastonbury, Henry Z Lo, and Yoshua Bengio. 2017. “Count-ception: Counting by fully convolutional redundant counting.” In Proceedings of the IEEE International conference on computer vision workshops, 18-26.</li>
+<li>Pham, Viet-Quoc, Tatsuo Kozakaya, Osamu Yamaguchi, and Ryuzo Okada. 2015. “Count forest: Co-voting uncertain number of targets using random forest for crowd density estimation.” In Proceedings of the IEEE International Conference on Computer Vision, 3253-61.</li>
+<li>Sabzmeydani, Payam, and Greg Mori. 2007. “Detecting pedestrians by learning shapelet features.” In 2007 IEEE Conference on Computer Vision and Pattern Recognition, 1-8. IEEE.</li>
+<li>Sam, Deepak Babu, Shiv Surya, and R Venkatesh Babu. ‘Supplementary Material: Switching Convolutional Neural Network for Crowd Counting’.</li>
+<li>Shami, Mamoona Birkhez, Salman Maqbool, Hasan Sajid, Yasar Ayaz, and Sen-Ching Samson Cheung. 2018. ‘People counting in dense crowd images using sparse head detections’, IEEE Transactions on Circuits and Systems for Video Technology, 29: 2627-36.</li>
+<li>Shi, Zenglin, Le Zhang, Yibo Sun, and Yangdong Ye. 2018. ‘Multiscale multitask deep NetVLAD for crowd counting’, IEEE Transactions on Industrial Informatics, 14: 4953-62.</li>
+<li>Sindagi, Vishwanath A, and Vishal M Patel. 2017. “Cnn-based cascaded multi-task learning of high-level prior and density estimation for crowd counting.” In 2017 14th IEEE International Conference on Advanced Video and Signal Based Surveillance (AVSS), 1-6. IEEE.</li>
+<li>Sindagi, Vishwanath A., and Vishal M. Patel. 2018. ‘A survey of recent advances in CNN-based single image crowd counting and density estimation’, Pattern Recognition Letters, 107: 3-16.</li>
+<li>Sindagi, Vishwanath, Rajeev Yasarla, and Vishal MM Patel. 2020. ‘Jhu-crowd++: Large-scale crowd counting dataset and a benchmark method’, IEEE Transactions on Pattern Analysis and Machine Intelligence.</li>
+<li>Walach, Elad, and Lior Wolf. 2016. “Learning to count with cnn boosting.” In European conference on computer vision, 660-76. Springer.</li>
+<li>Wang, Chuan, Hua Zhang, Liang Yang, Si Liu, and Xiaochun Cao. 2015. “Deep people counting in extremely dense crowds.” In Proceedings of the 23rd ACM international conference on Multimedia, 1299-302.</li>
+<li>Wang, Li, Weiyuan Shao, Yao Lu, Hao Ye, Jian Pu, and Yingbin Zheng. 2018. ‘Crowd counting with density adaption networks’, arXiv preprint arXiv:1806.10040.</li>
+<li>Wang, Nannan, Wenjin Zha, Jie Li, and Xinbo Gao. 2018. ‘Back projection: An effective postprocessing method for GAN-based face sketch synthesis’, Pattern Recognition Letters, 107: 59-65.</li>
+<li>Wang, Qi, Junyu Gao, Wei Lin, and Xuelong Li. 2021. ‘NWPU-Crowd: A Large-Scale Benchmark for Crowd Counting and Localization’, IEEE Transactions on Pattern Analysis and Machine Intelligence, 43: 2141-49.</li>
+<li>Wu, Bo, and Ramakant Nevatia. 2005. “Detection of multiple, partially occluded humans in a single image by bayesian combination of edgelet part detectors.” In Tenth IEEE International Conference on Computer Vision (ICCV’05) Volume 1, 90-97. IEEE.</li>
+<li>Xie, Weidi, J Alison Noble, and Andrew Zisserman. 2018. ‘Microscopy cell counting and detection with fully convolutional regression networks’, Computer methods in biomechanics and biomedical engineering: Imaging &amp; Visualization, 6: 283-92.</li>
+<li>Xu, Bolei, and Guoping Qiu. 2016. “Crowd density estimation based on rich features and random projection forest.” In 2016 IEEE Winter Conference on Applications of Computer Vision (WACV), 1-8. IEEE.</li>
+<li>Xu, Mingliang, Zhaoyang Ge, Xiaoheng Jiang, Gaoge Cui, Pei Lv, Bing Zhou, and Changsheng Xu. 2019. ‘Depth information guided crowd counting for complex crowd scenes’, Pattern Recognition Letters, 125: 563-69.</li>
+<li>Yao, Haiyan, Kang Han, Wanggen Wan, and Li Hou. 2017. ‘Deep spatial regression model for image crowd counting’, arXiv preprint arXiv:1710.09757.</li>
+<li>Zhang, Yingying, Desen Zhou, Siqin Chen, Shenghua Gao, and Yi Ma. 2016. “Single-image crowd counting via multi-column convolutional neural network.” In Proceedings of the IEEE conference on computer vision and pattern recognition, 589-97.</li>
+<li>Zhang, Youmei, Chunluan Zhou, Faliang Chang, Alex C Kot, and Wei Zhang. 2019. “Attention to head locations for crowd counting.” In International Conference on Image and Graphics, 727-37. Springer.</li>
+<li>Zhao, Muming, Jian Zhang, Fatih Porikli, Chongyang Zhang, and Wenjun Zhang. 2017. “Learning a perspective-embedded deconvolution network for crowd counting.” In 2017 IEEE International Conference on Multimedia and Expo (ICME), 403-08. IEEE.</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BA%A4%E9%80%9A%E5%B7%A5%E7%A8%8B/" class="category-chain-item">交通工程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AC%E7%A7%91%E5%9B%BD%E5%88%9B/" class="print-no-link">#本科国创</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>奇文共赏-复杂场景的密集人群计数</div>
+      <div>https://blog.tjdata.site/posts/9313437b.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/5568281b.html" title="CS229机器学习 参数方法和非参数方法 ｜ Vol3">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS229机器学习 参数方法和非参数方法 ｜ Vol3</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/e7902d53.html" title="CS229机器学习 SVM | vol2">
+                        <span class="hidden-mobile">CS229机器学习 SVM | vol2</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

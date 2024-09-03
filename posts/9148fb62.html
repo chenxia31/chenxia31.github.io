@@ -1,0 +1,1096 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在深度使用M1一年之后，在即将比如研究生生活之前，介绍一次Mac。同时也会结合自己的华为Mate40pro介绍macOS+ipadOS+harmonyOS在日常使用的习惯，说明常用的软件、硬件的配件、文件管理和同步以及password以及GTD管理、环境管理中Linux和python环境以及Git使用等，作为一次Summary 本次介绍的主体是2020年发布的M1芯片的Mac，也经历了结构更迭之苦">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工科生研0的Macbook Air M1 13inch（16+256）深度使用感受">
+<meta property="og:url" content="https://blog.tjdata.site/posts/9148fb62.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="在深度使用M1一年之后，在即将比如研究生生活之前，介绍一次Mac。同时也会结合自己的华为Mate40pro介绍macOS+ipadOS+harmonyOS在日常使用的习惯，说明常用的软件、硬件的配件、文件管理和同步以及password以及GTD管理、环境管理中Linux和python环境以及Git使用等，作为一次Summary 本次介绍的主体是2020年发布的M1芯片的Mac，也经历了结构更迭之苦">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-617065001909f0346e299d2839b64853_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-835bdbe7ebd0732a725b5258d74dfeff.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5d7500ce9dd672ca6731d147feea5a07.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-cb6b35636e7282f932af01caeb5a399e.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7989088113b7c2078c1689abe1904e38.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b79640844d6dfb329cdf3aca60765b0d_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-11aa44143b5c4a55178f7e67eb55b57e_1440w.jpg">
+<meta property="article:published_time" content="2024-04-29T08:55:56.000Z">
+<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="Apple">
+<meta property="article:tag" content="MacBook">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-617065001909f0346e299d2839b64853_1440w.jpg">
+  
+  
+  
+  <title>工科生研0的Macbook Air M1 13inch（16+256）深度使用感受 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="工科生研0的Macbook Air M1 13inch（16+256）深度使用感受"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:55" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          54 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">工科生研0的Macbook Air M1 13inch（16+256）深度使用感受</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在深度使用M1一年之后，在即将比如研究生生活之前，介绍一次Mac。同时也会结合自己的华为Mate40pro介绍macOS+ipadOS+harmonyOS在日常使用的习惯，说明常用的软件、硬件的配件、文件管理和同步以及password以及GTD管理、环境管理中Linux和python环境以及Git使用等，作为一次Summary</p>
+<p>本次介绍的主体是2020年发布的M1芯片的Mac，也经历了结构更迭之苦，当然一年之后能看到ARM架构的优越性。具体规格配置如图</p>
+<p><a target="_blank" rel="noopener" href="https://www.apple.com.cn/macbook-air-m1/specs/">MacBook Air (M1 芯片机型) - 技术规格</a></p>
+<p>【写作时间】2022年6月12日</p>
+<h2 id="01-Software-management"><a href="#01-Software-management" class="headerlink" title="01 Software management"></a>01 Software management</h2><p>在使用的过程中，很多软件都没有兼容M1，兼容M1的破解版也少的可怜</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-617065001909f0346e299d2839b64853_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>软件思维导图</p>
+<p>常用的Mac软件下载网站：</p>
+<p><a target="_blank" rel="noopener" href="https://www.macwk.com/">MacWk - 精品mac软件下载</a></p>
+<h3 id="1-1-处理不同格式文件软件"><a href="#1-1-处理不同格式文件软件" class="headerlink" title="1.1 处理不同格式文件软件"></a>1.1 处理不同格式文件软件</h3><p>Office 三件套：docx、ppt、xlsx WPS ：同office，虽然功能会少一点，但是带来的是性能的提升 Typora：Markdown Sublime Text：打开、轻编辑 【code】、markdown、latex（快） Skim：打开PDF文件，搭配Sublime Text使用（快） PDF Expert：编辑PDF文件 iMovie：编辑视频文件 IINA：视频播放软件（快） Capture One：修图软件</p>
+<h3 id="1-2-牛刀类工具"><a href="#1-2-牛刀类工具" class="headerlink" title="1.2 牛刀类工具"></a>1.2 牛刀类工具</h3><p>Notion：非常好用的笔记软件 Zotero：文献管理软件，可以搭配notion使用 Marginnote3 : 阅读PDF和知识管理软件，不太好用 OmniGraffle ： 流程图绘制软件（平替 draw.io网站） Xmind：思维导图软件，正在用的 Edge：很不错的浏览器 Axure RP：原型设计软件 Parallels Desktop：虚拟机管理 Terminus：终端增强</p>
+<h3 id="1-3-润物细无声的小工具"><a href="#1-3-润物细无声的小工具" class="headerlink" title="1.3 润物细无声的小工具"></a>1.3 润物细无声的小工具</h3><p>ClashX：代理软件简介 Rectangle：窗口管理 欧路词典：查单词 iStat：硬件状态 iPic Free：markdown的图片上传 Aldente：充电管理 GifSki：压缩生成GIF文件 SVGview：查看SVG Hidden bar：状态栏设置隐藏 iShot：截图软件，可以长截图和标记（command shift 4&#x2F;5可以截图和录屏） Better Zip：解压缩文件 ClipborderManagement：剪贴板管理 坚果云+Nextcloud：Webdav文件管理 cheetsheet：快捷键提醒 Monitor Control：管理显示器的亮度 Mail+Calendar+Reminder+Notes+Music：自带的软件都非常高</p>
+<h3 id="1-4-娱乐类工具"><a href="#1-4-娱乐类工具" class="headerlink" title="1.4 娱乐类工具"></a>1.4 娱乐类工具</h3><p>B站客户端 腾讯视频 虚拟机内的植物大战僵尸 微信-QQ 百度网盘+阿里云盘</p>
+<h2 id="02-Hardware-management"><a href="#02-Hardware-management" class="headerlink" title="02 Hardware management"></a>02 Hardware management</h2><p>Anker Nano II 65W充电头</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-835bdbe7ebd0732a725b5258d74dfeff.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>广告</p>
+<p>Anker 安克  USB-C PIQ3.0 PD20W快充头</p>
+<p>知乎</p>
+<p>¥55.00</p>
+<p>去购买</p>
+<p>小米100w快充线（2m）</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5d7500ce9dd672ca6731d147feea5a07.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>广告</p>
+<p>ROCK 三合一数据线    一拖三</p>
+<p>知乎</p>
+<p>¥39.00</p>
+<p>去购买</p>
+<p>Belkin七合一拓展坞</p>
+<p>罗技Master 2s</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-cb6b35636e7282f932af01caeb5a399e.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>广告</p>
+<p>Razer 雷蛇 炼狱蝰蛇 V2 游戏鼠标</p>
+<p>知乎</p>
+<p>¥249.00</p>
+<p>去购买</p>
+<p>DP1.4绿联转接线</p>
+<p>西数移动硬盘*2T</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7989088113b7c2078c1689abe1904e38.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>广告</p>
+<p>ROCK typec 多功能转换器 十合一</p>
+<p>知乎</p>
+<p>¥259.00</p>
+<p>去购买</p>
+<p>华为原装TypeC耳机</p>
+<h2 id="03-File-management-and-workflow"><a href="#03-File-management-and-workflow" class="headerlink" title="03 File management and workflow"></a>03 File management and workflow</h2><h3 id="3-1-Mac本地文件管理和备份"><a href="#3-1-Mac本地文件管理和备份" class="headerlink" title="3.1 Mac本地文件管理和备份"></a>3.1 Mac本地文件管理和备份</h3><p>256G的固态硬盘用起来比较着急，好在速度很快，全新 M1 MacBook Air 的固态硬盘写入速度为 2190 MB&#x2F;s，读取速度为 2675 MB&#x2F;s；相比较手机的sfs的速度可发现该机连续读取约为 1966M&#x2F;s，持续写入 1280M&#x2F;s；相比较UFS3.1通常为1200M&#x2F;s和800M&#x2F;s，速度感觉非常不错。</p>
+<p>在日常使用的文件中主要分为：</p>
+<ol>
+<li>大文件，比如下载的4K电影、爱死机系列片等，这一类文件在使用之后可以放到移动硬盘作为存储，或者上传到百度网盘</li>
+<li>不常用的文件，比如下载的文件PDF、下载的PPT、不用的课程PPT，这一类文件通常在一个阶段结束之后可以备份，比如放在移动硬盘或者放到百度网盘中</li>
+<li>小而杂的文件，临时做的ppt、下载的通知，这是管理的重点</li>
+</ol>
+<p>管理方法Tag+Folder：</p>
+<p>作为一个对macOS的的Finder热爱的人来说，非常喜欢提供tag的选项，但是常常利用Tag也会让我感到苦恼，因为会因为一个文件满足多个tag而不知道如何区分，然后新建一个Temp文件夹，久而久之所有的文件都会被放到这个临时文件夹中。就在苦苦思考的时候，我们会发现天然的无论是windows还是macOS都给我提供好了应该有的方法Folder，按照Document、Picture、Video、Download、Desktop的文件夹方式来进行分类，这里的管理原则是：</p>
+<blockquote>
+<p> 首先按照文件的时效性区分开： </p>
+</blockquote>
+<ol>
+<li>时效较短的 download desktop</li>
+<li>时效较长的 document、picture、video</li>
+</ol>
+<p> 再根据自己的Project来对不同文件类型的文件进行标记Tag，方便自己查找 Tag存在的意义是让自己容易找到他，而不是分类，因为Folder天然具有分类的作用 </p>
+<h3 id="3-2-基于Webdav的多端同步Sync"><a href="#3-2-基于Webdav的多端同步Sync" class="headerlink" title="3.2 基于Webdav的多端同步Sync"></a>3.2 基于Webdav的多端同步Sync</h3><p>！！macOS12还没有适配坚果云的云桥模式！！</p>
+<p>网盘通常可以分为两种</p>
+<ol>
+<li>大容量，作为资源库仅限App操作的，比如百度网盘、阿里云盘、夸克云盘等</li>
+<li>同步网盘，比如iCloud、坚果云、DropBox、nextcloud、one drive等</li>
+</ol>
+<p>针对第一种网盘纯粹可以当作备份盘处理，虽然百度网盘推出同步空间，体验依旧非常不好。第二种网盘主要针对写作办公和同步，如果你是iPhone+iPad+Mac当然iCloud是最佳的选择，没有之一，在国内的环境使用非常的舒服，但是如果没有则需要挑选，主要的选择有：</p>
+<ol>
+<li>时不时抽风的one drive</li>
+<li>会员当道的坚果云</li>
+<li>自建webdav协议的nextcloud</li>
+</ol>
+<h3 id="3-2-1-第一种one-drive"><a href="#3-2-1-第一种one-drive" class="headerlink" title="3.2.1 第一种one drive"></a>3.2.1 第一种one drive</h3><p>速度有时候莫名的快，有时候莫名的慢，使用很难受。同步必须在自己的电脑中新建一个文件夹作为同步，不能实现同步其他任意文件夹的功能，比较鸡肋。但是可以释放本地空间，以快捷方式保存在本地，同时作为学生可以享受超大容量。</p>
+<h3 id="3-2-2-第二种-坚果云"><a href="#3-2-2-第二种-坚果云" class="headerlink" title="3.2.2 第二种 坚果云"></a>3.2.2 第二种 坚果云</h3><p>目前开了一年的会员，在尝试其中的使用技巧，利用坚果云来构建Mac+iPad+Mate40pro之间的文件共享体系（重点！华为居然可以将文件夹放在桌面，太好用），在国内的同步速度非常快，快到看不见。但是目前macOS12应该是不支持云桥模式的api，也就是我文件都是同步的，而不能释放本地空间</p>
+<h3 id="3-2-3-第三种-webdav协议自建nextcloud"><a href="#3-2-3-第三种-webdav协议自建nextcloud" class="headerlink" title="3.2.3 第三种 webdav协议自建nextcloud"></a>3.2.3 第三种 webdav协议自建nextcloud</h3><p>因为本人自己有一台腾讯云服务器，所以尝试使用nextcloud构建自己的云盘，但是因为功能比较初级，想要在Mac系统中集成需要走HTTPS协议，暂时还没有搞好，但是webdav协议除了可以下载文件之外，还可以同步日历等，构建macOS+iPados+HarmonyOS的同步，但是目前https协议还没有搞好，期待后面的使用</p>
+<h3 id="3-3-Password管理"><a href="#3-3-Password管理" class="headerlink" title="3.3 Password管理"></a>3.3 Password管理</h3><p>密码管理的重要性，无论是个人信息中需要的密码管理，还是掌握服务器中的使用，都需要掌握良好的米阿们</p>
+<ul>
+<li>拖库:拖库就是指黑客通过各种社工手段、技术手段将数据库中敏感信息非法获取，一般这些敏感信息包括用户的账号信 息如用户名、密码;身份信息如真实姓名、证件号码;通讯信息如电子邮箱、电话、住址等。</li>
+<li>洗库:在拖库后，取得大量的用户数据之后，黑客会通过一系列的技术手段和黑色产业链将有价值的用户数据变现。</li>
+<li>撞库:撞库是黑客通过收集互联网已泄露的用户和密码信息，生成对应的字典表，尝试批量登陆其他网站 后，得到一系列可以登录的用户。很多用户在不同网站使用的是相同的帐号密码，因此黑客可以通过获取 用户在A网站的账户从而尝试登录B网址，这就可以理解为撞库攻击。</li>
+</ul>
+<p>手机内部华为自带的密码管理器真的是太差劲了，为了满足多端同步的功能，既然用不了Apple的钥匙串服务，Google密码在华为中用不了，只能使用微软的EDGE，电脑和平板端使用浏览器，手机端开启浏览器外部填充功能。</p>
+<p>当时实际的密码最好还是用备忘录或者笔记本记下来！！</p>
+<h3 id="3-4-GTD管理"><a href="#3-4-GTD管理" class="headerlink" title="3.4 GTD管理"></a>3.4 GTD管理</h3><p>它的所有方法都围绕着把所有事情都从大脑中弄出来并体系化地管理，让人专注于眼前的工作，完全信任外部体系的事务管理。</p>
+<p>因此，GTD的方法最适用以下情况：</p>
+<ul>
+<li>事务繁杂，容易忘记和混淆</li>
+<li>害怕忘记任务而反复回想，浪费时间造成压力</li>
+<li>杂务纷扰，重要的事常来不及做</li>
+</ul>
+<p>通常使用reminder来将需要做的事情记录下，收集所有的事情，然后划分到长期和短期应用，之后在日历calendar中记录准确的事情，在同步过程中，依旧采用微软的outlook邮箱来实现多端同步，手机上需要下载一个Microsoft ToDo，很简洁！</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b79640844d6dfb329cdf3aca60765b0d_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h3 id="3-5-Notes管理"><a href="#3-5-Notes管理" class="headerlink" title="3.5 Notes管理"></a>3.5 Notes管理</h3><p>笔记整理中，通常的来源包括</p>
+<ol>
+<li>讲座、会议等的会议记录和总结</li>
+<li>对于视频、文档、课本的阅读和总结</li>
+<li>个人博客</li>
+<li>自己的代码仓库</li>
+</ol>
+<p>由于使用不同文件就让自己的笔记整理困难，因此个人选择的ALl in one的Notion来管理自己的笔记，作为一个基于Web的笔记管理，很好用，个人笔记的特征管理选择</p>
+<ul>
+<li>Area-user ：笔记中主要分为person（自己的思考、自己的整理、自己的读书记录）；或者是school（课题组的项目、讲座）；以及一些第三方的东西，我是去study，或者做一些record </li>
+<li>Group-Tag：用于分类的依据，将自己的笔记分为四种：Library（个人的汇总表）、Post（一些单独的文章）、Wiki（完整知识体系，帮助学习）、Log（项目的日志） </li>
+<li>Name：该页面的主要名称，汇总表建议带上汇总两字、series的课程或者希望可以带上&lt;名称&gt;作为标识 </li>
+<li>Create Date：创建日期 </li>
+<li>Resource： 这个页面的根源是什么，包括个人的管理类或者思考类、school的项目日志或一些杂事、study的课程或文档 </li>
+<li>Area：随便的一些tag</li>
+</ul>
+<h2 id="04-Environment-management"><a href="#04-Environment-management" class="headerlink" title="04 Environment management"></a>04 Environment management</h2><h3 id="4-1-Homebrew-—软件包管理工具"><a href="#4-1-Homebrew-—软件包管理工具" class="headerlink" title="4.1 Homebrew —软件包管理工具"></a>4.1 Homebrew —软件包管理工具</h3><p><a target="_blank" rel="noopener" href="https://brew.sh/index_zh-cn.html">Homebrew</a></p>
+<p>Homebrew是一款macOS的软件包管理工具，通过其可以很方便的install or uninstall软件工具，类似与Linux下的apt-get、node的npm等包管理工具、centos下的yum，使用homebrew可以安装系统没有预装的东西，，同时会将软件包安装到独立目录，也就是local文件夹下面的homebrew自己安装的文件，然后再通过软链接到usr&#x2F;local</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">/bin/bash -c <span class="hljs-string">&quot;<span class="hljs-subst">$(curl -fsSL &lt;https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh&gt;)</span>&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>（可选的，如果希望将homebrew添加到环境变量）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;eval &quot;$(/opt/homebrew/bin/brew shellenv)&quot;&#x27;</span> &gt;&gt; ~/.zprofile<br><span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(/opt/homebrew/bin/brew shellenv)</span>&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>常用的一些命令</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">brew install 包名<br>brew uninstall 包名<br>brew upgrade 包名<br><br>brew <span class="hljs-keyword">update</span><br>brew upgrade<br>brew outdated<br><br>// 查看Homebrew版本<br>brew <span class="hljs-comment">--version</span><br>brew list<br>brew home<br>brew <span class="hljs-keyword">info</span> 包名<br>brew doctor<br></code></pre></td></tr></table></figure>
+
+<h3 id="4-2-Mini-forge3-—-macOS的conda"><a href="#4-2-Mini-forge3-—-macOS的conda" class="headerlink" title="4.2 Mini forge3 — macOS的conda"></a>4.2 Mini forge3 — macOS的conda</h3><ol>
+<li>一种是下载sh脚本，然后自己安装</li>
+<li>使用homebrew安装mini forge3</li>
+</ol>
+<p>Anaconda和Miniconda到现在都没有提供M1处理器的conda环境，可以使用conda-forge提供miniforge，用来支持Apple Silicon的版本软件</p>
+<p>下载软件的地址</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/conda-forge/miniforge/#download">GitHub - conda-forge&#x2F;miniforge: A conda-forge distribution.</a></p>
+<p>下载好mini forge3中对应的macOS+apple silicon的脚本，假设下载咋download文件夹</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-keyword">cd</span> download<br><br><span class="hljs-string">//</span> 之后安装脚本<br><span class="hljs-string">//</span> 假如之前安装过，可以重新卸载再安装<br><span class="hljs-string">//</span> 卸载的脚本 <br><span class="hljs-string">//</span> rm -rf ~<span class="hljs-string">/miniforge3</span> <br><span class="hljs-string">//</span> rm -rf <span class="hljs-string">.conda</span> <br><span class="hljs-string">//</span> rm -rf <span class="hljs-string">.condarc</span><br><span class="hljs-string">//</span> 没有以上可以略过<br>bash Miniforge3-MacOSX-arm64.sh<br></code></pre></td></tr></table></figure>
+
+<p>完成安装之后，需要重新激活配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">source</span> .zshrc<br></code></pre></td></tr></table></figure>
+
+<p>完成之后可以测试conda是否安装完成</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">conda <span class="hljs-comment">--version</span><br></code></pre></td></tr></table></figure>
+
+<p>第二种方法是使用homebrew安装</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>miniforge<br></code></pre></td></tr></table></figure>
+
+<p>conda常见命令的使用</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">//</span> conda环境的创建、激活<br><span class="hljs-comment"># 查看所有conda环境</span><br>conda info -e<br><span class="hljs-comment"># 创建虚拟环境</span><br>conda create -n env_name python=python_<span class="hljs-keyword">version</span><br>Eg<span class="hljs-function">:conda</span> create -n py39 python=3.9<br><span class="hljs-comment"># 激活虚拟环境</span><br>conda activate env_name<br>Eg: conda activate py39<br><span class="hljs-comment"># 退出虚拟环境</span><br>conda deactivate<br><br><span class="hljs-comment"># 删除虚拟环境</span><br>conda remove -n env_name <span class="hljs-params">--all</span><br><br><span class="hljs-string">//</span> 包的查看、安装、删除和更新<br><span class="hljs-comment"># 查看环境下所有安装的包</span><br>conda activate env_name<br>conda list<br><span class="hljs-comment"># 查看是否安装特定的包</span><br>conda activate env_name<br>conda list package_name<br><span class="hljs-comment"># 安装包</span><br>conda antivate env_name<br>conda insatall package_name<br><span class="hljs-comment"># 删除包</span><br>conda antivate env_name<br>conda remove package_name <br><span class="hljs-comment"># 更新包</span><br>conda antivate env_name<br>conda update package_name<br><br><span class="hljs-string">//</span> conda 安装本地包<br><span class="hljs-comment"># 进入包所在路径 cd /d路径</span><br><span class="hljs-keyword">cd</span> <span class="hljs-string">/dE</span>:\\Download<br><span class="hljs-comment"># 安装包 conda install --use-local 包名</span><br>conda install <span class="hljs-params">--use-local</span> pytorch-1.8.0-py3.7_cuda11.1_cudnn8_0.tar.bz2<br><br><span class="hljs-string">//</span> conda清理环境<br>conda clean -p<br>conda clean <br></code></pre></td></tr></table></figure>
+
+<h3 id="4-3-Git-—-版本控制"><a href="#4-3-Git-—-版本控制" class="headerlink" title="4.3 Git — 版本控制"></a>4.3 Git — 版本控制</h3><h3 id="4-3-1-常见指令"><a href="#4-3-1-常见指令" class="headerlink" title="4.3.1 常见指令"></a>4.3.1 常见指令</h3><p><a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2">Book</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html">常用 Git 命令清单</a></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment">// 新建代码库</span><br><span class="hljs-meta"># 在当前目录新建一个 Git 代码库</span><br>$ git <span class="hljs-keyword">init</span><br><span class="hljs-meta"># 新建一个目录，将其初始化为 Git 代码库</span><br>$ git <span class="hljs-keyword">init</span> [project-name]<br><span class="hljs-meta"># 下载一个项目和它的整个代码历史</span><br>$ git clone [url]<br><br><span class="hljs-comment">// 配置git，配置文件为gitconfig，可以在用户主目录，也可以在项目目录</span><br><span class="hljs-meta"># 显示当前的 Git 配置</span><br>$ git config --list<br><span class="hljs-meta"># 编辑 Git 配置文件</span><br>$ git config -e [--<span class="hljs-keyword">global</span>]<br><span class="hljs-meta"># 设置提交代码时的用户信息</span><br>$ git config [--<span class="hljs-keyword">global</span>] user.name <span class="hljs-string">&quot;[name]&quot;</span><br>$ git config [--<span class="hljs-keyword">global</span>] user.email <span class="hljs-string">&quot;[email address]&quot;</span><br><br>等等<br><br><span class="hljs-meta"># 添加所有文件</span><br><br>git commit -m <span class="hljs-string">&#x27;[your message]&#x27;</span><br><span class="hljs-meta"># 上传，应该是上一次add的文件夹的信息</span><br><br><br><span class="hljs-meta"># GitHub的本地ssh的设置</span><br><span class="hljs-meta"># GitHub的本地</span><br><br>git config --<span class="hljs-keyword">global</span>  --list<br>git config --<span class="hljs-keyword">global</span>  user.name <span class="hljs-string">&quot;这里换上你的用户名&quot;</span><br>git config --<span class="hljs-keyword">global</span> user.email <span class="hljs-string">&quot;这里换上你的邮箱&quot;</span><br>ssh-keygen -t rsa -C <span class="hljs-string">&quot;这里换上你的邮箱&quot;</span><br><span class="hljs-meta"># 后续确认就行，在GitHub上进行GUI的设置就OK</span><br>Settings -- SSH <span class="hljs-keyword">and</span> GPG keys<br><br><span class="hljs-meta"># 为dnf添加</span><br>sudo dnf config-manager --<span class="hljs-keyword">add</span>-repo https:<span class="hljs-comment">//cli.github.com/packages/rpm/gh-cli.repo</span><br><span class="hljs-meta"># 安装就好</span><br>dnf install gh<br><span class="hljs-meta"># 之后认证</span><br>gh auto login<br><span class="hljs-meta"># 按照规定输入选择输入token就行了</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4-3-2-Git-PyCharm-GitHub操作"><a href="#4-3-2-Git-PyCharm-GitHub操作" class="headerlink" title="4.3.2 Git - PyCharm - GitHub操作"></a>4.3.2 Git - PyCharm - GitHub操作</h3><p>首先安装好自己的git，然后在pycharm中的version control system中为当前的项目构建自己的git同步目录，其中的 git每次的文件会存储在相对应的.git文件夹的目录下，所以也会导致在每次提取的过程会逐渐变的越来越大，同时为自己的GitHub账户中的一些操作</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="http://chenxia31.github.io/">chenxia31.github.io</a> ,主要是个人blog的使用，在其中使用markdown来撰写相关的推文，使用hexo g、hexo d，以及GitHub page来管理域名来完成自己的公开</li>
+<li>code_study_pratice 这个是过去的一些操作，这里就删除，算是最开始的algorithm的东西，因为名字不好听以后就删除来，为啥不换个名字，算了换一个名字重新开始</li>
+<li>Mercury这里以后就是代码学习的地方，主要分为BaseSkill（比如pandas的操作）、Course（比如CS229、CS61A、李宏毅之类的）、Kaggle（其中比赛的名称）、Leetcde（包括力扣官网的，还有一些关于算法导论中习题的刷）、latex中的一些模版、如果想要更近一步还需要有其他代码语言比如web开发、C++语言等属于Special Area</li>
+</ol>
+<h3 id="4-3-3-Git-VsCode-GitHub操作"><a href="#4-3-3-Git-VsCode-GitHub操作" class="headerlink" title="4.3.3 Git - VsCode - GitHub操作"></a>4.3.3 Git - VsCode - GitHub操作</h3><p>暂时不需要</p>
+<h3 id="4-4-（Python）Tensorflow-Pytorch"><a href="#4-4-（Python）Tensorflow-Pytorch" class="headerlink" title="4.4 （Python）Tensorflow + Pytorch"></a>4.4 （Python）Tensorflow + Pytorch</h3><p>2022-04-09 pytorch暂时没有支持GPU加速，仅仅是讨论阶段，tensorflow已经支持GPU加速，使用的是apple提供的metal的toolkit</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">conda <span class="hljs-keyword">install</span> -c pytorch pytorch torchvision<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/metal/tensorflow-plugin/">Tensorflow Plugin - Metal - Apple Developer</a></p>
+<p>在conda管理中，直接使用homebrew安装的miniforge可能会有问题，可以选择第一种下载之后手动安装的方式来管理</p>
+<p>之后是新建一个conda环境，然后activate进去</p>
+<p>利用conda安装相关依赖</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs abnf">// 可以管理安装的版本<br>conda install -c apple tensorflow-deps<span class="hljs-operator">=</span><span class="hljs-operator">=</span><span class="hljs-number">2.6</span>.<span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<p>然后在环境内使用pip安装相对应的tensorflow和插件</p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mel"><span class="hljs-comment">// 安装</span><br><span class="hljs-keyword">python</span> -m pip install tensorflow-macos<br><span class="hljs-keyword">python</span> -m pip install tensorflow-metal<br><br><span class="hljs-comment">// 如果需要卸载之后重新安装</span><br><span class="hljs-keyword">python</span> -m pip uninstall tensorflow-macos<br><span class="hljs-keyword">python</span> -m pip uninstall tensorflow-metal<br></code></pre></td></tr></table></figure>
+
+<p>测试代码</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-keyword">from</span> tensorflow.keras import layers<br><span class="hljs-keyword">from</span> tensorflow.keras import models<br>model = models.Sequential()<br>model.<span class="hljs-built_in">add</span>(layers.Conv2D(32, (3, 3), <span class="hljs-attribute">activation</span>=<span class="hljs-string">&#x27;relu&#x27;</span>, input_shape=(28, 28, 1)))<br>model.<span class="hljs-built_in">add</span>(layers.MaxPooling2D((2, 2)))<br>model.<span class="hljs-built_in">add</span>(layers.Conv2D(64, (3, 3), <span class="hljs-attribute">activation</span>=<span class="hljs-string">&#x27;relu&#x27;</span>))<br>model.<span class="hljs-built_in">add</span>(layers.MaxPooling2D((2, 2)))<br>model.<span class="hljs-built_in">add</span>(layers.Conv2D(64, (3, 3), <span class="hljs-attribute">activation</span>=<span class="hljs-string">&#x27;relu&#x27;</span>))<br>model.<span class="hljs-built_in">add</span>(layers.Flatten())<br>model.<span class="hljs-built_in">add</span>(layers.Dense(64, <span class="hljs-attribute">activation</span>=<span class="hljs-string">&#x27;relu&#x27;</span>))<br>model.<span class="hljs-built_in">add</span>(layers.Dense(10, <span class="hljs-attribute">activation</span>=<span class="hljs-string">&#x27;softmax&#x27;</span>))<br>model.summary()<br><br><span class="hljs-keyword">from</span> tensorflow.keras.datasets import mnist<br><span class="hljs-keyword">from</span> tensorflow.keras.utils import to_categorical<br>(train_images, train_labels), (test_images, test_labels) = mnist.load_data()<br>train_images = train_images.reshape((60000, 28, 28, 1))<br>train_images = train_images.astype(<span class="hljs-string">&#x27;float32&#x27;</span>) / 255<br>test_images = test_images.reshape((10000, 28, 28, 1))<br>test_images = test_images.astype(<span class="hljs-string">&#x27;float32&#x27;</span>) / 255<br>train_labels = to_categorical(train_labels)<br>test_labels = to_categorical(test_labels)<br>model.compile(<span class="hljs-attribute">optimizer</span>=<span class="hljs-string">&#x27;rmsprop&#x27;</span>,<br>              <span class="hljs-attribute">loss</span>=<span class="hljs-string">&#x27;categorical_crossentropy&#x27;</span>,<br>              metrics=[<span class="hljs-string">&#x27;accuracy&#x27;</span>])<br>model.fit(train_images, train_labels, <span class="hljs-attribute">epochs</span>=5, <span class="hljs-attribute">batch_size</span>=64)<br>test_loss, test_acc = model.evaluate(test_images, test_labels)<br>test_acc<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/408877901">https://zhuanlan.zhihu.com/p/408877901</a>)</p>
+<h3 id="4-5-Linux使用"><a href="#4-5-Linux使用" class="headerlink" title="4.5 Linux使用"></a>4.5 Linux使用</h3><p>Linux 系统启动过程</p>
+<ul>
+<li>内核的引导</li>
+<li>BIOS开机自检，按照BIOS中设置的启动设备来启动，操作系统接管硬件之后，首先读入&#x2F;boot目录下的内核文件</li>
+<li>运行init</li>
+<li>init是系统所有进程的起点，首先读取配置文件 &#x2F;etc&#x2F;inittab</li>
+<li>系统初始化</li>
+<li>建立终端</li>
+<li>用户登陆系统</li>
+<li>命令行</li>
+<li>ssh</li>
+<li>图形界面</li>
+</ul>
+<p>Linux 系统目录结构</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ls</span>：查看文件目录<br>常见目录的解释：<br>/bin =binaries 二进制文件的缩写，这个目录存放最常用使用的明林<br>/boot 存放启动Linux的核心文件，包括一些连接文件以及镜像文件<br>/dev 是device的缩写，存放的是Linux的外部设备，Linux中饭昂问设备和访问文件的方式是相同的<br>/etc 是etcetera的缩写，用来存放所有的系统管理所需要的配置文件和子目录<br>/home 用户的主目录，一般该目录是用用户的账号名称<br>/lib 是library，存放在和系统最基本的动态链接库<br>/media 系统会将识别的设备挂载到这个目录下<br>/mnt 让用户临时挂载到别的文件系统<br>/opt optional，是主机额外安装软件所摆放的目录，弄人是空的<br>/proc 是processes的缩写，是虚拟文件下i痛，这个目录的netting不再硬盘上而是在内存里面，可以直接修改里面的文件来屏蔽命令<br>/root 系统管理员的用户主目录<br>/sbin superuser binaries的缩写，存放的额是系统管理员使用的系统管理程序<br>/selinux 是centos特有的目录，类似于Windows的额防火墙<br>/usr unix shared resources的缩写，用户的许多应用程序和文件<br>/usr/bin 系统用户使用的应用程序<br>/usr/sbin <br>/usr/src 内核源代码默认的存放目录<br></code></pre></td></tr></table></figure>
+
+<p>Linux系统是一种典型的多用户系统，不同的用户处于不同的地位，拥有不同的权限，为来保护系统的安全性，Linux系统对不同的用户访问相同的文件的权限做出了不同的规定，在Linux中常用一下两个命令来修改文件或者目录所述的用户与权限</p>
+<ul>
+<li>chown（change owner）修改所属的user和group</li>
+<li>chmod（change mode）修改用户的权限</li>
+</ul>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mel">ll 或者<span class="hljs-keyword">ls</span>-l<br>来显示一个文件的属性以及文件所属于的user和<span class="hljs-keyword">group</span><br></code></pre></td></tr></table></figure>
+
+<p>Linux 文件和目录管理</p>
+<p>Linux的目录结构为tree结构，最顶级的目录为根目录，其他目录通过挂载可以添加到tree中，通过解除挂载可以移除他们，首先区分绝对路径和相对路径</p>
+<ul>
+<li>绝对路径 &#x2F;usr&#x2F;share&#x2F;doc</li>
+<li>相对路径 ..&#x2F;man</li>
+</ul>
+<p>处理目录的常用命令</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">ls</span>：<span class="hljs-keyword">list</span> <span class="hljs-keyword">file</span> 列出目录及文件名<br><span class="hljs-keyword">cd</span>：<span class="hljs-keyword">change</span> directory 切换目录<br><span class="hljs-keyword">pwd</span>：佩内塔 work directory 显示目前的目录<br><span class="hljs-built_in">mkdir</span>：<span class="hljs-keyword">make</span> directory 创建一个新的目录<br>rmdir：<span class="hljs-built_in">remove</span> directory 删除一个空的目录<br><span class="hljs-keyword">cp</span>：<span class="hljs-keyword">copy</span> <span class="hljs-keyword">file</span>复制文件<br>rm：<span class="hljs-built_in">remove</span>删除文件或者目录<br>mv：<span class="hljs-keyword">move</span> <span class="hljs-keyword">file</span> 移动文件与目录<br>man 【<span class="hljs-keyword">command</span>】来查看使用文档<br></code></pre></td></tr></table></figure>
+
+<p>Linux的文件内容查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> 由第一行开始显示文本内容<br><span class="hljs-built_in">tac</span> 从最后一行开始显示<br><span class="hljs-built_in">nl</span> 显示的时候输出行号<br>more 一页一页的显示内容<br>less 可以<br><span class="hljs-built_in">head</span> 前几行<br><span class="hljs-built_in">tail</span> 只看后几行<br></code></pre></td></tr></table></figure>
+
+<p>Linux的连接link的概念，一种是硬连接，另外一种是符号连接</p>
+<ul>
+<li>hard link 通过索引界面的来连接，保存在磁盘分区汇总的文件不管是什么类型都给它分配一个编号成为inode index，在Linux汇总多个文件名指向同一个索引届电视存在的，硬连接允许一个文件拥有多个有效的文件名</li>
+<li>symbolic link：类似于快捷方式</li>
+</ul>
+<p>Linux 用户和用户组管理</p>
+<p>Linux系统是一个多用户多任务的分时操作系统，任何一个要使用系统资源的用户都必须首先向系统管理员申请一个账号，然后用账号的身份进入系统</p>
+<p>用户的账号一方面可以帮助系统管理员对使用系统得到用户进行跟踪并控制他们对系统资源的访问，另一方面也可以帮助用户组织文件，并为用户提供安全性防护</p>
+<p>实现用户账号的管理，要完成的工作主要有几个方面</p>
+<ul>
+<li>用户账号的添加、删除和修改</li>
+<li>用户口令的管理</li>
+<li>用户组的管理</li>
+</ul>
+<p>Linux磁盘管理好坏直接关系到整个系统的性能问题</p>
+<p>Linux磁盘管理常用的命令为df、du、fidsk</p>
+<ul>
+<li>disk full（df）</li>
+<li>disk used（du）</li>
+<li>fdisk 用于磁盘分区</li>
+</ul>
+<p>我的base环境是我之前用的</p>
+<p>首先安装anaconda：</p>
+<p>wget -P &#x2F;tmp <a target="_blank" rel="noopener" href="https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh">https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh</a></p>
+<p>wget是工具的名称，后面的 是对应的下载地轴</p>
+<p>后面的&#x2F;tmp是让下载文件存储在这个文件夹下面</p>
+<p>常见的command</p>
+<p>yum yellow dog update modified 是一个在fedora和redhat以及suse的shell前端软看包管理器，基于RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次性安装所有依赖软件包，无须繁琐对的一次次下载</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">grammar <span class="hljs-keyword">of</span> yum：<br>yum 【<span class="hljs-keyword">option</span>】 【command】<br>* <span class="hljs-keyword">option</span> 可选，包括-h（help） -y（yes） -q（不显示安装过程）<br>* command 要进行的操作<br>* package 安装的包名<br><br>常见的命令：<br><span class="hljs-keyword">check</span>-<span class="hljs-keyword">update</span><br><span class="hljs-keyword">update</span><br>install &lt;package-<span class="hljs-type">name</span>&gt;<br><span class="hljs-keyword">update</span> &lt;package -<span class="hljs-type">name</span>&gt;<br>yum list<br>yum remove &lt;package -<span class="hljs-type">name</span>&gt;<br>yum <span class="hljs-keyword">search</span> &lt;keyword&gt;<br>yum clean packages<br>yum clean headers<br>yum clean oldheaders<br></code></pre></td></tr></table></figure>
+
+<p>apt (advanced packageing tool 是一个在debian和ubuntu终端额shell前端软件挂你了工具</p>
+<p>利用bash Anaconda3-2021.11-Linux-x86_64.s h 来安装对应的文件</p>
+<p>安装的位置会默认在root&#x2F;anaconda的目录下面</p>
+<p>从yum安装dnf</p>
+<h3 id="4-6-Docker使用"><a href="#4-6-Docker使用" class="headerlink" title="4.6 Docker使用"></a>4.6 Docker使用</h3><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs vim">yum <span class="hljs-keyword">list</span> installed | <span class="hljs-keyword">grep</span> docker<br><br>卸载安装<br>yum -<span class="hljs-keyword">y</span> <span class="hljs-built_in">remove</span> docker-<span class="hljs-keyword">ce</span>-cli.x86_64<br>yum -<span class="hljs-keyword">y</span> <span class="hljs-built_in">remove</span> docker-<span class="hljs-keyword">ce</span>.x86_64<br>yum -<span class="hljs-keyword">y</span> <span class="hljs-built_in">remove</span> containerd.io<br><br>安装依赖<br>yum install -<span class="hljs-keyword">y</span> yum-utils device-mapper-persistent-data lvm2<br>安装yum圆头<br><br>yum-config-manager --<span class="hljs-built_in">add</span>-repo &lt;https://mirrors.cloud.tencent.<span class="hljs-keyword">com</span>/docker-<span class="hljs-keyword">ce</span>/linux/centos/docker-<span class="hljs-keyword">ce</span>.repo&gt;<br><br>安装Docker<br><br>yum install -<span class="hljs-keyword">y</span> docker-<span class="hljs-keyword">ce</span> docker-<span class="hljs-keyword">ce</span>-cli containerd.io<br><br>docker <span class="hljs-keyword">version</span><br></code></pre></td></tr></table></figure>
+
+<p>启动</p>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs nsis"><span class="hljs-params">system</span>ctl start docker<br><br>设置为开机启动<br><span class="hljs-params">system</span>ctl enable docker<br><br>查看运行状态<br></code></pre></td></tr></table></figure>
+
+<p>配置</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs stylus">mkdir -<span class="hljs-selector-tag">p</span> /etc/docker<br><br><span class="hljs-comment">//配置加速</span><br>tee /etc/docker/daemon<span class="hljs-selector-class">.json</span> &lt;&lt;-<span class="hljs-string">&#x27;EOF&#x27;</span><br>&#123;<br>  <span class="hljs-string">&quot;registry-mirrors&quot;</span>: <span class="hljs-selector-attr">[<span class="hljs-string">&quot;&lt;https://mirror.ccs.tencentyun.com&gt;&quot;</span>]</span><br>&#125;<br>EOF<br><br><span class="hljs-comment">// 重启守护进程并重启docker</span><br>systemctl daemon-reload &amp;&amp; systemctl restart docker<br></code></pre></td></tr></table></figure>
+
+<p>运行第一个容器</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs routeros">docker <span class="hljs-built_in">run</span> <span class="hljs-attribute">--name</span>=hello hello-world<br><br>查看<br>docker ps -a<br></code></pre></td></tr></table></figure>
+
+<p>或者一步一步运行一个容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker pull johngong/calibre-web<br><br>查看现有<br>docker images<br><br>根据创建镜像 <br>docker create --name=calibre-web -p 80:8083 -v /data/calibre-web/library:/library -e WEBLANGUAGE=zh_CN johngong/calibre-web<br><br>docker create 是创建容器的命令<br>--name=calibre-web 表示创建的容器的名称<br>-p 80:8083 表示该容器将 80 端口映射到 8083 端口<br>-v /data/calibre-web/librery:/libray 表示该容器将 /data/calibre-web/library 目录映射为 /library 目录<br>-e WEBLANGUAGE=zh_CN 表示该容器定义了一个变量，变量名是 WEBLANGUAGE，变量值是 zh_CN<br>johngong/calibre-web 是容器的镜像，这里也就是我们前面拉取的镜像<br><br>启动刚才创建好的镜像<br><br>docker start calibre-web<br></code></pre></td></tr></table></figure>
+
+<p>停止镜像</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">docker stop calibre-web<br><br>或者<br><br>docker kill calibre-web<br><br>删除容器<br>docker rm calibre-web<br><br>docker rmi hello-world<br><br>docker rmi `docker images -q`删除所有<br></code></pre></td></tr></table></figure>
+
+<p>Docker部署python 网站</p>
+<ul>
+<li>安装Docker虚拟机环境</li>
+<li>学习docke常用命令</li>
+<li>安装Python SDK和MySQL镜像</li>
+<li>为Flask添加SQL Alchemy拓展库</li>
+</ul>
+<p>为什么要Docker?虚拟化环境的重要性</p>
+<ol>
+<li>直接程序安装或者部署在Linux操作系统上面，容易引发资源冲突</li>
+<li>程序卸载不干净，导致无法安装或者部署新程序</li>
+<li>每次部署之前要安装很多软件，修改复杂的配置文件</li>
+<li>无法让服务器硬件资源实现多租户服务</li>
+<li>增大了在Linux系统上部署集群和分布式的难度</li>
+</ol>
+<p>在Linux上安装docker，了解docker hub的</p>
+<p>设置dockerhub的加速器DaoCloud</p>
+<p>了解Docker镜像与容器的关系，了解镜像和容器之间的关系，学习常用的docker命令</p>
+<p>什么是docker镜像？</p>
+<p>为了快速打包和部署软件环境，docker引入image机制</p>
+<p>镜像是一个配置好的只读层软件环境</p>
+<p>可以通过dockerfile文件创建镜像，也可以从docker仓库中下载到镜像中</p>
+<p>什么是docker容器</p>
+<p>容器是在镜像基础上创建出的虚拟实例，内容可读可写</p>
+<p>一个docker image 可以创建多个container，而且container之间相互隔离，部署的程序之间不会相互干扰，所有的容器直接使用宿主的主机的Linux内核</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-11aa44143b5c4a55178f7e67eb55b57e_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>docker run -it —name&#x3D;p1 python:3.8 bash</p>
+<p>docker 会为每个容器创建网址</p>
+<p>学习docker网络，docker的容器端口映射，目录挂载技术，FTP程序来管理文件，可以将宿主机挂载在目录挂载</p>
+<p>docker network create —subnet&#x3D;172.18.0.0&#x2F;16 mynet</p>
+<p>网段的ip</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">docker<span class="hljs-built_in"> network </span>create <span class="hljs-attribute">--subnet</span>=172.18.0.0/16 mynet<br>docker<span class="hljs-built_in"> network </span>rm mynet<br>docker <span class="hljs-built_in">run</span> -it <span class="hljs-attribute">--name</span>=p2 --net mynet --ip 172.18.0.2 python:3.8 bash<br></code></pre></td></tr></table></figure>
+
+<p>默认情况下，除来宿主机之外，任何主机无法访问远程访问的docker容器，通过端口映射可以把容器端口映射到宿主机的端口，这样其他的主机就能访问容器来，映射到宿主机的端口，不需要设置防火墙规则</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -it -p9500:<span class="hljs-number">5000</span> -p9600:<span class="hljs-number">3306</span> python3.<span class="hljs-number">8</span>:bash<br></code></pre></td></tr></table></figure>
+
+<p>为能把一部分业务数据保存在docker环境中，可以使用ftp，但是比较麻烦，因此可以使用目录映射。因为ftp会导致文件删除，只支持文件目录挂载，不支持文件挂载，而且一个容器可以挂载多个目录</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%B0%88/" class="category-chain-item">生活杂谈</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Apple/" class="print-no-link">#Apple</a>
+      
+        <a href="/tags/MacBook/" class="print-no-link">#MacBook</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>工科生研0的Macbook Air M1 13inch（16+256）深度使用感受</div>
+      <div>https://blog.tjdata.site/posts/9148fb62.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/52fccb61.html" title="计算机网络 Vol2 ｜ 应用层协议">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机网络 Vol2 ｜ 应用层协议</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/764a4687.html" title="计算机网络 Vol1 ｜ 什么是因特网">
+                        <span class="hidden-mobile">计算机网络 Vol1 ｜ 什么是因特网</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="模拟退火的计算过程分为 对于模型求解最小值或者最大值，首先得建立一个函数关系式，然后在定义域范围内随机生成一个初始解x0 在初始解附近生成另外一个解x_new,并保证新解也要在定义域内部 确定什么情况下新解可以替代旧解 重复上述过程N次，得到最优解  单元TSP问题描述 一个旅行商必须访问n个城市，这个城市是个完全图，旅行商需要恰好访问所有城市一次，并且回到最终的城市，城市与城市之间有一个旅行费用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数学建模模拟退化算法TSP">
+<meta property="og:url" content="https://blog.tjdata.site/posts/b9de85a7.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="模拟退火的计算过程分为 对于模型求解最小值或者最大值，首先得建立一个函数关系式，然后在定义域范围内随机生成一个初始解x0 在初始解附近生成另外一个解x_new,并保证新解也要在定义域内部 确定什么情况下新解可以替代旧解 重复上述过程N次，得到最优解  单元TSP问题描述 一个旅行商必须访问n个城市，这个城市是个完全图，旅行商需要恰好访问所有城市一次，并且回到最终的城市，城市与城市之间有一个旅行费用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-be433ea9abbfb96b714d39e811c4840b_1440w.png">
+<meta property="article:published_time" content="2019-04-29T07:59:40.000Z">
+<meta property="article:modified_time" content="2024-04-29T08:04:31.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="模拟退火">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-be433ea9abbfb96b714d39e811c4840b_1440w.png">
+  
+  
+  
+  <title>数学建模模拟退化算法TSP - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数学建模模拟退化算法TSP"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-04-29 15:59" pubdate>
+          2019年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数学建模模拟退化算法TSP</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="模拟退火的计算过程分为"><a href="#模拟退火的计算过程分为" class="headerlink" title="模拟退火的计算过程分为"></a><strong>模拟退火的计算过程分为</strong></h2><ol>
+<li>对于模型求解最小值或者最大值，首先得建立一个函数关系式，然后在定义域范围内随机生成一个初始解x0</li>
+<li>在初始解附近生成另外一个解x_new,并保证新解也要在定义域内部</li>
+<li>确定什么情况下新解可以替代旧解</li>
+<li>重复上述过程N次，得到最优解</li>
+</ol>
+<p><strong>单元TSP问题描述</strong></p>
+<p>一个旅行商必须访问n个城市，这个城市是个完全图，旅行商需要恰好访问所有城市一次，并且回到最终的城市，城市与城市之间有一个旅行费用，旅行商希望总费用最小</p>
+<blockquote>
+<p>基本概念 无向图：任意两个顶点构成的偶对是无序的 完全图：任意两个顶点之间都有方向互为相反的两条弧边相连接 图的表示：邻接矩阵adjacency matrix   邻接表adjacency list</p>
+</blockquote>
+<p>下面利用算法计算来自数据共享网站的TSP求解过程，可视化显示未作出来</p>
+<p>The Traveling Salesman Problem<a target="_blank" rel="noopener" href="http://www.math.uwaterloo.ca/tsp/index.html">www.math.uwaterloo.ca/tsp/index.html</a></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs routeros">%%准备1，输入数据<br>v=[11003.611100,42102.500000;11108.611100,42373.888900;11133.333300,42885.833300;11155.833300,42712.500000;11183.333300,42933.333300;11297.500000,42853.333300;11310.277800,42929.444400;11416.666700,42983.333300;11423.888900,43000.277800;11438.333300,42057.222200;11461.111100,43252.777800;11485.555600,43187.222200;11503.055600,42855.277800;11511.388900,42106.388900;11522.222200,42841.944400;11569.444400,43136.666700;11583.333300,43150.000000;11595.000000,43148.055600;11600.000000,43150.000000;11690.555600,42686.666700;11715.833300,41836.111100;11751.111100,42814.444400;11770.277800,42651.944400;11785.277800,42884.444400;11822.777800,42673.611100;11846.944400,42660.555600;11963.055600,43290.555600;11973.055600,43026.111100;12058.333300,42195.555600;12149.444400,42477.500000;12286.944400,43355.555600;12300.000000,42433.333300;12355.833300,43156.388900;12363.333300,43189.166700;12372.777800,42711.388900;12386.666700,43334.722200;12421.666700,42895.555600;12645.000000,42973.333300];<br><span class="hljs-attribute">n</span>=size(v,1);%%计算需要走的城市个数<br><br><span class="hljs-attribute">d</span>=zeros(n);<br><span class="hljs-keyword">for</span> <span class="hljs-attribute">i</span>=2:n<br>    <span class="hljs-keyword">for</span> <span class="hljs-attribute">j</span>=1:i<br>        <span class="hljs-attribute">x_i</span>=v(i,1);<br>        <span class="hljs-attribute">y_i</span>=v(i,2);<br>        <span class="hljs-attribute">x_j</span>=v(j,1);<br>        <span class="hljs-attribute">y_j</span>=v(j,2);<br>        d(i,j)=sqrt((x_i-x_j)^2+(y_i-y_j)^2);<br>    end<br>end<br><span class="hljs-attribute">d</span>=d+d&#x27;;<br><br>%%准备2，设置基本参数<br><span class="hljs-attribute">T0</span>=1000;<br><span class="hljs-attribute">T</span>=T0;<br><span class="hljs-attribute">N</span>=1000;<br><span class="hljs-attribute">Nn</span>=500;<br><span class="hljs-attribute">a</span>=0.95;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>第一步，生成随机解</strong></li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs routeros">%%第一步，随机生成可行解<br><span class="hljs-attribute">path0</span>=randperm(n);<br><span class="hljs-attribute">iter_path</span>=path0;<br><span class="hljs-attribute">iter_result</span>=tsp_result(path0,d);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>由于路径距离的计算之后多次用到，于是可以另写成一个tsp_result.m的文件，用来专门计算距离</strong></li>
+</ul>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">function</span>  result = tsp_result(<span class="hljs-type">path</span>,d)<br>% 输入：<span class="hljs-type">path</span>:路径（<span class="hljs-number">1</span>至n的一个序列），d：距离矩阵<br>    n=length(<span class="hljs-type">path</span>);<br>    result = <span class="hljs-number">0</span>; % 初始化该路径走的距离为<span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> i=<span class="hljs-number">1</span>:n<span class="hljs-number">-1</span>  <br>        result = d(path(i),path(i+<span class="hljs-number">1</span>)) + result;  % 按照这个序列不断的更新走过的路程这个值<br>    <span class="hljs-keyword">end</span>   <br>    result = d(path(<span class="hljs-number">1</span>),path(n)) + result;  % 别忘了加上从最后一个城市返回到最开始那个城市的距离<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>第二步，生成新解</strong></li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs routeros">%%第二步，生成新的解<br><span class="hljs-keyword">for</span> <span class="hljs-attribute">i</span>=1:N<br>    <span class="hljs-keyword">for</span> <span class="hljs-attribute">j</span>=1:Nn<br>       <span class="hljs-attribute">result0</span>=tsp_result(path0,d);%计算当前路径总长<br>       <span class="hljs-attribute">path1</span>=tsp_newpath(path0);%利用方法生成新的路径<br>       <span class="hljs-attribute">result1</span>=tsp_result(path1,d);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>旅行商问题生成新解的方式和之前求解函数问题不一样，因为TSP的解可以看作是39个点的顺序，因此可以用“交换法”或者“移位法”或者“倒置法”，在实际计算过程中可以综合三种方法</strong></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs matlab"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">path1</span> = <span class="hljs-title">tsp_newpath</span><span class="hljs-params">(path0)</span></span><br>    <span class="hljs-comment">% path0: 原来的路径</span><br>    n = <span class="hljs-built_in">length</span>(path0);<br>    <span class="hljs-comment">% 随机选择三种产生新路径的方法</span><br>    p1 = <span class="hljs-number">0.33</span>;  <span class="hljs-comment">% 使用交换法产生新路径的概率</span><br>    p2 = <span class="hljs-number">0.33</span>;  <span class="hljs-comment">% 使用移位法产生新路径的概率</span><br>    r = <span class="hljs-built_in">rand</span>(<span class="hljs-number">1</span>); <span class="hljs-comment">% 随机生成一个[0 1]间均匀分布的随机数</span><br>    <span class="hljs-keyword">if</span>  r&lt; p1    <span class="hljs-comment">% 使用交换法产生新路径 </span><br>        c1 = randi(n);   <span class="hljs-comment">% 生成1-n中的一个随机整数</span><br>        c2 = randi(n);   <span class="hljs-comment">% 生成1-n中的一个随机整数</span><br>        path1 = path0;  <span class="hljs-comment">% 将path0的值赋给path1</span><br>        path1(c1) = path0(c2);  <span class="hljs-comment">%改变path1第c1个位置的元素为path0第c2个位置的元素</span><br>        path1(c2) = path0(c1);  <span class="hljs-comment">%改变path1第c2个位置的元素为path0第c1个位置的元素</span><br>    <span class="hljs-keyword">elseif</span> r &lt; p1+p2 <span class="hljs-comment">% 使用移位法产生新路径</span><br>        c1 = randi(n);   <span class="hljs-comment">% 生成1-n中的一个随机整数</span><br>        c2 = randi(n);   <span class="hljs-comment">% 生成1-n中的一个随机整数</span><br>        c3 = randi(n);   <span class="hljs-comment">% 生成1-n中的一个随机整数</span><br>        sort_c = <span class="hljs-built_in">sort</span>([c1 c2 c3]);  <span class="hljs-comment">% 对c1 c2 c3从小到大排序</span><br>        c1 = sort_c(<span class="hljs-number">1</span>);  c2 = sort_c(<span class="hljs-number">2</span>);  c3 = sort_c(<span class="hljs-number">3</span>);  <span class="hljs-comment">% c1 &lt; = c2 &lt;=  c3</span><br>        tem1 = path0(<span class="hljs-number">1</span>:c1<span class="hljs-number">-1</span>);<br>        tem2 = path0(c1:c2);<br>        tem3 = path0(c2+<span class="hljs-number">1</span>:c3);<br>        tem4 = path0(c3+<span class="hljs-number">1</span>:<span class="hljs-keyword">end</span>);<br>        path1 = [tem1 tem3 tem2 tem4];<br>    <span class="hljs-keyword">else</span>  <span class="hljs-comment">% 使用倒置法产生新路径</span><br>        c1 = randi(n);   <span class="hljs-comment">% 生成1-n中的一个随机整数</span><br>        c2 = randi(n);   <span class="hljs-comment">% 生成1-n中的一个随机整数</span><br>        <span class="hljs-keyword">if</span> c1&gt;c2  <span class="hljs-comment">% 如果c1比c2大，就交换c1和c2的值</span><br>            tem = c2;<br>            c2 = c1;<br>            c1 = tem;<br>        <span class="hljs-keyword">end</span><br>        tem1 = path0(<span class="hljs-number">1</span>:c1<span class="hljs-number">-1</span>);<br>        tem2 = path0(c1:c2);<br>        tem3 = path0(c2+<span class="hljs-number">1</span>:<span class="hljs-keyword">end</span>);<br>        path1 = [tem1 <span class="hljs-built_in">fliplr</span>(tem2) tem3];   <span class="hljs-comment">%矩阵的左右对称翻转 fliplr，上下对称翻转 flipud</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>第三步，确定是否交换</strong></li>
+</ul>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs abnf">%%第三步，是否交换<br> if result1&lt;result0<br>           path0<span class="hljs-operator">=</span>path1<span class="hljs-comment">;</span><br>           iter_path<span class="hljs-operator">=</span>[iter_path<span class="hljs-comment">;path1];</span><br>           iter_result<span class="hljs-operator">=</span>[iter_result<span class="hljs-comment">;result1];</span><br>       else<br>           p<span class="hljs-operator">=</span>exp(-abs(result1-result0)/T)<span class="hljs-comment">;</span><br>           if rand(<span class="hljs-number">1</span>)&lt;p<br>               path0<span class="hljs-operator">=</span>path1<span class="hljs-comment">;</span><br>               iter_path<span class="hljs-operator">=</span>[iter_path<span class="hljs-comment">;path1];</span><br>                iter_result<span class="hljs-operator">=</span>[iter_result<span class="hljs-comment">;result1];</span><br>           end<br>       end<br>    end<br>    T<span class="hljs-operator">=</span>a*T<span class="hljs-comment">;</span><br>end<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>第四步，输出结果</strong></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs matlab"><span class="hljs-comment">%%第四步，显示结果</span><br>[best_result,ind]=<span class="hljs-built_in">min</span>(iter_result);<br>min_path=iter_path(ind,:);<br><span class="hljs-built_in">disp</span>(<span class="hljs-string">&#x27;最佳的方案是：&#x27;</span>); <span class="hljs-built_in">disp</span>(min_path)<br><span class="hljs-built_in">disp</span>(<span class="hljs-string">&#x27;此时最优值是：&#x27;</span>); <span class="hljs-built_in">disp</span>(best_result)<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-be433ea9abbfb96b714d39e811c4840b_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p><strong>新建一个figure画出散点图可能效果会好一点</strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A8%A1%E6%8B%9F%E9%80%80%E7%81%AB/" class="print-no-link">#模拟退火</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数学建模模拟退化算法TSP</div>
+      <div>https://blog.tjdata.site/posts/b9de85a7.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2019年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/3b284966.html" title="启发式算法模拟退火">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">启发式算法模拟退火</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

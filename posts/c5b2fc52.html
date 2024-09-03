@@ -1,0 +1,963 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="作者：Hessel, M., Modayil, J., Van Hasselt, H., Schaul, T., Ostrovski, G., Dabney, W., … &amp; Silver, D.  实验室：Google DeepMind 论文地址：https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1710.02298 发表： In Thirty-second AAAI conference o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rainbow_Combining_Improvements_in_Deep_Reinforcement_Learning categories">
+<meta property="og:url" content="https://blog.tjdata.site/posts/c5b2fc52.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="作者：Hessel, M., Modayil, J., Van Hasselt, H., Schaul, T., Ostrovski, G., Dabney, W., … &amp; Silver, D.  实验室：Google DeepMind 论文地址：https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1710.02298 发表： In Thirty-second AAAI conference o">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-cc2471c3fd3224c57fcb4309ebde94b9_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a78b13a4cdc16a979f34e2684e017049_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-02f72a087a1cf9714bbbf71f18e17aca_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3ac2312ee68584e699cf5ddb4029dd76_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-958d0797498237377ada28c5f040fe89_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4e0ed0915b45a8e2808e03a92259174a_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-33626839aa82073a3251a3742bbb2bed_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-faee16d293d12c702263d6ecae03b3f1_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-24e9e9b1c1c452283697b2853225d8b4_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-babe227bf657508c9892776ae274f451_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-db7adb0c329e9262af6a85f74bcc1ecf_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b3f3418fb6be4620a05c0cd6b3a4711a_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-cab3f6edb16e72bafac1d719d04c58cd_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-384e86c45e4e05170247ed8de5768876_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b31a71e49725736c62b5ccc61443ae65_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-86cf9dbbfbdd340d28d05c8fcd11d722_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5eb13a004a7b0c1e8be3c99dc490c454_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-21600e262570a348eeeb34b769eae3c3_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7f47620ec1f75b3c027213f2466e4c0c_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0051ac2a60cefae48683c4cccff9c982_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-52e28513cf5535cd82701933f348e200_1440w.png">
+<meta property="article:published_time" content="2024-04-29T09:14:13.000Z">
+<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="强化学习">
+<meta property="article:tag" content="Paper 阅读">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-cc2471c3fd3224c57fcb4309ebde94b9_1440w.jpg">
+  
+  
+  
+  <title>Rainbow_Combining_Improvements_in_Deep_Reinforcement_Learning categories - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Rainbow_Combining_Improvements_in_Deep_Reinforcement_Learning categories"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 17:14" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Rainbow_Combining_Improvements_in_Deep_Reinforcement_Learning categories</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>作者：Hessel, M., Modayil, J., Van Hasselt, H., Schaul, T., Ostrovski, G., Dabney, W., … &amp; Silver, D. </p>
+<p>实验室：Google DeepMind</p>
+<p>论文地址：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1710.02298">https://arxiv.org/pdf/1710.02298</a></p>
+<p>发表： In <em>Thirty-second AAAI conference on artificial intelligence</em>.</p>
+<h3 id="0x01-摘要"><a href="#0x01-摘要" class="headerlink" title="0x01 摘要"></a>0x01 摘要</h3><h3 id="1-1-摘要–背景及问题"><a href="#1-1-摘要–背景及问题" class="headerlink" title="1.1 摘要–背景及问题"></a>1.1 摘要–背景及问题</h3><p>从DQN<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/write#ref1">1</a>推导过程中发现依旧存在很多问题，常见的改进措施Double DQN<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/write#ref1">2</a>、Dueling DQN<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/write#ref1">3</a>、Prioritized replay<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/write#ref1">4</a>、Multi-step<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/write#ref1">5</a>、Distributional RL<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/write#ref1">6</a>、Noisy Net<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/write#ref1">7</a>等方法，这些方法并不是完全独立，比如在Dueling中其实已经将Double DQN和Prioritized replay结合起来。</p>
+<h3 id="1-2-摘要–方法"><a href="#1-2-摘要–方法" class="headerlink" title="1.2 摘要–方法"></a>1.2 摘要–方法</h3><p>本文希望将上述六种DQN方法结合经验融合在一起，来得到一个更好的网络。</p>
+<h3 id="1-3-摘要–贡献"><a href="#1-3-摘要–贡献" class="headerlink" title="1.3 摘要–贡献"></a>1.3 摘要–贡献</h3><ol>
+<li>成为Atari 2600中SOTA</li>
+<li>我们还提供详细的消融研究的结果，该研究结果显示了每个组件对整体性能的贡献。</li>
+</ol>
+<h3 id="0x02-问题背景"><a href="#0x02-问题背景" class="headerlink" title="0x02 问题背景"></a>0x02 问题背景</h3><h3 id="2-1-RL-problem-记号"><a href="#2-1-RL-problem-记号" class="headerlink" title="2.1 RL problem &amp; 记号"></a>2.1 RL problem &amp; 记号</h3><p>强化学习希望一个具有行为（action)的智能体(agent) 在与环境(environment)交互的过程可以最大化奖励(reward),在这个过程中并不会直接监督式的学习。这里分享另外一种定义:</p>
+<blockquote>
+<p> 一、Mathematical formalism for learning- based decision making 二、Approach for learning decision making and control form experience</p>
+</blockquote>
+<p><strong>MDP (Markov Decision Process)</strong> 𝑆,𝐴,𝑇,𝑟,𝛾 </p>
+<p>在不同的时间步下$t&#x3D;0,1,2,..$，环境状态$S_t$提供给智能体一个观测信息 $𝑂𝑡$ ,通常我们会认为是完全观测(即 $𝑆𝑡&#x3D;𝑂𝑡$ )，同时智能体根据观测信息做出动作$A_t$, 之后环境给出下一个奖励  ,奖励的折扣  以及更新状态为  </p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-cc2471c3fd3224c57fcb4309ebde94b9_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>MDP</p>
+<p>在这个过程通常$S,A$是有限的情况,对于环境来说状态转移（stochastic transition function)；奖励方程包括</p>
+<p>对于智能体来说，根据状态$S_t$（或者完全观测下的观测  )得到得到动作  来自于策略  （policy),在序列决策中我们的目标是最大化某个状态采取某个动作的折扣奖励之和</p>
+<p>我们在利用算法进行梯度提升通常会经过三个步骤</p>
+<ol>
+<li>生成样本</li>
+<li>评估模型或者是计算return</li>
+<li>提升策略</li>
+</ol>
+<h3 id="2-2-Policy-Gradient：直接提升policy"><a href="#2-2-Policy-Gradient：直接提升policy" class="headerlink" title="2.2 Policy Gradient：直接提升policy"></a>2.2 Policy Gradient：直接提升policy</h3><p>为了最大化策略的回报，我们可以直接对  最大化（REINFRORCEMENT），推导过程略</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-a78b13a4cdc16a979f34e2684e017049_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>REINFORCE algorithm </p>
+<p>我们可以利用baseline、n-steps、discount、import sampling的方法对他进行改进。</p>
+<h3 id="2-3-Actor-Crtic方法：Return与Policy分开"><a href="#2-3-Actor-Crtic方法：Return与Policy分开" class="headerlink" title="2.3 Actor-Crtic方法：Return与Policy分开"></a>2.3 <strong>Actor-Crtic方法</strong>：Return与Policy分开</h3><p>也可以引入新的状态价值函数  来结合拟合的方式计算$G_t$之后最大化(A3C),也可以直接利用  和动作状态价值函数  来进行基于价值函数的学习方法。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-02f72a087a1cf9714bbbf71f18e17aca_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>batch actor-crtic algorithm</p>
+<p>我们可以利用replay buffer、神经网络来学习降低policy gradient中的方差。</p>
+<h3 id="2-4-Value-based-method-抛弃policy"><a href="#2-4-Value-based-method-抛弃policy" class="headerlink" title="2.4 Value- based method  抛弃policy"></a>2.4 Value- based method  抛弃policy</h3><p>Policy iteration-&gt;Value iteration-&gt;Q learning</p>
+<p>首先从policy iteration与value iteration说起，<a target="_blank" rel="noopener" href="https://hrl.boyuai.com/chapter/1/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95">参考链接</a>可以看作是利用动态规划的方式反应强化学习的过程，两者的区别在于反应的是贝尔曼期望还是贝尔曼最优。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3ac2312ee68584e699cf5ddb4029dd76_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>贝尔曼期望方程</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-958d0797498237377ada28c5f040fe89_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>贝尔曼最优方程</p>
+<p>在基于价值学习算法的过程中，优点是我们只需要一个经验回放池，只需要$(s,a,s’,r)$而不是需要完整的决策序列。我们通常会引入随机探索（exploration）的概念，常见的包括$\epsilon-Greedy$的方法，在一定概率下选择非策略产生的动作。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4e0ed0915b45a8e2808e03a92259174a_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>epsilon-greedy</p>
+<p>在 value iteration的基础上，我们可以抛弃对$V(s)$的学习，而只是记录$Q(s,a)$;Q- iteration algorithm(或者$Q- learning$）看过程如下图所示</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-33626839aa82073a3251a3742bbb2bed_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221106114721046</p>
+<h3 id="2-2-DQN推导"><a href="#2-2-DQN推导" class="headerlink" title="2.2 DQN推导"></a>2.2 DQN推导</h3><p>在上述我们认识对于MDP目标，从显式表达Policy，到结合Value function再到之后的完全使用Value function来使用Q- learning的方法，我们没有解决的问题包括</p>
+<ol>
+<li>状态-动作空间的连续性</li>
+<li>在状态空间和动作空间纬度大的时候无法准确刻画 状态-动作价值</li>
+</ol>
+<p>随着神经网络的发展，我们希望利用网络拟合的方式来解决上述问题，同时每一步利用  的方式来探索回放池中的经验，并利用梯度下降等方法最小化价值函数表达的回报</p>
+<ul>
+<li>1 初始化大小为$N$的经验回放池(PS：注意有大小限制)</li>
+<li>2 用相同随机的网络参数初始化  与目标网络  </li>
+<li>3 for 回合episode&#x3D;1，N do：</li>
+<li>4 获取环境初始状态  </li>
+<li>5 for 时间步numstep&#x3D;1，T do：</li>
+<li>6 根据当前网络  结合  方法来得到  （PS：注意这一步动作的确定隐含之后DQN回报偏大的特点）</li>
+<li>7 执行动作  ,获取  ,环境状态变为  </li>
+<li>8 存储上述采样信息到经验回放池</li>
+<li>9 if 经验回放池数目足够：</li>
+<li>10 采样batchsize样本  </li>
+<li>11 计算目标值  </li>
+<li>12 最小化损失函数  </li>
+<li>13 更新网络参数</li>
+<li>14 END FOR</li>
+<li>15 更新目标网络参数</li>
+<li>16 END FOR</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-faee16d293d12c702263d6ecae03b3f1_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Deep Q- learning with Experience Replay</p>
+<p>其中非常有趣的技巧包括：</p>
+<ol>
+<li>经验回放(Experience Replay )与随机探索;这一部分主要是为了提高样本采样效率，同时降低后续梯度下降中样本的相关性。</li>
+<li>目标网络(Target Network)，由于TD误差在策略改变过程中也会改变，因此造成神经网络拟合过程的不稳定性，因此构建新的目标网络，在每次迭代过程中暂时固定，在回合结合后更新参数，这样需要两层Q网络</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://paperswithcode.com/paper/playing-atari-with-deep-reinforcement">相关代码实现</a></p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-24e9e9b1c1c452283697b2853225d8b4_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>A more general view of DQN</p>
+<h3 id="0x03-DQN改进"><a href="#0x03-DQN改进" class="headerlink" title="0x03 DQN改进"></a>0x03 DQN改进</h3><p>虽然DQN成功让强化学习在某些方面超过人类，但是依旧有这许多限制。</p>
+<h3 id="3-1-改进1–Double-Q-Learning"><a href="#3-1-改进1–Double-Q-Learning" class="headerlink" title="3.1 改进1–Double Q- Learning"></a>3.1 改进1–Double Q- Learning</h3><p>在DQN中会有估计值过高的情况，证明如下：</p>
+<p>根据期望公式</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-babe227bf657508c9892776ae274f451_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221106161746893</p>
+<p>我们通过证明发现估计值较大的原因是因为我在模型选择行为和计算Q值使用同一个网络，如果降低行为选择和Q值计算的相关性就可以降低高估，因此直觉的我们可以设计两个网络</p>
+<p>我们的确可以新加一个网络，但是会增加学习难度，需要重新设计架构。所以为什么不直接使用$Q_{\theta}(s,a)$作为行为的估计？</p>
+<h3 id="3-2-改进2：Prioritized-replay"><a href="#3-2-改进2：Prioritized-replay" class="headerlink" title="3.2 改进2：Prioritized replay"></a>3.2 改进2：Prioritized replay</h3><p>在DQN学习中为高效利用（s，a，r，s）样本，我们会使用经验回放的方式来存储一定规模的样本，在梯度下降的时候通常是从经验回放中均匀采样（uniformly sampling）来进行学习，但是我们依旧会存在两个问题：</p>
+<ol>
+<li>依旧没有完全解决数据之间独立同分布的假设</li>
+<li>容易忘记一些罕见的、重要的经验数据</li>
+</ol>
+<p>在该论文中作者首先制定指标“TD-error”作为衡量$(s_t^i,a_t^i,r_t^i,s^i_{t+1})$的信息量大小，作为采样的优先级，同时利用随机优先级采样、偏置和重要性采样等方式来避免贪心的问题。优先级的获取有3.2.1和3.2.2两种方式</p>
+<h3 id="3-2-1-比例优先级（Proportional-prioritization）"><a href="#3-2-1-比例优先级（Proportional-prioritization）" class="headerlink" title="3.2.1 比例优先级（Proportional prioritization）"></a>3.2.1 比例优先级（Proportional prioritization）</h3><h3 id="3-2-2-基于排名的优先级-Rank-based-prioritization"><a href="#3-2-2-基于排名的优先级-Rank-based-prioritization" class="headerlink" title="3.2.2 基于排名的优先级(Rank-based prioritization)"></a>3.2.2 基于排名的优先级(Rank-based prioritization)</h3><p>；优点可以保证线性性质，对异常值不敏感。</p>
+<p>上述两种是不同得到重要性的方式；在实现时候采用sum-tree的数据结构降低算法复杂程度。在采样中考虑重要性采样（importance sampling），并由此来进行热偏置（Annealing the bias）来修正误差</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-db7adb0c329e9262af6a85f74bcc1ecf_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Double DQN with proportional prioritization </p>
+<h3 id="3-3-改进3-Dueling-networks"><a href="#3-3-改进3-Dueling-networks" class="headerlink" title="3.3 改进3: Dueling networks"></a>3.3 改进3: Dueling networks</h3><p>Dueling DQN是一种针对基于价值函数的强化学习的网络结构设计，其并不直接输出$Q(s,a)$，而是输出$V(s)$与$A(s,a)$,通常会共用前几层的卷积参数，在后面则是状态价值函数与优势函数各自的参数。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b3f3418fb6be4620a05c0cd6b3a4711a_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221106165135693</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-cab3f6edb16e72bafac1d719d04c58cd_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Dueling DQN</p>
+<h3 id="3-4-改进4-Multi-step-learning"><a href="#3-4-改进4-Multi-step-learning" class="headerlink" title="3.4 改进4:Multi-step learning"></a>3.4 改进4:Multi-step learning</h3><p>在对状态动作函数的优势估计时候，通常我们会分为蒙特卡洛方法与Bootstrap(或者是Actor- critic内的C)的方法</p>
+<p>前者方法偏差低但是方差较大；后者方差低但是有偏。因此结合两者我们通常会有Multi-step target的方法。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-384e86c45e4e05170247ed8de5768876_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>N-step更进一步，广义优势估计</p>
+<p>同样的也可以用在DQN中对于状态动作价值函数的估计：</p>
+<p>更新之后的损失函数为</p>
+<h3 id="3-5-改进5-Distributional-RL"><a href="#3-5-改进5-Distributional-RL" class="headerlink" title="3.5 改进5:Distributional RL"></a>3.5 改进5:Distributional RL</h3><p>在基于价值函数的学习中我们通常是返回一个期望或者最大值而丢失很多其他信息，因此Distributional RL尝试利用其分布而不是单个值来进行强化学习。首先本文尝试将价值函数范围$[V_{min},V_{max}]$划分为N个各自来估计价值函数，利用Boltzmann分布表示价值函数的分布，同时利用投影的操作</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b31a71e49725736c62b5ccc61443ae65_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>估计Z(s)</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-86cf9dbbfbdd340d28d05c8fcd11d722_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>不同option</p>
+<p>由此对于分布拟合可以划分为交叉熵的形式，算法流程</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5eb13a004a7b0c1e8be3c99dc490c454_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Distribution RL</p>
+<h3 id="3-6-改进6：Noisy-Nets"><a href="#3-6-改进6：Noisy-Nets" class="headerlink" title="3.6 改进6：Noisy Nets"></a>3.6 改进6：Noisy Nets</h3><p>在Q- learning或者是DQN中，我们的轨迹并不是完全采样的，而是与我们的探索策略相关，最原本的是$\epsilon-Greedy$策略，这里提出一种NoisyNet来对参数增加噪声来增加模型的探索能力</p>
+<p>噪声的生成可以分为Independent Gaussian noise；Factorised Gaussian noise两种方式。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-21600e262570a348eeeb34b769eae3c3_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Nosy net的效果</p>
+<h3 id="3-7-融合上述策略"><a href="#3-7-融合上述策略" class="headerlink" title="3.7 融合上述策略"></a>3.7 融合上述策略</h3><p>首先将（改进5:Distributional RL）中的损失函数更换称为（改进4:Multi-step learning），并利用（改进1–Double Q- Learning）计算新的目标值</p>
+<p>损失函数为</p>
+<p>同时在采样过程中我们通常会减少TD-error，而在本文中我们的损失函数为KL损失，因此我们的（改进2：Prioritized replay）中的优先级定义为</p>
+<p>同时改变（改进3: Dueling networks）由接受期望转向接受价值函数分布，最后更改所有的线性层更换为（改进6：Noisy Nets）</p>
+<h3 id="0x04-实验"><a href="#0x04-实验" class="headerlink" title="0x04 实验"></a>0x04 实验</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7f47620ec1f75b3c027213f2466e4c0c_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Median human- normalized performance</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0051ac2a60cefae48683c4cccff9c982_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>结果</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-52e28513cf5535cd82701933f348e200_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221106175357633</p>
+<h3 id="0x05-总结"><a href="#0x05-总结" class="headerlink" title="0x05 总结"></a>0x05 总结</h3><h3 id="5-1-结论"><a href="#5-1-结论" class="headerlink" title="5.1 结论"></a>5.1 结论</h3><ol>
+<li>rainbow想比较其他现有的算法要更好，速度也会更快</li>
+<li>在消融实现中；我们会发现（改进2：Prioritized replay）与（改进4:Multi-step learning）会造成结果中位数大幅度下降;(改进5:Distributional RL)在最开始表现良好，但是最终结果表现较差；同时（改进6：Noisy Nets）通常会有更好的中位数表现，同时由于本次状态中通常是underestimate的，所以（改进1–Double Q- Learning）效果并不显著，（改进3: Dueling networks）提升幅度不大。</li>
+</ol>
+<h3 id="5-2-讨论"><a href="#5-2-讨论" class="headerlink" title="5.2 讨论"></a>5.2 讨论</h3><p>作者在最后总结他们的工作，主要是从value- based的Q-learning方法集合中寻找，而没有考虑purely policy- based的算法（比如TRPO),本文从网络探索、网络初始化、数据使用、损失或函数等方面进行集合，与之相对应的同样有很多工作，未来还可以用很多其他的方法。但是我们相信</p>
+<blockquote>
+<p> In general, we believe that exposing the real game to the agent is a promising direction for future research.</p>
+</blockquote>
+<h3 id="5-3-个人感悟"><a href="#5-3-个人感悟" class="headerlink" title="5.3 个人感悟"></a>5.3 个人感悟</h3><p>这篇论文看上去很水，但其实作者做了很多dirty work并最终有效，工作量非常大！</p>
+<p>【1】<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1312.5602">Mnih, V., Kavukcuoglu, K., Silver, D., Graves, A., Antonoglou, I., Wierstr<em>a, D., &amp; Riedmiller, M. (2</em>013). Playing atari with deep reinforcement learning. arXiv preprint arXiv:1312.5602.</a></p>
+<p>【2】<a target="_blank" rel="noopener" href="http://arxiv.org/abs/1509.06461">Van Hasselt, H., Guez, A., &amp;am<em>p; Silver, D. (2016, March). Deep reinforcement learning with</em> double q-learning. In Proceedings of the AAAI conference on artificial intelligence (Vol. 30, No. 1).</a></p>
+<p>【3】  <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1511.05952">Schaul, *T., Quan, J., Antonoglou, I., &amp;*amp; Silver, D. (2015). Prioritized experience replay. arXiv preprint arXiv:1511.05952.</a></p>
+<p>【4】<a target="_blank" rel="noopener" href="https://www.cs.mcgill.ca/~dprecup/courses/RL/Lectures/8-multistep-2019.pdf">Multi Step Learning</a></p>
+<p>【5】<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1511.06581">Wang, Z., Schaul, T., Hessel, M., Hasselt, H., Lanctot, M., &amp; Freita<em>s, N. (2016, June). Dueling network architec</em>tures for deep reinforcement learning. In International conference on machine learning (pp. 1995-2003). PMLR.</a></p>
+<p>【6】<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1707.06887.pdf">Bellemare, M. G., Dabney, <em>W., &amp; Munos, R. (2017, July). A distrib</em>utional perspective on reinforcement learning. In International Conference on Machine Learning (pp. 449-458). PMLR.</a></p>
+<p>【7】<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.10295">Fortunato, M., Azar, M. G., Piot, B., Menick, J*., Osband, I., Graves, A., …* &amp; Legg, S. (2017). Noisy networks for exploration. arXiv preprint arXiv:1706.10295.</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="print-no-link">#强化学习</a>
+      
+        <a href="/tags/Paper-%E9%98%85%E8%AF%BB/" class="print-no-link">#Paper 阅读</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Rainbow_Combining_Improvements_in_Deep_Reinforcement_Learning categories</div>
+      <div>https://blog.tjdata.site/posts/c5b2fc52.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/e8f3ab7c.html" title="CS229 机器学习 Vol10 ｜ 课后作业 1">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS229 机器学习 Vol10 ｜ 课后作业 1</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/7e704bf4.html" title="CS285 深度强化学习 Vol8 ｜ Q 函数">
+                        <span class="hidden-mobile">CS285 深度强化学习 Vol8 ｜ Q 函数</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

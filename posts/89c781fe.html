@@ -1,0 +1,894 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本节课的目标是搞明白Policy gradient一类的REINFORCEMENT方法，并且理解背后的局限性，然后知道为什么textbook很容易讲清楚，但是在实践中不行的原因。之后从Causality和Baseline两种方法来降低On- policy PG的方差。并给出结合IS（important sampling）的Off policy的梯度方法。最后利用代码实现RL里面的hello wor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS285 深度强化学习 Vol5 ｜ Policy gradient">
+<meta property="og:url" content="https://blog.tjdata.site/posts/89c781fe.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="本节课的目标是搞明白Policy gradient一类的REINFORCEMENT方法，并且理解背后的局限性，然后知道为什么textbook很容易讲清楚，但是在实践中不行的原因。之后从Causality和Baseline两种方法来降低On- policy PG的方差。并给出结合IS（important sampling）的Off policy的梯度方法。最后利用代码实现RL里面的hello wor">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b232b70f6250e776dde17d59773edf3d_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-e3299aa006dac93d215a2022656004f7_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-cf39e4ecb013d356eaddc033700c4b6f_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-33f57c325f5522b1dbbce7d466ad7ec6_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-edcc9ffe4ccab0bd2aee53ee3848c595_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-efdade153c15120cad04afa9df41f47a.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-015579d9f5f28bc794f3c4e0c728dace.jpg">
+<meta property="article:published_time" content="2024-04-29T09:14:10.000Z">
+<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="强化学习">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="梯度提升">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b232b70f6250e776dde17d59773edf3d_1440w.jpg">
+  
+  
+  
+  <title>CS285 深度强化学习 Vol5 ｜ Policy gradient - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS285 深度强化学习 Vol5 ｜ Policy gradient"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 17:14" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CS285 深度强化学习 Vol5 ｜ Policy gradient</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本节课的目标是搞明白Policy gradient一类的REINFORCEMENT方法，并且理解背后的局限性，然后知道为什么textbook很容易讲清楚，但是在实践中不行的原因。之后从Causality和Baseline两种方法来降低On- policy PG的方差。并给出结合IS（important sampling）的Off policy的梯度方法。最后利用代码实现RL里面的hello world—CartPole-v0来实现。</p>
+<h3 id="01-什么是Policy-gradients"><a href="#01-什么是Policy-gradients" class="headerlink" title="01 什么是Policy gradients"></a>01 什么是Policy gradients</h3><h3 id="1-1-PG的梯度函数的下载"><a href="#1-1-PG的梯度函数的下载" class="headerlink" title="1.1 PG的梯度函数的下载"></a>1.1 PG的梯度函数的下载</h3><p>回顾DRL的目标，我们需要的是增加累积奖励的期望：</p>
+<p>（目标函数）（目标函数）𝑚𝑎𝑥 𝐸𝜏−𝑝𝜃(𝜏)[Σ𝑡𝑟(𝑠𝑡,𝑎𝑡)] </p>
+<p>根据$(s_t,a_t)$ 对的马尔可夫性质，(在有限的情况下finite horizon case）下简化成为</p>
+<p>𝑚𝑎𝑥 Σ𝑡&#x3D;1𝑇𝐸(𝑠𝑡,𝑎𝑡)−𝑝𝜃(𝑠𝑡,𝑎𝑡)[𝑟(𝑠𝑡,𝑎𝑡)] </p>
+<p>因此我们可以根据$\pi_\theta$采样N个$\tau$,然后求得期望为</p>
+<p>（采样后的目标函数）（采样后的目标函数）𝐽(𝜃)&#x3D;1𝑁Σ𝑖Σ𝑡𝑟(𝑠𝑖,𝑡,𝑎𝑖,𝑡) </p>
+<p>这个式子的重要意义在于它直接给我们反应当前policy的优劣，也指明了我们需要前进的方向，就是最大化这个期望，虽然有的时候这个式子并不是容易计算。但是请把哪些问题先放放，直观的最大化这个问题，也就是用梯度提升的方法：</p>
+<p>（上式简写）𝐽(𝜃)&#x3D;∫𝑝𝜃(𝜏)𝑟(𝜏)𝑑𝜏（上式简写） </p>
+<p>那么对参数求导的结果就是；同时由于我们无法直接取值函数，我们通常需要转换为期望的方式来利用sampling—expectation的方式来求期望</p>
+<p>（目标函数梯度）（目标函数梯度）∇𝜃𝐽(𝜃)&#x3D;∫∇𝜃𝑝𝜃(𝜏)∗𝑟(𝜏)𝑑𝜏)&#x3D;∫𝑝𝜃(𝜏)∗∇𝜃𝑙𝑜𝑔𝑝𝜃(𝜏)∗𝑟(𝜏)𝑑𝜏&#x3D;𝐸𝜏−𝑝𝜃(𝜏)[∇𝜃𝑙𝑜𝑔𝑝𝜃(𝜏)∗𝑟(𝜏)] </p>
+<p>我们对上面的目标函数更进一步的探讨；首先疑问就是什么是$p_\theta(\tau)$,在MDP的state- observation-action- state转移中我们可以认识到</p>
+<p>𝑝𝜃(𝜏)&#x3D;𝑝(𝑠1)∏𝜋𝜃(𝑎𝑡|𝑠𝑡)𝑝(𝑠𝑡+1|𝑠𝑡,𝑎𝑡) </p>
+<p>所以可以很轻松的替换掉上述</p>
+<p>𝑙𝑜𝑔𝑝𝜃(𝜏)&#x3D;𝑙𝑜𝑔𝑝(𝑠1)+Σ𝑙𝑜𝑔𝜋𝜃(𝑎𝑡|𝑠𝑡)+𝑙𝑜𝑔𝑝(𝑠𝑡+1|𝑠𝑡,𝑎𝑡) </p>
+<p>假设我们求导的化，那么目标函数梯度就会变成</p>
+<p>Stop to think : just like before we <strong>evaluated our reinforcement learning objective</strong> by <strong>generating samples</strong> by actually running our policy in the world to <strong>get an estimate of an exception</strong></p>
+<p>这样情况下我们就可以得到采样的后的梯度计算：</p>
+<p>虽然我们成功得到了，我们如何从采样结果中得到如何计算梯度；但是我们需要对分析它具体的含义。</p>
+<h3 id="1-2-理解PG含义"><a href="#1-2-理解PG含义" class="headerlink" title="1.2 理解PG含义"></a>1.2 理解PG含义</h3><p>我们可以看到损失函数内部主要有两部分组成，第一部分是有梯度的东西，第二部份是奖励的求和；那么对于两项分别分析，可以发现第一部分梯度与简单的MLE类似，也就是直接的梯度下降，但是由于有奖励的加权，导致我们的结果是：</p>
+<p>good stuff is made more likely;bad stuff is made less likely（增加好的可能性，降低坏的可能性），也标记为“trial and error”</p>
+<p>对于中间的一项，  ,假设我们用一个神经网络来进行拟合，假如采用Gaussian policies；也就是我们的模型假设是</p>
+<p>那么我们的损失函数，根据MLE自然而然就可以得到(参考linear regression）</p>
+<p>这样我们就得到我们的REINFORCEMENT algorithm；这里缩写是针对：REward Increments&#x3D;nonnegative Factor<em>Offset Reinforcement</em> Characteristic+Eligibility</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-b232b70f6250e776dde17d59773edf3d_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221026121451902</p>
+<p>但是PG的问题在于：</p>
+<ol>
+<li>我们是否可以在partial observation，也就是o不等于s情况下使用？</li>
+<li>具有很大的方差，对于不同的reward取值结果大不相同。</li>
+<li>example：假设N&#x3D;3；其中总的奖励分为与（一负，两正），那么更新后的策略会偏向于右边，假如是加上constant（三正），那么更新的策略会比偏向中间。这种不确定性导致最终结果的方差偏大</li>
+</ol>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-e3299aa006dac93d215a2022656004f7_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221026121503952</p>
+<h3 id="0x02-如何降低方差一：Causality"><a href="#0x02-如何降低方差一：Causality" class="headerlink" title="0x02 如何降低方差一：Causality"></a>0x02 如何降低方差一：Causality</h3><p>在未来发生的事情并不会对现在的事情造成影响（policy at time b cannot affect reward at time a when a&lt;b）,因此在t之前的梯度不会对后面造成影响</p>
+<p>所以我们的梯度需要：</p>
+<p>变成；注意后面计算奖励的下标！有效的证明过程可能需要在paper中才能看到</p>
+<p>通常的我们会将后面的记为：reward to go：</p>
+<h3 id="0x03-如何降低发差二：Baselines"><a href="#0x03-如何降低发差二：Baselines" class="headerlink" title="0x03 如何降低发差二：Baselines"></a>0x03 如何降低发差二：Baselines</h3><p>首先直觉的感受不同reward的影响，还是之前的例子，如果reward&#x3D;(-1,2,2)和（1，4，4）或者是（10000，10005，10005）这样计算的结果通常是不一样的。我们需要在其中减去一个baseline，相当于unbiased in expectation，很直观的我们是减去奖励的平均值，注意！！平均值不一定是最好的</p>
+<p>可以简单的证明减去一个baseline不会对梯度造成影响，但是会对梯度变化程度造成影响</p>
+<p>除去平均值，我们会采取什么baseline来计算？我们的目标是降低模型的方差，那么最好的baseline就是让模型方差最低的，根据方差计算</p>
+<p>那么</p>
+<p>直接对方差Var的bias求导</p>
+<p>这样就可以得到最好的b值，但是通常在实践中很难计算，所以还君之好用</p>
+<h3 id="0x04-Off-policy-Policy-gradient"><a href="#0x04-Off-policy-Policy-gradient" class="headerlink" title="0x04 Off-policy Policy gradient"></a>0x04 Off-policy Policy gradient</h3><p>我们在之前的讨论中得到最终的梯度理论公式和采样公式，但是我们仔细思考这个过程，我们需要第i次采样得到完整  之后才能利用梯度提升更新policy，这样对于每次policy只是简单的更新一次梯度；这样的结果就是采样效率非常低。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-cf39e4ecb013d356eaddc033700c4b6f_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221026121521658</p>
+<p>可以简单的引入 important sampling；来尝试解决这个问题，其理论过程是这样的</p>
+<p>这样的好处是我们可以使用智能体旧策略  来更新策略梯度的值,得到  ,也就是目标函数会变成</p>
+<p>之间的比值可以展开得到</p>
+<p>因此可以得到 Important sampling下的目标函数的期望</p>
+<p>继续我们之前的causality的说明，所以采样情况下上面展开得到</p>
+<p>通常reward to go里的分布会删掉，因此不影响结果（paper中有）</p>
+<p>同时可以改变策略的比值，这个在之后课程中会讲到,这里采用first- order approximation，</p>
+<p>因此得到Off-Policy Policy gradient with important sampling的目标函数梯度：</p>
+<p>作为对比之前的on- policy gradient是：</p>
+<h3 id="0x05-代码实现"><a href="#0x05-代码实现" class="headerlink" title="0x05 代码实现"></a>0x05 代码实现</h3><p>参考<a target="_blank" rel="noopener" href="https://hrl.boyuai.com/chapter/2/%E7%AD%96%E7%95%A5%E6%A2%AF%E5%BA%A6%E7%AE%97%E6%B3%95">《动手学深度学习》</a></p>
+<p>首先几个有趣的发现</p>
+<ol>
+<li>在CartPole-v0成功的不一定能在MountainCar-v0中实现，这个与奖励函数的设置关系很大（小车没有上山之前都是-1，被打击到了）</li>
+<li>不同的超参数对最终结果影响很大</li>
+<li>推荐使用GYM 0.21版本；最新版本总会出问题</li>
+</ol>
+<h3 id="5-1-环境搭建"><a href="#5-1-环境搭建" class="headerlink" title="5.1 环境搭建"></a>5.1 环境搭建</h3><figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs haskell"><span class="hljs-meta">## 环境说明：Cartpole-v0 </span><br>我们采用的测试环境是 <span class="hljs-type">CartPole</span>-v0，其状态空间相对简单，只有 <span class="hljs-number">4</span> 个变量，因此网络结构<br>的设计也相对简单：采用一层 <span class="hljs-number">128</span> 个神经元的全连接并以 <span class="hljs-type">ReLU</span> 作为激活函数。当遇到更复<br>杂的诸如以图像作为输入的环境时，我们可以考虑采用深度卷积神经网络。<br><span class="hljs-meta"># 引入一些包</span><br><span class="hljs-title">from</span> pyvirtualdisplay <span class="hljs-keyword">import</span> Display<br><span class="hljs-title">display</span> = <span class="hljs-type">Display</span>(visible=<span class="hljs-number">0</span>, size=(<span class="hljs-number">1400</span>, <span class="hljs-number">900</span>))<br><span class="hljs-title">display</span>.start()<br><br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-title">from</span> <span class="hljs-type">IPython</span> <span class="hljs-keyword">import</span> display<br><span class="hljs-keyword">import</span> time<br><span class="hljs-title">from</span> <span class="hljs-type">IPython</span> <span class="hljs-keyword">import</span> display<br><span class="hljs-title">from</span> <span class="hljs-type">PIL</span> <span class="hljs-keyword">import</span> Image<br><span class="hljs-keyword">import</span> gym<br><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">import</span> torch.nn.functional <span class="hljs-keyword">as</span> F<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-title">from</span> tqdm <span class="hljs-keyword">import</span> tqdm<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-2-定义Policy-net"><a href="#5-2-定义Policy-net" class="headerlink" title="5.2 定义Policy net"></a>5.2 定义Policy net</h3><p>输入是state，输出是action。随便一个浅层MLP就够了</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs haskell"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-type">PolicyNet</span>(<span class="hljs-title">torch</span>.<span class="hljs-title">nn</span>.<span class="hljs-type">Module</span>):</span><br><span class="hljs-class">    def __init__(<span class="hljs-title">self</span>,<span class="hljs-title">state_dim</span>,<span class="hljs-title">hidden_dim</span>,<span class="hljs-title">action_dim</span>):</span><br><span class="hljs-class">        super(<span class="hljs-type">PolicyNet</span>,<span class="hljs-title">self</span>).__init__()</span><br><span class="hljs-class">        self.fc1=torch.nn.<span class="hljs-type">Linear</span>(<span class="hljs-title">state_dim</span>,<span class="hljs-title">hidden_dim</span>)</span><br><span class="hljs-class">        self.fc2=torch.nn.<span class="hljs-type">Linear</span>(<span class="hljs-title">hidden_dim</span>,<span class="hljs-title">action_dim</span>)</span><br><span class="hljs-class">        for m in self.modules():</span><br><span class="hljs-class">            if isinstance(<span class="hljs-title">m</span>, <span class="hljs-title">torch</span>.<span class="hljs-title">nn</span>.<span class="hljs-type">Linear</span>):</span><br><span class="hljs-class">                torch.nn.init.normal_(<span class="hljs-title">m</span>.<span class="hljs-title">weight</span>, <span class="hljs-title">std</span>=0.01)</span><br><span class="hljs-class"></span><br><span class="hljs-class">    def forward(<span class="hljs-title">self</span>,<span class="hljs-title">x</span>):</span><br><span class="hljs-class">        x=<span class="hljs-type">F</span>.relu(<span class="hljs-title">self</span>.<span class="hljs-title">fc1</span>(<span class="hljs-title">x</span>))</span><br><span class="hljs-class">        return <span class="hljs-type">F</span>.softmax(<span class="hljs-title">self</span>.<span class="hljs-title">fc2</span>(<span class="hljs-title">x</span>),dim=1)</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-3-定义算法"><a href="#5-3-定义算法" class="headerlink" title="5.3 定义算法"></a>5.3 定义算法</h3><p>三步，首先sample generation、然后policy evaluate，之后是improve policy</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-keyword">from</span> traitlets import observe<br><br>class REINFORCE:<br>    def __init__(self,state_dim,hidden_dim,action_dim,learning_rate,gamma,device):<br>        self.<span class="hljs-attribute">policy_net</span>=PolicyNet(state_dim,hidden_dim,action_dim).to(device)<br>        self.<span class="hljs-attribute">optimizer</span>=torch.optim.Adam(self.policy_net.parameters(),lr=learning_rate)<br>        self.<span class="hljs-attribute">gamma</span>=gamma<br>        self.<span class="hljs-attribute">device</span>=device<br><br>    def take_action(self,state):<br>        # 根据动作概率分布随机采样<br>        <span class="hljs-attribute">state</span>=torch.tensor([state],<span class="hljs-attribute">dtype</span>=torch.float).to(self.device)<br>        <span class="hljs-attribute">probs</span>=self.policy_net(state)<br>        <span class="hljs-attribute">action_dist</span>=torch.distributions.Categorical(probs)<br>        <span class="hljs-attribute">action</span>=action_dist.sample()<br>        return action.item()<br><br>    def update(self,transition_dict):<br>        <span class="hljs-attribute">reward_list</span>=transition_dict[<span class="hljs-string">&#x27;rewards&#x27;</span>]<br>        <span class="hljs-attribute">state_list</span>=transition_dict[<span class="hljs-string">&#x27;states&#x27;</span>]<br>        <span class="hljs-attribute">action_list</span>=transition_dict[<span class="hljs-string">&#x27;actions&#x27;</span>]<br><br>        <span class="hljs-attribute">G</span>=0<br>        self.optimizer.zero_grad()<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> reversed(range(len(reward_list))):<br>            # 从最后一步开始<br>            <span class="hljs-attribute">state</span>=torch.tensor([state_list[i]],<span class="hljs-attribute">dtype</span>=torch.float).to(self.device)<br>            <span class="hljs-attribute">reward</span>=reward_list[i]<br>            <span class="hljs-attribute">action</span>=torch.tensor([action_list[i]]).view(-1,1).<span class="hljs-keyword">to</span>(self.device)<br>            <span class="hljs-attribute">log_prob</span>=torch.log(self.policy_net(state).gather(1,action))<br>            <span class="hljs-attribute">G</span>=self.gamma*G+reward<br>            <span class="hljs-attribute">loss</span>=-log_prob*G<br>            loss.backward()<br>        self.optimizer.<span class="hljs-keyword">step</span>()<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-3-开始实验"><a href="#5-3-开始实验" class="headerlink" title="5.3 开始实验"></a>5.3 开始实验</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-attribute">learning_rate</span>=0.001<br><span class="hljs-attribute">num_episodes</span>=1000<br><span class="hljs-attribute">hidden_dim</span>=128<br><span class="hljs-attribute">gamma</span>=0.98<br><span class="hljs-attribute">device</span>=torch.device(&#x27;cuda&#x27; <span class="hljs-keyword">if</span> torch.cuda.is_available() <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;cpu&#x27;</span>)<br><span class="hljs-attribute">env_name</span>=<span class="hljs-string">&#x27;CartPole-v0&#x27;</span><br><span class="hljs-comment"># env_name=&#x27;MountainCar-v0&#x27;</span><br><span class="hljs-comment"># env_name=&#x27;LunarLander-v2&#x27;</span><br><span class="hljs-comment">## 观察环境</span><br><br><span class="hljs-attribute">env</span>=gym.make(env_name)<br>env.seed(0)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;state:&#123;&#125;&#x27;</span>.format(env.observation_space.dtype))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;action:&#123;&#125;&#x27;</span>.format(env.action_space))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;state shape:&#123;&#125;~&#123;&#125;&#x27;</span>.format(env.observation_space.low,env.observation_space.high))<br>torch.manual_seed(0)<br><span class="hljs-attribute">state_dim</span>=env.observation_space.shape[0]<br><span class="hljs-attribute">action_dim</span>=env.action_space.n<br><span class="hljs-attribute">agent</span>=REINFORCE(state_dim,hidden_dim,action_dim,learning_rate,gamma,device)<br>return_list = []<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(10):<br>    with tqdm(<span class="hljs-attribute">total</span>=int(num_episodes / 10), <span class="hljs-attribute">desc</span>=<span class="hljs-string">&#x27;Iteration %d&#x27;</span> % i) as pbar:<br>        <span class="hljs-keyword">for</span> i_episode <span class="hljs-keyword">in</span> range(int(num_episodes / 10)):<br>            episode_return = 0<br>            transition_dict = &#123;<br>                <span class="hljs-string">&#x27;states&#x27;</span>: [],<br>                <span class="hljs-string">&#x27;actions&#x27;</span>: [],<br>                <span class="hljs-string">&#x27;next_states&#x27;</span>: [],<br>                <span class="hljs-string">&#x27;rewards&#x27;</span>: [],<br>                <span class="hljs-string">&#x27;dones&#x27;</span>: []<br>            &#125;<br><br>            state = env.reset()<br>            # 清除当前 Cell 的输出<br>            done = <span class="hljs-literal">False</span><br>            <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> done:<br>                action = agent.take_action(state)<br>                next_state, reward, done, _ = env.<span class="hljs-keyword">step</span>(action)<br>                transition_dict[<span class="hljs-string">&#x27;states&#x27;</span>].append(state)<br>                transition_dict[<span class="hljs-string">&#x27;actions&#x27;</span>].append(action)<br>                transition_dict[<span class="hljs-string">&#x27;next_states&#x27;</span>].append(next_state)<br>                # special <span class="hljs-keyword">for</span> Mountain<br>                # reward=(next_state[0]+1)*<span class="hljs-number">*5</span><br>                # <span class="hljs-keyword">if</span> abs(next_state[1])&gt;0.04:<br>                #     reward+=1<br>                transition_dict[<span class="hljs-string">&#x27;rewards&#x27;</span>].append(reward)<br>                transition_dict[<span class="hljs-string">&#x27;dones&#x27;</span>].append(done)<br>                state = next_state<br>                episode_return += reward<br>            return_list.append(episode_return)<br>            agent.update(transition_dict)<br>            <span class="hljs-keyword">if</span> (i_episode + 1) % 10 == 0:<br>                pbar.set_postfix(&#123;<br>                    <span class="hljs-string">&#x27;episode&#x27;</span>:<br>                    <span class="hljs-string">&#x27;%d&#x27;</span> % (num_episodes / 10 * i + i_episode + 1),<br>                    <span class="hljs-string">&#x27;return&#x27;</span>:<br>                    <span class="hljs-string">&#x27;%.3f&#x27;</span> % np.mean(return_list[-10:])<br>                &#125;)<br>            pbar.update(1)<br></code></pre></td></tr></table></figure>
+
+<p>假如设置三层网络结果有点奇怪，但是policy是好的</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-33f57c325f5522b1dbbce7d466ad7ec6_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>两层结果</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-edcc9ffe4ccab0bd2aee53ee3848c595_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>三层神经网络，但是policy好的</p>
+<h3 id="5-4-观察"><a href="#5-4-观察" class="headerlink" title="5.4 观察"></a>5.4 观察</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs routeros">done = <span class="hljs-literal">False</span><br>state = env.reset()<br><span class="hljs-attribute">flag</span>=1<br>    # 防止刷新过快<br><span class="hljs-keyword">while</span> flag&lt;100:<br>    action = agent.take_action(state)<br>    next_state, reward, done, _ = env.<span class="hljs-keyword">step</span>(action)<br>    <span class="hljs-attribute">state</span>=next_state<br>    # 清除当前 Cell 的输出<br>    display.clear_output(<span class="hljs-attribute">wait</span>=<span class="hljs-literal">True</span>)<br>    # 渲染画面，得到画面的像素数组<br>    rgb_array = env.render(<span class="hljs-attribute">mode</span>=<span class="hljs-string">&#x27;rgb_array&#x27;</span>)<br>    # 使用像素数组生成图片<br>    img = Image.fromarray(rgb_array)<br>    # 当前 Cell 中展示图片<br>    display.display(img)<br>    time.sleep(1/24)<br>    flag+=1<br></code></pre></td></tr></table></figure>
+
+<p>第一个是2层，第二是3层</p>
+<p>视频可以看</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-efdade153c15120cad04afa9df41f47a.jpg" srcset="/img/loading.gif" lazyload alt="视频封面"></p>
+<p>上传视频封面</p>
+<p>两层网络情况</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-015579d9f5f28bc794f3c4e0c728dace.jpg" srcset="/img/loading.gif" lazyload alt="视频封面"></p>
+<p>上传视频封面</p>
+<p>三层网络情况</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="print-no-link">#强化学习</a>
+      
+        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="print-no-link">#深度学习</a>
+      
+        <a href="/tags/%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87/" class="print-no-link">#梯度提升</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS285 深度强化学习 Vol5 ｜ Policy gradient</div>
+      <div>https://blog.tjdata.site/posts/89c781fe.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/f2288390.html" title="CS285 深度强化学习 Vol7 ｜ 值函数">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS285 深度强化学习 Vol7 ｜ 值函数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/17be7a15.html" title="CS285 深度强化学习 Vol6 ｜ Actor Critic">
+                        <span class="hidden-mobile">CS285 深度强化学习 Vol6 ｜ Actor Critic</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

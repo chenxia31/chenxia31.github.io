@@ -1,0 +1,982 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这里参考很多前人的经验： 因果推断笔记——入门学习因果推断在智能营销、补贴的通用框架（十一）-腾讯云开发者社区-腾讯云 基础理论0. 相关性和因果性在日常的生活和数据分析中，我们可以得到大量和相关性的杰伦，通常这些相关性和因果性存在对称性，“小偷多的地方，警察多” or “警察多的地方，小偷也会多”，那么是否需要对这个城市增加警力？ 因果性往往是存在单箭头的，比如辛普森悖论  吃药的意愿收到 X">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试经验 vol3 ｜ 从 AB 实验到因果推断">
+<meta property="og:url" content="https://blog.tjdata.site/posts/77fa14ff.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="这里参考很多前人的经验： 因果推断笔记——入门学习因果推断在智能营销、补贴的通用框架（十一）-腾讯云开发者社区-腾讯云 基础理论0. 相关性和因果性在日常的生活和数据分析中，我们可以得到大量和相关性的杰伦，通常这些相关性和因果性存在对称性，“小偷多的地方，警察多” or “警察多的地方，小偷也会多”，那么是否需要对这个城市增加警力？ 因果性往往是存在单箭头的，比如辛普森悖论  吃药的意愿收到 X">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20240429194410328.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20240429194428562.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20240429194435623.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20240429194445924.png">
+<meta property="article:published_time" content="2024-04-29T11:42:56.000Z">
+<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="AB 实验">
+<meta property="article:tag" content="因果推断">
+<meta property="article:tag" content="观察数据建模">
+<meta property="article:tag" content="选择偏差">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20240429194410328.png">
+  
+  
+  
+  <title>面试经验 vol3 ｜ 从 AB 实验到因果推断 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="面试经验 vol3 ｜ 从 AB 实验到因果推断"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 19:42" pubdate>
+          2024年4月29日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">面试经验 vol3 ｜ 从 AB 实验到因果推断</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这里参考很多前人的经验：</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1913932?areaId=106001">因果推断笔记——入门学习因果推断在智能营销、补贴的通用框架（十一）-腾讯云开发者社区-腾讯云</a></p>
+<h2 id="基础理论"><a href="#基础理论" class="headerlink" title="基础理论"></a>基础理论</h2><h3 id="0-相关性和因果性"><a href="#0-相关性和因果性" class="headerlink" title="0. 相关性和因果性"></a>0. 相关性和因果性</h3><p>在日常的生活和数据分析中，我们可以得到大量和相关性的杰伦，通常这些相关性和因果性存在对称性，“小偷多的地方，警察多” or “警察多的地方，小偷也会多”，那么是否需要对这个城市增加警力？</p>
+<p>因果性往往是存在单箭头的，比如辛普森悖论</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20240429194410328.png" srcset="/img/loading.gif" lazyload alt="image-20240429194410328"></p>
+<p>吃药的意愿收到 X 的印象，由此 T 和 X 共同会影响最终的 Y，这和时候需要做分层的解释才能得到最终的结果</p>
+<h3 id="1-解决问题"><a href="#1-解决问题" class="headerlink" title="1. 解决问题"></a>1. 解决问题</h3><p>推理问题的层次包括：</p>
+<ol>
+<li><strong>关联 association</strong>：纯粹的统计关系，在 X 条件下 Y 的输出会怎么样？eg. 购买儿童纸尿裤的人有较大概率会购买啤酒</li>
+<li><strong>介入 intervention</strong>：如果做了某件事情，会发生什么样的效果？eg. 如果我们将地铁票价翻倍会如何？如果吃了药是否会变好？</li>
+<li><strong>反事实推断 counterfactual inference</strong>：如果我们希望 Y 变化，我们希望对 x 做出什么样的改变？eg. 如果地铁人数减少，我们希望知道是否是由票价提高引起的？我们头疼变好是否是因为吃了药</li>
+</ol>
+<h3 id="2-内生性问题"><a href="#2-内生性问题" class="headerlink" title="2. 内生性问题"></a>2. 内生性问题</h3><p><strong>定义：</strong></p>
+<p>在线性回归模型中可以定义四个假设：</p>
+<ol>
+<li>响应变量 y 和解释变量 x 之间存在线性随机函数关系</li>
+<li>严格外生假定: 当所有时期的解释变量给定时，每一期的随机干扰项的均值都为 0</li>
+<li>球形扰动假定</li>
+<li>无完全共线性假定，也就是变量之间不存在线性关系</li>
+</ol>
+<p>由此可以得到对应权重变量的OLS 的最优线性无偏估计量，外生性值得是：</p>
+<p>E(误差 ｜ 变量) &#x3D; 0 ，E（误差 t ｜ 变量 t） &#x3D; 0</p>
+<p>如果外生性假定不满足，则会产生内生性问题，常见的问包括</p>
+<ol>
+<li>遗漏解释变量，存在un observation variable</li>
+<li>X 和 Y 之间互为因果</li>
+<li>自选择问题</li>
+<li>测量偏差问题</li>
+</ol>
+<p>常见的解决方案包括</p>
+<ol>
+<li>自然实验法，将其看作是一种实验组和对照组</li>
+<li>双重差分法 DID，双重差分法，倘若出现一次外部冲击，影响了一部分样本，对另外一部分样本无影响，如果如何外部冲击的影响？可以使用收影响样本做差、未受影响样本做差，差再做差得到最终的结果</li>
+<li>工具变量 IV，找到影响内在变量的外生变量，连同其他的变量得到最终的结果</li>
+<li>动态面板回归法，将解释变量和被解释变量的滞后项作为工具变量的方法来进行使用，但是不认可这种处理方法</li>
+<li>断点回归</li>
+<li>倾向得分匹配模型 PSM：加权、分层、匹配</li>
+</ol>
+<p>关于 PS 问题存在几个误区：</p>
+<ol>
+<li>没有从根本上介绍因为选择偏差或者遗漏变量造成的内生性问题</li>
+<li>不能成为 准实验，无法提供模拟实验条件</li>
+<li>外部有效性条件，在共同支撑假设，PSM 也会排除缺乏对照组的样本进而使得样本代表性变差，影响效果的外部有效性</li>
+</ol>
+<h3 id="3-因果分析的两种框架"><a href="#3-因果分析的两种框架" class="headerlink" title="3. 因果分析的两种框架"></a>3. 因果分析的两种框架</h3><p><strong>潜在结果框架 Rubin potential outcome RCM</strong></p>
+<p>希望估计单个个体或者整体平均意义下的 treatment effect：</p>
+<ol>
+<li>识别（identification）将因果关系从关联中分割</li>
+<li>估计（estimation）计算因果关系的大小</li>
+<li>检验（hypo test）我们有多大信心结果是正确的</li>
+<li>置信（conf int）结果会存在多大的扰动</li>
+</ol>
+<p>最重要的是需要找到合适的：对照组和实验组</p>
+<p>keywords：</p>
+<ol>
+<li>匹配方法</li>
+<li>双重差分模型 DID</li>
+<li>合成控制法 Synthetic control method</li>
+<li>断点回归</li>
+</ol>
+<p><strong>因果图结果框架 Pearl causal graph CGM</strong></p>
+<p>有向图用来描述变量之间的因果关系，通过计算因果图之间的条件分布，获得变量之间的因果关系，希望使用条件分布来消除估计偏差，最核心的估计检验分布，消除其他变量带来的偏差</p>
+<p>侧重识别</p>
+<p>keywords：后门准则 和 前门准则</p>
+<h3 id="4-调节效应于中介效应"><a href="#4-调节效应于中介效应" class="headerlink" title="4. 调节效应于中介效应"></a>4. 调节效应于中介效应</h3><ol>
+<li>中介效应：X —&gt; M —&gt; Y</li>
+<li>调节效用：X —&gt; Y， M —&gt; Y</li>
+</ol>
+<p>比如，性别 X 和录取 Y 之间的关系，其中性别 X 会影响 M 学历，进而影响 Y，这个是中介效用，这个时候我们需要消除这个学历（confounders）的影响来保证学历不变的情况下，衡量性别于录取结果之间的关系</p>
+<p>比如，收入 I 会影响M，这个就是调节作用</p>
+<h3 id="5-常见假设"><a href="#5-常见假设" class="headerlink" title="5. 常见假设"></a>5. 常见假设</h3><p><strong>无混淆性 unconfounder ｜ 可忽略假设 Ignorability ｜ CIA 假设</strong></p>
+<p>不存在未被观察到的可以影响 T 分布的混杂因子</p>
+<p><strong>正值假设 positivity</strong></p>
+<p>至少存在一项干预导致的结果是无法被观察饿的</p>
+<p><strong>一致性假设 consistency ｜ 稳定单元干预值假设 Stable unit treatment value assumption SUTVA</strong></p>
+<p>任意单元的潜在结果都不会因为其他单元的干预发生改变而改变，且对于每个单元其所接受的每种干预不存在不同的形式或版本导致不同的潜在结果</p>
+<p>干预水平对于所有的个体一致</p>
+<h2 id="常见模型"><a href="#常见模型" class="headerlink" title="常见模型"></a>常见模型</h2><h3 id="1-PS-based-方法"><a href="#1-PS-based-方法" class="headerlink" title="1. PS based 方法"></a>1. PS based 方法</h3><p>Match 匹配方法，寻找对照组</p>
+<p>IPW 逆倾向性打分的方法</p>
+<p>缺点：1. 需要对 PS 估计足够准确 2. 过去趋近于 会导致权重过高</p>
+<p>DR or （AIPW）增强 IPW 方法结合倾向性打分和结果回顾模型来得样本权重</p>
+<p>Stratification PSS 方法</p>
+<h3 id="2-数据驱动的方法"><a href="#2-数据驱动的方法" class="headerlink" title="2. 数据驱动的方法"></a>2. 数据驱动的方法</h3><p>D2VD 变量分解方法</p>
+<ol>
+<li>混淆变量 confounders：影响干预变量 T，也会影响结果变量 Y</li>
+<li>调整变量 adjustment： 与干预变量 T 独立，但是会影响到 Y</li>
+<li>无关变量，不会直接影响到干预变量于估计变量</li>
+</ol>
+<h3 id="3-平衡性-and-均衡性检验检查"><a href="#3-平衡性-and-均衡性检验检查" class="headerlink" title="3. 平衡性 and 均衡性检验检查"></a>3. 平衡性 and 均衡性检验检查</h3><p><strong>如何知道匹配的效果？或者实验组对照组是否分布均匀</strong></p>
+<p>最直观的是观察</p>
+<ol>
+<li>PS 分数在匹配前后的分布，或者是</li>
+<li>特征匹配前后的 QQ plot</li>
+<li>量化指标 SMD，用于计算两者之间的差异</li>
+<li>共同支撑检验 common support：主要检验的目的是确定针对每个处理组，都有对照组与之匹配</li>
+</ol>
+<p><strong>反驳 Refute</strong></p>
+<p>使用不同的数据干预方式来进行检验，来验证得到的因果效应的有效性，反驳的基本原理是对于数据进行某种关于之后，对重新生成的数据进行因果效应的估计</p>
+<ol>
+<li>安慰剂数据方法，使用 placebo 的方法来代替真实的处理变量</li>
+<li>随机混淆变量，增加一个随机生成的混淆变量</li>
+<li>子集数据方法：随机删除一部分数据，作为最终数据的随机自己</li>
+</ol>
+<h3 id="4-DID-双重差分法"><a href="#4-DID-双重差分法" class="headerlink" title="4. DID 双重差分法"></a>4. DID 双重差分法</h3><p>在一定程度上减轻了选择偏差和外因带来的影响</p>
+<p>使用的时候需要满足的假设：</p>
+<ol>
+<li>线性关系假设：来自于线性回归，认为因变量和结果变量存在线性关系</li>
+<li>个体处理稳定假设 SUTVA<ol>
+<li>一致性 consistency：个体接受处理所导致的潜在结果是唯一的</li>
+<li>互不干预：个体接受处理的潜在结果不会受到其他个体吃的影响，eg 比如我在淘宝上购买红包后会更愿意买东西，并不会因为我同事也领到了红包而降低意愿</li>
+</ol>
+</li>
+<li>平行趋势假设：结果的趋势是一只的</li>
+</ol>
+<h3 id="5-工具变量法-Instrumental-variable"><a href="#5-工具变量法-Instrumental-variable" class="headerlink" title="5. 工具变量法 Instrumental variable"></a>5. 工具变量法 Instrumental variable</h3><p>工具变量需要存在以下三个条件</p>
+<ol>
+<li>Z 和 T 相关</li>
+<li>Z 只能通过T 影响 Y</li>
+<li>Z 和 Y 没有共同诱因</li>
+</ol>
+<h3 id="6-Double-machine-learning"><a href="#6-Double-machine-learning" class="headerlink" title="6. Double machine learning"></a>6. Double machine learning</h3><p>消除精准预测，使用任意的 ML 模型给出特征对于目标的无偏估计</p>
+<h2 id="应用细节"><a href="#应用细节" class="headerlink" title="应用细节"></a>应用细节</h2><h3 id="1-双重机器学习-Double-machine-learning"><a href="#1-双重机器学习-Double-machine-learning" class="headerlink" title="1. 双重机器学习 Double machine learning"></a>1. 双重机器学习 Double machine learning</h3><p>问题例子：分析直播推荐多样性（D）对用户活跃度（Y）的影响，都收到用户自身的画像、用户过去的直播浏览历史 X 有关</p>
+<p>存在的问题：</p>
+<ol>
+<li>X 的纬度太高怎么办？</li>
+<li>不知道 X 和 D 的关系</li>
+</ol>
+<p>方法思路：</p>
+<ol>
+<li>CIA 假设，所有混淆变量都可以被观测</li>
+<li>ML 自带的正则化来达到高纬度变量的选择的目的</li>
+</ol>
+<p>估计 X 对 Y 的影响，再估计 X 对 D 的影响，提出这两部分之后，取残差进行估计，来分析直播多样性和输出之间的关系</p>
+<h3 id="2-因果随机森林模型"><a href="#2-因果随机森林模型" class="headerlink" title="2. 因果随机森林模型"></a>2. 因果随机森林模型</h3><p>相当于训练一个 treatment 的树，然后在树的节点做因果头对岸，类似于match or subclass很相似</p>
+<h3 id="3-meta-learner-对于-uplift-modeling"><a href="#3-meta-learner-对于-uplift-modeling" class="headerlink" title="3. meta learner 对于 uplift modeling"></a>3. meta learner 对于 uplift modeling</h3><p>S-learner</p>
+<p>T-learner</p>
+<p>X-learner：利用 weight function 来得到两种不同 ATE 估计的求和</p>
+<h3 id="4-快手的因果推断和实验估计"><a href="#4-快手的因果推断和实验估计" class="headerlink" title="4. 快手的因果推断和实验估计"></a>4. 快手的因果推断和实验估计</h3><p>场景：直播是一个双边网络</p>
+<p>网络设计的难点：网络效应的检测和应对</p>
+<ol>
+<li>流量扶持情况下，主播是否存在流量基站</li>
+<li>主播侧传播到用户侧的双边网络效用</li>
+<li>用户侧传播到主播侧的双边网络效用</li>
+</ol>
+<p>更微观一点的：</p>
+<p>问题挂件是否会存在刺激消费？</p>
+<p>主播：control 不上挂件、treatment 上挂件</p>
+<p>用户：control 看不到挂件、treatment 看得到挂件</p>
+<ol>
+<li>挂件可能会导致 treatment用户在 treatment 和 control 的用户之间转移直播消费</li>
+<li>treatment 主播可能会更加卖力直播，影响 treatment 和 control 组观众</li>
+</ol>
+<h3 id="5-淘宝中的PSM-DID"><a href="#5-淘宝中的PSM-DID" class="headerlink" title="5. 淘宝中的PSM+DID"></a>5. 淘宝中的PSM+DID</h3><p>实验组和对照组是否同质</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/pjgYKfFICqzvFwhHwHBNow">倾向得分匹配（PSM）的原理以及应用</a></p>
+<p>PSM： 根据倾向性打分来进行匹配，适用于样本属性很高，并且不好做切断的离散变量</p>
+<p>CEM：广义精确匹配，使用核心混杂因子进行匹配，每个实验用户匹配到的 N 个同特征用户作为对照组，取 N 个同特征用户的核心指标均值作为实验用户的对照</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20240429194428562.png" srcset="/img/loading.gif" lazyload alt="image-20240429194428562"></p>
+<h3 id="6-淘宝3D-化价值分析"><a href="#6-淘宝3D-化价值分析" class="headerlink" title="6. 淘宝3D 化价值分析"></a>6. 淘宝3D 化价值分析</h3><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/etMqiZ0oKH9BtrGwLdJu2g">mp.weixin.qq.com</a></p>
+<h3 id="7-腾讯因果推断框架总结"><a href="#7-腾讯因果推断框架总结" class="headerlink" title="7 腾讯因果推断框架总结"></a>7 腾讯因果推断框架总结</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20240429194435623.png" srcset="/img/loading.gif" lazyload alt="image-20240429194435623"></p>
+<h3 id="8-滴滴国际化外卖团队的因果推断"><a href="#8-滴滴国际化外卖团队的因果推断" class="headerlink" title="8. 滴滴国际化外卖团队的因果推断"></a>8. 滴滴国际化外卖团队的因果推断</h3><p>因果推断建模和 auuc</p>
+<p>ROI &#x3D; （指标｜干预 - 指标｜不干预）&#x2F; （补贴｜干预 - 补贴｜不干预）</p>
+<p>ROI 不一定会是一个好的指标，同时 GMV 和成本分层下对应的ROI 提升也是有效的</p>
+<h3 id="9-QQ-浏览器-push-优化实践"><a href="#9-QQ-浏览器-push-优化实践" class="headerlink" title="9. QQ 浏览器 push 优化实践"></a>9. QQ 浏览器 push 优化实践</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/451884908">安全验证 - 知乎</a></p>
+<h2 id="个人总结"><a href="#个人总结" class="headerlink" title="个人总结"></a><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20240429194445924.png" srcset="/img/loading.gif" lazyload alt="image-20240429194445924">个人总结</h2><p>离散选择或者一类的回归分析、基于特征重要性的树模型是从 结果来分析对应的原因，这个其实和因果推断中得出 AB 实验如何来分析背后的差异是一致的，本质上解决的问题是从结果到原因</p>
+<ul>
+<li>改不改发优惠卷</li>
+</ul>
+<p>在因果推断方法中，我们希望解决what if 的问题，也就是从如果我们希望得到什么样的结果，我们应该如何来做出自己的策略的选择，这个是从“原因来分析结果”，所以通常有因果关系发现和因果效用估计两种方式</p>
+<ul>
+<li>线路关闭受到哪些影响因素</li>
+<li>指标异常分析、流失分析、DAU 分析</li>
+</ul>
+<p>那么为什么要做因果推断？这个表现在强化学习中是可能会造成智能体学习的策略估计，通常最简单的方式是DQN 的 Q 值会过高轨迹，为了解决这个 on policy 的问题，我们通常会使用 off policy 的方法来分离探索智能体和目标智能体来得到教优估计。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/" class="category-chain-item">数据科学</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="print-no-link">#机器学习</a>
+      
+        <a href="/tags/AB-%E5%AE%9E%E9%AA%8C/" class="print-no-link">#AB 实验</a>
+      
+        <a href="/tags/%E5%9B%A0%E6%9E%9C%E6%8E%A8%E6%96%AD/" class="print-no-link">#因果推断</a>
+      
+        <a href="/tags/%E8%A7%82%E5%AF%9F%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1/" class="print-no-link">#观察数据建模</a>
+      
+        <a href="/tags/%E9%80%89%E6%8B%A9%E5%81%8F%E5%B7%AE/" class="print-no-link">#选择偏差</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>面试经验 vol3 ｜ 从 AB 实验到因果推断</div>
+      <div>https://blog.tjdata.site/posts/77fa14ff.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/4529.html" title="电脑键盘背后的故事 feat. 宁芝 Plum">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">电脑键盘背后的故事 feat. 宁芝 Plum</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/d29c87a5.html" title="面试经验 Vol2 ｜ 损失函数和评价指标总结">
+                        <span class="hidden-mobile">面试经验 Vol2 ｜ 损失函数和评价指标总结</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

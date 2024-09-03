@@ -1,0 +1,1007 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="将RL嵌入到现有的框架当中来保证效率和完全性，非常Fancy！ https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2006.01610AbstractCombinatorial Optimization 应用广泛：从航空领域、交通规划甚至到经济学中，它的目标是在有限的解空间中找到最优解（find an optimal solution among a finite set of possibilitie">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Combining_Reinforcement_Learning_and Constraint_Programming_for_Combinatorial Optimization">
+<meta property="og:url" content="https://blog.tjdata.site/posts/adc401ca.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="将RL嵌入到现有的框架当中来保证效率和完全性，非常Fancy！ https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2006.01610AbstractCombinatorial Optimization 应用广泛：从航空领域、交通规划甚至到经济学中，它的目标是在有限的解空间中找到最优解（find an optimal solution among a finite set of possibilitie">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-1aaaf2e10c6c37bc9a27ae001791deaa_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-2d7fecd2ea4b073214a51a6800838ea9_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5f28dc3679f4c16209105fdde7480d7c_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-221614208a328d30af141b6278eabc32_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-14a9a0f21f12c2ebcd1cee514206bb06_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-95a8a3b90498c1e40aa99b21c2687753_1440w.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-9f0c18210ff7beb90ab28b15a9c882b5_1440w.png">
+<meta property="article:published_time" content="2024-04-29T10:27:16.000Z">
+<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="强化学习">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="paper 阅读">
+<meta property="article:tag" content="运筹优化">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-1aaaf2e10c6c37bc9a27ae001791deaa_1440w.png">
+  
+  
+  
+  <title>Combining_Reinforcement_Learning_and Constraint_Programming_for_Combinatorial Optimization - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Combining_Reinforcement_Learning_and Constraint_Programming_for_Combinatorial Optimization"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 18:27" pubdate>
+          2024年4月29日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Combining_Reinforcement_Learning_and Constraint_Programming_for_Combinatorial Optimization</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>将RL嵌入到现有的框架当中来保证效率和完全性，非常Fancy！</p>
+<h2 id="https-arxiv-org-abs-2006-01610"><a href="#https-arxiv-org-abs-2006-01610" class="headerlink" title="https://arxiv.org/abs/2006.01610"></a><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.01610">https://arxiv.org/abs/2006.01610</a></h2><h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p><a target="_blank" rel="noopener" href="https://www.notion.so/Combinatorial-Optimization-0f8d8ad2698643b1abf8e955f2a4e869">Combinatorial Optimization</a> 应用广泛：从航空领域、交通规划甚至到经济学中，它的目标是在有限的解空间中找到最优解（find an optimal solution among a finite set of possibilities），其面临的最严重的挑战为<a target="_blank" rel="noopener" href="https://www.notion.so/Q-state-action-d9e8f9603c0a47f895d30615644c41d9">Q-state-action方法</a> 中提到的 状态空间爆炸（State- space explosion problem）：问题的解空间岁问题规模增大成指数型的增大，导致对于一些大型的问题难以求解；另一方面DRL（deep reinforcement learning）在求解NP-hard 组合优化问题过程对设计好的启发式求解算法具有比较好的贡献，但是现有的方法具有两个缺点</p>
+<ol>
+<li>他们仅仅专注于标准的TSP问题，不容易拓展到其他问题</li>
+<li>通常只给出一种近似解（approximate solution），而没有给出一种系统的方法来提高或者证明它的最优性（Optimality）</li>
+</ol>
+<p>在另外一种情况下，<a target="_blank" rel="noopener" href="https://www.notion.so/Constraint-programming-05ee88110f8b4c18ac9f9cffe6f65976">Constraint programming</a> 是解决组合优化问题的通用工具，基于一个完整的搜索过程，通常可以在比较大的运行时间中找到最优解。其中决定性的确定搜索的方向，或者说分枝策略，或者说是探索策略。</p>
+<p>在本文中我们提出一种通用和混合的方法（l）的方法，结合CP和DRL来求解COP，主要是基于<a target="_blank" rel="noopener" href="https://www.notion.so/Part01-dynamic-programming-8f83f0126c2447e8984b0904e305a33a">运筹学Part01–dynamic programming</a> 作为两者之间的桥梁，并通过实验来证明求解器在两个有挑战性的问题上进行求解：<a target="_blank" rel="noopener" href="https://www.notion.so/TSPTW-the-traveling-salesman-problem-with-time-windows-e46e9c09083041af998fa7a2ffe2ee1e">TSPTW the traveling salesman problem with time windows</a> 和 <a target="_blank" rel="noopener" href="https://www.notion.so/4POP-4-moments-portfolio-optimization-problem-b67f257853f348c29fd54edd42d79092">4POP 4-moments portfolio optimization problem</a>,实时证明比一些单独的RL或者利用通用求解器效果更好</p>
+<blockquote>
+<p> Brief Conclusion P：具有多项式时间算法，算得很快的问题 NP：不确定需要多长时间，但是我们验证它只需要多项式时间 NP- complete：属于NP问题，同时也属于NP-hard问题 NP-hard：比NP问题都要难的问题</p>
+</blockquote>
+<p>NP问题 指的是非确定性多项式问题（non- deterministic polynomial NP），非确定性指的是可用一定数量的运算去解决多项式时间内可解决的问题，通常解决问题包括：TSP、Hamilton回路问题、最大团问题；但是其可以在多项式时间内可以被验证其正确定的问题</p>
+<p>NP-hard问题 指的是non- deterministic polynomial time hardness，如果所有的NP问题都可以在多项式时间规约到某个问题，则称这个问题为NP困难</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>在组合优化中大多数问题为NP-hard问题，对其高效的优化算法的探索由来已久。广泛的可以将其分为两种方法</p>
+<p><a target="_blank" rel="noopener" href="https://www.notion.so/exact-algorithm-6f0de3f67ad942299d12b6e6962f9e10">精确算法 exact algorithm</a> 是基于对求解空间的完整并且巧妙的枚举，它的优点是可以选招到最优解，但是在对于一些大型的案例中往往会出现求解时间扩大。但也有另外的说法可以让精确算法在找到最优解之前就终止的方式来探索得到次优解。这种灵活性让精确求解算法更加appealing并且practical，也正是如此构成了现代求解器的核心 CPLEX、Gurobi、Gecode等等。这是一个CP的介绍，通过additional asset 用来求解非常大的复杂性的COP问题，通常<a target="_blank" rel="noopener" href="https://www.notion.so/mixed-integer-programming-MIP-fc936c07376b4ef098d1307191c9019e">混合整数规划mixed integer programming MIP</a> 求解器往往只能求解线性问题或者有限的非线形问题。</p>
+<p><a target="_blank" rel="noopener" href="https://www.elsevier.com/books/handbook-of-constraint-programming/rossi/978-0-444-52726-4">Handbook of Constraint Programming</a></p>
+<p>而在利用CP进行求解的过程中重要的是branching strategy，非常自然的，好的设计的启发式的探索方法可以很好的发现求解，但是差的启发式分枝策略往往会导致进入没有解的子空间。所以在CP求解问题中br分枝策略的研究是非常热门的话题</p>
+<p><a target="_blank" rel="noopener" href="https://www.notion.so/heuristic-algorithm-5887d2ccbbc34a0db4eb5136ab9645ca">启发式算法 heuristic algorithm</a> 是一种非完全的手段来求解得到最终解，但是不能证明解的最优性。他们通常需要特定子问题的知识才能构建他们。在近几年，<a target="_blank" rel="noopener" href="https://www.notion.so/Lecture01-Deep-Reinforcement-Learning-Decision-Making-and-Control-38667912b7734364a527d8ae71ff2a40">Lecture01 Deep Reinforcement Learning, Decision Making,and Control</a> 在对一些NP-hard的COP问题的近似求解中取得了非常好的成果。只要一个模型训练好，在实践中的运行时间是可以忽略不计的，利用DRL求解问题的前提是</p>
+<ol>
+<li>我们知道实际问题的例子分布</li>
+<li>我们有足够多的样本，并可以从中采样来训练模型</li>
+</ol>
+<p>但是现有的DRL在COP应用中存在的一些问题表阔</p>
+<ol>
+<li>仅限于求解特定的问题，比如TSP</li>
+<li>其次，它们仅旨在充当建设性的启发式方法，并且与完整的方法（例如CP）不同，没有系统的方法来改进所获得的解决方案。</li>
+</ol>
+<p>上述的<a target="_blank" rel="noopener" href="https://www.notion.so/exact-algorithm-6f0de3f67ad942299d12b6e6962f9e10">精确算法 exact algorithm</a> 和基于学习的<a target="_blank" rel="noopener" href="https://www.notion.so/heuristic-algorithm-5887d2ccbbc34a0db4eb5136ab9645ca">启发式算法 heuristic algorithm</a> 都具有好处和坏处，很自然的就有一个问题</p>
+<blockquote>
+<p> 我们是否可以将他们的优点联合起来来求解COP</p>
+</blockquote>
+<p>在本文中我们成果将RL与CP利用<a target="_blank" rel="noopener" href="https://www.notion.so/Part01-dynamic-programming-8f83f0126c2447e8984b0904e305a33a">运筹学Part01–dynamic programming</a> 结合起来，动态规划在很多场合中都具有很成果的作用，是一种非常关键的建模COP问题的方法，简单来说DP问题将一个问题分解成为子问题并通过递归公式（recursive formulation，比如常见的bellman equation结合起来），其中DP面临的苦难常常是 维度灾难问题：生成的子问题的数量呈指数级增长，以至于将它们全部存储在内存中变得不可行。</p>
+<p>据我们所知是第一次在CP求解器中内置可学习的启发式探索，详细的贡献如下：</p>
+<ol>
+<li>对于COP问题新的DP编码方式来利用RL求解和CP模型</li>
+<li>利用两种常见的RL模型，DQL、PPO，训练数据集是从问题中随机抽样得到的</li>
+<li>与现有的CP求解过程中分枝策结合，形成三种 brand and bound \ iterative limited discrpancy search and restart based search三种</li>
+<li>给出有意义的结果</li>
+<li>代码开源，为了简化后续研究的进程</li>
+</ol>
+<p>通常如果没有内在的假设，比如线形和凸性，DP不能简单的编码然后利用标准的MIP方法求解，这也是驱动我们思考尝试使用CP进行编码的原因之一</p>
+<p>下一章给出混合整数求解器求解的过程</p>
+<p>对两个案例进行实验分析</p>
+<p>最后给出总结</p>
+<h2 id="2-数据表征"><a href="#2-数据表征" class="headerlink" title="2  数据表征"></a>2  数据表征</h2><p>这一部分总结我们提出的完整的框架，一个概括性的框架图在图一中展示，分为三个部分：</p>
+<ol>
+<li>学习部分，利用随机生成的例子通过unifying representation作为RL的环境进行训练，最终训练的智能体是对求解过程中search的启发式分枝策略进行基于价值的选择（或者说是强化学习的探索）</li>
+<li>求解部分，利用CP对模型进行求解，同时对求解的案例进行评估</li>
+<li>联合表示阶段，讲输入的COP问题，结合Dominance pruning rules剪枝策略得到动态规划模型的建模，这样可以作为学习阶段的环境，也可以作为求解节点的输入模型</li>
+</ol>
+<p>绿色表示我们的原创共享，蓝色表示已经有的框架</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-1aaaf2e10c6c37bc9a27ae001791deaa_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221218154958762</p>
+<h3 id="2-1-动态规划模型"><a href="#2-1-动态规划模型" class="headerlink" title="2.1 动态规划模型"></a>2.1 动态规划模型</h3><p>动态规划模型是一种将数学建模与计算机编程联系起来求解复杂优化问题的手段，简单来说是将一个大的问题转换成很多小的子问题然后将他们利用recursive formulation的方式联系起来最终求解，其中包括的一些关键的影响因素</p>
+<table>
+<thead>
+<tr>
+<th>Q</th>
+<th>COP问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>controls</td>
+<td>C</td>
+</tr>
+<tr>
+<td>domain</td>
+<td>D</td>
+</tr>
+<tr>
+<td>transition</td>
+<td>T</td>
+</tr>
+<tr>
+<td>states</td>
+<td>S</td>
+</tr>
+<tr>
+<td>stage</td>
+<td></td>
+</tr>
+<tr>
+<td>reward</td>
+<td>R</td>
+</tr>
+<tr>
+<td>validity conditions</td>
+<td>V</td>
+</tr>
+<tr>
+<td>dominance rules</td>
+<td>P</td>
+</tr>
+</tbody></table>
+<p>其中validity conditions 和dominance rules之间的区别在于两者之间的区别在于，有效性条件是强制性的，以确保DP模型的正确性（V （s， x） &#x3D; 0 ⇔ T（s， x） &#x3D; ⊥），而优势规则仅用于效率目的（P（s， x） &#x3D; 0 ⇒ T（s， x） &#x3D; ⊥），其中⇔、⇒和⊥表示等价性、含义、 和不可行的状态，分别。其中DP建模可以包括 S，X，T，R，V，P；根据贝尔曼方程我们可以一直计算到开头的状态的价值。</p>
+<p>但是DP收到curse of dimensionality的影响，在解决大的状态或者动作空间下需要的内存很多，一种方法是对其进行剪枝处理，其中需要评估</p>
+<p>此问题的部分解决方案是修剪主导操作 （P（s， x） &#x3D; 0）。如果一个动作根据递归公式是有效的，那么它就是主导的，但（1）要么严格地比另一个动作差，要么（2）它不能导致可行的解决方案。在实践中，修剪这些主导操作会对搜索空间的大小产生巨大影响，但是在实践过程中找到这样的求解方案并不是容易的</p>
+<p>而且就算在DP过程中对上述的子问题进行修建之后仍不能确保解空间足够小</p>
+<h3 id="2-2-强化学习编码"><a href="#2-2-强化学习编码" class="headerlink" title="2.2 强化学习编码"></a>2.2 强化学习编码</h3><p>从DP问题中，结合一个实际COP问题可以定义一个强化学习过程，这里有一个关于强化学习的概述</p>
+<p>介绍强化学习的作用：</p>
+<p>介绍一个基本的过程</p>
+<h3 id="2-2-1-State"><a href="#2-2-1-State" class="headerlink" title="2.2.1 State"></a>2.2.1 State</h3><p>对于DP问题中不同的阶段，我们可以使用（Q，s_i）作为当前状态的定义，通常状态被embed一种张量作为神经网络的输入，也包括action，最终输出是最优的动作</p>
+<h3 id="2-2-2-Action"><a href="#2-2-2-Action" class="headerlink" title="2.2.2 Action"></a>2.2.2 Action</h3><p>给定一个DP问题中的state，其中包括一种一对一关系的，$a_i$可以被采用除非$x_i$是有效的，通常可行的动作可以由domain和valid进行判断</p>
+<h3 id="2-2-3-Transition"><a href="#2-2-3-Transition" class="headerlink" title="2.2.3 Transition"></a>2.2.3 Transition</h3><p>输入当前状态和侗族哦，我们就可以使用DP问题来进行转换就行</p>
+<h3 id="2-2-4-Reward"><a href="#2-2-4-Reward" class="headerlink" title="2.2.4 Reward"></a>2.2.4 Reward</h3><p>最初的想法是使用DP问题中存在的奖励，但是这样可能会存在没有解的轨迹奖励要高于有解方案的奖励，因此在设计奖励的需要考虑COP问题中存在的两个原则</p>
+<p>1， 如果e1比e2更坏，我们需要e1的奖励小于e2的奖励</p>
+<ol>
+<li>所有找到可行解的轨迹需要比没有找到可行解的轨迹高</li>
+</ol>
+<p>UB对应规划问题可能到达的上限，第二个问题强迫智能体去寻找到最佳的可行解，最终的scaling factor 防止最终奖励落入零值周边</p>
+<h3 id="2-3-学习方法"><a href="#2-3-学习方法" class="headerlink" title="2.3 学习方法"></a>2.3 学习方法</h3><p>DQN</p>
+<p>PPO</p>
+<p>有一个非常重要的假设，利用生成器得到instance的时候，得到的分布与实际问题中的问题想等，这也是在RL解决其他问题中常见的假设，强化学习的过程是希望学习出不同状态和动作下得到不同的Q，我们的策略往往是采用最大Q值的东西，利用DQN得到Q值的训练过程有</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs clean"># Trainer——DQN（）<br># <span class="hljs-keyword">class</span> Env，<br># <span class="hljs-keyword">class</span> BrainDQN<br># <span class="hljs-keyword">class</span> TSPTW<br># <span class="hljs-keyword">class</span> state<br></code></pre></td></tr></table></figure>
+
+<p>展现代码的调用过程</p>
+<ol>
+<li>这一步仅仅是希望训练出DQN的brain，而没有其他的东西</li>
+<li>重点在环境生成，以及训练的整个过程</li>
+</ol>
+<p>首先确保如何生成一个TSPTW问题</p>
+<p>之后生成多个作为训练的集合</p>
+<p>同时在每次训练中提高</p>
+<h3 id="2-4-网络框架"><a href="#2-4-网络框架" class="headerlink" title="2.4 网络框架"></a>2.4 网络框架</h3><p>为了确保框架的通用型和有效性，对于网络框架我们需要确保两件事情</p>
+<ol>
+<li>对于相同的COP问题，可以有不同的输入尺寸</li>
+<li>对输入的排列保持不变</li>
+</ol>
+<p>为了保证这样的架构我们通常会使用一种Transformer架构，对于TSP问题天然的我们可以采用GAT的方式来实现序列到序列的转换</p>
+<p>对于DQN网络中最后一层的输入是不同动作对应的Q- value</p>
+<h3 id="2-5-CP-Encoding"><a href="#2-5-CP-Encoding" class="headerlink" title="2.5 CP Encoding"></a>2.5 CP Encoding</h3><p>现在介绍如何将DP过程编码放入Constraint model</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>CP</th>
+<th>DP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>variable and domains</td>
+<td>X- decision variables，set of the variables，表示动作</td>
+<td>X</td>
+</tr>
+<tr>
+<td></td>
+<td>X-auxiliary variables，表示state</td>
+<td>S</td>
+</tr>
+<tr>
+<td></td>
+<td>D，set of the domain</td>
+<td>V</td>
+</tr>
+<tr>
+<td></td>
+<td>C，set of the constraints</td>
+<td>P</td>
+</tr>
+<tr>
+<td></td>
+<td>O，objective function</td>
+<td>在后面N阶段中的最大值，这里的动态规划方向仅仅和x_a有关</td>
+</tr>
+</tbody></table>
+<h3 id="2-6-搜索策略"><a href="#2-6-搜索策略" class="headerlink" title="2.6 搜索策略"></a>2.6 搜索策略</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-2d7fecd2ea4b073214a51a6800838ea9_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221218155022842</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5f28dc3679f4c16209105fdde7480d7c_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221218155036915</p>
+<p>与DP方式相同，我们用此来构建RL的环境（并固定CO问题）来得到动作的输出，框架的统一性是问题的核心，这一部分展示我们如何将学习的模型嵌入到CP搜索中，我们考虑几种常见的搜索方式</p>
+<ol>
+<li>Depth-first branch-and-bound search</li>
+<li>iterative limited discrepancy search</li>
+<li>restart based search</li>
+</ol>
+<p>这里仅介绍第一种搜索策略与DQN的结合，DFS确保了当一个可行解找到之后，下一个解需要好与当前的，当遇到没有可行的分支会回溯到之前的分支，由此来确保整个解空间都得到遍历，同时最终得到的解可以被证明是最优的optimal，这个过程中需要非常好的value- selection</p>
+<p>在学习之后，DQN的作用是输入当前的状态，以及可行的动作，输入不同动作的最大值，这里可以贪心搜索的方式进行下去，尽管可能不是最优的，需要保证和DP问题中存在的一致性，通常这里会有一些近似变量来作为对DP问题的关键影响，但是这里不是重点</p>
+<p>整个过程如下表所示⬇️</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-221614208a328d30af141b6278eabc32_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221218155108646</p>
+<h2 id="3-Experimental-result"><a href="#3-Experimental-result" class="headerlink" title="3 Experimental result"></a>3 Experimental result</h2><p>TSPTW是从传统的TSP问题中得到的，只是给所有的salesman增加一个时间窗的概念，最终规定需要在规定时间内沿着所有的节点走一圈。</p>
+<p><a target="_blank" rel="noopener" href="https://developers.google.com/optimization/routing/vrptw">Vehicle Routing Problem with Time Windows | OR-Tools | Google Developers</a></p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-14a9a0f21f12c2ebcd1cee514206bb06_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221218155120405</p>
+<p>最终证明了结果</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-95a8a3b90498c1e40aa99b21c2687753_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221218155134078</p>
+<h2 id="4-Discussion-and-Limitation"><a href="#4-Discussion-and-Limitation" class="headerlink" title="4 Discussion and Limitation"></a>4 Discussion and Limitation</h2><p>首先本文并不是第一个尝试使用ML来引导优化求解器的分支，但是他们的方法专注于监督学习并且仅限于线性问题，这里本文的共享</p>
+<ol>
+<li>关注与将COP问题建模成为DP</li>
+<li>完全利用RL进行训练</li>
+</ol>
+<p>同时结合CP问题的完整性，可以更好的求解一系列问题包括非线性约束或者非线性约束函数</p>
+<p>同时我们也不需要一些历史数据或者仿真生成器，同时是一种端到端的求解器，并且可以证明求解结果的最优性</p>
+<h2 id="5-Conclusion"><a href="#5-Conclusion" class="headerlink" title="5 Conclusion"></a>5 Conclusion</h2><p>这些结果表明，该框架可能是解决具有挑战性的组合优化问题的一种有前途的新途径。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-9f0c18210ff7beb90ab28b15a9c882b5_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>image-20221218155147889</p>
+<p><a target="_blank" rel="noopener" href="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/202212181553133.pdf">总结的ppt</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="print-no-link">#强化学习</a>
+      
+        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="print-no-link">#深度学习</a>
+      
+        <a href="/tags/paper-%E9%98%85%E8%AF%BB/" class="print-no-link">#paper 阅读</a>
+      
+        <a href="/tags/%E8%BF%90%E7%AD%B9%E4%BC%98%E5%8C%96/" class="print-no-link">#运筹优化</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Combining_Reinforcement_Learning_and Constraint_Programming_for_Combinatorial Optimization</div>
+      <div>https://blog.tjdata.site/posts/adc401ca.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/d49191c7.html" title="知识管理的一些想法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">知识管理的一些想法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/354c5ef8.html" title="流程图库 Mermaid 总结">
+                        <span class="hidden-mobile">流程图库 Mermaid 总结</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

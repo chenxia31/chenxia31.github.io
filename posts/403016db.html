@@ -1,0 +1,856 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="非常喜欢《机器学习导论》中关于感知器的一句话：“神经网络的目的不是为了研究人脑的内部结构和运行机理，而仅仅是模仿来作为一个学习罢了”，通过这句话可以看出机器学习作为一门工程类的学科，本质目的还是为了寻找一种好的方法，在此过程中就要思考需要用什么样的标准来评价好坏？这是一个曾经观察高中物理、高中化学、高中生物中的实验科学，更进一步，我们更有着统计的知识来指导我们更近一步地正确设计实验。 0x01 引">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS229机器学习 实验设计 ｜ Vol5">
+<meta property="og:url" content="https://blog.tjdata.site/posts/403016db.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="非常喜欢《机器学习导论》中关于感知器的一句话：“神经网络的目的不是为了研究人脑的内部结构和运行机理，而仅仅是模仿来作为一个学习罢了”，通过这句话可以看出机器学习作为一门工程类的学科，本质目的还是为了寻找一种好的方法，在此过程中就要思考需要用什么样的标准来评价好坏？这是一个曾经观察高中物理、高中化学、高中生物中的实验科学，更进一步，我们更有着统计的知识来指导我们更近一步地正确设计实验。 0x01 引">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4d9a47736089ae08272021597657db5a_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0347a0ef74be7698d93aefaeb487333d_1440w.jpg">
+<meta property="article:published_time" content="2024-04-29T08:09:21.000Z">
+<meta property="article:modified_time" content="2024-04-29T08:55:25.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="CS229">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4d9a47736089ae08272021597657db5a_1440w.jpg">
+  
+  
+  
+  <title>CS229机器学习 实验设计 ｜ Vol5 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS229机器学习 实验设计 ｜ Vol5"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:09" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CS229机器学习 实验设计 ｜ Vol5</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>非常喜欢《机器学习导论》中关于感知器的一句话：“神经网络的目的不是为了研究人脑的内部结构和运行机理，而仅仅是模仿来作为一个学习罢了”，通过这句话可以看出机器学习作为一门工程类的学科，本质目的还是为了寻找一种好的方法，在此过程中就要思考需要用什么样的标准来评价好坏？这是一个曾经观察高中物理、高中化学、高中生物中的实验科学，更进一步，我们更有着统计的知识来指导我们更近一步地正确设计实验。</p>
+<h2 id="0x01-引言"><a href="#0x01-引言" class="headerlink" title="0x01 引言"></a>0x01 引言</h2><p>机器学习中，实现一个目标中可以有很多中不同的学习算法，来么：</p>
+<ol>
+<li>如何评估一个学习算法在给定问题上的期望误差？</li>
+<li>对于同一个目标的不同学习算法，我们如何证明一个算法比另外一个算法误差更低？</li>
+</ol>
+<p>我们不能只看训练集上的误差来作为判断，因为具有更复杂度的模型的误差总是比简单模型小</p>
+<p>同样在不同与训练及的验证集中一轮运行也不够，因为可能会有噪声和离群点的影响，同样具有超参数的算法的泛化过程中会有这其他的随机因素。我们通过运行learning algorithm来得到一个leaner；如果我们只训练一次只得到一个leaner和一个validation error，为了平均各种随机性，我们需要产生多种leaner，进而在多个验证集上评估，我们对learning algorithm的评估是应该是基于这些validation error的distribution来的，通过评估expected error或者是variance来进行比较。</p>
+<p>总结上述，可以看出我们的目标是规划和设计机器学习实验，来分析实验产生的数据，以便能够排除随机性的影响，得到统计显著的结论，在机器学习中，我们的目标是得到具有最高的泛化准确率、最小复杂度的学习器，并且该学习器是robust</p>
+<p>我们在实验设计中需要设计的3项基本原则：</p>
+<ul>
+<li>randomization随机化，要求实验运行的次序应该是随机确定的，这样使得结果是独立的</li>
+<li>replication重复，因为这应该对可控因素的相同配置多次实验，以便平均不可控因素的影响，通常在相同数据集上再抽样的版本上叫做交叉验证（cross- validation）</li>
+<li>blocking阻止，用来降低或消除有害因素导致的可变性，准确率的差异不仅取决于不同的算法还取决于不同的子集，因此为了度量仅由算法导致的差别，重复运行的不同训练集应该是相同的，在统计中常有配对检验（pairing test）</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4d9a47736089ae08272021597657db5a_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h2 id="0x02-实验设计的基本策略-strategy-of-experimentation"><a href="#0x02-实验设计的基本策略-strategy-of-experimentation" class="headerlink" title="0x02 实验设计的基本策略 strategy of experimentation"></a>0x02 实验设计的基本策略 strategy of experimentation</h2><p>这里感觉更多是关于如何调参的选择，如何设计对比出不同算法优劣，比如消融实验之类的还是依靠实践</p>
+<h3 id="最佳猜测-best-guess"><a href="#最佳猜测-best-guess" class="headerlink" title="最佳猜测 best- guess"></a>最佳猜测 best- guess</h3><p>从某个我们相信是好配置的因素设置开始，在此检验响应之前，每次稍微改动一个或者少量因素，来检验每个组合指导得到一个足够好的状态</p>
+<h3 id="一次一个因素-one-factor-at-a-tiem"><a href="#一次一个因素-one-factor-at-a-tiem" class="headerlink" title="一次一个因素 one factor at a tiem"></a>一次一个因素 one factor at a tiem</h3><p>我们为每个因素确定一个基线的抹额认知，然后对一个因素尝试不同水平而令其他因素保持在极限上，这种方法的缺点是假设因素之间不相互影响</p>
+<h3 id="因素设计-factorial-design"><a href="#因素设计-factorial-design" class="headerlink" title="因素设计 factorial design"></a>因素设计 factorial design</h3><p>通常也被称为网格搜索grid search，其中因素一起变化而不是单因素变化</p>
+<h3 id="响应面设计-response-surface-design"><a href="#响应面设计-response-surface-design" class="headerlink" title="响应面设计 response surface design"></a>响应面设计 response surface design</h3><p>通过设计合理的有限次数试验，建立一个包括各显著因素的一次项、平方项和任何两个因素之间的一级交互作用项的数学模型，精确研究各因素与响应值之间的关系，快速确定多因素系统的最佳条件，常用具体方法有：中心复合试验设计（central composite design CCD）和Box-Behnken试验设计（DDB）</p>
+<h2 id="0x03-模型选择–重复样本"><a href="#0x03-模型选择–重复样本" class="headerlink" title="0x03 模型选择–重复样本"></a>0x03 模型选择–重复样本</h2><blockquote>
+<p> hold-out 通常对获得数据集之后，会将其划分出来一部分不会使用的test set；在训练过程中的会用到的有train set和validation set </p>
+</blockquote>
+<p>通常train set和validation set之间的比例可以为10或者30，但是不幸的是样本通常没有这么多，因此我们应该在小数据集上尽力而为，其方法是以不同划分来重复使用它，这种称为交叉验证cross- validation，但是潜在的问题有<strong>交叉验证使得错误率是相互依赖的，因为这些不同集合共享数据</strong></p>
+<p>在重复爱漾中要尽可能的保持分层stratification，我们希望保证误差估计的鲁棒性，同时要保持不同集合间的重叠尽可能的小，还不能扰乱类的先验概率</p>
+<h3 id="3-1-K-fold-CV"><a href="#3-1-K-fold-CV" class="headerlink" title="3.1 K- fold CV"></a>3.1 K- fold CV</h3><p>将训练的书籍划分为K等分，将K份数据集中的一份划分为验证集，其他作为验证集，在较为极端的医疗中可能会有leave-one-out</p>
+<h3 id="3-2-5x2-CV"><a href="#3-2-5x2-CV" class="headerlink" title="3.2 5x2 CV"></a>3.2 5x2 CV</h3><p>很神奇而让人不想去了解</p>
+<h3 id="3-3-bootstrapping（自助法）"><a href="#3-3-bootstrapping（自助法）" class="headerlink" title="3.3 bootstrapping（自助法）"></a>3.3 bootstrapping（自助法）</h3><p>采用从原始样本中以有放回地抽取实例的方法来产生新的样本，自助样本可能比交叉验证有更多的重叠，因而其估计可能更相互依赖 $$ （1-\frac{1}{N})^N&#x3D;1&#x2F;e&#x3D;0.368 $$ 意味训练集中包含63.2%的实例，将原始数据集作为验证集</p>
+<h2 id="0x04-模型选择–性能度量"><a href="#0x04-模型选择–性能度量" class="headerlink" title="0x04 模型选择–性能度量"></a>0x04 模型选择–性能度量</h2><h3 id="4-1-分类"><a href="#4-1-分类" class="headerlink" title="4.1 分类"></a>4.1 分类</h3><p>二分类的混淆矩阵confusion matrix</p>
+<p>|              | 预测positive | 预测negative |      | | ———— | ———— | ———— | —- | | 正例positive | TP           | FN           |      | | 负例negative | FP           | TN           |      |</p>
+<p>$$ 误差：(FP+FN)&#x2F;N\ 准确率：(TP+TN)&#x2F;N\ 精度：TP&#x2F;（TP+FP）\ 召回率：TP&#x2F;（TP+FN）\ 灵敏度：召回率\ 特效性：TN&#x2F;fp+tn\ tp-rate:tp&#x2F;p\ fp-rate&#x3D;fp&#x2F;(tn+fp) $$</p>
+<blockquote>
+<p> 关于假正和假负，例如一个用户希望登陆另外一个用户的账户，假正是允许顶替，假负是正常用户登陆不了，显然前者危害会更高 tp-rate：衡量通过身份认证合法用户的比例 FP-rate：错误接受顶替的比例 </p>
+</blockquote>
+<p>（tp-rate，fp-rate）得到ROC（receiver operating characteristic），该曲线下面的（area under the curve AUC）可以来比较不同损失条件下平均的整体性能</p>
+<p>可以参考科技文献检索中的查全率和查准率</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0347a0ef74be7698d93aefaeb487333d_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>class confusion matrix</p>
+<h3 id="4-2-回归"><a href="#4-2-回归" class="headerlink" title="4.2 回归"></a>4.2 回归</h3><p>mean square error</p>
+<p>RMSE之类的</p>
+<h2 id="0x05-模型选择-–-结果可靠性（看不懂，统计功底不够）"><a href="#0x05-模型选择-–-结果可靠性（看不懂，统计功底不够）" class="headerlink" title="0x05 模型选择 – 结果可靠性（看不懂，统计功底不够）"></a>0x05 模型选择 – 结果可靠性（看不懂，统计功底不够）</h2><h3 id="5-1-区间估计-interval-estimation"><a href="#5-1-区间估计-interval-estimation" class="headerlink" title="5.1 区间估计 interval estimation"></a>5.1 区间估计 interval estimation</h3><p>《概率论》</p>
+<h3 id="5-2-假设检验-hypothesis-testing"><a href="#5-2-假设检验-hypothesis-testing" class="headerlink" title="5.2 假设检验 hypothesis testing"></a>5.2 假设检验 hypothesis testing</h3><p>《概率论和数理统计》</p>
+<h3 id="5-3-结合评估性能"><a href="#5-3-结合评估性能" class="headerlink" title="5.3 结合评估性能"></a>5.3 结合评估性能</h3><p>一下用于对分类问题中的错误率进行分析，同样可以适用于回归的就放误差、非监督学习的对数似然、增强学习的期望奖励等</p>
+<h3 id="单个学习器的错误率衡量"><a href="#单个学习器的错误率衡量" class="headerlink" title="单个学习器的错误率衡量"></a>单个学习器的错误率衡量</h3><p>二项检验</p>
+<p>近似正态检验</p>
+<p>t检验（K-fold）</p>
+<h3 id="比较两个分类算法错误率"><a href="#比较两个分类算法错误率" class="headerlink" title="比较两个分类算法错误率"></a>比较两个分类算法错误率</h3><p>McNemar检验</p>
+<p>K折+t检验</p>
+<h3 id="比较多个分类的错误率同时分析方差"><a href="#比较多个分类的错误率同时分析方差" class="headerlink" title="比较多个分类的错误率同时分析方差"></a>比较多个分类的错误率同时分析方差</h3><h3 id="在多个数据集上比较多个算法的错误率"><a href="#在多个数据集上比较多个算法的错误率" class="headerlink" title="在多个数据集上比较多个算法的错误率"></a>在多个数据集上比较多个算法的错误率</h3><h3 id="比较多个算法的不同指标"><a href="#比较多个算法的不同指标" class="headerlink" title="比较多个算法的不同指标"></a>比较多个算法的不同指标</h3>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/" class="category-chain-item">数据科学</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="print-no-link">#机器学习</a>
+      
+        <a href="/tags/CS229/" class="print-no-link">#CS229</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS229机器学习 实验设计 ｜ Vol5</div>
+      <div>https://blog.tjdata.site/posts/403016db.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/c5f0b1c2.html" title="Django 新建项目全流程">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Django 新建项目全流程</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/fad3d23f.html" title="CS229机器学习 决策树 ｜ Vol4">
+                        <span class="hidden-mobile">CS229机器学习 决策树 ｜ Vol4</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

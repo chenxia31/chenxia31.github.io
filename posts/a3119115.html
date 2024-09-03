@@ -1,0 +1,989 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这里主要借鉴Tsinghua的2020fall&lt;数据结构与算法&gt;这本书，包含对于一些基本数据结构的探索，先从定义梳理，在整理题目，之后是实际训练。结合之前在程序设计或嵌入式中对于数据在实际存储的例子来学习可能会更好。从中也能体悟到算法一些含义 本次主要对图（Graph）的基本知识点，和一些实际应用的算法进行描述，但是在另外一方面，图也不仅仅存在于数据结构中，在运筹学中对图也有相关的描述">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构和算法设计 Vol2">
+<meta property="og:url" content="https://blog.tjdata.site/posts/a3119115.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="这里主要借鉴Tsinghua的2020fall&lt;数据结构与算法&gt;这本书，包含对于一些基本数据结构的探索，先从定义梳理，在整理题目，之后是实际训练。结合之前在程序设计或嵌入式中对于数据在实际存储的例子来学习可能会更好。从中也能体悟到算法一些含义 本次主要对图（Graph）的基本知识点，和一些实际应用的算法进行描述，但是在另外一方面，图也不仅仅存在于数据结构中，在运筹学中对图也有相关的描述">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7f8e5237259c925d67906127dc6440e1_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-d55423bf03ac246770e7e9ec5859e078_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-d0bf6d868d5fa0f8f947a5b88a4f6e23_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-73bcc73bb74fafe42c874d3035441960_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3a64490ff0bfe85b8c81dad6e011c5f3_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3e899cb521c1ac0d03a1b33c219ef61e_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-eca9e84f77339f9de049189d47825e0c_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-09530d19000494ddc864f0f2cb72f574_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c2e79f28ed745cbf0dadb6161cc3e928_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3c5062b5717ce3b3a4f34da227125fcc_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7a527be03926e147f04d538ca5bdd4ab_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-9276e9a3f616942d0d5033def810d71e_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-f6f5a16c8a9aade41e700382fc170cc8_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-79e89290433cfffdbb4064dd9cbe4e39_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20220423203235868.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20220423194702621.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20220423195949264.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8066d8f9dfd90a17d86d80091faabaf5_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-dc151c272ee97c94f688589124d836f0_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-535005f5498a0f3c725c00cddfe32c1c_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0d50fecaa4587ff1399b17cc5424f56b_1440w.jpg">
+<meta property="article:published_time" content="2024-04-29T08:38:41.000Z">
+<meta property="article:modified_time" content="2024-04-29T08:54:05.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="图 graph">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7f8e5237259c925d67906127dc6440e1_1440w.jpg">
+  
+  
+  
+  <title>数据结构和算法设计 Vol2 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构和算法设计 Vol2"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:38" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          47 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构和算法设计 Vol2</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这里主要借鉴Tsinghua的2020fall&lt;数据结构与算法&gt;这本书，包含对于一些基本数据结构的探索，先从定义梳理，在整理题目，之后是实际训练。结合之前在程序设计或嵌入式中对于数据在实际存储的例子来学习可能会更好。从中也能体悟到算法一些含义</p>
+<p>本次主要对图（Graph）的基本知识点，和一些实际应用的算法进行描述，但是在另外一方面，图也不仅仅存在于数据结构中，在运筹学中对图也有相关的描述，因此希望在这里整合两者之间的概念，并分别介绍两者的应用，挺有意思的。</p>
+<h2 id="0x01-数据结构中的-图-Graph"><a href="#0x01-数据结构中的-图-Graph" class="headerlink" title="0x01 数据结构中的 图 Graph"></a>0x01 数据结构中的 图 Graph</h2><p>例如之前例子中的迷宫，借助绳索掌握迷宫内各通道之间的相互关系，在很多应用中我们需要准确有效描述和利用这类信息，这类信息往往可以表述为定义与一组对象之间的二元关系，比如城市交通图、比如互联网中的IP地址，尽管上一章的树 Tree结构也可以用来表示这种二元关系，但是仅限与Parent Node 和Child Node之间，这种一般性的二元关系属于图论 Graph Theory的范畴</p>
+<p>本章的主要目的</p>
+<ol>
+<li>简要介绍图（Graph）的基本概念和术语</li>
+<li>如何实现作为抽象数据类型（ADT）的图结构，主要讨论邻接矩阵（Adjacent matrix），和邻接表（Adjacent list）两种实现方式</li>
+<li>从遍历（traverse）的角度介绍将图（Graph）转换为树（Tree）的典型方法，包括广度优先搜索（BFS）和深度优先搜索（DFS）</li>
+<li>分别以拓扑排序和双连通域分解为例子，介绍利用基本数据结构并基于遍历模式，设计图算法的主要方法</li>
+<li>（数据结构决定遍历次序）的观点出发，将遍历算法概括并统一为最佳优先遍历这一模式，如此来更加准确和深刻理解不同图算法之间的共性与联系，更可以学会通过选择和改进数据结构，高效设计并实现各种图算法</li>
+</ol>
+<h2 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h2><p>图（Graph）定义为G&#x3D;（V，E）。集合V中的元素为顶点（Vertex），集合E中的元素分别对应于V总的某一对顶点（u,v），表示它们之间存在的某种关系，因此可以称为边（Edge），从计算需求的角度约定都是有限集，规模分别记为n和e</p>
+<ul>
+<li>无向图（undirected graph），若边(u,v)所对应顶点的u和v的次序无所谓，称作无向边（undirect edge）；</li>
+<li>有向图（directed graph）。如果不对等，称为directed edge，如果从u指向v，则其中u是该边的origin或者尾顶点tail，v是该边的终点destination或头顶点head</li>
+<li>如果包含有向边和无向边，可以称为混合图mixed graph</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7f8e5237259c925d67906127dc6440e1_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>度（Degree），对于任何一边e&#x3D;，可以称顶点u和v彼此邻接（adjacent），同时与边e彼此关联（incident）。在无向图中，与顶点v关联的边数称为v的度数（degree），记deg（v）；在有向图中，出边总数称为出度（out-degree）、入边总数称为（in-degree）</p>
+<p>简单图（Simple Graph），指的是不包含任何自环的图（Self-loop），自环指的是联接与同一顶点之间的边，在某些场景中具有特定意义，但在简单图中不讨论。</p>
+<p>通路（path）就是由m+1个顶点于m条边交替而成的一个序列，也就是说这些边依次首尾相连，其中沿途的边的总数m是通路的长度。注意通路中的边必须互异，但是顶点可能重复，当顶点都不相同称为简单通路（Simple path）</p>
+<p>环路（cycle）就是在通路的基础上加上起止顶点相同，对于不包含任何环路的有向图称为有向无环图（directed acrylic graph，DAG），如果环路中除了起点和终点的顶点相同，其他都是一样的称为简单环路（Simple  cycle）。一些特殊的环路，欧拉环路（Eulerian tour）是图中各边一次且恰好一次的环路；对偶的，哈密尔顿环路（Hamiltonian tour）是经过图中各顶点一次且恰好一次的环路</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-d55423bf03ac246770e7e9ec5859e078_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>带权网络（weighted network，G（V，E，wt（）））需要通过一个权值函数，为每一边e指定一个权重weight，wt（e）指定边e的权重</p>
+<p>复杂度（complexity），在这个过程中n各顶点，最多有e&#x3D;O（n^2)来进行描述</p>
+<h2 id="1-2-抽象数据类型的实现"><a href="#1-2-抽象数据类型的实现" class="headerlink" title="1.2 抽象数据类型的实现"></a>1.2 抽象数据类型的实现</h2><p>也就是图（Graph）操作的一些方法，一般常见的实际方法，具体实现过程略过（看不懂，暂时觉得没必要）</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-d0bf6d868d5fa0f8f947a5b88a4f6e23_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h2 id="1-3-邻接矩阵-Adjacent-matrix"><a href="#1-3-邻接矩阵-Adjacent-matrix" class="headerlink" title="1.3 邻接矩阵 Adjacent matrix"></a>1.3 邻接矩阵 Adjacent matrix</h2><p>邻接矩阵是图（Graph）的ADT（Abstract Data Type），使用方阵A[n][n] 表示由n顶点构成的图，其中的每个单元负责描述顶点之间可能存在的邻接（Adjacent）关系</p>
+<p>对于无权图，存在和不存在使用0-1来表示</p>
+<p>对于带权网络，此时可以将矩阵中各单元从bool转换为int或者float类型，对于不存在的边使用0或者∞来代替</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-73bcc73bb74fafe42c874d3035441960_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p><strong>代码实现过程略过</strong></p>
+<h3 id="1-3-1-时间性能"><a href="#1-3-1-时间性能" class="headerlink" title="1.3.1 时间性能"></a>1.3.1 时间性能</h3><p>各顶点编号可以直接转换为其Adjacent matrix中对应的Rank，从而使得ADT中所有的静态操作接口的时间只需要O（1）时间</p>
+<p>另外边的静态和动态操作只需要O（1）的时间，代价是Adjacent matrix的空间冗余</p>
+<p>但是这种方法并非完美无缺，不足点在于顶点的动态操作接口十分耗费时间，为来插入新的顶点，V[]中需要添加一个元素，同时边集向量E[][]也需要增加一行，且每行都需要添加一个元素，顶点的删除操作也是类似；在通常的算法中顶点的动态操作远少于其他操作，而且计入向量扩容的代价，单次操作的耗时不过O（n）</p>
+<h3 id="1-3-2-空间性能"><a href="#1-3-2-空间性能" class="headerlink" title="1.3.2 空间性能"></a>1.3.2 空间性能</h3><p>对于无向图而言，邻接矩阵必须为对称阵，其中除自环以外的每条边都被重复存放来两次，因此有一半的单元都是冗余的，也就是O（n^2）</p>
+<h2 id="1-4-邻接表（adjacent-list）"><a href="#1-4-邻接表（adjacent-list）" class="headerlink" title="1.4 邻接表（adjacent list）"></a>1.4 邻接表（adjacent list）</h2><p>在上述邻接矩阵（Adjacent matrix）的空间解释中可以看出其空间的仍存在改进的余地，在实际应用中处理的图所含有的边通常远远少于O（n^2)，比如在平面图之类的稀疏图（sparse graph）中，边数渐进不超过O（n），仅仅与顶点总数大致相当</p>
+<p>为了完善这种静态空间管理策略所导致的问题，因此可以使用图结构的另外一种表示与实现方式，可以将邻接矩阵转换称邻接表的方式，分别记录每个顶点的关联边（或者等价的邻接顶点）来构成邻接表（adjacent list）</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3a64490ff0bfe85b8c81dad6e011c5f3_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h3 id="1-4-1-时间复杂度分析"><a href="#1-4-1-时间复杂度分析" class="headerlink" title="1.4.1 时间复杂度分析"></a>1.4.1 时间复杂度分析</h3><p>复杂度分析，adjacent list中的列表等于顶点总数N，每条边在其中仅存放一次（for direct graph）或者两次（for undirected graph），因此空间总量为O(n+e),与图自身的规模相当，相比较adjacent matrix有很大的改进</p>
+<p>在空间性能的改进，相对应的是时间性能的降低为代价，比如判断顶点v与顶点u的边是否存在，需要O(n)时间</p>
+<p>与顶点相关的动态操作，顶点的插入操作可以在O（1）的时间内完成，顶点的删除操作需要遍历所有的adjacent list，需要O（e）时间</p>
+<h3 id="1-4-2-空间复杂度分析"><a href="#1-4-2-空间复杂度分析" class="headerlink" title="1.4.2 空间复杂度分析"></a>1.4.2 空间复杂度分析</h3><p>adjacent list在访问单条边的效率并不算高，但是适合用循环的额方式，处理同一顶点的所有关联边比如为了枚举从顶点v出发的所有边，仅需要theta(1+outdegreee(v))而不是theta(n)的时间</p>
+<h2 id="1-5-图（Graph）遍历算法概述–BFS和DFS"><a href="#1-5-图（Graph）遍历算法概述–BFS和DFS" class="headerlink" title="1.5 图（Graph）遍历算法概述–BFS和DFS"></a>1.5 图（Graph）遍历算法概述–BFS和DFS</h2><p>图算法中大部分成员的主体框架都归结于图的遍历，与树的遍历相似，图的遍历需要访问所有顶点一次且仅有一次，此外图遍历同时还需要访问所有的边一次且仅一次</p>
+<p>同时无论采用何种策略和算法，图遍历都可以理解为<strong>将非线性结转化为半线性结构的过程，经遍历而确定的边类型中，最重要的一类就是所谓的树边，它们与所有顶点共同构成来原图的一颗支撑树，称为遍历树traversal tree</strong></p>
+<p>图中顶点之间可能存在多条通路，为来避免对顶点重复访问，在遍历的过程中，通常还需要动态设置不同顶点的状态，并随着遍历的进程不断转换状态，直至最后的“访问完毕”，图的遍历更加强调对处于特定状态顶点的甄别与查找，因此也称为图搜索（Graph search）</p>
+<p>深度优先搜索、广度优先搜索、最佳优先等基本而典型的图搜索，都可以在线性时间内完成，也就睡这些算法仅需要O（n+e）的时间来访问所有的顶点和边</p>
+<p>各种图搜索之间的区别体现在边分类结果的不同，以及所得遍历树的结构差异，其决定因素在于搜索过程的每一步迭代，将依照何种策略来选取下一接受访问的顶点</p>
+<h3 id="1-5-1-广度优先搜索-breadth-first-search-BFS-越早被访问到的顶点，其邻居被优先选用"><a href="#1-5-1-广度优先搜索-breadth-first-search-BFS-越早被访问到的顶点，其邻居被优先选用" class="headerlink" title="1.5.1  广度优先搜索 breadth-first-search BFS 越早被访问到的顶点，其邻居被优先选用"></a>1.5.1  广度优先搜索 breadth-first-search BFS 越早被访问到的顶点，其邻居被优先选用</h3><p>搜索的过程：反复从前沿集（frontier）中找到最早被访问到顶点v，若其邻居均已访问到，则将其逐出前沿集，否则随意选出一个尚未访问到的邻居，并将其加入到前沿集（frontier）</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3e899cb521c1ac0d03a1b33c219ef61e_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>由于每一步迭代都有一个顶点被访问，因此最多迭代O（n），另一方面因为不会泄漏每个刚被访问顶点的任何邻居，因此对应无向图（undirected graph）必能覆盖s所属的连通分量（connected component），对于有向图必能覆盖以s为起点的可达分量（reachable component）</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 图的广度优先搜索算法</span><br><span class="hljs-keyword">void</span> <span class="hljs-title class_">Graph</span>::<span class="hljs-title function_ invoke__">bfs</span>(<span class="hljs-keyword">int</span> s)&#123; <span class="hljs-comment">//assert 0,n</span><br><span class="hljs-title function_ invoke__">reset</span>();<br><span class="hljs-keyword">int</span> clock=<span class="hljs-number">0</span>;<br><span class="hljs-keyword">int</span> v=s; <span class="hljs-comment">//初始化</span><br><span class="hljs-keyword">do</span><br>    <span class="hljs-keyword">if</span> (UNDISCOVERED == <span class="hljs-title function_ invoke__">status</span>(v))<span class="hljs-comment">// 一旦遇到尚未发现的顶点</span><br>        <span class="hljs-title function_ invoke__">BFS</span>(v,clock);<br><span class="hljs-keyword">while</span> (s !=(v=(++v %n))<span class="hljs-comment">// 按照序号检查</span><br><br><span class="hljs-keyword">void</span> <span class="hljs-title class_">Graph</span>::<span class="hljs-title function_ invoke__">BFS</span>(<span class="hljs-keyword">int</span> v, <span class="hljs-keyword">int</span>&amp; clock)&#123;<br>    Queue Q;<span class="hljs-comment">//辅助队列</span><br>    <span class="hljs-title function_ invoke__">status</span>(V)=DISCOVERED;<br>    Q.<span class="hljs-title function_ invoke__">enqueue</span>(v);<span class="hljs-comment">//初始化起点</span><br>    <span class="hljs-keyword">while</span>(!Q.<span class="hljs-keyword">empty</span>())&#123;<br>        <span class="hljs-keyword">int</span> v=Q.<span class="hljs-title function_ invoke__">dequeue</span>();<br>        <span class="hljs-title function_ invoke__">dTime</span>(v)=++clock;<span class="hljs-comment">//取出队首顶点v</span><br>        <span class="hljs-keyword">for</span>(u=<span class="hljs-title function_ invoke__">firstNbr</span>(v);-<span class="hljs-number">1</span>&lt;u;u=<span class="hljs-title function_ invoke__">nextNbr</span>(v,u))<br>            <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">status</span>(u)==UNDISCOVERED)&#123;<br>                <span class="hljs-title function_ invoke__">status</span>(u)=DSICOVERED;<br>                Q.<span class="hljs-title function_ invoke__">enqueue</span>(u);<span class="hljs-comment">//发现顶点</span><br>                <span class="hljs-title function_ invoke__">type</span>(v,u)=TREE;<br>                <span class="hljs-built_in">parent</span>(u)=v;<br>            &#125;<span class="hljs-keyword">else</span><br>                <span class="hljs-title function_ invoke__">type</span>(v,u)=CROSS;<br>    &#125;<br>    <span class="hljs-title function_ invoke__">status</span>(v)=VISITED<br>&#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>### 1.5.2 深度优先搜索 depth-first-search，DFS 优先选取最后一个被访问到的顶点的邻居</p>
+<p>以顶点s为基点的DFS搜索，首先访问顶点s，再从s所有尚未访问到的邻居中任取其一，并以之为基点，递归地执行DFS搜索，故各顶点被访问到的次序，类似与树的先序遍历，而各顶点被访问完毕的次序，则类似于树的后序遍历</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-eca9e84f77339f9de049189d47825e0c_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h2 id="0x02-交通运筹学中的图"><a href="#0x02-交通运筹学中的图" class="headerlink" title="0x02 交通运筹学中的图"></a>0x02 交通运筹学中的图</h2><h2 id="2-1-交通中图的例子"><a href="#2-1-交通中图的例子" class="headerlink" title="2.1 交通中图的例子"></a>2.1 交通中图的例子</h2><ul>
+<li>轨道交通中的图</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-09530d19000494ddc864f0f2cb72f574_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<ul>
+<li>18世纪哥尼斯堡城的，普雷格尔的两岸和河中两个岛之前有七座桥</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c2e79f28ed745cbf0dadb6161cc3e928_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<ul>
+<li>经典的收发问题</li>
+</ul>
+<h2 id="2-2-基本概念–无向图G"><a href="#2-2-基本概念–无向图G" class="headerlink" title="2.2 基本概念–无向图G"></a>2.2 基本概念–无向图G</h2><p>无向图，设 V 是一个有n顶点的非空集合：V&#x3D;{v1，v2，v3，…，vn}；E是一个有m条无向边的集合：E&#x3D;{e1，e2，..，em}，则称V和E这两个集合组合一个无向图，记做G&#x3D;（V，E）</p>
+<p>基于无向图的G的结构特点，给出下列术语</p>
+<ul>
+<li>平行边，如果两条不同的边具有相同的端点，称为e和e‘是G的平行边</li>
+<li>简单图，如果图G中没有平行边则为简单图（！！有点不一样）</li>
+<li>完备图，若图G中任何两个顶点之间恰好有一条边相关联，则称图G是完备图</li>
+<li>子图，G1&#x3D;（V1，E1）并且V1属于V、E1属于E</li>
+<li>生成子图，G1是G的子图，并且V1&#x3D;V，则称G1是G的生成子图</li>
+<li>导出子图，若非空E1属于E，则E1及包含的顶点时G的导出子图</li>
+<li>链，无向图中一个由顶点和边交替而成的非空有限序列，Q&#x3D;v0e0v1e1v2，如果起始点相同是闭链，不想等位开链</li>
+<li>初等链，若开链Q中诸顶点都不相同，则称Q为一条初等链</li>
+<li>回路，若一个闭链除链第一个顶点和最后一个顶点相同之外，没有其他相同的顶点和相同的边则称为回路</li>
+<li>连通图，若图G中任意两顶点u和v之间存在一条链，则称为图G为连通图。 否则被称为分离图</li>
+<li>割边，若G为连通图，将G中边e取走后所得图为分离图，则称e为图G的割边</li>
+</ul>
+<h2 id="2-3-基本概念–有向图D"><a href="#2-3-基本概念–有向图D" class="headerlink" title="2.3 基本概念–有向图D"></a>2.3 基本概念–有向图D</h2><p>有向图，设 V 是一个有n顶点的非空集合：V&#x3D;{v1，v2，v3，…，vn}；E是一个有m条有向边的集合：E&#x3D;{e1，e2，..，em}，则称V和E这两个集合组合一个有向图，记做D&#x3D;（V，E）</p>
+<p>类似的有向图D也有术语</p>
+<ul>
+<li>平行边，不同有向边的e与e‘的起点与终点相同</li>
+<li>孤立点，V中不与E任一条边关联的点称为D的孤立点</li>
+<li>简单图，无平行边的称为简单图</li>
+<li>完备图，图中任何两个顶点，存在有向边（u，v）和（v，u），则该有向图D为完备图</li>
+<li>基本图，将有向图D的每条边除定向就得到一个相应的无向图G，则G位D的基本图</li>
+<li>子图，同上</li>
+<li>导出子图，同上</li>
+<li>导出生成子图，同上</li>
+<li>同构图，如下图，顶点和边是相等的，由于同构图被认为是相同的，这就给我们在网络规划中建立网络模型带来许多方便，当我们使用几何图来构建网络模型时，点的位置可以任意布置。边的长短曲直可以任意，因此需要尽量设计这种反应问题清晰、简练的几何图</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3c5062b5717ce3b3a4f34da227125fcc_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<ul>
+<li>链，若Q是有向图D的基本图G中的一条链，则Q为D的一条链</li>
+<li>初等链，若Q是有向图D的基本图G的一条初等链，则Q被称为D的一条初等链</li>
+<li>路，若Q是有向图D的基本图G中一条链</li>
+<li>路径</li>
+<li>回路，第一个顶点和最后一个顶点相同</li>
+</ul>
+<h2 id="2-4-基本概念–矩阵表示"><a href="#2-4-基本概念–矩阵表示" class="headerlink" title="2.4 基本概念–矩阵表示"></a>2.4 基本概念–矩阵表示</h2><p>关联矩阵，行表示顶点，列表示边，使用1表示是否链接</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7a527be03926e147f04d538ca5bdd4ab_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>邻接矩阵，行表示顶点，列表示顶点，使用数目表示两个顶点之间的链接数量</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-9276e9a3f616942d0d5033def810d71e_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h2 id="2-5-树"><a href="#2-5-树" class="headerlink" title="2.5 树"></a>2.5 树</h2><p>不做赘述</p>
+<h2 id="0x03-数据结构中图的应用"><a href="#0x03-数据结构中图的应用" class="headerlink" title="0x03 数据结构中图的应用"></a>0x03 数据结构中图的应用</h2><h2 id="3-1-拓扑排序（topological-sorting）"><a href="#3-1-拓扑排序（topological-sorting）" class="headerlink" title="3.1 拓扑排序（topological sorting）"></a>3.1 拓扑排序（topological sorting）</h2><p>以教材的编写实际问题为例子，作者可以借助有向图的结构整理出相关知识点之间的依赖关系，因向量是散列表和查找表的基础知识点，等等得到一份有向图，在这个基础上如何将这个有向图（undirected graph）来得到具有前端的顺序的额拓扑排序（topological sorting）</p>
+<p>相容：每一个顶点都不会通过边，指向其在此序列中的前驱顶点，这样的一个线性序列，称作原图的拓扑序列</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-f6f5a16c8a9aade41e700382fc170cc8_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>针对有向无环图（directed noloop graph），问题在于topological sorting是否必然存在，如果存在是否唯一？</p>
+<p>同理，有限偏序集中也必然存在极小元素（同样，未必唯一）。该元素作为顶点，出度必然 为零比如图6.10(b)中的顶点D和F。而在对有向无环图的DFS搜索中，首先因访问完成而转 换至VISITED状态的顶点m，也必然具有这一性质；反之亦然。</p>
+<p>166</p>
+<p>进一步地，根据DFS搜索的特性，顶点m（及其关联边）对此后的搜索过程将不起任何作用。 于是，下一转换至VISITED状态的顶点可等效地理解为是，从图中剔除顶点m（及其关联边）之 后的出度为零者在拓扑排序中，该顶点应为顶点m的前驱。由此可见，DFS搜索过程中各顶 点被标记为VISITED的次序，恰好（按逆序）给出了原图的一个拓扑排序。</p>
+<p>此外，DFS搜索善于检测环路的特性，恰好可以用来判别输入是否为有向无环图。具体地， 搜索过程中一旦发现后向边，即可终止算法并报告“因非DAG而无法拓扑排序”。</p>
+<h2 id="3-2-双连通域分解"><a href="#3-2-双连通域分解" class="headerlink" title="3.2 双连通域分解"></a>3.2 双连通域分解</h2><p>考查无向图G。若删除顶点v后G所包含的连通域增多，则v称作切割节点（cut vertex）或 关节点（articulation point）。如图6.13中的C即是一个关节点它的删除将导致连通域 增加两块。反之，不含任何关节点的图称作双连通图。任一无向图都可视作由若干个极大的双连 通子图组合而成，这样的每一子图都称作原图的一个双连通域（bi-connected component）。 例如图6.14(a)中的无向图，可分解为如图(b)所示的三个双连通域。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-79e89290433cfffdbb4064dd9cbe4e39_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h2 id="3-3-优先级搜索"><a href="#3-3-优先级搜索" class="headerlink" title="3.3 优先级搜索"></a>3.3 优先级搜索</h2><p>上面的图搜索应用虽然各有特点，但是其基本框架缺基本相似，总体而言都是通过迭代逐步发现各顶点，将其纳入遍历树中并做相应处理，同时根据应用问题的需求适当给出解答，各算法在功能上的差异，主要体现在每一步迭代中对新顶点的选取策略不同，比如BFS搜索会优先考察更早被发现的顶点，而DFS会更侧重于最后被发现的顶点</p>
+<p>总结上述策略，可以看出其本质上是给所有顶点赋予不同的优先级，随着算法的推进不断调整，而每一步迭代所选取的顶点都是当时的优先级最高者，按照这样的理解，可以将BFS和DFS纳入统一的框架，称为PFS（priority-first search）</p>
+<p>在实际应用中，引导优化方向的指标，往往对应于某种有限的资源或成本（比如通讯带宽、机票价格等）因此这里不妨约定优先级越大顶点的优先级越低</p>
+<p>通过最小支撑树和最短路径这两个经典的图算法深入介绍这个框架的具体应用，在复杂度的分析中，PFS由两层循环构成，其中内层循环又含并列的两个循环，采用邻接表的方式，总体的复杂度为O（n^2)</p>
+<h2 id="3-4-最小支撑树"><a href="#3-4-最小支撑树" class="headerlink" title="3.4 最小支撑树"></a>3.4 最小支撑树</h2><p>连通图G的某一无环连通子树T若覆盖G中所有的顶点，则称为G的一颗支撑树或生成树（spanning tree）</p>
+<p>就保留原图中边的数目而言，支撑树是禁止环路前提下的极大子图，也是保持连通前提下的最小子图，其往往对应系统中最经济的连接方案</p>
+<h3 id="3-4-1-蛮力算法"><a href="#3-4-1-蛮力算法" class="headerlink" title="3.4.1 蛮力算法"></a>3.4.1 蛮力算法</h3><h3 id="3-4-2-prim算法（属于PFS的特例，时间复杂度为O（n-2）"><a href="#3-4-2-prim算法（属于PFS的特例，时间复杂度为O（n-2）" class="headerlink" title="3.4.2 prim算法（属于PFS的特例，时间复杂度为O（n^ 2）"></a>3.4.2 prim算法（属于PFS的特例，时间复杂度为O（n^ 2）</h3><h2 id="3-5-最短路径树"><a href="#3-5-最短路径树" class="headerlink" title="3.5  最短路径树"></a>3.5  最短路径树</h2><p>可以看下面问题描述</p>
+<p>Dijkstra算法（时间复杂度O(n^2)</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20220423203235868.png" srcset="/img/loading.gif" lazyload alt="image-20220423203235868"></p>
+<h2 id="0x04-交通运筹学中的图的应用"><a href="#0x04-交通运筹学中的图的应用" class="headerlink" title="0x04 交通运筹学中的图的应用"></a>0x04 交通运筹学中的图的应用</h2><h2 id="4-1-最短路径问题"><a href="#4-1-最短路径问题" class="headerlink" title="4.1 最短路径问题"></a>4.1 最短路径问题</h2><p>在生产实践、运输管理和工程时间的很多活动中都需要面临寻找“图的最短路径”，这是网络规划中的一个基本问题</p>
+<p>假设对于有向图D&#x3D;（V，E），设图D的每条边(u,v)都和一个实数权重W（e）&#x3D;W（u，v）对应，则称为赋权图。这里所说的权是与边有关的数量指标，可以根据问题的需要不同的含义，比如距离、时间和费用等</p>
+<p>$W（P）&#x3D;\Sigma W(e)$</p>
+<p>常见的解决方法</p>
+<h3 id="4-1-1-Dijkstra算法-略"><a href="#4-1-1-Dijkstra算法-略" class="headerlink" title="4.1.1 Dijkstra算法(略)"></a>4.1.1 Dijkstra算法(略)</h3><h3 id="4-1-2-Bellman-Ford算法（略"><a href="#4-1-2-Bellman-Ford算法（略" class="headerlink" title="4.1.2 Bellman-Ford算法（略"></a>4.1.2 Bellman-Ford算法（略</h3><h2 id="4-2-最长路径问题"><a href="#4-2-最长路径问题" class="headerlink" title="4.2 最长路径问题"></a>4.2 最长路径问题</h2><h2 id="4-3-第k短路径问题"><a href="#4-3-第k短路径问题" class="headerlink" title="4.3 第k短路径问题"></a>4.3 第k短路径问题</h2><p>在最短路径的基础上，考虑第k路径感兴趣</p>
+<h2 id="4-4-最小生成树"><a href="#4-4-最小生成树" class="headerlink" title="4.4 最小生成树"></a>4.4 最小生成树</h2><p>给定连通赋权无向图G&#x3D;（V，E），若T为G的生成树，T中边e的权</p>
+<p>$W(T)&#x3D;\Sigma W(e)$</p>
+<p>其中最小的称为最小生成树，一些常见的算法</p>
+<h3 id="4-4-1-Prim算法（略）"><a href="#4-4-1-Prim算法（略）" class="headerlink" title="4.4.1 Prim算法（略）"></a>4.4.1 Prim算法（略）</h3><h3 id="4-4-2-Kruskal-算法（略）"><a href="#4-4-2-Kruskal-算法（略）" class="headerlink" title="4.4.2 Kruskal 算法（略）"></a>4.4.2 Kruskal 算法（略）</h3><h2 id="4-5-中国邮路问题"><a href="#4-5-中国邮路问题" class="headerlink" title="4.5 中国邮路问题"></a>4.5 中国邮路问题</h2><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20220423194702621.png" srcset="/img/loading.gif" lazyload alt="image-20220423194702621"></p>
+<h2 id="4-6-运输网络"><a href="#4-6-运输网络" class="headerlink" title="4.6 运输网络"></a>4.6 运输网络</h2><p>许多系统中存在流的问题，运输系统有物资流、公交系统中有车辆流、供水系统中存在水流，因此可以用图来描述网络，因此给定一些数学定义</p>
+<ul>
+<li>运输网络</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/image-20220423195949264.png" srcset="/img/loading.gif" lazyload alt="image-20220423195949264"></p>
+<ul>
+<li>网络流</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8066d8f9dfd90a17d86d80091faabaf5_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<ul>
+<li>割</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-dc151c272ee97c94f688589124d836f0_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<ul>
+<li>最小割</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-535005f5498a0f3c725c00cddfe32c1c_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<ul>
+<li>最大流</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0d50fecaa4587ff1399b17cc5424f56b_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h2 id="4-7-最大流（4-6）"><a href="#4-7-最大流（4-6）" class="headerlink" title="4.7 最大流（4.6）"></a>4.7 最大流（4.6）</h2><h2 id="4-8-最小代价流问题（4-6）"><a href="#4-8-最小代价流问题（4-6）" class="headerlink" title="4.8 最小代价流问题（4.6）"></a>4.8 最小代价流问题（4.6）</h2>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" class="category-chain-item">程序设计</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%9B%BE-graph/" class="print-no-link">#图 graph</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据结构和算法设计 Vol2</div>
+      <div>https://blog.tjdata.site/posts/a3119115.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/450e6b54.html" title="Pyomo 简单示例学习">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Pyomo 简单示例学习</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/3a18c0af.html" title="数据结构和算法设计 Vol1">
+                        <span class="hidden-mobile">数据结构和算法设计 Vol1</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

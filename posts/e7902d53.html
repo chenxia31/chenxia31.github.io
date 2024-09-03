@@ -1,0 +1,870 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="讨论一种不同的线性分类和回归方法，每种学习算法都具有不同的归纳偏倚，做不同的假设，定义不同的目标函数，因此可能找到不同的模型 Support Vector Machine 0x01 引言支持向量机使用Vapnik原则   不要在解决实际问题之前把解决一个更复杂的问题作为第一步（vapnik，1995）   训练后，线性模型的参数（权重向量）可以用训练集的一个子集表示，这个子集称为支持向量suppo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS229机器学习 SVM | vol2">
+<meta property="og:url" content="https://blog.tjdata.site/posts/e7902d53.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="讨论一种不同的线性分类和回归方法，每种学习算法都具有不同的归纳偏倚，做不同的假设，定义不同的目标函数，因此可能找到不同的模型 Support Vector Machine 0x01 引言支持向量机使用Vapnik原则   不要在解决实际问题之前把解决一个更复杂的问题作为第一步（vapnik，1995）   训练后，线性模型的参数（权重向量）可以用训练集的一个子集表示，这个子集称为支持向量suppo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c3b7e25a83a399c4e7f2cae9aeee13f8_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-956ab1b0ca37f05247403887591cc5d8_1440w.jpg">
+<meta property="article:published_time" content="2024-04-29T08:09:17.000Z">
+<meta property="article:modified_time" content="2024-04-29T08:35:38.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="CS229">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c3b7e25a83a399c4e7f2cae9aeee13f8_1440w.jpg">
+  
+  
+  
+  <title>CS229机器学习 SVM | vol2 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS229机器学习 SVM | vol2"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:09" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CS229机器学习 SVM | vol2</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>讨论一种不同的线性分类和回归方法，每种学习算法都具有不同的归纳偏倚，做不同的假设，定义不同的目标函数，因此可能找到不同的模型 Support Vector Machine</p>
+<h2 id="0x01-引言"><a href="#0x01-引言" class="headerlink" title="0x01 引言"></a>0x01 引言</h2><p>支持向量机使用Vapnik原则</p>
+<blockquote>
+<p> 不要在解决实际问题之前把解决一个更复杂的问题作为第一步（vapnik，1995） </p>
+</blockquote>
+<p>训练后，线性模型的参数（权重向量）可以用训练集的一个子集表示，这个子集称为支持向量support vector。对于分类这些是靠近边界的实例，因此知道它们可以提取知识：这些事两个类之间的边界附近、不确定或有错误的实例，它们的个数给我们提供了范化误差的一个估计，并且正如我们将在下面看到的，能够用实例集表示模型参数进行核化</p>
+<p>其总体框架：是一种分类算法，主要应用于二分类算法，通过定位两类数据在集合空间中的margin，来确定分类起，主要步骤分为：</p>
+<ol>
+<li>（建立模型）将二分类问题转换成为一个优化问题</li>
+<li>（求解模型）利用SMO算法、拉格朗日对偶、KKT条件来求解简化优化问题</li>
+<li>（分类讨论）之后利用松弛变量、核函数、惩罚因子等对不同情况下的优化问题进行求解</li>
+</ol>
+<p>它的优点和缺点是什么？</p>
+<ul>
+<li>优点：参数非常少，不像logistic regression还具有超参数，虽然比神经网络效果差，但是很简单</li>
+<li>缺点：</li>
+</ul>
+<h2 id="0x02-建立模型"><a href="#0x02-建立模型" class="headerlink" title="0x02 建立模型"></a>0x02 建立模型</h2><h3 id="符号说明（notation）"><a href="#符号说明（notation）" class="headerlink" title="符号说明（notation）"></a>符号说明（notation）</h3><p>$$ ：等价于之前的𝑖𝑛𝑝𝑢𝑡:𝑋&#x3D;(𝑥1,…,𝑥𝑛) 𝑙𝑎𝑏𝑒𝑙𝑠：𝑦∈−1,1 ℎ𝑦𝑝𝑒𝑟𝑝𝑙𝑎𝑛𝑒:𝜔𝑇𝑋+𝑏(等价于之前的𝜃𝑇𝑋) 𝑔(𝑍)&#x3D;{1 𝑖𝑓 𝑍&gt;&#x3D;0 −1 𝑖𝑓 𝑜𝑡ℎ𝑒𝑟𝑤𝑖𝑠𝑒 $$</p>
+<p>数据集和超平面的距离</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c3b7e25a83a399c4e7f2cae9aeee13f8_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<h3 id="定义边缘（margin）"><a href="#定义边缘（margin）" class="headerlink" title="定义边缘（margin）"></a>定义边缘（margin）</h3><h3 id="geo-margin"><a href="#geo-margin" class="headerlink" title="geo- margin"></a>geo- margin</h3><p>从单个实例来看，就是向量到一个平面的距离，根据向量的推导知识可以看出： $$ geo_{margin}^{i}&#x3D;y^{(i)}*(\omega^TX^i+b) $$ 从整个数据集来看，就是一群点到一个平面中距离的最小值，定义为 $$ geo_{margin}&#x3D;min_{i&#x3D;1}^m geo_{margin}^i $$</p>
+<h3 id="fun-margin"><a href="#fun-margin" class="headerlink" title="fun- margin"></a>fun- margin</h3><p>上述的几何边缘的定义中，最终出现的结果可能会出现结果会随着不同的w的取值而出现不同的情况，因此需要从归一化的角度来更新边缘 $$ fun_{margin}^{(i)}&#x3D;\frac{y^{(i)}*(\omega^TX^{(i)}+b)}{||w||} $$ 同样定义数据集的fun margin $$ fun_{margin}&#x3D;min_{i&#x3D;1}^m\ fun_{margin}^{i} $$</p>
+<h3 id="得到模型（model）"><a href="#得到模型（model）" class="headerlink" title="得到模型（model）"></a>得到模型（model）</h3><p>最直观的，我们希望所有点的margin可以都以大于零，在这个约束的基础上，数据集的margin可以越大越好 $$ target:max[min_{i&#x3D;1}^m y^{(i)}<em>(\omega^TX^i+b)]\ s.t.:y^{(i)}</em>(\omega^TX^i+b)&gt;&#x3D;0\ ||w||&#x3D;1 $$ 在上述直觉的基础上，需要对模型进行进一步的调整</p>
+<ol>
+<li>我们希望所有的margin都可以大于零，也可以说是希望所有的margin都大于最小margin（目标函数）的值    $$    max\ \hat\gamma\    s.t.:y^{(i)}(w^Tx^{(i)}+b)&gt;&#x3D;\hat\gamma\    ||w||&#x3D;1    $$ </li>
+<li>可以将||w||&#x3D;1的假设调整到目标函数上    $$    max\ \hat\gamma&#x2F;||w||\    s.t.:y^{(i)}(w^Tx^{(i)}+b)&gt;&#x3D;\hat\gamma    $$ </li>
+<li>同样的跟进一步，我们假设之间的距离为1    $$    \hat \gamma&#x3D;1    $$    那么模型等价于    $$    max\ \frac{1}{||w||}\    s.t.:y^{(i)}(w^Tx^{(i)}+b)&gt;&#x3D;\hat\gamma    $$    为了方便后续计算    $$    min \frac{1}{2}||w||^2    $$ </li>
+<li>由此转换为一个凸优化问题    $$    min \frac{1}{2}||w||^2\    s.t.:1-y^{(i)}(w^Tx^{(i)}+b)&lt;&#x3D;0    $$</li>
+</ol>
+<h2 id="0x03-求解模型"><a href="#0x03-求解模型" class="headerlink" title="0x03 求解模型"></a>0x03 求解模型</h2><h3 id="数学基础1（凸优化）"><a href="#数学基础1（凸优化）" class="headerlink" title="数学基础1（凸优化）"></a>数学基础1（凸优化）</h3><p>优化问题可以分为三类：</p>
+<p>同样所有的优化问题，都可以转换成为对偶问题，来简化求解过程</p>
+<ul>
+<li>无约束条件的优化问题   $$   min\ f(x)\   —\   eg:min\ f(x)&#x3D;x_1^2+x_1-4   $$   求解思路：求导完事了 </li>
+<li>仅含等式约束的优化问题   $$   min\ f(x)\   s.t.\ h_j(x)&#x3D;0,j\in {1,2,…,n}\   —\   eg: min\ f(x)&#x3D;2x_1^2+3x_2^2+7x_3^2\   s.t.\ 2x_1+x_2&#x3D;1\   2x_2+3x_3&#x3D;2   $$   求解思路：利用拉格朗日乘子法，见下一节 </li>
+<li>含不等式和等式的优化问题   $$   min\ f(x)\   s.t. h_j(x)&#x3D;0,j\in {1,2,…,n}\   g_j(x)&lt;&#x3D;0,j\in{1,2,…,m}\</li>
+</ul>
+<p>\   eg:min\ f(x)&#x3D;x_1^2-2x_1+1+x_2^2+4x_2+4\   s.t.:x_1+10x_2&gt;10\   10x_1-x_2&lt;10   $$   求解思路：利用拉格朗日乘子法，但是需要满足KKT条件</p>
+<h3 id="数学基础2（拉格朗日乘子法）"><a href="#数学基础2（拉格朗日乘子法）" class="headerlink" title="数学基础2（拉格朗日乘子法）"></a>数学基础2（拉格朗日乘子法）</h3><h3 id="求解上述：仅含等式约束的优化问题"><a href="#求解上述：仅含等式约束的优化问题" class="headerlink" title="求解上述：仅含等式约束的优化问题"></a>求解上述：仅含等式约束的优化问题</h3><p>首先构建拉格朗日函数 $$ L（x，\alpha）&#x3D;2x_1^2+3x_2^2+7x_3^2+\alpha_1*(2x_1+x_2-1)+\alpha_2*(2x_2+3x_3-2) $$ 此时针对拉格朗日函数对变量X求导，希望等于0 $$ \frac{\partial L}{\partial x_1}&#x3D;0\ \frac{\partial L}{\partial x_2}&#x3D;0\ \frac{\partial L}{\partial x_3}&#x3D;0 $$ 得到 $$ x_1&#x3D;-\frac {1}{2}\alpha_1\ x_2&#x3D;-\frac {1}{6}\alpha_1-\frac {1}{3}\alpha_2\ x_3&#x3D;-\frac {3}{14}\alpha_2\ $$ 带入约束条件中求解等式，得到最优解</p>
+<h3 id="同样的求解上述：含有等式和不等式的优化问题"><a href="#同样的求解上述：含有等式和不等式的优化问题" class="headerlink" title="同样的求解上述：含有等式和不等式的优化问题"></a>同样的求解上述：含有等式和不等式的优化问题</h3><p>$$ L(x,\alpha)&#x3D;x_1^2-2x_1+1+x_2^2+4x_2+4+\alpha_1(-x_1-10x_2+10)+\alpha_2(10x_1-x_2-10)\ \alpha_i&gt;&#x3D;0 $$</p>
+<p>和上述相似对拉格朗日求导，希望等于0 $$ \frac{\partial L}{\partial x_1}&#x3D;0\ \frac{\partial L}{\partial x_2}&#x3D;0\ $$ 这里需要满足KKT条件 $$  <em>导数等于0*  h(X)&#x3D;0\ </em>\Sigma_{j&#x3D;1}^m\alpha_ig_i(X)&#x3D;0 $$</p>
+<h3 id="数学基础3（对偶求解）"><a href="#数学基础3（对偶求解）" class="headerlink" title="数学基础3（对偶求解）"></a>数学基础3（对偶求解）</h3><blockquote>
+<p> Slater条件：一个凸优化问题如果存在一个候选x是的所有不等式约束都严格满足，则存在是原问题的对偶问题的最优解 </p>
+</blockquote>
+<p>这样有时候可以简化操作计算,</p>
+<h3 id="求解SVM的凸优化问题"><a href="#求解SVM的凸优化问题" class="headerlink" title="求解SVM的凸优化问题"></a>求解SVM的凸优化问题</h3><ol>
+<li>首先将优化问题转换成为一个 convex optimization（P）</li>
+<li>因为满足Slater条件，P为对偶问题D是同解的</li>
+</ol>
+<p>拉格朗日乘子法-P问题的函数： $$ L(x,w,a)&#x3D;\frac{1}{2}||w||^2+\Sigma_{i&#x3D;1}^na_i(1-y^{(i)}(wx^{(i)}+b)) $$ 原问题： $$ p&#x3D;min_{w,b}max_a L $$ 转换为对偶问题 $$ d&#x3D;max_amin_{w,b}L $$ 这里是将第三种凸优化问题转换成为一个无约束的第一种凸优化问题 $$ \frac{\partial L}{\partial w}&#x3D;w-\Sigma_{i&#x3D;1}^na_iy^{(i)}x_i^T&#x3D;0\ \frac{\partial L}{\partial b}&#x3D;\Sigma_{i&#x3D;1}^na_iy^{(i)}&#x3D;0 $$ 带入到拉格朗日函数中 $$ L&#x3D;\frac{1}{2}\Sigma_{i,j&#x3D;1}^na_ia_jy_iy_jx_i^Tx_j-\Sigma_{i,j&#x3D;1}^na_ia_jy_iy_jx_i^Tx_j-b\Sigma_{i&#x3D;1}^na_iy^{(i)}+\Sigma_{i&#x3D;1}^na_i\ &#x3D;\Sigma_{i&#x3D;1}^na_i-\frac{1}{2}\Sigma_{i,j&#x3D;1}^na_ia_jy_iy_jx_i^Tx_j $$ 约束条件： $$ s.t.:\Sigma_{i&#x3D;1}^ma_iy_i&#x3D;0\ a_i&gt;&#x3D;0 $$ 之后利用SMO算法来求解得到 $$ a_i $$ 之后得到hyperplane为： $$ \Sigma (a_iy^{(i)}x_i^Tx_j+b) $$</p>
+<h2 id="0x04-分类讨论"><a href="#0x04-分类讨论" class="headerlink" title="0x04 分类讨论"></a>0x04 分类讨论</h2><ol>
+<li>在线性可分的情况下可以顺利的求解出 a_i</li>
+<li>加入松弛变量和惩罚因子来找到相对更好的hyperplane</li>
+<li>使用kernel trick来将低维映射到高纬的空间，使得在高纬空间中数据是线性可分的</li>
+</ol>
+<p>详细介绍kernel trick：</p>
+<p>本来是在低维中直接内积 $$ x_i^Tx_j $$ 之后希望都从地维转换到高纬，在计算内积 $$ \phi(x_i)^T\phi(x_j) $$ 跟进一步，希望直接在低维空间计算高维内积 $$ 线性核：x_i^Tx_j\ 多项式核：（x_i^Tx_j+1）^q\ 高斯核：exp(-\frac{(||x_i-x_j||^2))}{2}\ sigmoid:tanh(x_i^Tx_j+1) $$</p>
+<h2 id="0x05-SVM-code"><a href="#0x05-SVM-code" class="headerlink" title="0x05 SVM code"></a>0x05 SVM code</h2><p><a target="_blank" rel="noopener" href="https://github.com/chenxia31/code_Study_Practice/tree/main/CS229_2018autumn/ProblemSet(%E8%AF%BE%E5%90%8E%E4%BD%9C%E4%B8%9A%EF%BC%89/%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%9802">github</a> </p>
+<p>借鉴别人的，留一个坑自己写</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-956ab1b0ca37f05247403887591cc5d8_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> random<br><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">函数说明:读取数据</span><br><span class="hljs-string">Parameters:</span><br><span class="hljs-string">    fileName - 文件名</span><br><span class="hljs-string">Returns:</span><br><span class="hljs-string">    dataMat - 数据矩阵</span><br><span class="hljs-string">    labelMat - 数据标签</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">loadDataSet</span>(<span class="hljs-params">fileName</span>):<br>    dataMat = []; labelMat = []<br>    fr = <span class="hljs-built_in">open</span>(fileName)<br>    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> fr.readlines():                                     <span class="hljs-comment">#逐行读取，滤除空格等</span><br>        lineArr = line.strip().split(<span class="hljs-string">&#x27;\t&#x27;</span>)<br>        dataMat.append([<span class="hljs-built_in">float</span>(lineArr[<span class="hljs-number">0</span>]), <span class="hljs-built_in">float</span>(lineArr[<span class="hljs-number">1</span>])])      <span class="hljs-comment">#添加数据</span><br>        labelMat.append(<span class="hljs-built_in">float</span>(lineArr[<span class="hljs-number">2</span>]))                          <span class="hljs-comment">#添加标签</span><br>    <span class="hljs-keyword">return</span> dataMat,labelMat<br><br><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">函数说明:随机选择alpha</span><br><span class="hljs-string">Parameters:</span><br><span class="hljs-string">    i - alpha</span><br><span class="hljs-string">    m - alpha参数个数</span><br><span class="hljs-string">Returns:</span><br><span class="hljs-string">    j -</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">selectJrand</span>(<span class="hljs-params">i, m</span>):<br>    j = i                                 <span class="hljs-comment">#选择一个不等于i的j</span><br>    <span class="hljs-keyword">while</span> (j == i):<br>        j = <span class="hljs-built_in">int</span>(random.uniform(<span class="hljs-number">0</span>, m))<br>    <span class="hljs-keyword">return</span> j<br><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">函数说明:修剪alpha</span><br><span class="hljs-string">Parameters:</span><br><span class="hljs-string">    aj - alpha值</span><br><span class="hljs-string">    H - alpha上限</span><br><span class="hljs-string">    L - alpha下限</span><br><span class="hljs-string">Returns:</span><br><span class="hljs-string">    aj - alpah值</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">clipAlpha</span>(<span class="hljs-params">aj,H,L</span>):<br>    <span class="hljs-keyword">if</span> aj &gt; H:<br>        aj = H<br>    <span class="hljs-keyword">if</span> L &gt; aj:<br>        aj = L<br>    <span class="hljs-keyword">return</span> aj<br><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">函数说明:简化版SMO算法</span><br><span class="hljs-string">Parameters:</span><br><span class="hljs-string">    dataMatIn - 数据矩阵</span><br><span class="hljs-string">    classLabels - 数据标签</span><br><span class="hljs-string">    C - 松弛变量</span><br><span class="hljs-string">    toler - 容错率</span><br><span class="hljs-string">    maxIter - 最大迭代次数</span><br><span class="hljs-string">Returns:</span><br><span class="hljs-string">    无</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-comment"># 参数分别为 数据集、类别标签、常数C、容错率、最大循环次数</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">smoSimple</span>(<span class="hljs-params">dataMatIn, classLabels, C, toler, maxIter</span>):<span class="hljs-comment">#</span><br>    <span class="hljs-comment">#转换为numpy的mat存储</span><br>    dataMatrix = np.mat(dataMatIn); labelMat = np.mat(classLabels).transpose()<span class="hljs-comment">#转置成列向量</span><br>    <span class="hljs-comment">#初始化b参数，统计dataMatrix的维度</span><br>    b = <span class="hljs-number">0</span>; m,n = np.shape(dataMatrix)<span class="hljs-comment"># m=100,n=2</span><br>    <span class="hljs-comment">#初始化alpha参数，设为0</span><br>    alphas = np.mat(np.zeros((m,<span class="hljs-number">1</span>)))<span class="hljs-comment"># 100个alpha</span><br>    <span class="hljs-comment">#初始化迭代次数</span><br>    iter_num = <span class="hljs-number">0</span><br>    <span class="hljs-comment">#最多迭代matIter次</span><br>    <span class="hljs-keyword">while</span> (iter_num &lt; maxIter):<br>        alphaPairsChanged = <span class="hljs-number">0</span> <span class="hljs-comment">#用于记录alpha是否已经进行优化</span><br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):<br>            <span class="hljs-comment">#步骤1：计算误差Ei</span><br>            <span class="hljs-comment">#此公式为分类决策公式</span><br>            fXi = <span class="hljs-built_in">float</span>(np.multiply(alphas,labelMat).T*(dataMatrix*dataMatrix[i,:].T)) + b<br>            <span class="hljs-comment">#print(&quot;fXi:&quot;,fXi)</span><br>            Ei = fXi - <span class="hljs-built_in">float</span>(labelMat[i])<span class="hljs-comment">#误差</span><br>            <span class="hljs-comment">#优化alpha，更设定一定的容错率。</span><br>            <span class="hljs-keyword">if</span> ((labelMat[i]*Ei &lt; -toler) <span class="hljs-keyword">and</span> (alphas[i] &lt; C)) <span class="hljs-keyword">or</span> ((labelMat[i]*Ei &gt; toler) <span class="hljs-keyword">and</span> (alphas[i] &gt; <span class="hljs-number">0</span>)):<br>                <span class="hljs-comment">#随机选择另一个与alpha_i成对优化的alpha_j</span><br>                j = selectJrand(i,m)<br>                <span class="hljs-comment">#步骤1：计算误差Ej</span><br>                fXj = <span class="hljs-built_in">float</span>(np.multiply(alphas,labelMat).T*(dataMatrix*dataMatrix[j,:].T)) + b<br>                Ej = fXj - <span class="hljs-built_in">float</span>(labelMat[j])<br>                <span class="hljs-comment">#保存更新前的aplpha值，使用深拷贝</span><br>                alphaIold = alphas[i].copy(); alphaJold = alphas[j].copy();<br>                <span class="hljs-comment">#步骤2：计算上下界L和H</span><br>                <span class="hljs-keyword">if</span> (labelMat[i] != labelMat[j]):<br>                    L = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, alphas[j] - alphas[i])<br>                    H = <span class="hljs-built_in">min</span>(C, C + alphas[j] - alphas[i])<br>                <span class="hljs-keyword">else</span>:<br>                    L = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, alphas[j] + alphas[i] - C)<br>                    H = <span class="hljs-built_in">min</span>(C, alphas[j] + alphas[i])<br>                <span class="hljs-keyword">if</span> L==H: <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;L==H&quot;</span>); <span class="hljs-keyword">continue</span><br><br>                <span class="hljs-comment">#步骤3：计算eta，即η。</span><br>                eta = dataMatrix[i,:]*dataMatrix[i,:].T +dataMatrix[j,:]*dataMatrix[j,:].T-<span class="hljs-number">2.0</span> * dataMatrix[i,:]*dataMatrix[j,:].T<br>                <span class="hljs-keyword">if</span> eta == <span class="hljs-number">0</span>: <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;eta=0&quot;</span>); <span class="hljs-keyword">continue</span><br>                <span class="hljs-comment">#步骤4：更新alpha_j</span><br>                alphas[j] += labelMat[j]*(Ei - Ej)/eta<br>                <span class="hljs-comment">#步骤5：修剪alpha_j</span><br>                alphas[j] = clipAlpha(alphas[j],H,L)<br>                <span class="hljs-comment">#abs 函数  返回数字的绝对值</span><br>                <span class="hljs-keyword">if</span> (<span class="hljs-built_in">abs</span>(alphas[j] - alphaJold) &lt; <span class="hljs-number">0.00001</span>): <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;alpha_j变化太小&quot;</span>); <span class="hljs-keyword">continue</span><br>                <span class="hljs-comment">#步骤6：更新alpha_i</span><br>                alphas[i] += labelMat[j]*labelMat[i]*(alphaJold - alphas[j])<br>                <span class="hljs-comment">#步骤7：更新b_1和b_2</span><br>                b1 = b - Ei- labelMat[i]*(alphas[i]-alphaIold)*dataMatrix[i,:]*dataMatrix[i,:].T - labelMat[j]*(alphas[j]-alphaJold)*dataMatrix[i,:]*dataMatrix[j,:].T<br>                b2 = b - Ej- labelMat[i]*(alphas[i]-alphaIold)*dataMatrix[i,:]*dataMatrix[j,:].T - labelMat[j]*(alphas[j]-alphaJold)*dataMatrix[j,:]*dataMatrix[j,:].T<br>                <span class="hljs-comment">#步骤8：根据b_1和b_2更新b</span><br>                <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> &lt; alphas[i]) <span class="hljs-keyword">and</span> (C &gt; alphas[i]): b = b1<br>                <span class="hljs-keyword">elif</span> (<span class="hljs-number">0</span> &lt; alphas[j]) <span class="hljs-keyword">and</span> (C &gt; alphas[j]): b = b2<br>                <span class="hljs-keyword">else</span>: b = (b1 + b2)/<span class="hljs-number">2.0</span><br>                <span class="hljs-comment">#统计优化次数</span><br>                alphaPairsChanged += <span class="hljs-number">1</span><br>                <span class="hljs-comment">#打印统计信息</span><br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;第%d次迭代 样本:%d, alpha优化次数:%d&quot;</span> % (iter_num,i,alphaPairsChanged))<br>        <span class="hljs-comment">#更新迭代次数</span><br>        <span class="hljs-keyword">if</span> (alphaPairsChanged == <span class="hljs-number">0</span>): iter_num += <span class="hljs-number">1</span><br>        <span class="hljs-keyword">else</span>: iter_num = <span class="hljs-number">0</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;迭代次数: %d&quot;</span> % iter_num)<br>    <span class="hljs-keyword">return</span> b,alphas<br><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">函数说明:分类结果可视化</span><br><span class="hljs-string">Parameters:</span><br><span class="hljs-string">    dataMat - 数据矩阵</span><br><span class="hljs-string">    w - 直线法向量</span><br><span class="hljs-string">    b - 直线解决</span><br><span class="hljs-string">Returns:</span><br><span class="hljs-string">    无</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">showClassifer</span>(<span class="hljs-params">dataMat, w, b</span>):<br>    <span class="hljs-comment">#绘制样本点</span><br>    data_plus = []                                  <span class="hljs-comment">#正样本</span><br>    data_minus = []                                 <span class="hljs-comment">#负样本</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(dataMat)):<br>        <span class="hljs-keyword">if</span> labelMat[i] &gt; <span class="hljs-number">0</span>:<br>            data_plus.append(dataMat[i])<br>        <span class="hljs-keyword">else</span>:<br>            data_minus.append(dataMat[i])<br>    data_plus_np = np.array(data_plus)              <span class="hljs-comment">#转换为numpy矩阵</span><br>    data_minus_np = np.array(data_minus)            <span class="hljs-comment">#转换为numpy矩阵</span><br>    plt.scatter(np.transpose(data_plus_np)[<span class="hljs-number">0</span>], np.transpose(data_plus_np)[<span class="hljs-number">1</span>], s=<span class="hljs-number">30</span>, alpha=<span class="hljs-number">0.7</span>)   <span class="hljs-comment">#正样本散点图</span><br>    plt.scatter(np.transpose(data_minus_np)[<span class="hljs-number">0</span>], np.transpose(data_minus_np)[<span class="hljs-number">1</span>], s=<span class="hljs-number">30</span>, alpha=<span class="hljs-number">0.7</span>) <span class="hljs-comment">#负样本散点图</span><br>    <span class="hljs-comment">#绘制直线</span><br>    x1 = <span class="hljs-built_in">max</span>(dataMat)[<span class="hljs-number">0</span>]<br>    x2 = <span class="hljs-built_in">min</span>(dataMat)[<span class="hljs-number">0</span>]<br>    a1, a2 = w<br>    b = <span class="hljs-built_in">float</span>(b)<br>    a1 = <span class="hljs-built_in">float</span>(a1[<span class="hljs-number">0</span>])<br>    a2 = <span class="hljs-built_in">float</span>(a2[<span class="hljs-number">0</span>])<br>    y1, y2 = (-b- a1*x1)/a2, (-b - a1*x2)/a2<br>    plt.plot([x1, x2], [y1, y2])<br>    <span class="hljs-comment">#找出支持向量点</span><br>    <span class="hljs-keyword">for</span> i, alpha <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(alphas):<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">abs</span>(alpha) &gt; <span class="hljs-number">0</span>:<span class="hljs-comment">#如果alpha&gt;0,表示 alpha所在的不等式条件起作用了</span><br>            x, y = dataMat[i]<br>            plt.scatter([x], [y], s=<span class="hljs-number">150</span>, c=<span class="hljs-string">&#x27;none&#x27;</span>, alpha=<span class="hljs-number">0.7</span>, linewidth=<span class="hljs-number">1.5</span>, edgecolor=<span class="hljs-string">&#x27;red&#x27;</span>)<br>    plt.show()<br><br><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">函数说明:计算w</span><br><span class="hljs-string">Parameters:</span><br><span class="hljs-string">    dataMat - 数据矩阵</span><br><span class="hljs-string">    labelMat - 数据标签</span><br><span class="hljs-string">    alphas - alphas值</span><br><span class="hljs-string">Returns:</span><br><span class="hljs-string">    w</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_w</span>(<span class="hljs-params">dataMat, labelMat, alphas</span>):<br>    alphas, dataMat, labelMat = np.array(alphas), np.array(dataMat), np.array(labelMat)<br>    w = np.dot((np.tile(labelMat.reshape(<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>).T, (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)) * dataMat).T, alphas)<br>    <span class="hljs-keyword">return</span> w.tolist()<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    dataMat, labelMat = loadDataSet(<span class="hljs-string">&#x27;datasets/testSet.txt&#x27;</span>)<br>    b,alphas = smoSimple(dataMat, labelMat, <span class="hljs-number">0.6</span>, <span class="hljs-number">0.001</span>, <span class="hljs-number">40</span>)<br>    <span class="hljs-comment"># print(&quot;b,alphas&quot;,b,alphas)</span><br>    w = get_w(dataMat, labelMat, alphas)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;w:&quot;</span>,w)<br>    showClassifer(dataMat, w, b)<br></code></pre></td></tr></table></figure>
+
+<p>&#x2F;datasets&#x2F;testSet.txt</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">3.542485</span>    <span class="hljs-number">1.977398</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">3.018896</span>    <span class="hljs-number">2.556416</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">7.551510</span>    -<span class="hljs-number">1.580030</span>   <span class="hljs-number">1</span><br><span class="hljs-number">2.114999</span>    -<span class="hljs-number">0.004466</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">8.127113</span>    <span class="hljs-number">1.274372</span>    <span class="hljs-number">1</span><br><span class="hljs-number">7.108772</span>    -<span class="hljs-number">0.986906</span>   <span class="hljs-number">1</span><br><span class="hljs-number">8.610639</span>    <span class="hljs-number">2.046708</span>    <span class="hljs-number">1</span><br><span class="hljs-number">2.326297</span>    <span class="hljs-number">0.265213</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">3.634009</span>    <span class="hljs-number">1.730537</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">0.341367</span>    -<span class="hljs-number">0.894998</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">3.125951</span>    <span class="hljs-number">0.293251</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">2.123252</span>    -<span class="hljs-number">0.783563</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">0.887835</span>    -<span class="hljs-number">2.797792</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">7.139979</span>    -<span class="hljs-number">2.329896</span>   <span class="hljs-number">1</span><br><span class="hljs-number">1.696414</span>    -<span class="hljs-number">1.212496</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">8.117032</span>    <span class="hljs-number">0.623493</span>    <span class="hljs-number">1</span><br><span class="hljs-number">8.497162</span>    -<span class="hljs-number">0.266649</span>   <span class="hljs-number">1</span><br><span class="hljs-number">4.658191</span>    <span class="hljs-number">3.507396</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">8.197181</span>    <span class="hljs-number">1.545132</span>    <span class="hljs-number">1</span><br><span class="hljs-number">1.208047</span>    <span class="hljs-number">0.213100</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">1.928486</span>    -<span class="hljs-number">0.321870</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">2.175808</span>    -<span class="hljs-number">0.014527</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">7.886608</span>    <span class="hljs-number">0.461755</span>    <span class="hljs-number">1</span><br><span class="hljs-number">3.223038</span>    -<span class="hljs-number">0.552392</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">3.628502</span>    <span class="hljs-number">2.190585</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">7.407860</span>    -<span class="hljs-number">0.121961</span>   <span class="hljs-number">1</span><br><span class="hljs-number">7.286357</span>    <span class="hljs-number">0.251077</span>    <span class="hljs-number">1</span><br><span class="hljs-number">2.301095</span>    -<span class="hljs-number">0.533988</span>   -<span class="hljs-number">1</span><br>-<span class="hljs-number">0.232542</span>   -<span class="hljs-number">0.547690</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">3.457096</span>    -<span class="hljs-number">0.082216</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">3.023938</span>    -<span class="hljs-number">0.057392</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">8.015003</span>    <span class="hljs-number">0.885325</span>    <span class="hljs-number">1</span><br><span class="hljs-number">8.991748</span>    <span class="hljs-number">0.923154</span>    <span class="hljs-number">1</span><br><span class="hljs-number">7.916831</span>    -<span class="hljs-number">1.781735</span>   <span class="hljs-number">1</span><br><span class="hljs-number">7.616862</span>    -<span class="hljs-number">0.217958</span>   <span class="hljs-number">1</span><br><span class="hljs-number">2.450939</span>    <span class="hljs-number">0.744967</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">7.270337</span>    -<span class="hljs-number">2.507834</span>   <span class="hljs-number">1</span><br><span class="hljs-number">1.749721</span>    -<span class="hljs-number">0.961902</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">1.803111</span>    -<span class="hljs-number">0.176349</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">8.804461</span>    <span class="hljs-number">3.044301</span>    <span class="hljs-number">1</span><br><span class="hljs-number">1.231257</span>    -<span class="hljs-number">0.568573</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">2.074915</span>    <span class="hljs-number">1.410550</span>    -<span class="hljs-number">1</span><br>-<span class="hljs-number">0.743036</span>   -<span class="hljs-number">1.736103</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">3.536555</span>    <span class="hljs-number">3.964960</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">8.410143</span>    <span class="hljs-number">0.025606</span>    <span class="hljs-number">1</span><br><span class="hljs-number">7.382988</span>    -<span class="hljs-number">0.478764</span>   <span class="hljs-number">1</span><br><span class="hljs-number">6.960661</span>    -<span class="hljs-number">0.245353</span>   <span class="hljs-number">1</span><br><span class="hljs-number">8.234460</span>    <span class="hljs-number">0.701868</span>    <span class="hljs-number">1</span><br><span class="hljs-number">8.168618</span>    -<span class="hljs-number">0.903835</span>   <span class="hljs-number">1</span><br><span class="hljs-number">1.534187</span>    -<span class="hljs-number">0.622492</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">9.229518</span>    <span class="hljs-number">2.066088</span>    <span class="hljs-number">1</span><br><span class="hljs-number">7.886242</span>    <span class="hljs-number">0.191813</span>    <span class="hljs-number">1</span><br><span class="hljs-number">2.893743</span>    -<span class="hljs-number">1.643468</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">1.870457</span>    -<span class="hljs-number">1.040420</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">5.286862</span>    -<span class="hljs-number">2.358286</span>   <span class="hljs-number">1</span><br><span class="hljs-number">6.080573</span>    <span class="hljs-number">0.418886</span>    <span class="hljs-number">1</span><br><span class="hljs-number">2.544314</span>    <span class="hljs-number">1.714165</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">6.016004</span>    -<span class="hljs-number">3.753712</span>   <span class="hljs-number">1</span><br><span class="hljs-number">0.926310</span>    -<span class="hljs-number">0.564359</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">0.870296</span>    -<span class="hljs-number">0.109952</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">2.369345</span>    <span class="hljs-number">1.375695</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">1.363782</span>    -<span class="hljs-number">0.254082</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">7.279460</span>    -<span class="hljs-number">0.189572</span>   <span class="hljs-number">1</span><br><span class="hljs-number">1.896005</span>    <span class="hljs-number">0.515080</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">8.102154</span>    -<span class="hljs-number">0.603875</span>   <span class="hljs-number">1</span><br><span class="hljs-number">2.529893</span>    <span class="hljs-number">0.662657</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">1.963874</span>    -<span class="hljs-number">0.365233</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">8.132048</span>    <span class="hljs-number">0.785914</span>    <span class="hljs-number">1</span><br><span class="hljs-number">8.245938</span>    <span class="hljs-number">0.372366</span>    <span class="hljs-number">1</span><br><span class="hljs-number">6.543888</span>    <span class="hljs-number">0.433164</span>    <span class="hljs-number">1</span><br>-<span class="hljs-number">0.236713</span>   -<span class="hljs-number">5.766721</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">8.112593</span>    <span class="hljs-number">0.295839</span>    <span class="hljs-number">1</span><br><span class="hljs-number">9.803425</span>    <span class="hljs-number">1.495167</span>    <span class="hljs-number">1</span><br><span class="hljs-number">1.497407</span>    -<span class="hljs-number">0.552916</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">1.336267</span>    -<span class="hljs-number">1.632889</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">9.205805</span>    -<span class="hljs-number">0.586480</span>   <span class="hljs-number">1</span><br><span class="hljs-number">1.966279</span>    -<span class="hljs-number">1.840439</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">8.398012</span>    <span class="hljs-number">1.584918</span>    <span class="hljs-number">1</span><br><span class="hljs-number">7.239953</span>    -<span class="hljs-number">1.764292</span>   <span class="hljs-number">1</span><br><span class="hljs-number">7.556201</span>    <span class="hljs-number">0.241185</span>    <span class="hljs-number">1</span><br><span class="hljs-number">9.015509</span>    <span class="hljs-number">0.345019</span>    <span class="hljs-number">1</span><br><span class="hljs-number">8.266085</span>    -<span class="hljs-number">0.230977</span>   <span class="hljs-number">1</span><br><span class="hljs-number">8.545620</span>    <span class="hljs-number">2.788799</span>    <span class="hljs-number">1</span><br><span class="hljs-number">9.295969</span>    <span class="hljs-number">1.346332</span>    <span class="hljs-number">1</span><br><span class="hljs-number">2.404234</span>    <span class="hljs-number">0.570278</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">2.037772</span>    <span class="hljs-number">0.021919</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">1.727631</span>    -<span class="hljs-number">0.453143</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">1.979395</span>    -<span class="hljs-number">0.050773</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">8.092288</span>    -<span class="hljs-number">1.372433</span>   <span class="hljs-number">1</span><br><span class="hljs-number">1.667645</span>    <span class="hljs-number">0.239204</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">9.854303</span>    <span class="hljs-number">1.365116</span>    <span class="hljs-number">1</span><br><span class="hljs-number">7.921057</span>    -<span class="hljs-number">1.327587</span>   <span class="hljs-number">1</span><br><span class="hljs-number">8.500757</span>    <span class="hljs-number">1.492372</span>    <span class="hljs-number">1</span><br><span class="hljs-number">1.339746</span>    -<span class="hljs-number">0.291183</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">3.107511</span>    <span class="hljs-number">0.758367</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">2.609525</span>    <span class="hljs-number">0.902979</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">3.263585</span>    <span class="hljs-number">1.367898</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">2.912122</span>    -<span class="hljs-number">0.202359</span>   -<span class="hljs-number">1</span><br><span class="hljs-number">1.731786</span>    <span class="hljs-number">0.589096</span>    -<span class="hljs-number">1</span><br><span class="hljs-number">2.387003</span>    <span class="hljs-number">1.573131</span>    -<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/" class="category-chain-item">数据科学</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="print-no-link">#机器学习</a>
+      
+        <a href="/tags/CS229/" class="print-no-link">#CS229</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS229机器学习 SVM | vol2</div>
+      <div>https://blog.tjdata.site/posts/e7902d53.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/9313437b.html" title="奇文共赏-复杂场景的密集人群计数">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">奇文共赏-复杂场景的密集人群计数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/ceb408a2.html" title="CS229机器学习广义线性模型 | vol1">
+                        <span class="hidden-mobile">CS229机器学习广义线性模型 | vol1</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

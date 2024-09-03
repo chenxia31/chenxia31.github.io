@@ -1,0 +1,858 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="[Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）](https:&#x2F;&#x2F;blog.tjdata.site&#x2F;2022&#x2F;03&#x2F;19&#x2F;Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）&#x2F;) Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）blog.tjdata.site&#x2F;2022&#x2F;03&#x2F;19&#x2F;Andrew-Wu%20">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS229机器学习 贝叶斯学习理论 ｜ Vol7">
+<meta property="og:url" content="https://blog.tjdata.site/posts/30f3d7d.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="[Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）](https:&#x2F;&#x2F;blog.tjdata.site&#x2F;2022&#x2F;03&#x2F;19&#x2F;Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）&#x2F;) Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）blog.tjdata.site&#x2F;2022&#x2F;03&#x2F;19&#x2F;Andrew-Wu%20">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ae5acf3b4881e03e3b98761cd390af20_1440w.jpg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5965c8e2746b9ecdee4563ac43bd0743_1440w.jpg">
+<meta property="article:published_time" content="2024-04-29T08:38:34.000Z">
+<meta property="article:modified_time" content="2024-04-29T08:54:05.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ae5acf3b4881e03e3b98761cd390af20_1440w.jpg">
+  
+  
+  
+  <title>CS229机器学习 贝叶斯学习理论 ｜ Vol7 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS229机器学习 贝叶斯学习理论 ｜ Vol7"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:38" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CS229机器学习 贝叶斯学习理论 ｜ Vol7</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>[Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）](<a href="https://blog.tjdata.site/2022/03/19/Andrew-Wu">https://blog.tjdata.site/2022/03/19/Andrew-Wu</a> 基本理论01–贝叶斯学习（暨基本理论开篇）&#x2F;)</p>
+<p>Andrew-Wu 基本理论01–贝叶斯学习（暨基本理论开篇）blog.tjdata.site&#x2F;2022&#x2F;03&#x2F;19&#x2F;Andrew-Wu%20%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA01–%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AD%A6%E4%B9%A0%EF%BC%88%E6%9A%A8%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA%E5%BC%80%E7%AF%87%EF%BC%89&#x2F;</p>
+<h2 id="0x00-计算学习理论的开篇"><a href="#0x00-计算学习理论的开篇" class="headerlink" title="0x00 计算学习理论的开篇"></a>0x00 计算学习理论的开篇</h2><ul>
+<li>贝叶斯学习，贝叶斯推理提供来一种推理的概率方法，基于待考察的量遵循某种概率分布，且可根据这些概率及已观察到的数据进行推理得到最优的决策</li>
+<li>集成学习，从多个弱学习器中得到一个较好的学习器</li>
+<li>计算学习理论，致力于回答“在什么养的条件下成功的学习是可能的》”和“在 什么条件下某个特定的学习算法可保证成功运行？”，从近似正确（PAC）和对假设空间的自然度量两个角度来分析学习算法，在出错界限的框架下考察一个学习器在确定正确假设前可能产生的训练错误数量</li>
+<li>基于实例的学习，每当学习器遇到一个新的实例，通过分析这个例子和之前存储的实例关系来将这个目标函数赋值给新的实例</li>
+<li>基于解释的学习，先验知识用于分析观察到的学习样例是怎样满足目标概念的，然后这个解释被用于区分训练样例中哪些是相关的特征、哪些是不相关的，这样就可以基于逻辑推理进行泛化，而不是基于统计推理</li>
+<li>增强学习，用来确定最优控制策略</li>
+</ul>
+<h2 id="0x01-贝叶斯学习简介"><a href="#0x01-贝叶斯学习简介" class="headerlink" title="0x01 贝叶斯学习简介"></a>0x01 贝叶斯学习简介</h2><p>贝叶斯学习具有两个特点：第一，贝叶斯学习算法能够计算显始的假设概率，比如朴素贝叶斯分类器，是解决相应学习问题的最实际的方法之一；第二，为理解多数学习算法提供了一种有效的手段，这些算法不一定直接操纵概率数据</p>
+<p>在机器学习中，通常最感兴趣是在给定训练数据D的时候，确定假设空间H中最可能的假设：</p>
+<blockquote>
+<p> 使用$P(h)$ 来代表没有训练数据前假设h拥有的概率，通常被称为prior probability（先验概率） $P(D)$ 代表将要观察的训练数据D的先验概率，也就是在没有某一假设成立时D的概率 $P(h|D)$ 代表的是看到训练数据D后h成立的置信度，这里是posterior probability（后验概率） $P(h|D)&#x3D;\frac{P(D|h)P(h)}{P(D)}$ 极大后验（maximum a posterior，MAP）：$max P(D|h)P(h)$ 极大似然估计（maximum likelihood，MLE）：$max P(D|h)$ </p>
+</blockquote>
+<p>example：考虑一个医疗诊断问题，这里是h是是否患有癌症，这里是的数据是检测结果是正例+还是负例-</p>
+<p>我们知道人群中患有癌症的概率是0.008；也就是没有患有癌症的概率是0.992</p>
+<p>同时我们知道对于患有癌症的患者返回检测结果，0.98是+、0.02是-</p>
+<p>对于没有患有癌症的患者，返回检测结果，0.03是+，0.97-</p>
+<p>如果现在来了一个病人的检测结果是+，那么患有癌症的概率是多少</p>
+<p>$P(h&#x3D;患有癌症｜D&#x3D;检测结果+)&#x3D;\frac{P（D&#x3D;+｜h&#x3D;患有癌症）P（h&#x3D;患有癌症）}{p（D&#x3D;+|h&#x3D;患）p（h&#x3D;患）+p（D&#x3D;+｜h&#x3D;不患）p（不患）}&#x3D;0.21$</p>
+<p>example02～example03:</p>
+<ul>
+<li>线性回归中极大似然和最小误差平方假设</li>
+<li>逻辑回归中极大似然和交叉熵</li>
+</ul>
+<h2 id="0x02-贝叶斯分类器"><a href="#0x02-贝叶斯分类器" class="headerlink" title="0x02 贝叶斯分类器"></a>0x02 贝叶斯分类器</h2><p>基于一个简单而又强大的假设：在给定目标值事，属性值之间的相互条件独立，该假定说明在给定实例的目标值情况下，观察到的联合属性a1、a2、a3… 的概念等于单个属性的概率乘积： $$ P（a_1,a_2,…,a_n|h）&#x3D;\prod P(a_i|h) $$ example：</p>
+<p>我们是数据集和知道了关于一个🍉是否好坏的颜色和大小的属性：</p>
+<p>对一个红色，大的🍉判断是否好坏：</p>
+<p>P（好）&#x3D;0.8</p>
+<p>P（坏）&#x3D;0.2</p>
+<p>P（红色｜好）&#x3D;0.8，</p>
+<p>P（红色｜坏）&#x3D;0.1，</p>
+<p>P（大｜好）&#x3D;0.9</p>
+<p>P（大｜坏）&#x3D;0.4</p>
+<p>P（好）<em>P（红色｜好）</em>P（大｜好）&#x3D;0.576</p>
+<p>同理，观察到数据中坏的可能行&#x3D;0.008</p>
+<p>所以为好🍉</p>
+<p>半进阶，需要考虑到独依赖估计（semi- naive bayes classifiers）</p>
+<p>进阶：贝叶斯信念网</p>
+<p>留个坑：贝叶斯分类器的文本估计</p>
+<h2 id="0x03-期望最大化算法（EM）"><a href="#0x03-期望最大化算法（EM）" class="headerlink" title="0x03 期望最大化算法（EM）"></a>0x03 期望最大化算法（EM）</h2><p>在讨论中，一直假设训练样本所有属性变量的值度可以被观测到，但是在实际中往往会遇到特征只有一部分可以观察到，EM算法可以用于变量从来没有被直接观察到的情况，只要这些变量所遵循的概率分布的一段形式</p>
+<p>example：理解EM算法可以从一个实际的例子推导来得到，假设一个数据是从k个高斯分布混合而得到的，注意这个k未知，但是这个k个高斯分布的方差是$\sigma ^2$    知道，现在需要预测是k个均值$&lt;\mu_1,\mu_2,,,\mu_k&gt;$,我们需要先假设均值的值，在重新估计隐藏变量的值来重新计算极大似然假设</p>
+<p>Step01:当前的假设为$&lt;\mu_1…,\mu_k&gt;$     的值，计算属于每个类别的期望值</p>
+<p>$E(z&#x3D;k|D)&#x3D;p(x&#x3D;x_i|\mu&#x3D;\mu_i)&#x2F;P(x&#x3D;x_i)$</p>
+<p>Step02: 计算一个新的极大似然假设，计算每个点属于每周类别的最大概率来更新均值，来替换称为新的假设</p>
+<ul>
+<li>理论推导</li>
+</ul>
+<p>对于n个样本观察数据${x^i}<em>{i&#x3D;1}^m$ 我们需要找到样本的模型参数$\theta$ 来最大对数似然函数，其中包含没有观察到的隐含数据Z $$ \bar \theta&#x3D;argmax \Sigma log p(x^i;\theta)\ \bar \theta&#x3D;argmax \Sigma log p(x^i,z^i;\theta)\ &#x3D;\bar \theta&#x3D;argmax \Sigma log \Sigma</em>{z^i}\ p(x_i,z^i;\theta)\ &#x3D;\bar \theta&#x3D;argmax \Sigma log Q_i(Z^i) \Sigma_{z^i}\ \frac{p(x^i,z^i;\theta)}{Q_i(z^i)}引入一个新的分布\</p>
+<blockquote>
+<p> &#x3D;\Sigma\Sigma Q(Z_i) *log\frac{p(x_i,z_i;\theta)}{Q(z_i)}根据Jensen不等式 $$ 我们有许多的选择，但是这样Jesen会在后面的取常数的时候手链 $$ \frac{p(x^i,z^i;\theta)}{Q_i(z^i)}&#x3D;c\ 同时\Sigma Q_i(Z^i)&#x3D;1 $$ 由此可以看出 $$ Q_i(z^i)&#x3D;p(x^i,z^i;\theta)&#x2F;\Sigma(p(x^i,z^i;\theta))&#x3D;p(z^i|x^i,\theta) $$ E: 计算$Q_i(Z^i)$ </p>
+</blockquote>
+<p>M: $argmax\Sigma\Sigma Q_i(Z^i)log(p(x^i,z^i;\theta)&#x2F;Q_i(Z^i))$</p>
+<p><a target="_blank" rel="noopener" href="https://chenrudan.github.io/blog/2015/12/02/emexample.html">EM算法的例子</a></p>
+<p>更实际的例子：假设AB用相同的概率选择一个硬币，进行实验，每次都是独立的，请问如何估计两个硬币正面出现的概率？（a情况是知道选择硬币A还是B；b情况不知道选择硬币A还是B）</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ae5acf3b4881e03e3b98761cd390af20_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+<p>E：我们假设A的概率是0.6；假设B的概率是0.5，这里仅仅是初始化的值，同时根据观测的数据来计算期望的分布 $$ Q_i(Z^i&#x3D;A)&#x3D;P（Z&#x3D;A｜y_i,\bar\theta_A）&#x3D;\frac{P（Z&#x3D;A,y_i|\bar\theta_A）P(A)}{P（Z&#x3D;A,y_i|\bar\theta_A）P(A)+P（Z&#x3D;B,y_i|\bar\theta_A）P(B)}\ &#x3D;[0.45,0.80,0.73,0.35,0.65] $$ Q: 其中的Q函数形式为 $$ Q(θ,θi)&#x3D;∑j&#x3D;1N∑zP(z|yj,θi)logP(yj,z|θ)&#x3D;∑j&#x3D;1Nμjlog(θyjA(1−θA)10−yj)+(1−μj)log(θyjB(1−θB)10−yj)] Q ( θ , θ i ) &#x3D; ∑ j &#x3D; 1 N ∑ z P ( z | y j , θ i ) l o g P ( y j , z | θ ) &#x3D; ∑ j &#x3D; 1 N μ j l o g ( θ A y j ( 1 − θ A ) 10 − y j ) + ( 1 − μ j ) l o g ( θ B y j ( 1 − θ B ) 10 − y j ) ]</p>
+<p>$$ 求导来得到更新的$\theta_A,\theta_B$</p>
+<p>比如混合高斯模型GMM、K-means聚类的方法</p>
+<h2 id="0x04-卡尔曼滤波"><a href="#0x04-卡尔曼滤波" class="headerlink" title="0x04 卡尔曼滤波"></a>0x04 卡尔曼滤波</h2><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5965c8e2746b9ecdee4563ac43bd0743_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加图片注释，不超过 140 字（可选）</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="print-no-link">#机器学习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS229机器学习 贝叶斯学习理论 ｜ Vol7</div>
+      <div>https://blog.tjdata.site/posts/30f3d7d.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/87767e37.html" title="zotero 文献管理实战">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">zotero 文献管理实战</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/37cef8cc.html" title="CPLEX 安装指南">
+                        <span class="hidden-mobile">CPLEX 安装指南</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
