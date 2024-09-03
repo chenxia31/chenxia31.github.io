@@ -19,35 +19,25 @@
   <meta name="author" content="chenlongxu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Problem set00 是关于线性代数和多元微积分学的基本知识，Problem set 01主要是监督学习。作业要求最好使用LaTex进行编写，同时需要将library保存到environment.yml文件中，并保证run.py脚本可以正常运行。 0x01 线性分类（逻辑回归和广义线性模型）1.1 问题回顾Linear classifiers ( logistic regression an">
+    <meta name="description" content="从未想象过南方的夏天会如此的丰富多彩，阳光和暴雨的展开姿势是内陆从未见过的大开大合。当天气明媚的时候，仿佛广州塔都在微笑，而当暴雨倾城，突然分不清天地之间的边界。很幸运可以在六月底背负着被航班取消，踏着十个小时的高铁来到羊城，开始了自己的“无问西东“的暑期实习，也希望自己的秋招可以顺利。  “无问西东” 是这个暑假的旋律  朴实竟然是我对腾讯的第一眼，T.I.T 创意园中穿插着矮楼和高树，这些树儿">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CS229 机器学习 vol11 ｜ 课后作业 2">
-<meta property="og:url" content="https://blog.tjdata.site/2024/04/29/CS229%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20vol11%20%EF%BD%9C%20%E8%AF%BE%E5%90%8E%E4%BD%9C%E4%B8%9A%202/index.html">
+<meta property="og:title" content="盛夏之后，苦秋之前 ｜ 致求职">
+<meta property="og:url" content="https://blog.tjdata.site/2024/09/03/%E7%9B%9B%E5%A4%8F%E4%B9%8B%E5%90%8E%EF%BC%8C%E8%8B%A6%E7%A7%8B%E4%B9%8B%E5%89%8D%20%EF%BD%9C%20%E8%87%B4%E6%B1%82%E8%81%8C/index.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
-<meta property="og:description" content="Problem set00 是关于线性代数和多元微积分学的基本知识，Problem set 01主要是监督学习。作业要求最好使用LaTex进行编写，同时需要将library保存到environment.yml文件中，并保证run.py脚本可以正常运行。 0x01 线性分类（逻辑回归和广义线性模型）1.1 问题回顾Linear classifiers ( logistic regression an">
+<meta property="og:description" content="从未想象过南方的夏天会如此的丰富多彩，阳光和暴雨的展开姿势是内陆从未见过的大开大合。当天气明媚的时候，仿佛广州塔都在微笑，而当暴雨倾城，突然分不清天地之间的边界。很幸运可以在六月底背负着被航班取消，踏着十个小时的高铁来到羊城，开始了自己的“无问西东“的暑期实习，也希望自己的秋招可以顺利。  “无问西东” 是这个暑假的旋律  朴实竟然是我对腾讯的第一眼，T.I.T 创意园中穿插着矮楼和高树，这些树儿">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-953073d4bbe0fb585e3671449d2ca2e5_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5381f9c5574ce4899eb18cb477728684_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8641037bcb189b702521d34b929d6462_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8f46410ae30d25bbb247b2d4d0c318b5_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c033c6076e08731a98accc169e3667a5_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-f993231b4f134eaddbd837448024a4e8_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-fb15d7cc0e440384e9fceff01b58d93c_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-25d53c46cb3eea386529b4a69527fd9e_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7acdf9f7f1f5fafdf9e4637417f51f52_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-d4f2e1ec6e32a9029cca092802c7dd3e_1440w.png">
-<meta property="article:published_time" content="2024-04-29T09:14:15.000Z">
-<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/DSC00223.JPG">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/53c6bb3ed9e27fc57f283b56c0aaadba.jpg">
+<meta property="article:published_time" content="2024-09-03T12:55:42.000Z">
+<meta property="article:modified_time" content="2024-09-03T14:14:39.065Z">
 <meta property="article:author" content="chenlongxu">
-<meta property="article:tag" content="CS229">
-<meta property="article:tag" content="机器学习">
-<meta property="article:tag" content="课后作业">
+<meta property="article:tag" content="生活杂谈">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-953073d4bbe0fb585e3671449d2ca2e5_1440w.png">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/DSC00223.JPG">
   
   
   
-  <title>CS229 机器学习 vol11 ｜ 课后作业 2 - Chenlong&#39;s blog</title>
+  <title>盛夏之后，苦秋之前 ｜ 致求职 - Chenlong&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -226,7 +216,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CS229 机器学习 vol11 ｜ 课后作业 2"></span>
+            <span id="subtitle" data-typed-text="盛夏之后，苦秋之前 ｜ 致求职"></span>
           
         </div>
 
@@ -237,8 +227,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-04-29 17:14" pubdate>
-          2024年4月29日 下午
+        <time datetime="2024-09-03 20:55" pubdate>
+          2024年9月3日 晚上
         </time>
       </span>
     
@@ -249,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          706 字
+          1.8k 字
         
       </span>
     
@@ -260,7 +250,7 @@
         
         
         
-          6 分钟
+          16 分钟
         
       </span>
     
@@ -306,64 +296,44 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CS229 机器学习 vol11 ｜ 课后作业 2</h1>
+            <h1 id="seo-header">盛夏之后，苦秋之前 ｜ 致求职</h1>
             
             
               <div class="markdown-body">
                 
-                <p>Problem set00 是关于线性代数和多元微积分学的基本知识，Problem set 01主要是监督学习。作业要求最好使用LaTex进行编写，同时需要将library保存到environment.yml文件中，并保证run.py脚本可以正常运行。</p>
-<h3 id="0x01-线性分类（逻辑回归和广义线性模型）"><a href="#0x01-线性分类（逻辑回归和广义线性模型）" class="headerlink" title="0x01 线性分类（逻辑回归和广义线性模型）"></a>0x01 线性分类（逻辑回归和广义线性模型）</h3><h3 id="1-1-问题回顾"><a href="#1-1-问题回顾" class="headerlink" title="1.1 问题回顾"></a>1.1 问题回顾</h3><p>Linear classifiers ( logistic regression and GDA)</p>
-<p>在本次作业中将回顾之前的概率线性分类器，</p>
-<ol>
-<li>判别线性分类 (discriminative linear classifier) ：逻辑回归</li>
-<li>生成线性分类 （generative linear classifier）：高斯判别模型</li>
-</ol>
-<p>两者均可以将一个数据集分成两类，但是基于不同的假设，本次问题的目的是找到两者的相同点和差异。</p>
-<h3 id="1-2-实际问题"><a href="#1-2-实际问题" class="headerlink" title="1.2 实际问题"></a>1.2 实际问题</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-953073d4bbe0fb585e3671449d2ca2e5_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>问题1-(a)</p>
-<p>注意Hessian矩阵为PSD，则说明损失函数是凸（convex）的，也就是存在极值点</p>
-<p>𝑝(𝑦|𝑥,𝑡ℎ𝑒𝑡𝑎)&#x3D;𝑝(𝑦,𝑥,𝑡ℎ𝑒𝑡𝑎)&#x2F;𝑝(𝑥,𝑡ℎ𝑒𝑡𝑎)&#x3D;𝑝(𝑥,𝑡ℎ𝑒𝑡𝑎|𝑦)𝑝(𝑦)&#x2F;𝑝(𝑥,𝑡ℎ𝑒𝑡𝑎) </p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5381f9c5574ce4899eb18cb477728684_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>1-b</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8641037bcb189b702521d34b929d6462_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>1-c</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8f46410ae30d25bbb247b2d4d0c318b5_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>1-c(2)</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c033c6076e08731a98accc169e3667a5_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>1-d</p>
-<h3 id="1-3-问题求解"><a href="#1-3-问题求解" class="headerlink" title="1.3 问题求解"></a>1.3 问题求解</h3><p>由于公式较多，只能给出思路</p>
-<p>（1） 展开求导就能发现是大于0</p>
-<p>（2）coding就完事了，numpy的MATLAB的矩阵计算方式</p>
-<p>（3）GDA按照贝叶斯展开就行了</p>
-<p>（4） 发现是相同的</p>
-<p>（5）（6）（7）（8）是一些可视化的东西</p>
-<h3 id="0x02-不完整、只有正标签：Incomplete，Positive-only-labels"><a href="#0x02-不完整、只有正标签：Incomplete，Positive-only-labels" class="headerlink" title="0x02 不完整、只有正标签：Incomplete，Positive- only labels"></a>0x02 不完整、只有正标签：Incomplete，Positive- only labels</h3><h3 id="2-1-问题回顾"><a href="#2-1-问题回顾" class="headerlink" title="2.1 问题回顾"></a>2.1 问题回顾</h3><p>假设在我们没有得到完整的标签的情况下的，只能确定性得到部分的正样本，而不能得到其他样本的标签。也就是所有负样本和剩余的正样本是没有标签的。</p>
-<p>这道题的问题设置更像是一种引导，如何理解这种情况下如何构建模型</p>
-<h3 id="2-2-问题"><a href="#2-2-问题" class="headerlink" title="2.2 问题"></a>2.2 问题</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-f993231b4f134eaddbd837448024a4e8_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>2-a</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-fb15d7cc0e440384e9fceff01b58d93c_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>2-b</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-25d53c46cb3eea386529b4a69527fd9e_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>2-c</p>
-<p>后续是那个coding problem</p>
-<h3 id="2-3-问题解答"><a href="#2-3-问题解答" class="headerlink" title="2.3 问题解答"></a>2.3 问题解答</h3><p>（1） 简单随机样本抽样</p>
-<h3 id="0x03-泊松分布的拟合"><a href="#0x03-泊松分布的拟合" class="headerlink" title="0x03 泊松分布的拟合"></a>0x03 泊松分布的拟合</h3><p>重新回归GLM中的三个基本假设：</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-7acdf9f7f1f5fafdf9e4637417f51f52_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>GLM-assumption</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-d4f2e1ec6e32a9029cca092802c7dd3e_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>GLM-assumption02</p>
-<p>本重新认识到：</p>
-<ol>
-<li>第一个assumption给出了y的分布！这可以用来计算似然函数</li>
-<li>第二个assumption给出如何确定hypothesis，也就是模型</li>
-<li>第三个assumption似乎是人们设计好的，这样我们才能对一些线性模型做假设</li>
-</ol>
-<h3 id="0x04-广义线性模型的convex相关的研究"><a href="#0x04-广义线性模型的convex相关的研究" class="headerlink" title="0x04 广义线性模型的convex相关的研究"></a>0x04 广义线性模型的convex相关的研究</h3><p>太理论了看不下去～</p>
-<h3 id="0x05-加权线性回归"><a href="#0x05-加权线性回归" class="headerlink" title="0x05 加权线性回归"></a>0x05 加权线性回归</h3><p>除了 利用gradient descent求解，也可以使用normal equation来进行参数的求解；非常的奇妙！</p>
-<p>注意这部分和后面的attention有关系</p>
-<p>后面的公式太多了不想打，</p>
-<h3 id="0x06-感悟"><a href="#0x06-感悟" class="headerlink" title="0x06 感悟"></a>0x06 感悟</h3><p>动手才能发现学习的问题所在，动手才能知道代码应该如何实践！</p>
-<p>对于现实世界的抽象可以帮助我们进一步学习和研究，虽然矩阵的定义很简单，但是只有在这个抽象定义的基础上才能发展出线性代数这门学科，才能用此解决问题。</p>
+                <p>从未想象过南方的夏天会如此的丰富多彩，阳光和暴雨的展开姿势是内陆从未见过的大开大合。当天气明媚的时候，仿佛广州塔都在微笑，而当暴雨倾城，突然分不清天地之间的边界。很幸运可以在六月底背负着被航班取消，踏着十个小时的高铁来到羊城，开始了自己的“无问西东“的暑期实习，也希望自己的秋招可以顺利。</p>
+<blockquote>
+<p>“无问西东” 是这个暑假的旋律</p>
+</blockquote>
+<p>朴实竟然是我对腾讯的第一眼，T.I.T 创意园中穿插着矮楼和高树，这些树儿不知何时初见行人，又不知送走了多少代观众。艺术氛围在这里是不缺的，但没想到在游客之中也穿插 B1～B10 的工区，这边是办公地点的，不问西东是未来两个月的主旋律。</p>
+<p>人总是需要追踪点什么才能跑过时间的流失，有的时候是什么都不说的骑着摩托车去体验地面的温度，也有的时候是被赶鸭子上架上手工作。前者是感受生命的禅意，后者可能是感受生命的跳动。初入实习的时候很难适应快节奏：不会写 OKR，看不懂周报黑话，甚至连 SQL 都不熟练，但可能知道自己缺点的时候才是成长最快的时候。当知道自己眼里有梁木之后，时间成为最宝贵的东西。</p>
+<p>天而复始的起床-冥想-工作-下班的飞轮是盛夏的核心，吃掉十几个西瓜、经历过多次暴雨，不知道听过多少蝉鸣，当度过答辩，满下脚步确发现这个夏天已经过去了，如果等站在行刑队面前，一定忘不了这个夏天的坚持。感谢实习中遇到的人让我自己成长，见识到了一个更深层次的世界，也明白追求完美再实际中就要动手去做，“无问西东”是我学到最宝贵的教训。</p>
+<img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/DSC00223.JPG" srcset="/img/loading.gif" lazyload alt="DSC00223" style="zoom:10%;" />
+
+
+
+<blockquote>
+<p> “ 我是谁？我从哪里来？我向哪里去？“ 是无论何时都需要回答的问题</p>
+</blockquote>
+<p>但我好像还是不知道自己应该选择什么样的职业。在绿皮书中，博士爆发时说“我不够黑，我也不够白，告诉我我是谁？”，同样的悖论在日漫中也有体现，无论是金木还是艾伦，当系统中出现变化的人，无法找到自我认同是最大的障碍，筚路蓝缕的孤独只有初代人才能体会。当踏破铁鞋，行半百却蓦然发现不知道自己在哪里，也不知道自己需要什么。</p>
+<p>本人的专业是可笑的交通信息，是个问题非常多的专业。可以说是跨越再文科、工科、理科、商科之外的专业，曾经去过工地见过道路施工，也上过铁路搬过道岔机，了解机场的飞机起飞，也写过公交的排班算法，既要会出彩的报告能力，也要过硬的代码素质，还要探讨群体的管理。仿佛这个专业告诉过我们世界上所有的难题，唯一不告诉的是怎么去解决这些问题。但也幸运的是在这个四不像的专业中，找到了自己喜欢并热爱的东西 – 数据和代码。</p>
+<p>热爱代码是自己的第一步，第一次接触代码是在高中的信息科上，唯一的工具是家里一台 03 年生产的奔腾笔记本，第一次安装 Python，在交互式命令行敲击 print（‘hello world’）,就觉得这是非常酷的事情。上大学最喜欢的一门课是嵌入式系统（交通也要学这个，是不是很神奇），当看到自己写的代码经历烧录和串口传输可以操控硬件，是一件非常有成就感的事情，内心一直希望可以和乔布斯一样可以造出自己的盗版电话机，直到本科的信息论上老师说不同频段使用有规范，才发现条条框框早已梳在虚拟世界之中，接下来唯一有趣的便是数据了。</p>
+<p>机器学习是数据处理中非常热门的话题，但是它到底解决了什么问题？从另外一个角度，当前社会生产力已经经历了很多次的分类，庞大甚至恐怖的信息分发机制笼罩着人们的生活：新闻、生活、外卖、购物、出行… 也由此产生了大量需要决策的需求，而如何将人力解放来使用模型解决它可以解决的问题，让人来确定模型去哪里便是机器学习的意义所在。而幸运的是交通中从不缺难题，因此机器学习、深度学习、强化学习中一些模型也慢慢被尝试动手下来，仿佛自己学会了很多。</p>
+<p>打击来自日常实习的寻找，还记得字节的面试官问我“你知道辛普森悖论”吗？感觉自己就像骄傲的地球人被水滴戳破了虚浮的外表，好像自己从来没有认真的做过什么呢，模型也是只会调包，推导的公式也是复述的，所幸的是通过了滴滴的面试，让我得以认识到真实公司的运作，第一次见识如何处理大规模数据，第一次认真的魔改模型和调参，第一次因为模型效果不够好而焦虑，也第一次因为模型评估通过而高兴。明白了自己的优势并不是刷榜式的改模型，而是针对业务需求是分析问题、应用工具，这边是我需要往哪去。</p>
+<img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/53c6bb3ed9e27fc57f283b56c0aaadba.jpg" srcset="/img/loading.gif" lazyload alt="53c6bb3ed9e27fc57f283b56c0aaadba" style="zoom:10%;" />
+
+
+
+<blockquote>
+<p>心中有信仰，脚下才有力量</p>
+</blockquote>
+<p>人总是需要信仰的，这样才能保持前进的步伐。</p>
+<ul>
+<li>信仰可以是金钱，这是人类社会最通用的等价值交换物，也是个体耐以生存的必要，保持对金钱的渴望才能对现在有更多的动力，但也会专注与六便士而忽略远方的月亮。</li>
+<li>信仰可以是兴趣，因为喜欢代码，旁边的开发小哥会参加 icpc，也会在闲暇时间刷题提升能力，这样的生活是愉悦的，是不自知的。</li>
+<li>信仰也可以来自外部，当失去力量的时候往往需要外部的力量来激励自己，或者说“情绪价值”，保持对代码的热爱可以让人更快速的学习，保持对总结的热爱，可以规范人的行为</li>
+</ul>
+<p>所以在秋招的时候，由于不信任自己擅长什么，在过去一周都过的浑浑噩噩的。所以在此希望自己能勉励自己，在看见自己不足的情况下才是应该成长的时候，去前进而不是去逃避。也希望可以避免成为乌合之众，在牛马之中也可以有天命人的激情。</p>
 
                 
               </div>
@@ -382,7 +352,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  <a href="/categories/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%B0%88/" class="category-chain-item">生活杂谈</a>
   
   
 
@@ -397,11 +367,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/CS229/" class="print-no-link">#CS229</a>
-      
-        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="print-no-link">#机器学习</a>
-      
-        <a href="/tags/%E8%AF%BE%E5%90%8E%E4%BD%9C%E4%B8%9A/" class="print-no-link">#课后作业</a>
+        <a href="/tags/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%B0%88/" class="print-no-link">#生活杂谈</a>
       
     </div>
   
@@ -413,8 +379,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CS229 机器学习 vol11 ｜ 课后作业 2</div>
-      <div>https://blog.tjdata.site/2024/04/29/CS229 机器学习 vol11 ｜ 课后作业 2/</div>
+      <div>盛夏之后，苦秋之前 ｜ 致求职</div>
+      <div>https://blog.tjdata.site/2024/09/03/盛夏之后，苦秋之前 ｜ 致求职/</div>
     </div>
     <div class="license-meta">
       
@@ -426,7 +392,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年4月29日</div>
+          <div>2024年9月3日</div>
         </div>
       
       
@@ -458,18 +424,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/04/29/Everything%20is%20Connected:%20Graph%20Neural%20Networks/" title="Everything is Connected Graph Neural Networks">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Everything is Connected Graph Neural Networks</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/04/29/CS229%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%20Vol10%20%EF%BD%9C%20%E8%AF%BE%E5%90%8E%E4%BD%9C%E4%B8%9A%201/" title="CS229 机器学习 Vol10 ｜ 课后作业 1">
-                        <span class="hidden-mobile">CS229 机器学习 Vol10 ｜ 课后作业 1</span>
+                      <a href="/2024/04/30/%E7%94%B5%E8%84%91%E9%94%AE%E7%9B%98%E8%83%8C%E5%90%8E%E7%9A%84%E6%95%85%E4%BA%8B%20feat.%20%E5%AE%81%E8%8A%9D%20Plum/" title="电脑键盘背后的故事 feat. 宁芝 Plum">
+                        <span class="hidden-mobile">电脑键盘背后的故事 feat. 宁芝 Plum</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
