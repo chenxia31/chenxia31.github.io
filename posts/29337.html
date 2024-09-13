@@ -1,0 +1,1047 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这篇文章主要针对 casual inference 的前置概念进行介绍，核心希望回答的问题是为什么需要因果性，如何得到因果估计。介绍到常见的因果发现的方法。之后会在因果路径的基础上介绍更多的因果方法。 一、为什么需要因果性而不是相关性1.1 从辛普森悖论说起 辛普森悖论的现象 目的希望查看药物T（A，B） 在患者 X（轻、重、总体）下的效果 悖论： 从分层人群来看，药物 A 均优于药物 B 从总体">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阅读 Casual inference 总结上">
+<meta property="og:url" content="https://blog.tjdata.site/posts/29337.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="这篇文章主要针对 casual inference 的前置概念进行介绍，核心希望回答的问题是为什么需要因果性，如何得到因果估计。介绍到常见的因果发现的方法。之后会在因果路径的基础上介绍更多的因果方法。 一、为什么需要因果性而不是相关性1.1 从辛普森悖论说起 辛普森悖论的现象 目的希望查看药物T（A，B） 在患者 X（轻、重、总体）下的效果 悖论： 从分层人群来看，药物 A 均优于药物 B 从总体">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913110909447.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913134745864.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913142533915.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913142834998.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913143054989.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913143236910.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913143823575.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913143902540.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913144519294.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913144556971.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913144707018.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913150150844.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913150342251.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913150604517.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913151026087.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913151519188.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913153535071.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913153502329.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913155020606.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913160033455.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913161235590.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913161333239.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913161443725.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913161836120.png">
+<meta property="article:published_time" content="2024-09-13T02:56:52.000Z">
+<meta property="article:modified_time" content="2024-09-13T08:36:41.797Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="因果推断">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913110909447.png">
+  
+  
+  
+  <title>阅读 Casual inference 总结上 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="阅读 Casual inference 总结上"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-13 10:56" pubdate>
+          2024年9月13日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">阅读 Casual inference 总结上</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这篇文章主要针对 casual inference 的前置概念进行介绍，核心希望回答的问题是为什么需要因果性，如何得到因果估计。介绍到常见的因果发现的方法。之后会在因果路径的基础上介绍更多的因果方法。</p>
+<h2 id="一、为什么需要因果性而不是相关性"><a href="#一、为什么需要因果性而不是相关性" class="headerlink" title="一、为什么需要因果性而不是相关性"></a>一、为什么需要因果性而不是相关性</h2><h3 id="1-1-从辛普森悖论说起"><a href="#1-1-从辛普森悖论说起" class="headerlink" title="1.1 从辛普森悖论说起"></a>1.1 从辛普森悖论说起</h3><ul>
+<li>辛普森悖论的现象<ul>
+<li>目的希望查看药物T（A，B） 在患者 X（轻、重、总体）下的效果</li>
+<li>悖论：<ul>
+<li>从分层人群来看，药物 A 均优于药物 B</li>
+<li>从总体人群来看，药物 A 均差于药物 B</li>
+<li>问题？应当对于一个新的人给于什么样的治疗</li>
+<li><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913110909447.png" srcset="/img/loading.gif" lazyload alt="image-20240913110909447" style="zoom:50%;" /></li>
+</ul>
+</li>
+<li>解释：<ul>
+<li>可能的解释 1：某种因素影响 T 的分配，比如更严重的人才会用 B，这个时候 B 更好</li>
+<li>可能的解释 2：如果存在中介变量，例如药物 B 需要人停留很长的时间而不被允许，这个时候 A 更好</li>
+</ul>
+</li>
+<li>结论：<ul>
+<li>需要因果才能解释数据中出现违反直觉的结论</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-2-因果推断的应用"><a href="#1-2-因果推断的应用" class="headerlink" title="1.2 因果推断的应用"></a>1.2 因果推断的应用</h3><ul>
+<li>希望找到因果的描述，而不是相关性的描述（Associational），这样才能做出有效的策略<ul>
+<li>药物治疗</li>
+<li>强化学习</li>
+<li>社会实验</li>
+</ul>
+</li>
+<li>因果推断对关键决策至关重要<ul>
+<li>温室气体控制</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3-相关性不代表因果性"><a href="#1-3-相关性不代表因果性" class="headerlink" title="1.3 相关性不代表因果性"></a>1.3 相关性不代表因果性</h3><blockquote>
+<p>Correlation does not imply causation</p>
+</blockquote>
+<p>关联关系（Association 或者 Correlation in linear statistical dependence）与因果关系</p>
+<ul>
+<li>并不是所有的 association 都是 casual</li>
+<li>也不是所有的 association 都不是 casual</li>
+<li>这句话的目的在于说明 association 和 causation 之间是有区别的</li>
+<li>例子：不脱鞋和头疼，但是潜在的混杂在于喝酒 -&gt; 不脱鞋，喝酒 -&gt; 头疼。 这种为 casual association，但是不脱鞋 -&gt; 头疼，为confounding association</li>
+</ul>
+<p><strong>核心问题：希望找到因果关系来产出有效的策略方案</strong></p>
+<h3 id="1-4-核心主题"><a href="#1-4-核心主题" class="headerlink" title="1.4 核心主题"></a>1.4 核心主题</h3><ul>
+<li><p>统计和因果</p>
+<ul>
+<li><p>统计（Statistical）：在有限的样本中估计随机性</p>
+</li>
+<li><p>因果性（casual）：但是 statistical 中的correlation 不代表 casual</p>
+</li>
+</ul>
+</li>
+<li><p>识别和估计</p>
+<ul>
+<li>identification：识别因果效应（casual effect）是因果推断的关键</li>
+<li>estimation：常用到 ML 中的估计方法来实现效应的估计</li>
+</ul>
+</li>
+<li><p>干预和实验</p>
+<ul>
+<li>interventional 干预实验中可以很容易得到因果效应估计</li>
+<li>observation 数据中容易出现很多的观察因素</li>
+</ul>
+</li>
+<li><p>假设</p>
+<ul>
+<li>基于一些假设我们才能正确的计算 potential outcome</li>
+</ul>
+</li>
+</ul>
+<h2 id="二、基本假设：如何得到-Potential-outcome"><a href="#二、基本假设：如何得到-Potential-outcome" class="headerlink" title="二、基本假设：如何得到 Potential outcome"></a>二、基本假设：如何得到 Potential outcome</h2><p>T 表示策略、Y 表示输出值、X 表示可行的协变量，利用大写变量表示随机性、利用小写变量表示具体值。</p>
+<h3 id="2-1-潜在输出到ITE"><a href="#2-1-潜在输出到ITE" class="headerlink" title="2.1 潜在输出到ITE"></a>2.1 潜在输出到ITE</h3><blockquote>
+<p>例子 1：假如你现在很开心（Y&#x3D;1），现在给了你一个玩具狗 （T&#x3D;1），这个时候你仍然很开心（Y&#x3D;1），但是玩具狗对你开心的效应是很弱的</p>
+<p>例子 2：假设你现在不开心（Y&#x3D;0），现在给了你一个玩具狗（T&#x3D;1），这个时候你变开心了（Y&#x3D;1），说明玩具狗具有很强的开心效应</p>
+</blockquote>
+<p>Y（t）表示实施某种策略下潜在的输出，因此对于单个个体的策略包括</p>
+<p>$$ t_i &#x3D; Y_i(1)-Y_i(0) $$</p>
+<h3 id="2-2-基本问题"><a href="#2-2-基本问题" class="headerlink" title="2.2  基本问题"></a>2.2  基本问题</h3><p>但是对于同一个个体无法在同一个时间下同时观察到两种策略下的输出，也就是反事实counterfactuals</p>
+<h3 id="2-3-如何解决这些问题"><a href="#2-3-如何解决这些问题" class="headerlink" title="2.3 如何解决这些问题"></a>2.3 如何解决这些问题</h3><p>如何无法计算 ITE，是否可以有某种方式来计算 ATE</p>
+<p>$$t &#x3D; E[t_i] &#x3D; E[Y_i(1)-E_i(0)] &#x3D; E[Y(1)-Y(0)]$$ </p>
+<p>但是在通常的条件下，这个并不是等于</p>
+<p>$$E[Y|T&#x3D;1] - E[Y|T&#x3D;0]$$</p>
+<p>由此来计算对应的 ATE 输出</p>
+<h4 id="2-3-1-假设1：ignorability-and-exchange"><a href="#2-3-1-假设1：ignorability-and-exchange" class="headerlink" title="2.3.1 假设1：ignorability and exchange"></a>2.3.1 假设1：ignorability and exchange</h4><p>需要保证施加策略的用户是可以实现互换的</p>
+<ul>
+<li>可忽略性假设是人们如何选择策略以及被策略选择</li>
+<li>互换性假设希望两者之间可以互换的</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913134745864.png" srcset="/img/loading.gif" lazyload alt="条件独立性"></p>
+<p>如何使用 a2.1 来实现因果关系的识别，也就是可以从相关关系的识别中来观察到因果关系效应，这样可以将 causal expression 转换成为一个 statistical expression。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913142533915.png" srcset="/img/loading.gif" lazyload alt="可识别性定义"></p>
+<h4 id="2-3-2-假设2：unconfoundeness-（CIA）或者-conditional-exchange-ability"><a href="#2-3-2-假设2：unconfoundeness-（CIA）或者-conditional-exchange-ability" class="headerlink" title="2.3.2 假设2：unconfoundeness （CIA）或者 conditional exchange ability"></a>2.3.2 假设2：unconfoundeness （CIA）或者 conditional exchange ability</h4><p>在观察数据中，满足假设 1 是完全不可能的，因为不可能找到两者完全相同的组，但是如果我们可以控制住相关的变量，那么在相同条件下可以计算对应的因果效应。</p>
+<ul>
+<li>如何定义“相关变量”在因果图中可以表示</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913142834998.png" srcset="/img/loading.gif" lazyload alt="条件独立性"></p>
+<p>这里的核心思想在于 T 和 Y 虽然可能是相关联的 association，但是在控制住相同的协变量之后，不同 T 组别之间是可比的</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913143054989.png" srcset="/img/loading.gif" lazyload alt="控制住 confounders 来满足计算"></p>
+<p>通过控制混淆变量的方式可以让我们在无法观察到反事实的情况下，计算出因果效应，这里的公式被定义为 adjustment formula，进而可以计算除因果效应。通过将假设 2.1 转换为假设 2.2 ，让这个额条件更加实际，但但是我们仍然不知道控制的变量是什么形式，但是由于协变量中不可能保证完整的混淆变量 confounders 被观察到，因此仍然不满足条件独立性假设</p>
+<ul>
+<li>在自然对照实验中这并不是问题<ul>
+<li>（个人想法，但是理论上完全的自然对照实验是不存在的，因此通过一些纠偏的方法来AB 实验的数据中进行清洗可能会得到一个更好的结果）</li>
+</ul>
+</li>
+<li>在观察数据中很难解决的事情<ul>
+<li>唯一可行的是观察和拟合尽可能多的协变量 X，来尝试保证（无混淆假设 unconfoundedness）</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913143236910.png" srcset="/img/loading.gif" lazyload alt="调整公式"></p>
+<h4 id="2-3-3-假设3：positivity"><a href="#2-3-3-假设3：positivity" class="headerlink" title="2.3.3 假设3：positivity"></a>2.3.3 假设3：positivity</h4><p>虽然尽可能的保证协变量 X 中包含尽可能多的混淆变量 confounders 可以让 CIA 假设得到的满足，但是为了计算因果效应，我们需要保证正值假设，而随着变量的增多可能会导致某些个体无法观察到对应的数据进而不能计算因果效应。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913143823575.png" srcset="/img/loading.gif" lazyload alt="Assumption23"></p>
+<p>证明如下：计算 ATE 提升期望的过程中，使用贝叶斯法则：</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913143902540.png" srcset="/img/loading.gif" lazyload alt="正值假设"></p>
+<blockquote>
+<p>直觉的解释，为什么需要正值假设？</p>
+<p>因为如果不满足正值假设，说明其中某些子群体 subgroup 常常被分配到固定的策略方式，这种完全观察不到另一种方式会导致无法计算合理的casual effect</p>
+</blockquote>
+<p>因此我们往往面临 假设 2.2-假设 2.3 之间的 tradeoff。协变量 X 中表示更多的混杂变量可以更容易满足假设 2.2，但是随着变量的增多，我们更容易陷入不满足假设 2.3 中，因为一部分群体只会接受到固定的策略。此时在外推情况下往往会导致输出为 0</p>
+<h4 id="2-3-4-假设-4：No-interference-consistency-SUTVA"><a href="#2-3-4-假设-4：No-interference-consistency-SUTVA" class="headerlink" title="2.3.4 假设 4：No interference + consistency &#x3D; SUTVA"></a>2.3.4 假设 4：No interference + consistency &#x3D; SUTVA</h4><p>没有干扰性的假设表示每个人的输出不会受到其他人的影响</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913144519294.png" srcset="/img/loading.gif" lazyload alt="image-20240913144519294"></p>
+<p>一致性假设表示在给定一个策略下，必然得到固定的产出</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913144556971.png" srcset="/img/loading.gif" lazyload alt="image-20240913144556971"></p>
+<h4 id="2-3-5-总结"><a href="#2-3-5-总结" class="headerlink" title="2.3.5 总结"></a>2.3.5 总结</h4><p>在满足上述假设的过程中，我们可以通过期望公式将条件因果效应得到对应的输出</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913144707018.png" srcset="/img/loading.gif" lazyload alt="满足假设条件下的因果效应估计方法"></p>
+<ul>
+<li>Casual estimand 因果效应真实值（通过 identification）</li>
+<li>Statistical estimand 统计效应真实值 （通过 estimation）</li>
+<li>Estimate</li>
+</ul>
+<h2 id="三、违反基本假设的困难：从Casual-Graph-解释"><a href="#三、违反基本假设的困难：从Casual-Graph-解释" class="headerlink" title="三、违反基本假设的困难：从Casual Graph 解释"></a>三、违反基本假设的困难：从Casual Graph 解释</h2><h4 id="3-1-基本图的术语"><a href="#3-1-基本图的术语" class="headerlink" title="3.1 基本图的术语"></a>3.1 基本图的术语</h4><ul>
+<li>graph <ul>
+<li>nodes</li>
+<li>edges</li>
+<li>Connection </li>
+<li>path</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-2-贝叶斯网络"><a href="#3-2-贝叶斯网络" class="headerlink" title="3.2 贝叶斯网络"></a>3.2 贝叶斯网络</h4><p>The chain rule of probability </p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913150150844.png" srcset="/img/loading.gif" lazyload alt="概率计算链条"></p>
+<p>结合贝叶斯网络和马尔科夫性质</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913150342251.png" srcset="/img/loading.gif" lazyload alt="如何计算 casual estimand"></p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913150604517.png" srcset="/img/loading.gif" lazyload alt="image-20240913150604517"></p>
+<p>PS： 定义 3.2 没太看懂</p>
+<h4 id="3-3-因果图-Casual-Graph"><a href="#3-3-因果图-Casual-Graph" class="headerlink" title="3.3 因果图 Casual Graph"></a>3.3 因果图 Casual Graph</h4><blockquote>
+<p>什么是因果性？</p>
+<p>如果 X 变化，Y 一定会随着变化的。在因果图中每一个父节点都是子节点的直接原因</p>
+</blockquote>
+<h4 id="3-4-两个节点"><a href="#3-4-两个节点" class="headerlink" title="3.4 两个节点"></a>3.4 两个节点</h4><p>对于两个没有关联的节点之间是存在独立性的 $P(x_1,x_2) &#x3D; P(x_1)P(x_2)$</p>
+<p>对于两个存在关联的节点之间是存在 association 的 </p>
+<h4 id="3-5-因果链-chain-和-因果叉-fork"><a href="#3-5-因果链-chain-和-因果叉-fork" class="headerlink" title="3.5 因果链 chain 和 因果叉 fork"></a>3.5 因果链 chain 和 因果叉 fork</h4><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913151026087.png" srcset="/img/loading.gif" lazyload alt="因果图中常见的关系包括"></p>
+<p>在 Chain 下如何计算 X1 对于 X3 的因果效应？</p>
+<p>在 Fork 下如何计算 X1 对于 X3 的因果效应？</p>
+<p>如果在保证变量 X2 的条件下，可以证明 X1 和 X3 之间存在独立性，因此可以计算因果性。由此可以满足条件独立性假设。</p>
+<h4 id="3-6-因果碰撞-Collider-与其后代"><a href="#3-6-因果碰撞-Collider-与其后代" class="headerlink" title="3.6 因果碰撞 Collider 与其后代"></a>3.6 因果碰撞 Collider 与其后代</h4><p>看上去 Immorality 中 X1 和 X3 之间没有association，但是其都是指向了相同的变量 X2，因此在采用 X2 作为变量控制，可能会让两个不相关的变量存在 association</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913151519188.png" srcset="/img/loading.gif" lazyload alt="Collider 因果发现"></p>
+<blockquote>
+<p>为什么通过控制碰撞变量可以得到因果效应的估计呢？</p>
+<p>比如在相亲的过程中， X1 善良，X3 外表；你会发现大多数好看的男生都是混蛋，而大多数善良的男生都不好看，因此必需要在外表和善良之间做出选择，也就是两者存在负相关。<br>但是变量 X2 表示可获得性，也就是没有对象的人才会相亲。由于 X2 导致两者存在 association，在条件于 X2 的情况下，会导致两者存在 association</p>
+</blockquote>
+<p>因此通过控制 Collider 变量，会导致一个阻断链路成为一个非阻断链路。</p>
+<ul>
+<li>X1 和 X3 在整个人群中没有关系</li>
+<li>但是条件与 X2下，会导致两者出现association</li>
+<li>berkson‘s paradox，这也是导致 selection bias 的存在</li>
+</ul>
+<h4 id="3-7-Do-算子-｜-d-separation"><a href="#3-7-Do-算子-｜-d-separation" class="headerlink" title="3.7 Do 算子 ｜ d-separation"></a>3.7 Do 算子 ｜ d-separation</h4><p>那么上述的阻断路径指的是什么？</p>
+<ul>
+<li>对于 chain 和 fork 变量，需要控制住</li>
+<li>对于 Collider及其子变量，都不需要控制</li>
+</ul>
+<p>未被阻断的路径就是路径中存在未被阻断的节点，其中可能会存在 association，但是在 blocked path 中不存在 association 而可以识别出casual，有次定义的 D -分离的定义<img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913153535071.png" srcset="/img/loading.gif" lazyload alt="符号定义" style="zoom:25%;" /></p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913153502329.png" srcset="/img/loading.gif" lazyload alt="d 分离定义"></p>
+<h4 id="3-8-因果图和相关图"><a href="#3-8-因果图和相关图" class="headerlink" title="3.8 因果图和相关图"></a>3.8 因果图和相关图</h4><p>在介绍完因果图中常见的概念之外，最终的目的是为了能够介绍因果图中的 association 和 causation</p>
+<ul>
+<li>association<ul>
+<li>casual association 按照 direct path 运行</li>
+<li>confounding association 混淆关联</li>
+</ul>
+</li>
+</ul>
+<p>在上述的基础后提出的“后门准则”和“前门准则”中的意义在于</p>
+<ul>
+<li><p>在某些研究中，虽然 DAG 的某些变量不可观测，我们仍然可以从有限的观测数据中估计因果效应</p>
+</li>
+<li><p>有助于鉴别 混杂变量和设计观察性研究</p>
+</li>
+<li><p>后门准则(Fork)：定义变量之间除了直连路径之外的其他 unblocked path 均为后门路径</p>
+<ul>
+<li>Z 中节点不是 X 的后代</li>
+<li>Z 阻断所有指向 X 的路径</li>
+</ul>
+</li>
+<li><p>前门准则(Chain)</p>
+<ul>
+<li>Z  阻断了所有 X 到 Y 的直接路径</li>
+<li>X 到 Z 没有后门路径</li>
+<li>所有 Z 到 Y 的后门路径都被 X 阻断</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>例子：</strong>我们关心吸烟和肺癌之间的因果关系。由于一个潜在的不可观测的基因 的存在，吸烟和肺癌之间有一条“活”的后门路径，因此不借助其他的条件，我们无法识别吸烟与肺癌的因果关系。如果我们有这样的知识“吸烟 仅仅通过肺部烟焦油的含量 来影响肺癌 ”，那么吸烟对肺癌的因果作用就可以估计出来了。不过，这里需要两个条件，也就是在证明中使用的两个条件独立性，他们表明：（1）吸烟  和肺部烟焦油的含量  之间没有“活”的后门路径（或者没有混杂因素）；（2）吸烟 对肺癌 的作用仅仅来源于吸烟 对肺部烟焦油 的作用，或者说，吸烟 对肺癌 没有“直接作用“”</p>
+</blockquote>
+<p>再回到原始的辛普森悖论的 问题，可以发现在背后可以有很多种解释的方法，因此只有基于因果的方式才能更好的描述这个状况</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913155020606.png" srcset="/img/loading.gif" lazyload alt="辛普森悖论背后的解释方法"></p>
+<h2 id="四、如何得到准确的答案：Casual-Models"><a href="#四、如何得到准确的答案：Casual-Models" class="headerlink" title="四、如何得到准确的答案：Casual Models"></a>四、如何得到准确的答案：Casual Models</h2><h4 id="4-1-do算子和干预输出分布"><a href="#4-1-do算子和干预输出分布" class="headerlink" title="4.1 do算子和干预输出分布"></a>4.1 do算子和干预输出分布</h4><p>因果推断中 do 算子的一些描述</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913160033455.png" srcset="/img/loading.gif" lazyload alt="可视化描述"></p>
+<h4 id="4-2-核心的假设：模块化-Modularity"><a href="#4-2-核心的假设：模块化-Modularity" class="headerlink" title="4.2 核心的假设：模块化 Modularity"></a>4.2 核心的假设：模块化 Modularity</h4><p>为确保因果图中对于变量 X 的干预只会改变 X 本身的概率，等价于移除所有指向 X 的因果边</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913161235590.png" srcset="/img/loading.gif" lazyload alt="模块化的定义"></p>
+<p>例如从观察数据中，和对其施加干预之后的干预分布定义</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913161333239.png" srcset="/img/loading.gif" lazyload alt="分布示意图"></p>
+<p>被定义为反事实规则或者是干预规则</p>
+<h4 id="4-3-因果图分解-truncated-factorization"><a href="#4-3-因果图分解-truncated-factorization" class="headerlink" title="4.3 因果图分解 truncated factorization"></a>4.3 因果图分解 truncated factorization</h4><p>在因果图的局部假设的基础上，可以提出因果图的分解方法</p>
+<ul>
+<li><p>贝叶斯网络分解公式</p>
+<ul>
+<li>对其进行分解</li>
+</ul>
+</li>
+<li><p>马尔可夫假设 或者 模块化假设</p>
+<ul>
+<li>对其进行分解</li>
+</ul>
+<p>通过三个步骤计算出因果统计量</p>
+</li>
+</ul>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913161443725.png" srcset="/img/loading.gif" lazyload alt="因果图分解"></p>
+<h4 id="4-4-后门调整-backdoor-adjustment"><a href="#4-4-后门调整-backdoor-adjustment" class="headerlink" title="4.4 后门调整 backdoor adjustment"></a>4.4 后门调整 backdoor adjustment</h4><p>如果在上述的到完整的后门准则调整的集合之后，在给定的数据集后则可以识别出对应的因果效应</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240913161836120.png" srcset="/img/loading.gif" lazyload alt="后门调整"></p>
+<p>前提是需要满足 正值假设、后门准则（充分集合）来求解出对应的因果效应</p>
+<h4 id="4-5-结构因果模型-SCM"><a href="#4-5-结构因果模型-SCM" class="headerlink" title="4.5 结构因果模型 SCM"></a>4.5 结构因果模型 SCM</h4><h4 id="4-6-后门调整的应用"><a href="#4-6-后门调整的应用" class="headerlink" title="4.6 后门调整的应用"></a>4.6 后门调整的应用</h4><h4 id="4-7-回顾假设"><a href="#4-7-回顾假设" class="headerlink" title="4.7 回顾假设"></a>4.7 回顾假设</h4><h2 id="五、自然对照实验和非参数识别"><a href="#五、自然对照实验和非参数识别" class="headerlink" title="五、自然对照实验和非参数识别"></a>五、自然对照实验和非参数识别</h2><h2 id="六、如何估计因果效应-Casual-effect"><a href="#六、如何估计因果效应-Casual-effect" class="headerlink" title="六、如何估计因果效应 Casual effect"></a>六、如何估计因果效应 Casual effect</h2><h2 id="七、-未观察到的混杂因子"><a href="#七、-未观察到的混杂因子" class="headerlink" title="七、 未观察到的混杂因子"></a>七、 未观察到的混杂因子</h2><h2 id="八、工具变量-IV"><a href="#八、工具变量-IV" class="headerlink" title="八、工具变量 IV"></a>八、工具变量 IV</h2><h2 id="九、时间差异-DID"><a href="#九、时间差异-DID" class="headerlink" title="九、时间差异 DID"></a>九、时间差异 DID</h2><h2 id="十、观察数据中的因果发现"><a href="#十、观察数据中的因果发现" class="headerlink" title="十、观察数据中的因果发现"></a>十、观察数据中的因果发现</h2><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>《Introduction to casual inference from a machine learning perspective》 by Brady Neal</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%9B%A0%E6%9E%9C%E6%8E%A8%E6%96%AD/" class="print-no-link">#因果推断</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>阅读 Casual inference 总结上</div>
+      <div>https://blog.tjdata.site/posts/29337.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年9月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/21152.html" title="盛夏之后，苦秋之前 ｜ 致求职">
+                        <span class="hidden-mobile">盛夏之后，苦秋之前 ｜ 致求职</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
