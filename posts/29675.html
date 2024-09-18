@@ -19,32 +19,34 @@
   <meta name="author" content="chenlongxu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="从Policy gradient，到Actor- critic，我们尝试丢弃policy，从AC到Q- iteration或者Q- learning我们彻底丢弃Policy，但是遇到不能收敛的问题。现在我们尝试改进Q- learning来实现想要的功能 0x01 Q- learning中的问题上次从理论的角度看出online Q iteration很难收敛，更直观的看待问题我们会发现有以下几点的原">
+    <meta name="description" content="上一篇文章从概念的角度解释了因果推断中常见的问题，同时介绍因果图的分析方法来得到相关性信息和因果性信息流之间的方法。在这篇将更加深入的理解干预（Invention）、后门路径（Backdoor path）和后门调整（Backdoor adjustment）来准确的计算因果效应。以及假设较为困难的前门准则和 do 算子的方式来估计因果效应。这些方法的核心目的是：将因果估计转换成为统计估计，进而估计结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CS285 深度强化学习 Vol8 ｜ Q 函数">
-<meta property="og:url" content="https://blog.tjdata.site/posts/7e704bf4.html">
+<meta property="og:title" content="阅读 Casual inference_总结中">
+<meta property="og:url" content="https://blog.tjdata.site/posts/29675.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
-<meta property="og:description" content="从Policy gradient，到Actor- critic，我们尝试丢弃policy，从AC到Q- iteration或者Q- learning我们彻底丢弃Policy，但是遇到不能收敛的问题。现在我们尝试改进Q- learning来实现想要的功能 0x01 Q- learning中的问题上次从理论的角度看出online Q iteration很难收敛，更直观的看待问题我们会发现有以下几点的原">
+<meta property="og:description" content="上一篇文章从概念的角度解释了因果推断中常见的问题，同时介绍因果图的分析方法来得到相关性信息和因果性信息流之间的方法。在这篇将更加深入的理解干预（Invention）、后门路径（Backdoor path）和后门调整（Backdoor adjustment）来准确的计算因果效应。以及假设较为困难的前门准则和 do 算子的方式来估计因果效应。这些方法的核心目的是：将因果估计转换成为统计估计，进而估计结">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c1d91e32f5ff28d1f146cca885d9baf8_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ac9ee308c712738a359daef7914d72f8_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4cd2d97b204e83c6a5cc26e1fcf41c12_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-858ae38d9cd26e82f0db62d602dcb3f0_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-fbd12e57b426cf7f20ea8cafac4b6256_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-85311453c1891e8367356451b6b0741b_1440w.png">
-<meta property="article:published_time" content="2024-04-29T09:14:12.000Z">
-<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918092041754.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918092059134.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918093111288.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918093837862.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918093954279.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918094608683.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918100637222.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918101428649.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918101922155.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918103236733.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918103633239.png">
+<meta property="article:published_time" content="2024-09-18T00:44:53.000Z">
+<meta property="article:modified_time" content="2024-09-18T02:55:51.924Z">
 <meta property="article:author" content="chenlongxu">
-<meta property="article:tag" content="深度学习">
-<meta property="article:tag" content="强化学习">
-<meta property="article:tag" content="CS285">
-<meta property="article:tag" content="动作状态价值">
+<meta property="article:tag" content="因果推断">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c1d91e32f5ff28d1f146cca885d9baf8_1440w.png">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918092041754.png">
   
   
   
-  <title>CS285 深度强化学习 Vol8 ｜ Q 函数 - Chenlong&#39;s blog</title>
+  <title>阅读 Casual inference_总结中 - Chenlong&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -223,7 +225,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CS285 深度强化学习 Vol8 ｜ Q 函数"></span>
+            <span id="subtitle" data-typed-text="阅读 Casual inference_总结中"></span>
           
         </div>
 
@@ -234,8 +236,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-04-29 17:14" pubdate>
-          2024年4月29日 下午
+        <time datetime="2024-09-18 08:44" pubdate>
+          2024年9月18日 早上
         </time>
       </span>
     
@@ -246,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          387 字
+          2.2k 字
         
       </span>
     
@@ -257,7 +259,7 @@
         
         
         
-          4 分钟
+          19 分钟
         
       </span>
     
@@ -303,39 +305,102 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CS285 深度强化学习 Vol8 ｜ Q 函数</h1>
+            <h1 id="seo-header">阅读 Casual inference_总结中</h1>
             
             
               <div class="markdown-body">
                 
-                <p>从Policy gradient，到Actor- critic，我们尝试丢弃policy，从AC到Q- iteration或者Q- learning我们彻底丢弃Policy，但是遇到不能收敛的问题。现在我们尝试改进Q- learning来实现想要的功能</p>
-<h3 id="0x01-Q-learning中的问题"><a href="#0x01-Q-learning中的问题" class="headerlink" title="0x01 Q- learning中的问题"></a>0x01 Q- learning中的问题</h3><p>上次从理论的角度看出online Q iteration很难收敛，更直观的看待问题我们会发现有以下几点的原因：</p>
+                <p>上一篇文章从概念的角度解释了因果推断中常见的问题，同时介绍因果图的分析方法来得到相关性信息和因果性信息流之间的方法。在这篇将更加深入的理解干预（Invention）、后门路径（Backdoor path）和后门调整（Backdoor adjustment）来准确的计算因果效应。以及假设较为困难的前门准则和 do 算子的方式来估计因果效应。这些方法的核心目的是：将因果估计转换成为统计估计，进而估计结果。</p>
+<h2 id="第四章、干预与后门调整"><a href="#第四章、干预与后门调整" class="headerlink" title="第四章、干预与后门调整"></a>第四章、干预与后门调整</h2><h3 id="4-1-Do-运算符"><a href="#4-1-Do-运算符" class="headerlink" title="4.1 Do 运算符"></a>4.1 Do 运算符</h3><p>注意干预 invention 和统计学中的 conditioning 之间的区别，为了表示区别因果中利用 do 算子表示</p>
 <ol>
-<li>Q- learning中通常使用的是单个样本，这样对于更新迭代并不友好</li>
-<li>在第三步中的有一个类似gradient descent的公式但是其实在同一个轨迹中两者之间具有强烈相关性</li>
-<li>不满足iid假设样本中的效果并不好</li>
+<li>统计中的conditional，指的是我们只将注意力限定在接受治疗的 subgroup 中</li>
+<li>因果中的 invention，指的是针对所有的群体添加干预</li>
 </ol>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c1d91e32f5ff28d1f146cca885d9baf8_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102223452106</p>
-<p>解决思路</p>
+<p>同时我们希望得到的结果是干预分布（interventional distributions）P（Y｜do（T）），同时也要注意干预分布和观测到的分布之间的区别。其中面临反事实的问题，那么什么样的情况下可识别？</p>
+<blockquote>
+<p>如果可以将包含 do 算子的表达式（Casual estimation）还原成为没有 do 算子的表达式（statistical estimate），则说明是可识别的</p>
+</blockquote>
+<p>因果机制（Casual mechanism）指的是，对于一个节点来说，影响其的结果只包含其parent 和对应的边。在因果机制的基础上，我们作出<strong>干预是局部的假设</strong>，我们假设对于一些变量的干预改变 X 对应的因果机制，而不是改变其产生其他变量的因果机制，也可以额被称为模块化（modularity），或者是独立机制、自主性和不变性机制。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918092041754.png" srcset="/img/loading.gif" lazyload alt="模块化的机制"></p>
+<p>干预操作的本质是希望改变原有的概率分布：</p>
 <ol>
-<li>修正样本，同样借鉴AC中的方法可以使用synchronized parallel Q- learning或者asynchronous parallel Q- learning来实现。</li>
-<li>使用replay buffers，因为Q- learning只需要（state，action，next- state，reward）就行</li>
+<li>第一种是观察数据中的因果图</li>
+<li>第二种是针对 T 施加干预的结果，对于其他节点的因果机制没有发生改变，而针对干预节点由于其因果机制发生了改变，因此可以对其parent 节点进行截断</li>
+<li>第三种与上述的情况保持一致</li>
 </ol>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ac9ee308c712738a359daef7914d72f8_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102223917061</p>
-<h3 id="0x02-Q-learning-with-replay-buffer的问题"><a href="#0x02-Q-learning-with-replay-buffer的问题" class="headerlink" title="0x02 Q-learning with replay- buffer的问题"></a>0x02 Q-learning with replay- buffer的问题</h3><p>按照厂里后面的一部份应该是没有梯度的，但是因为两者具有相关性我们的效果会很差，起不到梯度下降的效果。</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4cd2d97b204e83c6a5cc26e1fcf41c12_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102224124136</p>
-<p>因此我们会设置一个target network，在每次更新的时候，target也不会改变，同时这个过程中两者是某种意义上的不想关的。背后的方式是启发式的，但是实际上是一种经验很好的实践方法。通常更新的时候可以用指数平均的方法</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-858ae38d9cd26e82f0db62d602dcb3f0_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102225023533</p>
-<p>更高的视角</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-fbd12e57b426cf7f20ea8cafac4b6256_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102225216215</p>
-<h3 id="0x03-提高Q-learning"><a href="#0x03-提高Q-learning" class="headerlink" title="0x03 提高Q-learning"></a>0x03 提高Q-learning</h3><p>后面结合一篇论文来介绍，也就是Rainbow～</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-85311453c1891e8367356451b6b0741b_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102225350693</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918092059134.png" srcset="/img/loading.gif" lazyload alt="详细解释概率图"></p>
+<p>添加干预的好处是可以让概率发生变化，那么为什么需要将概率升变化呢？核心目的是让策略效应的计算可以更加的简单，通过模块化的假设可以让我们在计算联合概率分布中将干预的节点进行剔除，具体来说就是截断公式（Truncated factorization ）</p>
+<p>针对下列经典的情况，我们可以计算在施加干预和不施加干预前后的输出</p>
+<ol>
+<li>干预分布 P(y|do(t)</li>
+<li>观测分布P(y|t)</li>
+</ol>
+<p>通过计算可以发现核心在于 P(X) 和 P(X|T)之间的分布差异造成了观察结果和干预分布之间的问题</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918093111288.png" srcset="/img/loading.gif" lazyload alt="经典混淆因果关系"></p>
+<h3 id="4-2-后门路径和后门调整"><a href="#4-2-后门路径和后门调整" class="headerlink" title="4.2 后门路径和后门调整"></a>4.2 后门路径和后门调整</h3><p>在因果图中，如果希望识别两个节点的因果关系我们希望可以截断两个节点直接非因果的关联，而非因果的关联主要是通过非阻塞路径（unblocked path）进行传递，If 我们可以阻断这些路径，Then 就可以在干预 T 的情况下估计出 T 对 Y 的因果效应，由此得到的后门标准为：</p>
+<p>需要有一系列变量的集合造成了：</p>
+<ol>
+<li>W 阻塞了所有 T 和 X 之间的后门路径</li>
+<li>W 不会包含 T 的任何后台节点</li>
+</ol>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918093837862.png" srcset="/img/loading.gif" lazyload alt="后门标准"></p>
+<p>在后门准则的基础上，我们找到了调整变量，进而施加干预得到准确的因果效应估计</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918093954279.png" srcset="/img/loading.gif" lazyload alt="后门调整公式 backdoor adjustment formula"></p>
+<blockquote>
+<p> 一个实际的例子来计算：干预和非干预情况下 的因果效应估计</p>
+</blockquote>
+<ol>
+<li>第一种在施加干预的情况下，可以通过截断公式来得到 Y 对于 T 的效应识别</li>
+<li>第二种是在不施加干预的情况下，利用相关性公式得到 Y 对于 T 的识别，可以发现是存在有偏差的</li>
+</ol>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918094608683.png" srcset="/img/loading.gif" lazyload alt="示意图"></p>
+<p>在无法准确的施加干预的背景下，我们可以使用施加找到后门调整的变量来估算出因果效应</p>
+<blockquote>
+<p>key point 总结</p>
+<ol>
+<li>为了计算干预之后的概率分布公式，我们可以使用局部性假设来对概率分布进行截断，进而计算出包含 do 算子下的因果效应分析公式</li>
+<li>因果关系识别的核心在于如何将包含 do 算子的公式转换成为没有 do 算子的表达式</li>
+<li>造成偏差的核心问题在于 P（X|T）和 P（X）之间的不一致造成的偏差</li>
+<li>如果我们可以找到后门调整的路径并进行截断，我们可以完成上述的操作</li>
+</ol>
+</blockquote>
+<h2 id="五、随机控制实验-randomized-control-experiments"><a href="#五、随机控制实验-randomized-control-experiments" class="headerlink" title="五、随机控制实验 randomized control experiments"></a>五、随机控制实验 randomized control experiments</h2><p>在 AB 实验中，通过随机的控制策略的分发机制，可以保障最终得到的关联性为因果性。因为 T 和协变量直接完全独立是的最终的因果效应可以识别。</p>
+<p>在随机对照实验需要保证 AB 两组是完全可比的，更加精确的定义这里的可比是各组的协变量之间的分布为相似的状态，确保协变量均衡是有效对比和分析后续的基础。核心是实现<img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918100637222.png" srcset="/img/loading.gif" lazyload alt="image-20240918100637222" style="zoom: 25%;" />，通过保证 X 和 T之间相互独立的状态，可以实现两者满足可交换的假设，进而准确的计算因果效应。如何实现协变量均衡可以从：</p>
+<ol>
+<li>随机化，在实验设计的过程中将变量随机的分配到不同的组别在满足条件</li>
+<li>匹配，通过匹配的方式来均衡协变量的分布</li>
+<li>统计套装，通过回归分析的方法对最终的结果进行纠偏的操作来调整对结果的影响 regression adjustment</li>
+</ol>
+<h2 id="六、非参数识别"><a href="#六、非参数识别" class="headerlink" title="六、非参数识别"></a>六、非参数识别</h2><h3 id="6-1-前门准则"><a href="#6-1-前门准则" class="headerlink" title="6.1 前门准则"></a>6.1 前门准则</h3><p>在第四章中我们在后门准则的基础上介绍了后门调整的方法（通过寻找到恰当的后门准则变量来实现后门调整，进而完成准确的因果效应估计），但是是否有其他的方式来实现因果效应的评估。或者说在之前的经验中我们尝试使用观察到充足的后门调整变量来实现因果效应的识别，但是如果在 W 无法被重插的情况下如何实现效应的评估。这里注重介绍 前门准则和前门调整。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918101428649.png" srcset="/img/loading.gif" lazyload alt="前门准则和调整"></p>
+<p>前门调整适用于在后门准则的变量无法被充分识别和观察的情况下+中介变量可以被观察的情况下，可以通过三个步骤来计算出Y 中 T 因果效应</p>
+<ol>
+<li>M 中 T 的因果效应，完全是因果关系</li>
+<li>Y 中 M 的因果效应，可以通过对 T的后门准则的截断来完成</li>
+<li>联合上述两个步骤，来得到 Y 中 T 的因果效应<img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918101922155.png" srcset="/img/loading.gif" lazyload alt="image-20240918101922155" style="zoom: 25%;" /></li>
+</ol>
+<p>其中前门准则包括：</p>
+<ol>
+<li>M 是充分的变量，也就是所有的因果路径均会通过 M 流向 Y</li>
+<li>所有 T 到 M 的后门路径均被截断</li>
+<li>所有从 M 到 Y 的路径均被 T 截断</li>
+</ol>
+<h3 id="6-2-do-算子"><a href="#6-2-do-算子" class="headerlink" title="6.2 do 算子"></a>6.2 do 算子</h3><p>在不满足前门准则和后门准则的基础上，如何来实现因果效应的估计</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918103236733.png" srcset="/img/loading.gif" lazyload alt="do 计算实现因果效应估计"></p>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p><a target="_blank" rel="noopener" href="https://zhang-each.github.io/My-CS-Notebook/Causality/Causality04-Intervention%26BackdoorAdjustment/">小角龙的学习记录- 04</a></p>
+<h5 id="因果发现的方法"><a href="#因果发现的方法" class="headerlink" title="因果发现的方法"></a>因果发现的方法</h5><p>因果发现的目的在于确定一个因果推的马尔可夫等价的方法，主要分为两种方式</p>
+<ol>
+<li>基于约束的方法，需要判定集合是否满足一系列假设检验（例如节点之间是否需要满足条件独立性假设），为了避免对于所有可能的子集合进行搜索，往往从一个全连接图开始逐渐增加条件集合的大小</li>
+<li>基于分数的方法，主要通过对模型类别进行假设限制，直接拟合一个结构因果模型架构来得到最终的打分函数的定义来进行求解。为了得到最优的因果图结果，需要包括两个部分：1. 最大化对数据的拟合程度、2. 对图结构的复杂程度进行惩罚。比如使用贪婪搜索的方法或者动态规划的方式。</li>
+</ol>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20240918103633239.png" srcset="/img/loading.gif" lazyload alt="因果发现的方法"></p>
+<h4 id="因果估计和统计估计的方法"><a href="#因果估计和统计估计的方法" class="headerlink" title="因果估计和统计估计的方法"></a>因果估计和统计估计的方法</h4><p>在假设后门变量均被观察到的假设的基础上，我们可以使用一系列的方法来进行纠偏的操作</p>
+<ol>
+<li>s learner 和 t learner</li>
+<li>tarnet 和 xlearner</li>
+<li>PS 分数</li>
+<li>double machine learning</li>
+</ol>
 
                 
               </div>
@@ -369,13 +434,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="print-no-link">#深度学习</a>
-      
-        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="print-no-link">#强化学习</a>
-      
-        <a href="/tags/CS285/" class="print-no-link">#CS285</a>
-      
-        <a href="/tags/%E5%8A%A8%E4%BD%9C%E7%8A%B6%E6%80%81%E4%BB%B7%E5%80%BC/" class="print-no-link">#动作状态价值</a>
+        <a href="/tags/%E5%9B%A0%E6%9E%9C%E6%8E%A8%E6%96%AD/" class="print-no-link">#因果推断</a>
       
     </div>
   
@@ -387,8 +446,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CS285 深度强化学习 Vol8 ｜ Q 函数</div>
-      <div>https://blog.tjdata.site/posts/7e704bf4.html</div>
+      <div>阅读 Casual inference_总结中</div>
+      <div>https://blog.tjdata.site/posts/29675.html</div>
     </div>
     <div class="license-meta">
       
@@ -400,7 +459,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年4月29日</div>
+          <div>2024年9月18日</div>
         </div>
       
       
@@ -432,18 +491,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/c5b2fc52.html" title="Rainbow_Combining_Improvements_in_Deep_Reinforcement_Learning categories">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Rainbow_Combining_Improvements_in_Deep_Reinforcement_Learning categories</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/f2288390.html" title="CS285 深度强化学习 Vol7 ｜ 值函数">
-                        <span class="hidden-mobile">CS285 深度强化学习 Vol7 ｜ 值函数</span>
+                      <a href="/posts/29337.html" title="阅读 Casual inference 总结上">
+                        <span class="hidden-mobile">阅读 Casual inference 总结上</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
