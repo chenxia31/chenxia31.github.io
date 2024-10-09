@@ -19,32 +19,26 @@
   <meta name="author" content="chenlongxu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="从Policy gradient，到Actor- critic，我们尝试丢弃policy，从AC到Q- iteration或者Q- learning我们彻底丢弃Policy，但是遇到不能收敛的问题。现在我们尝试改进Q- learning来实现想要的功能 0x01 Q- learning中的问题上次从理论的角度看出online Q iteration很难收敛，更直观的看待问题我们会发现有以下几点的原">
+    <meta name="description" content="以 LLM 为底层的自动代码补全工具帮助我们从代码敲击的背景下剥离出来，一定程度上减轻了劳动量。但是其能力的限制使得通常无法在高度定制化的场景下给出最优方案，此时对于熟悉 Copilot 的我们会发现生疏到无法解决。因此如何权衡自动补全工具带来的便利性和自身能力成长是必要的，合理的解决方法是建立心智模型来得其意，再指挥工具免其劳帮助工作效率的提升。本文从自身的角度建立自己的心智模型， 一、从 Ch">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CS285 深度强化学习 Vol8 ｜ Q 函数">
-<meta property="og:url" content="https://blog.tjdata.site/posts/7e704bf4.html">
+<meta property="og:title" content="如何建立自己的代码心智模型">
+<meta property="og:url" content="https://blog.tjdata.site/posts/54653.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
-<meta property="og:description" content="从Policy gradient，到Actor- critic，我们尝试丢弃policy，从AC到Q- iteration或者Q- learning我们彻底丢弃Policy，但是遇到不能收敛的问题。现在我们尝试改进Q- learning来实现想要的功能 0x01 Q- learning中的问题上次从理论的角度看出online Q iteration很难收敛，更直观的看待问题我们会发现有以下几点的原">
+<meta property="og:description" content="以 LLM 为底层的自动代码补全工具帮助我们从代码敲击的背景下剥离出来，一定程度上减轻了劳动量。但是其能力的限制使得通常无法在高度定制化的场景下给出最优方案，此时对于熟悉 Copilot 的我们会发现生疏到无法解决。因此如何权衡自动补全工具带来的便利性和自身能力成长是必要的，合理的解决方法是建立心智模型来得其意，再指挥工具免其劳帮助工作效率的提升。本文从自身的角度建立自己的心智模型， 一、从 Ch">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c1d91e32f5ff28d1f146cca885d9baf8_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ac9ee308c712738a359daef7914d72f8_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4cd2d97b204e83c6a5cc26e1fcf41c12_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-858ae38d9cd26e82f0db62d602dcb3f0_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-fbd12e57b426cf7f20ea8cafac4b6256_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-85311453c1891e8367356451b6b0741b_1440w.png">
-<meta property="article:published_time" content="2024-04-29T09:14:12.000Z">
-<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/Python_cheetsheet.drawio.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/structure_data_cheetsheet.drawio.png">
+<meta property="article:published_time" content="2024-10-08T08:43:05.000Z">
+<meta property="article:modified_time" content="2024-10-09T07:16:33.679Z">
 <meta property="article:author" content="chenlongxu">
-<meta property="article:tag" content="CS285">
-<meta property="article:tag" content="强化学习">
-<meta property="article:tag" content="深度学习">
-<meta property="article:tag" content="动作状态价值">
+<meta property="article:tag" content="代码基础">
+<meta property="article:tag" content="生产效率">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c1d91e32f5ff28d1f146cca885d9baf8_1440w.png">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/Python_cheetsheet.drawio.png">
   
   
   
-  <title>CS285 深度强化学习 Vol8 ｜ Q 函数 - Chenlong&#39;s blog</title>
+  <title>如何建立自己的代码心智模型 - Chenlong&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -223,7 +217,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CS285 深度强化学习 Vol8 ｜ Q 函数"></span>
+            <span id="subtitle" data-typed-text="如何建立自己的代码心智模型"></span>
           
         </div>
 
@@ -234,8 +228,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-04-29 17:14" pubdate>
-          2024年4月29日 下午
+        <time datetime="2024-10-08 16:43" pubdate>
+          2024年10月8日 下午
         </time>
       </span>
     
@@ -246,7 +240,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          387 字
+          1.9k 字
         
       </span>
     
@@ -257,7 +251,7 @@
         
         
         
-          4 分钟
+          17 分钟
         
       </span>
     
@@ -303,39 +297,58 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CS285 深度强化学习 Vol8 ｜ Q 函数</h1>
+            <h1 id="seo-header">如何建立自己的代码心智模型</h1>
             
             
               <div class="markdown-body">
                 
-                <p>从Policy gradient，到Actor- critic，我们尝试丢弃policy，从AC到Q- iteration或者Q- learning我们彻底丢弃Policy，但是遇到不能收敛的问题。现在我们尝试改进Q- learning来实现想要的功能</p>
-<h3 id="0x01-Q-learning中的问题"><a href="#0x01-Q-learning中的问题" class="headerlink" title="0x01 Q- learning中的问题"></a>0x01 Q- learning中的问题</h3><p>上次从理论的角度看出online Q iteration很难收敛，更直观的看待问题我们会发现有以下几点的原因：</p>
+                <p>以 LLM 为底层的自动代码补全工具帮助我们从代码敲击的背景下剥离出来，一定程度上减轻了劳动量。但是其能力的限制使得通常无法在高度定制化的场景下给出最优方案，此时对于熟悉 Copilot 的我们会发现生疏到无法解决。因此如何权衡自动补全工具带来的便利性和自身能力成长是必要的，合理的解决方法是建立心智模型来得其意，再指挥工具免其劳帮助工作效率的提升。本文从自身的角度建立自己的心智模型，</p>
+<h2 id="一、从-Cheetsheet、Cookbook-到-LLM"><a href="#一、从-Cheetsheet、Cookbook-到-LLM" class="headerlink" title="一、从 Cheetsheet、Cookbook 到 LLM"></a>一、从 Cheetsheet、Cookbook 到 LLM</h2><p>学习代码工具中速查表、官方文档、cookbook 是非常重要的资源。</p>
 <ol>
-<li>Q- learning中通常使用的是单个样本，这样对于更新迭代并不友好</li>
-<li>在第三步中的有一个类似gradient descent的公式但是其实在同一个轨迹中两者之间具有强烈相关性</li>
-<li>不满足iid假设样本中的效果并不好</li>
+<li>速查表（Cheetsheet）是列出某个库的常用的命令、语法和代码片段，给初学者快速参考的工具，可以帮助快速的查找特定命令和语法，共享的互联网资源总结了很多可行的速查表。eg: <a target="_blank" rel="noopener" href="https://github.com/rahulmakwana1/machine-learning-cheat-sheets/tree/master">ML-cheetsheet</a></li>
+<li>但是从学习的角度官方文档（Document）往往会给出详细的例子，让人望而却步。</li>
+<li>在两者之间的 cookbook 更倾向于结合代码片段给出如何解决实际案例，除了代码片段本身，也还会解释、上下文信息以及在什么样的场景下采取特定的解决方法。</li>
 </ol>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c1d91e32f5ff28d1f146cca885d9baf8_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102223452106</p>
-<p>解决思路</p>
+<p>在后 LLM 时代，copilot 的自动补全功能可以说完全代替了 cookbook，当用户提出一个需求场景，如“帮我写一个归并排序”，先天的代码补全功能可以给用户自动生成所需要的代码。</p>
 <ol>
-<li>修正样本，同样借鉴AC中的方法可以使用synchronized parallel Q- learning或者asynchronous parallel Q- learning来实现。</li>
-<li>使用replay buffers，因为Q- learning只需要（state，action，next- state，reward）就行</li>
+<li>优点一在于提升效率，可以从烦躁的代码敲击和函数名称记录中剥离出来，让一些常见的操作可以自动的从代码补全来完成</li>
+<li>优点二让边界更进一步，代码补全有的时候会“涌现”出新的编辑方式，这通常是因为别人已经有过相同的表达，可以将大模型看作是共同记忆的集合</li>
+<li>缺点在于无法完成创新工作，如果这件事情从来没有出现过，LLM 通常是无法完成固定的操作的，这个时候仍然依赖于写作者自身对于工具的理解，但是长时间未写相关论文的过程中，会消失对于 API 的熟练性而导致无从下手。</li>
 </ol>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ac9ee308c712738a359daef7914d72f8_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102223917061</p>
-<h3 id="0x02-Q-learning-with-replay-buffer的问题"><a href="#0x02-Q-learning-with-replay-buffer的问题" class="headerlink" title="0x02 Q-learning with replay- buffer的问题"></a>0x02 Q-learning with replay- buffer的问题</h3><p>按照厂里后面的一部份应该是没有梯度的，但是因为两者具有相关性我们的效果会很差，起不到梯度下降的效果。</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4cd2d97b204e83c6a5cc26e1fcf41c12_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102224124136</p>
-<p>因此我们会设置一个target network，在每次更新的时候，target也不会改变，同时这个过程中两者是某种意义上的不想关的。背后的方式是启发式的，但是实际上是一种经验很好的实践方法。通常更新的时候可以用指数平均的方法</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-858ae38d9cd26e82f0db62d602dcb3f0_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102225023533</p>
-<p>更高的视角</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-fbd12e57b426cf7f20ea8cafac4b6256_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102225216215</p>
-<h3 id="0x03-提高Q-learning"><a href="#0x03-提高Q-learning" class="headerlink" title="0x03 提高Q-learning"></a>0x03 提高Q-learning</h3><p>后面结合一篇论文来介绍，也就是Rainbow～</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-85311453c1891e8367356451b6b0741b_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102225350693</p>
+<p>解决这样问题的前提是思考我们是如何学习一件事物的：我们会通过学习相关概念和实际案例来获取属于自己的理解和知识，个体的理解程度决定对于知识的掌握程度。个人将在代码领域中的理解称为**<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BF%83%E6%99%BA%E6%A8%A1%E5%9E%8B">心智模型</a>**。</p>
+<blockquote>
+<p>认知心理学中将心智模型定义为我们脑海中的世界是一种概念，通过概念和关系来表达真实的系统</p>
+</blockquote>
+<p>通过建立自己对于某种概念的全局认识，再通过自动补全工具是操作 API 可以帮助我们在每次使用的过程中都是对自身理解外在表现应用的认知，可以进一步加深自己的印象而不是让自己变得生疏</p>
+<h2 id="二、心智模型-Copilot-复利效应"><a href="#二、心智模型-Copilot-复利效应" class="headerlink" title="二、心智模型 + Copilot &#x3D; 复利效应"></a>二、心智模型 + Copilot &#x3D; 复利效应</h2><p>Copilot 的含义是辅助工具，抛开 LLM 时代不谈很多场景下的工业工具都是对人类个体自身的辅助增强：</p>
+<ul>
+<li>纺织机，通过工具的方式来提升纺织的效率，但是起无法替代苏绣的作用</li>
+<li>汽车，通过新的能源转换方式代替双腿移动，但是起无法在所有道路上运行</li>
+<li>社交媒体，通过互联网来代替 face-to-face 的表达，让物理距离变得不重要，但是其无法代替线下交流</li>
+<li>洗衣机，是在洗衣场景下双手的解放，但是其无法适用所有的衣物</li>
+<li>相机，对于人类视觉和绘画的简化，但是其无法替代艺术创作</li>
+<li>…</li>
+</ul>
+<p>AI-Copilot 也是如此，通过对简单事物的替代，配合自己的理解可以增加创作效率，但是坐在主导位的只能是自身，为了更好的使用辅助驾驶需要理解其行为的含义，建立其工作的心智模型，来更好的使用 ta</p>
+<h2 id="三、【个人向】需要建立什么样的心智模型"><a href="#三、【个人向】需要建立什么样的心智模型" class="headerlink" title="三、【个人向】需要建立什么样的心智模型"></a>三、【个人向】需要建立什么样的心智模型</h2><h3 id="3-1-编程基础"><a href="#3-1-编程基础" class="headerlink" title="3.1 编程基础"></a>3.1 编程基础</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/Python_cheetsheet.drawio.png" srcset="/img/loading.gif" lazyload alt="Python_cheetsheet.drawio"></p>
+<h3 id="3-2-数据获取、数据预处理、数据转换"><a href="#3-2-数据获取、数据预处理、数据转换" class="headerlink" title="3.2 数据获取、数据预处理、数据转换"></a>3.2 数据获取、数据预处理、数据转换</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/structure_data_cheetsheet.drawio.png" srcset="/img/loading.gif" lazyload alt="structure_data_cheetsheet.drawio"></p>
+<h3 id="3-3-数学操作、模型构建、框架展示"><a href="#3-3-数学操作、模型构建、框架展示" class="headerlink" title="3.3 数学操作、模型构建、框架展示"></a>3.3 数学操作、模型构建、框架展示</h3><h2 id="附录：关于写作的一些思考"><a href="#附录：关于写作的一些思考" class="headerlink" title="附录：关于写作的一些思考"></a>附录：关于写作的一些思考</h2><p>文字、语言、肢体表达是个体与个体之间有限的交流方式，内在的逻辑性是上述三者均需要的内核，其中文字是最为正式和准确的信息交流方式。现代社会的高度分工需要敏锐、清晰的文字表达，除了逻辑性之外，其还需要有准确的词汇和语法技巧，在图文编辑器发达的背景下恰当的格式排版更加重要。但是在中文互联网背景和推荐系统肆掠的背景下，如何培养自己的文字表达成为一种奢侈。这里给出自己的建议总结：</p>
+<ol>
+<li><strong>凝练表达，目的为先</strong>。用尽可能少的语言让别人来抓住自己的核心思想，达成从“听不懂”到“听懂但是不知道为什么”的目的，建立起快速联系的纽带</li>
+<li><strong>逻辑连贯，有理有据。</strong>在说服别人的时候可以通过精炼表达，利用层次递进的方式来让别人接受自己的想法。注意每个论据也可以看作是一个需要精炼表达的命题，尽可能的用数据和事实去表达自己。重复冗余的话术只会让自己变得不够信服</li>
+<li><strong>词汇专业，语法通顺。</strong>所谓的互联网黑话或者是英语的专业词汇本质上是一种语言共识，可以快速的将希望表达的含义浓缩的传递给别人，专业学习也是如此，很多的专业壁垒来自于浓缩的含义。除了词汇之外，句子的语法通顺也很重要，这部分中文的表达（图）不如英文的表达（树）方式有趣，平时要多加锻炼</li>
+<li><strong>格式清晰，排版准确。</strong>现代编辑器带来从个体化（书法、签字）向工业化（字体、格式、排版、符号）的转变，如何善用这些模块可以更好的提升自己的表达。<ol>
+<li>符号：字体、大小、颜色、中文符号、英文符号</li>
+<li>工具：斜体、加粗、划线</li>
+<li>排版：段落、缩进、表格</li>
+</ol>
+</li>
+<li><strong>理解意图，尊重读者</strong>。表达的核心目的在于建立起双方的联系，而不是为了坚持自己的想法来辩论得到输赢，因此充分的理解读者的理解诉求，针对不同群众可以接受的方式来表达自己。</li>
+<li><strong>敏锐思考，在反馈中成长</strong>。表达交流并不只是将内心的东西全部的释放，和别人交流反馈的过程中也是提升自己内在思考的一种手段因此表达的时候也要持续保持对于自身观点的思考，讨论是表达的最终目的。</li>
+</ol>
+<p>推荐书籍</p>
+<p>《金字塔原理》</p>
+<p>《批判性思维》</p>
 
                 
               </div>
@@ -354,7 +367,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" class="category-chain-item">计算机科学</a>
   
   
 
@@ -369,13 +382,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/CS285/" class="print-no-link">#CS285</a>
+        <a href="/tags/%E4%BB%A3%E7%A0%81%E5%9F%BA%E7%A1%80/" class="print-no-link">#代码基础</a>
       
-        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="print-no-link">#强化学习</a>
-      
-        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="print-no-link">#深度学习</a>
-      
-        <a href="/tags/%E5%8A%A8%E4%BD%9C%E7%8A%B6%E6%80%81%E4%BB%B7%E5%80%BC/" class="print-no-link">#动作状态价值</a>
+        <a href="/tags/%E7%94%9F%E4%BA%A7%E6%95%88%E7%8E%87/" class="print-no-link">#生产效率</a>
       
     </div>
   
@@ -387,8 +396,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CS285 深度强化学习 Vol8 ｜ Q 函数</div>
-      <div>https://blog.tjdata.site/posts/7e704bf4.html</div>
+      <div>如何建立自己的代码心智模型</div>
+      <div>https://blog.tjdata.site/posts/54653.html</div>
     </div>
     <div class="license-meta">
       
@@ -400,7 +409,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年4月29日</div>
+          <div>2024年10月8日</div>
         </div>
       
       
@@ -432,18 +441,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/c5b2fc52.html" title="Rainbow_Combining_Improvements_in_Deep_Reinforcement_Learning categories">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Rainbow_Combining_Improvements_in_Deep_Reinforcement_Learning categories</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/f2288390.html" title="CS285 深度强化学习 Vol7 ｜ 值函数">
-                        <span class="hidden-mobile">CS285 深度强化学习 Vol7 ｜ 值函数</span>
+                      <a href="/posts/29675.html" title="阅读 Casual inference_总结中">
+                        <span class="hidden-mobile">阅读 Casual inference_总结中</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
