@@ -19,26 +19,25 @@
   <meta name="author" content="chenlongxu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="以 LLM 为底层的自动代码补全工具帮助我们从代码敲击的背景下剥离出来，一定程度上减轻了劳动量。但是其能力的限制使得通常无法在高度定制化的场景下给出最优方案，此时对于熟悉 Copilot 的我们会发现生疏到无法解决。因此如何权衡自动补全工具带来的便利性和自身能力成长是必要的，合理的解决方法是建立心智模型来得其意，再指挥工具免其劳帮助工作效率的提升。本文从自身的角度建立自己的心智模型， 一、从 Ch">
+    <meta name="description" content="这里系统自顶向下的对于大数据系统下的分布式平台做一次综述，包括一些简单的实际操作。 一、背景：什么是分布式系统A brief introduction to distributed systems 分布式系统是以单一完整系统（Single coherent system）为表现的自助计算单元的集合（Collections of autonomous computing elements），实现的技">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何建立自己的代码心智模型">
-<meta property="og:url" content="https://blog.tjdata.site/posts/54653.html">
+<meta property="og:title" content="大数据与分布式系统概述">
+<meta property="og:url" content="https://blog.tjdata.site/posts/51817.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
-<meta property="og:description" content="以 LLM 为底层的自动代码补全工具帮助我们从代码敲击的背景下剥离出来，一定程度上减轻了劳动量。但是其能力的限制使得通常无法在高度定制化的场景下给出最优方案，此时对于熟悉 Copilot 的我们会发现生疏到无法解决。因此如何权衡自动补全工具带来的便利性和自身能力成长是必要的，合理的解决方法是建立心智模型来得其意，再指挥工具免其劳帮助工作效率的提升。本文从自身的角度建立自己的心智模型， 一、从 Ch">
+<meta property="og:description" content="这里系统自顶向下的对于大数据系统下的分布式平台做一次综述，包括一些简单的实际操作。 一、背景：什么是分布式系统A brief introduction to distributed systems 分布式系统是以单一完整系统（Single coherent system）为表现的自助计算单元的集合（Collections of autonomous computing elements），实现的技">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/Python_cheetsheet.drawio.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/structure_data_cheetsheet.drawio.png">
-<meta property="article:published_time" content="2024-10-08T08:43:05.000Z">
-<meta property="article:modified_time" content="2024-10-09T07:16:58.932Z">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241021103055087.png">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241021110228456.png">
+<meta property="article:published_time" content="2024-10-21T02:10:15.000Z">
+<meta property="article:modified_time" content="2024-10-21T05:57:42.825Z">
 <meta property="article:author" content="chenlongxu">
-<meta property="article:tag" content="代码基础">
-<meta property="article:tag" content="生产效率">
+<meta property="article:tag" content="外部阅读">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/Python_cheetsheet.drawio.png">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241021103055087.png">
   
   
   
-  <title>如何建立自己的代码心智模型 - Chenlong&#39;s blog</title>
+  <title>大数据与分布式系统概述 - Chenlong&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -217,7 +216,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="如何建立自己的代码心智模型"></span>
+            <span id="subtitle" data-typed-text="大数据与分布式系统概述"></span>
           
         </div>
 
@@ -228,8 +227,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-10-08 16:43" pubdate>
-          2024年10月8日 下午
+        <time datetime="2024-10-21 10:10" pubdate>
+          2024年10月21日 上午
         </time>
       </span>
     
@@ -240,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.9k 字
+          2k 字
         
       </span>
     
@@ -297,58 +296,144 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">如何建立自己的代码心智模型</h1>
+            <h1 id="seo-header">大数据与分布式系统概述</h1>
             
             
               <div class="markdown-body">
                 
-                <p>以 LLM 为底层的自动代码补全工具帮助我们从代码敲击的背景下剥离出来，一定程度上减轻了劳动量。但是其能力的限制使得通常无法在高度定制化的场景下给出最优方案，此时对于熟悉 Copilot 的我们会发现生疏到无法解决。因此如何权衡自动补全工具带来的便利性和自身能力成长是必要的，合理的解决方法是建立心智模型来得其意，再指挥工具免其劳帮助工作效率的提升。本文从自身的角度建立自己的心智模型，</p>
-<h2 id="一、从-Cheetsheet、Cookbook-到-LLM"><a href="#一、从-Cheetsheet、Cookbook-到-LLM" class="headerlink" title="一、从 Cheetsheet、Cookbook 到 LLM"></a>一、从 Cheetsheet、Cookbook 到 LLM</h2><p>学习代码工具中速查表、官方文档、cookbook 是非常重要的资源。</p>
+                <p>这里系统自顶向下的对于大数据系统下的分布式平台做一次综述，包括一些简单的实际操作。</p>
+<h1 id="一、背景：什么是分布式系统"><a href="#一、背景：什么是分布式系统" class="headerlink" title="一、背景：什么是分布式系统"></a>一、背景：什么是分布式系统</h1><p><em><a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s00607-016-0508-7">A brief introduction to distributed systems</a></em></p>
+<p>分布式系统是以单一完整系统（Single coherent system）为表现的自助计算单元的集合（Collections of autonomous computing elements），实现的技术基础为：</p>
 <ol>
-<li>速查表（Cheetsheet）是列出某个库的常用的命令、语法和代码片段，给初学者快速参考的工具，可以帮助快速的查找特定命令和语法，共享的互联网资源总结了很多可行的速查表。eg: <a target="_blank" rel="noopener" href="https://github.com/rahulmakwana1/machine-learning-cheat-sheets/tree/master">ML-cheetsheet</a></li>
-<li>但是从学习的角度官方文档（Document）往往会给出详细的例子，让人望而却步。</li>
-<li>在两者之间的 cookbook 更倾向于结合代码片段给出如何解决实际案例，除了代码片段本身，也还会解释、上下文信息以及在什么样的场景下采取特定的解决方法。</li>
+<li>Node 性能强大的<strong>微处理器</strong></li>
+<li>高速发展的<strong>计算机网络</strong></li>
 </ol>
-<p>在后 LLM 时代，copilot 的自动补全功能可以说完全代替了 cookbook，当用户提出一个需求场景，如“帮我写一个归并排序”，先天的代码补全功能可以给用户自动生成所需要的代码。</p>
+<p>为了完成上述目标，分布式系统需要满足一下四个准则：</p>
 <ol>
-<li>优点一在于提升效率，可以从烦躁的代码敲击和函数名称记录中剥离出来，让一些常见的操作可以自动的从代码补全来完成</li>
-<li>优点二让边界更进一步，代码补全有的时候会“涌现”出新的编辑方式，这通常是因为别人已经有过相同的表达，可以将大模型看作是共同记忆的集合</li>
-<li>缺点在于无法完成创新工作，如果这件事情从来没有出现过，LLM 通常是无法完成固定的操作的，这个时候仍然依赖于写作者自身对于工具的理解，但是长时间未写相关论文的过程中，会消失对于 API 的熟练性而导致无从下手。</li>
+<li>资源共享，包括外围设备、存储设备、数据、文件、服务和网络</li>
+<li>分配透明化</li>
+<li>开放性</li>
+<li>具备可拓展性</li>
 </ol>
-<p>解决这样问题的前提是思考我们是如何学习一件事物的：我们会通过学习相关概念和实际案例来获取属于自己的理解和知识，个体的理解程度决定对于知识的掌握程度。个人将在代码领域中的理解称为**<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BF%83%E6%99%BA%E6%A8%A1%E5%9E%8B">心智模型</a>**。</p>
-<blockquote>
-<p>认知心理学中将心智模型定义为我们脑海中的世界是一种概念，通过概念和关系来表达真实的系统</p>
-</blockquote>
-<p>通过建立自己对于某种概念的全局认识，再通过自动补全工具是操作 API 可以帮助我们在每次使用的过程中都是对自身理解外在表现应用的认知，可以进一步加深自己的印象而不是让自己变得生疏</p>
-<h2 id="二、心智模型-Copilot-复利效应"><a href="#二、心智模型-Copilot-复利效应" class="headerlink" title="二、心智模型 + Copilot &#x3D; 复利效应"></a>二、心智模型 + Copilot &#x3D; 复利效应</h2><p>Copilot 的含义是辅助工具，抛开 LLM 时代不谈很多场景下的工业工具都是对人类个体自身的辅助增强：</p>
+<p>分布式系统的主要特点包括：</p>
+<ol>
+<li>分布式（<strong>Distribution</strong>）：节点可以分布在不同的计算机上</li>
+<li>同步 （<strong>Synchronization</strong>）：多个节点可以通过执行任务</li>
+<li>异步（<strong>Asynchrony</strong>）：节点之间通过信息传递进行通信，不同节点可以再不同的时间执行不同的任务</li>
+</ol>
+<p>常见的分布式系统为：</p>
+<ol>
+<li>高性能的分布式计算，包括集群计算、网格计算、云计算</li>
+<li>分布式信息系统（不懂）</li>
+<li>普适系统（不懂）</li>
+</ol>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241021103055087.png" srcset="/img/loading.gif" lazyload alt="云计算服务的分类"></p>
+<h1 id="二、分布式计算框架组成"><a href="#二、分布式计算框架组成" class="headerlink" title="二、分布式计算框架组成"></a>二、分布式计算框架组成</h1><p><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/10026506"><em>Survey of Distributed Computing Frameworks for Supporting Big Data Analysis</em></a></p>
+<h3 id="分布式系统架构-（System-architectures）"><a href="#分布式系统架构-（System-architectures）" class="headerlink" title="分布式系统架构 （System architectures）"></a>分布式系统架构 （System architectures）</h3><p>分布式系统需要大量的硬件资源：硬盘、内存、CPU&#x2F;GPU、传输带宽、IO 速度，这样的系统框架可以分为</p>
+<ol>
+<li>HPC，高性能计算系统常见的是用于解决复杂科学、工程和学术问题的超级计算机大型集群，特征是通过并行计算加速任务执行，通常处理的是高度复杂的计算机任务，包括气象模拟、基因组分析、流体动力学模拟</li>
+<li>Cluster computing，主要用于并行处理、分布式计算和大规模数据处理，集群的目的是通过协作提高系统的可拓展性和可靠性</li>
+</ol>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241021110228456.png" srcset="/img/loading.gif" lazyload alt="Map Reduce 分布式框架"></p>
+<h3 id="分布式文件系统-（Distributed-file-system）"><a href="#分布式文件系统-（Distributed-file-system）" class="headerlink" title="分布式文件系统 （Distributed file system）"></a>分布式文件系统 （Distributed file system）</h3><p>将一个大数据文件分区（partition）成为数个小文件块（data block）存储再分布式集群（cluster）中的节点（node）里，常见的分布式存储系统包括：</p>
 <ul>
-<li>纺织机，通过工具的方式来提升纺织的效率，但是起无法替代苏绣的作用</li>
-<li>汽车，通过新的能源转换方式代替双腿移动，但是起无法在所有道路上运行</li>
-<li>社交媒体，通过互联网来代替 face-to-face 的表达，让物理距离变得不重要，但是其无法代替线下交流</li>
-<li>洗衣机，是在洗衣场景下双手的解放，但是其无法适用所有的衣物</li>
-<li>相机，对于人类视觉和绘画的简化，但是其无法替代艺术创作</li>
-<li>…</li>
+<li>GFS（Google File System）</li>
+<li>HDFS（Hadoop Distributed File System） from Apache Hadoop</li>
+<li>TFS（Taobao File System）</li>
+<li>FastDFS</li>
+<li>CEPH：统一分布式存储系统，支持对象、块和文件存储</li>
 </ul>
-<p>AI-Copilot 也是如此，通过对简单事物的替代，配合自己的理解可以增加创作效率，但是坐在主导位的只能是自身，为了更好的使用辅助驾驶需要理解其行为的含义，建立其工作的心智模型，来更好的使用 ta</p>
-<h2 id="三、【个人向】需要建立什么样的心智模型"><a href="#三、【个人向】需要建立什么样的心智模型" class="headerlink" title="三、【个人向】需要建立什么样的心智模型"></a>三、【个人向】需要建立什么样的心智模型</h2><h3 id="3-1-编程基础"><a href="#3-1-编程基础" class="headerlink" title="3.1 编程基础"></a>3.1 编程基础</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/Python_cheetsheet.drawio.png" srcset="/img/loading.gif" lazyload alt="Python_cheetsheet.drawio"></p>
-<h3 id="3-2-数据获取、数据预处理、数据转换"><a href="#3-2-数据获取、数据预处理、数据转换" class="headerlink" title="3.2 数据获取、数据预处理、数据转换"></a>3.2 数据获取、数据预处理、数据转换</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/structure_data_cheetsheet.drawio.png" srcset="/img/loading.gif" lazyload alt="structure_data_cheetsheet.drawio"></p>
-<h3 id="3-3-数学操作、模型构建、框架展示"><a href="#3-3-数学操作、模型构建、框架展示" class="headerlink" title="3.3 数学操作、模型构建、框架展示"></a>3.3 数学操作、模型构建、框架展示</h3><h2 id="附录：关于写作的一些思考"><a href="#附录：关于写作的一些思考" class="headerlink" title="附录：关于写作的一些思考"></a>附录：关于写作的一些思考</h2><p>文字、语言、肢体表达是个体与个体之间有限的交流方式，内在的逻辑性是上述三者均需要的内核，其中文字是最为正式和准确的信息交流方式。现代社会的高度分工需要敏锐、清晰的文字表达，除了逻辑性之外，其还需要有准确的词汇和语法技巧，在图文编辑器发达的背景下恰当的格式排版更加重要。但是在中文互联网背景和推荐系统肆掠的背景下，如何培养自己的文字表达成为一种奢侈。这里给出自己的建议总结：</p>
-<ol>
-<li><strong>凝练表达，目的为先</strong>。用尽可能少的语言让别人来抓住自己的核心思想，达成从“听不懂”到“听懂但是不知道为什么”的目的，建立起快速联系的纽带</li>
-<li><strong>逻辑连贯，有理有据。</strong>在说服别人的时候可以通过精炼表达，利用层次递进的方式来让别人接受自己的想法。注意每个论据也可以看作是一个需要精炼表达的命题，尽可能的用数据和事实去表达自己。重复冗余的话术只会让自己变得不够信服</li>
-<li><strong>词汇专业，语法通顺。</strong>所谓的互联网黑话或者是英语的专业词汇本质上是一种语言共识，可以快速的将希望表达的含义浓缩的传递给别人，专业学习也是如此，很多的专业壁垒来自于浓缩的含义。除了词汇之外，句子的语法通顺也很重要，这部分中文的表达（图）不如英文的表达（树）方式有趣，平时要多加锻炼</li>
-<li><strong>格式清晰，排版准确。</strong>现代编辑器带来从个体化（书法、签字）向工业化（字体、格式、排版、符号）的转变，如何善用这些模块可以更好的提升自己的表达。<ol>
-<li>符号：字体、大小、颜色、中文符号、英文符号</li>
-<li>工具：斜体、加粗、划线</li>
-<li>排版：段落、缩进、表格</li>
-</ol>
+<h3 id="分布式数据库"><a href="#分布式数据库" class="headerlink" title="分布式数据库"></a>分布式数据库</h3><ul>
+<li><p>HBase，在上述文件系统的基础上，如基于 HDFS 构造NoSQL 的数据库 Hbase ，通过 HiveSQL 将 SQL 语句转换成为 Map Reduce 语句来实现计算功能。其本身并不是真正意义上的数据库，只是将结构化的数据文件转换成为一种数据库表，因此本质上是一种内存的 Hash 表，所以其相对于传统的关系型 SQL 会需要加上 Partition 和 Bucket 的字段</p>
 </li>
-<li><strong>理解意图，尊重读者</strong>。表达的核心目的在于建立起双方的联系，而不是为了坚持自己的想法来辩论得到输赢，因此充分的理解读者的理解诉求，针对不同群众可以接受的方式来表达自己。</li>
-<li><strong>敏锐思考，在反馈中成长</strong>。表达交流并不只是将内心的东西全部的释放，和别人交流反馈的过程中也是提升自己内在思考的一种手段因此表达的时候也要持续保持对于自身观点的思考，讨论是表达的最终目的。</li>
+<li><p>ClickHouse 用于联机分析处理的开源列式数据库</p>
+</li>
+<li><p>ElasticSearch 基于 Lucene 库的全文搜索引擎</p>
+</li>
+<li><p>Redis Cluster基于内存的键值对数据库</p>
+</li>
+<li><p>Mongo DB</p>
+</li>
+<li><p>Cassandra</p>
+</li>
+<li><p>DynamoDB</p>
+</li>
+<li><p>TiDB</p>
+</li>
+</ul>
+<p><strong>注：普通的关系数据库的区别</strong></p>
+<p>普通的关系性数据库常见的使用的是服务器本地的文件系统，利用自身设计的计算模型来实现实时查询，具备介绍的拓展性</p>
+<h3 id="分布式计算处理框架-（distributed-process）"><a href="#分布式计算处理框架-（distributed-process）" class="headerlink" title="分布式计算处理框架 （distributed process）"></a>分布式计算处理框架 （distributed process）</h3><p>分布式计算是通过将算法切分成可以并行的处理框架来实现高效的计算效果，其最基本的思想是通过“分治法（Divide-and-conquer）”来进行计算，通常可以分为是基于离线数据处理和在线数据处理两种方法，常见的处理框架为</p>
+<ul>
+<li><strong>Apache Hadoop</strong>，基于 Mapreduce 模型，主要用于处理大规模数据，Hive 是基于 HDFS 的数据仓库工具，用于数据提取、转化和加载、可以实现数据存储、查询和分析存储的大规模数据的机制，适合用海量数据做数据挖掘，但是实时性较差，但是计算能力和存储拓展方便</li>
+<li><strong>Apache spark</strong>，基于内存的数据处理，是强大的分布式处理框架，处理速度更快，且更加适合迭代计算的任务，主要组件包括 Spark core、Spark streaming、MLlib、GraphX</li>
+<li><strong>Apache Flink</strong>，流处理框架</li>
+<li>Kafka Streams，允许直接在消息中处理数据，用于消息传递系统中进行流式计算</li>
+<li>Map-Reduce ，最原始的版本，在单一节点上进行计算来得到本地结构 local result，汇合多个节点的计算结果，来得到 global result</li>
+</ul>
+<h3 id="其余的平台（platform）与包（package）"><a href="#其余的平台（platform）与包（package）" class="headerlink" title="其余的平台（platform）与包（package）"></a>其余的平台（platform）与包（package）</h3><ul>
+<li>基本程序语言：JVM、Java、Scala（面向对象和函数式编程）、Python</li>
+<li>采集和传输：Kafaka（分布式订阅消息系统）、Flume、Datax</li>
+<li>数据湖：在数据存储和数据处理之间：Iceberg、Hudi</li>
+<li>资源调度框架：YARN、KUbernets、Mesos</li>
+</ul>
+<h1 id="三、如何学习分布式计算系统"><a href="#三、如何学习分布式计算系统" class="headerlink" title="三、如何学习分布式计算系统"></a>三、如何学习分布式计算系统</h1><h2 id="2-1-编程基础"><a href="#2-1-编程基础" class="headerlink" title="2.1 编程基础"></a>2.1 编程基础</h2><h3 id="Scala基础"><a href="#Scala基础" class="headerlink" title="Scala基础"></a>Scala基础</h3><p><a target="_blank" rel="noopener" href="https://www.runoob.com/scala/scala-tutorial.html">Scala 菜鸟教程</a></p>
+<p>Scala 是一门类 Java 的编程语言，结合了面向对象编程和函数式编程</p>
+<ul>
+<li>每个值都是一个对象，对象的类型和行为由类定义，不同的类可以通过混入的方式混合在一起</li>
+<li>函数式编程芋圆，原生支持嵌套函数定义和高阶函数</li>
+</ul>
+<h3 id="PySpark-基础"><a href="#PySpark-基础" class="headerlink" title="PySpark 基础"></a>PySpark 基础</h3><p><a target="_blank" rel="noopener" href="https://help.aliyun.com/zh/emr/emr-on-ecs/user-guide/use-spark-shell-and-rdds?spm=a2c4g.11186623.0.0.12522e0b0BmqTk">阿里云文档</a></p>
+<p>需要深刻理解如何使用 pyspark 来完成 spark 的算力的厂检查熬做</p>
+<h2 id="2-2-计算框架-Spark"><a href="#2-2-计算框架-Spark" class="headerlink" title="2.2 计算框架 Spark"></a>2.2 计算框架 Spark</h2><p><em><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/3.5.2/">Spark documentation overview</a></em></p>
+<p>关键的Topic 包括</p>
+<ol>
+<li><strong>快速理解 spark 的 API</strong></li>
+<li><strong>理解如何使用 RDD 来进行编程、核心 API、加速和广播操作</strong></li>
+<li><strong>理解 SPARK 的 SQL、Dataset、Dataframe，利用最新的操作 API</strong></li>
+<li><em>流处理structured streaming、spark streaming（可选）</em></li>
+<li><strong>机器学习库 MLlib</strong></li>
+<li><strong>图网络学习 GraphX</strong></li>
+<li><em>利用 R 语言来进行学习（可选）</em></li>
+<li><strong>利用 Python 来使用 Spark</strong></li>
 </ol>
-<p>推荐书籍</p>
-<p>《金字塔原理》</p>
-<p>《批判性思维》</p>
+<h2 id="2-3-额外知识"><a href="#2-3-额外知识" class="headerlink" title="2.3 额外知识"></a>2.3 额外知识</h2><h4 id="SQL-CRUD"><a href="#SQL-CRUD" class="headerlink" title="SQL - CRUD"></a>SQL - CRUD</h4><h4 id="HDFS-常见操作"><a href="#HDFS-常见操作" class="headerlink" title="HDFS - 常见操作"></a>HDFS - 常见操作</h4><h4 id="Flink-流数据处理-pipeline（可选）"><a href="#Flink-流数据处理-pipeline（可选）" class="headerlink" title="Flink 流数据处理 pipeline（可选）"></a>Flink 流数据处理 pipeline（可选）</h4><ol>
+<li>首先利用 Flink 从实时流数据采集中获取数据流，例如用户的行为日志</li>
+<li>利用 Flink 处理的 api 来完成数据的清晰、格式化和特征提取操作（基于 MapReduce）</li>
+<li>调用深度学习模型来完成预测，Map 操作</li>
+<li>将更新的数据输入到 Kafka，或者根据应用常见写入到数据库、消息队列或者文件系统中</li>
+</ol>
+<h1 id="四、其他问题"><a href="#四、其他问题" class="headerlink" title="四、其他问题"></a>四、其他问题</h1><h4 id="流数据（Stream-data）和批数据（Batch-data）处理的区别？"><a href="#流数据（Stream-data）和批数据（Batch-data）处理的区别？" class="headerlink" title="流数据（Stream data）和批数据（Batch data）处理的区别？"></a>流数据（Stream data）和批数据（Batch data）处理的区别？</h4><ul>
+<li>流数据是连续生成，需要实时采集并实时处理，通常的数据来源包括传感器用户日期和、社交媒体更新、金融交易等操作。<ul>
+<li>金融服务的交易分析，比如检查用户的行为</li>
+<li>实时用户和推荐系统，比如实时分析用户的需求</li>
+</ul>
+</li>
+<li>批数据模式下，数据是成块或者成批次组成的，通常被定时的收集或者存储<ul>
+<li>金融网贷业务的预处理</li>
+</ul>
+</li>
+</ul>
+<h4 id="全量更新和增量更新"><a href="#全量更新和增量更新" class="headerlink" title="全量更新和增量更新"></a>全量更新和增量更新</h4><ul>
+<li>全量更新 （Full update） 每次更新的时候处理整个数据集<ul>
+<li>Pro 实现逻辑简单，不需要复杂的变更追踪的逻辑，每次更新都是完整的数据集，可以直接避免数据不一致的风险</li>
+<li>Con 每次都需要处理全部数据，对于系统资源要求高。特别是对于大型数据集需要很长时间才能完成更新</li>
+</ul>
+</li>
+<li>增量更新（incremental update）只处理上次更新依赖发生变化的数据<ul>
+<li>Pro 增量更新的效率高、实时性更强</li>
+<li>Con 但是面临数据处理逻辑的复杂性，容易造成数据不一致的风险，对历史数据管理要求较高</li>
+</ul>
+</li>
+</ul>
+<p>增量更新常见的操作是根据 key 和 update time 来保留最新的记录</p>
+<p>对应的表格分类包括：</p>
+<ol>
+<li>增量表：记录更新周期内新增的数据，在原表中数据的基础上新增本周起产生的新数据</li>
+<li>全量表：记录更新周期内的全量数据，无论数据是否有变化都需要记录</li>
+<li>拉链表：记录数据的历史信息，记录数据从开始 i 一直到当前所有变化的信息</li>
+</ol>
+<h4 id="持续更新…"><a href="#持续更新…" class="headerlink" title="持续更新…"></a>持续更新…</h4><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.sqlboy.tech/">https://www.sqlboy.tech/</a></p>
 
                 
               </div>
@@ -382,9 +467,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E4%BB%A3%E7%A0%81%E5%9F%BA%E7%A1%80/" class="print-no-link">#代码基础</a>
-      
-        <a href="/tags/%E7%94%9F%E4%BA%A7%E6%95%88%E7%8E%87/" class="print-no-link">#生产效率</a>
+        <a href="/tags/%E5%A4%96%E9%83%A8%E9%98%85%E8%AF%BB/" class="print-no-link">#外部阅读</a>
       
     </div>
   
@@ -396,8 +479,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>如何建立自己的代码心智模型</div>
-      <div>https://blog.tjdata.site/posts/54653.html</div>
+      <div>大数据与分布式系统概述</div>
+      <div>https://blog.tjdata.site/posts/51817.html</div>
     </div>
     <div class="license-meta">
       
@@ -409,7 +492,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年10月8日</div>
+          <div>2024年10月21日</div>
         </div>
       
       
@@ -441,18 +524,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/51817.html" title="大数据与分布式系统概述">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">大数据与分布式系统概述</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/29675.html" title="阅读 Casual inference_总结中">
-                        <span class="hidden-mobile">阅读 Casual inference_总结中</span>
+                      <a href="/posts/54653.html" title="如何建立自己的代码心智模型">
+                        <span class="hidden-mobile">如何建立自己的代码心智模型</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
