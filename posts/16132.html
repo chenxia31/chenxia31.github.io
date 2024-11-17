@@ -19,25 +19,24 @@
   <meta name="author" content="chenlongxu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="这里系统自顶向下的对于大数据系统下的分布式平台做一次综述，包括一些简单的实际操作。 一、背景：什么是分布式系统A brief introduction to distributed systems 分布式系统是以单一完整系统（Single coherent system）为表现的自助计算单元的集合（Collections of autonomous computing elements），实现的技">
+    <meta name="description" content="因为希望开通 OPENAI-API，需要有美区发行的信用卡，由此折腾了虚拟信用卡 wildcard、国内 MasterCard、美区 PayPal 来完成 OPENAI、App Store、Amazon 海淘等过程，以下为小白经验贴，如有不对的地方欢迎指正 一、支付方式简介支付方式通常可以分为：银行卡支付、移动支付、数字钱包、银行转账、加密货币、预付卡、电子支票等方式，这里注重解释前三者：  银行">
 <meta property="og:type" content="article">
-<meta property="og:title" content="大数据与分布式系统概述">
-<meta property="og:url" content="https://blog.tjdata.site/posts/51817.html">
+<meta property="og:title" content="小白的在线支付方式折腾">
+<meta property="og:url" content="https://blog.tjdata.site/posts/16132.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
-<meta property="og:description" content="这里系统自顶向下的对于大数据系统下的分布式平台做一次综述，包括一些简单的实际操作。 一、背景：什么是分布式系统A brief introduction to distributed systems 分布式系统是以单一完整系统（Single coherent system）为表现的自助计算单元的集合（Collections of autonomous computing elements），实现的技">
+<meta property="og:description" content="因为希望开通 OPENAI-API，需要有美区发行的信用卡，由此折腾了虚拟信用卡 wildcard、国内 MasterCard、美区 PayPal 来完成 OPENAI、App Store、Amazon 海淘等过程，以下为小白经验贴，如有不对的地方欢迎指正 一、支付方式简介支付方式通常可以分为：银行卡支付、移动支付、数字钱包、银行转账、加密货币、预付卡、电子支票等方式，这里注重解释前三者：  银行">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241021103055087.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241021110228456.png">
-<meta property="article:published_time" content="2024-10-21T02:10:15.000Z">
-<meta property="article:modified_time" content="2024-10-21T05:59:37.260Z">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241117102454663.png">
+<meta property="article:published_time" content="2024-11-17T02:23:28.000Z">
+<meta property="article:modified_time" content="2024-11-17T02:24:59.258Z">
 <meta property="article:author" content="chenlongxu">
-<meta property="article:tag" content="外部阅读">
+<meta property="article:tag" content="数字移民">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241021103055087.png">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241117102454663.png">
   
   
   
-  <title>大数据与分布式系统概述 - Chenlong&#39;s blog</title>
+  <title>小白的在线支付方式折腾 - Chenlong&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -216,7 +215,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="大数据与分布式系统概述"></span>
+            <span id="subtitle" data-typed-text="小白的在线支付方式折腾"></span>
           
         </div>
 
@@ -227,8 +226,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-10-21 10:10" pubdate>
-          2024年10月21日 上午
+        <time datetime="2024-11-17 10:23" pubdate>
+          2024年11月17日 上午
         </time>
       </span>
     
@@ -239,7 +238,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          1.6k 字
         
       </span>
     
@@ -250,7 +249,7 @@
         
         
         
-          17 分钟
+          14 分钟
         
       </span>
     
@@ -296,144 +295,93 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">大数据与分布式系统概述</h1>
+            <h1 id="seo-header">小白的在线支付方式折腾</h1>
             
             
               <div class="markdown-body">
                 
-                <p>这里系统自顶向下的对于大数据系统下的分布式平台做一次综述，包括一些简单的实际操作。</p>
-<h1 id="一、背景：什么是分布式系统"><a href="#一、背景：什么是分布式系统" class="headerlink" title="一、背景：什么是分布式系统"></a>一、背景：什么是分布式系统</h1><p><em><a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s00607-016-0508-7">A brief introduction to distributed systems</a></em></p>
-<p>分布式系统是以单一完整系统（Single coherent system）为表现的自助计算单元的集合（Collections of autonomous computing elements），实现的技术基础为：</p>
+                <p>因为希望开通 OPENAI-API，需要有美区发行的信用卡，由此折腾了虚拟信用卡 wildcard、国内 MasterCard、美区 PayPal 来完成 OPENAI、App Store、Amazon 海淘等过程，以下为小白经验贴，如有不对的地方欢迎指正</p>
+<h2 id="一、支付方式简介"><a href="#一、支付方式简介" class="headerlink" title="一、支付方式简介"></a>一、支付方式简介</h2><p>支付方式通常可以分为：银行卡支付、移动支付、数字钱包、银行转账、加密货币、预付卡、电子支票等方式，这里注重解释前三者：</p>
 <ol>
-<li>Node 性能强大的<strong>微处理器</strong></li>
-<li>高速发展的<strong>计算机网络</strong></li>
+<li>银行卡支付（Bank card payment），进一步分为信用卡（Credit card）和借记卡（Debit card）</li>
+<li>移动支付（Mobile payment），包括 Apple pay、Google Pay、支付宝（Alipay）、微信支付（WeChat Pay）</li>
+<li>数字钱包（Digital wallet and Online Payment），包括 Paypal、Venmo 等等</li>
 </ol>
-<p>为了完成上述目标，分布式系统需要满足一下四个准则：</p>
+<p>支付中的参与方包括：</p>
 <ol>
-<li>资源共享，包括外围设备、存储设备、数据、文件、服务和网络</li>
-<li>分配透明化</li>
-<li>开放性</li>
-<li>具备可拓展性</li>
+<li>发卡机构（Issuer），通常为银行，负责提供卡片</li>
+<li>支付网络（Payment Network），连接发卡机构和收单机构的中介，处理交易请求和验证</li>
+<li>收单机构（Acquirer），为商户提供银行卡支付处理服务的金融机构</li>
+<li>商户（Merchant），提供商品或者服务的商家</li>
 </ol>
-<p>分布式系统的主要特点包括：</p>
+<p>支付网络可以分为</p>
 <ol>
-<li>分布式（<strong>Distribution</strong>）：节点可以分布在不同的计算机上</li>
-<li>同步 （<strong>Synchronization</strong>）：多个节点可以通过执行任务</li>
-<li>异步（<strong>Asynchrony</strong>）：节点之间通过信息传递进行通信，不同节点可以再不同的时间执行不同的任务</li>
+<li>**全球性支付网络 (Global Payment Networks)**：这些网络覆盖全球，适用于国际和跨境交易。常见的全球性支付网络包括：</li>
 </ol>
-<p>常见的分布式系统为：</p>
+<p>•	<strong>Visa</strong>：覆盖全球的大型信用卡和借记卡支付网络。</p>
+<p>•	<strong>MasterCard</strong>：全球通用的支付网络，支持信用卡、借记卡等多种支付方式。</p>
+<p>•	<strong>American Express</strong>：提供信用卡支付，覆盖全球多个国家，主要采用三方模式。</p>
+<p>•	**UnionPay (银联)**：在中国广泛使用，近年来也在全球扩展，支持信用卡、借记卡和二维码支付。</p>
 <ol>
-<li>高性能的分布式计算，包括集群计算、网格计算、云计算</li>
-<li>分布式信息系统（不懂）</li>
-<li>普适系统（不懂）</li>
+<li>**地区性支付网络 (Regional Payment Networks)**：这些支付网络主要在特定区域内使用，通常只支持该地区的银行账户或支付工具。</li>
 </ol>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241021103055087.png" srcset="/img/loading.gif" lazyload alt="云计算服务的分类"></p>
-<h1 id="二、分布式计算框架组成"><a href="#二、分布式计算框架组成" class="headerlink" title="二、分布式计算框架组成"></a>二、分布式计算框架组成</h1><p><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/10026506"><em>Survey of Distributed Computing Frameworks for Supporting Big Data Analysis</em></a></p>
-<h3 id="分布式系统架构-（System-architectures）"><a href="#分布式系统架构-（System-architectures）" class="headerlink" title="分布式系统架构 （System architectures）"></a>分布式系统架构 （System architectures）</h3><p>分布式系统需要大量的硬件资源：硬盘、内存、CPU&#x2F;GPU、传输带宽、IO 速度，这样的系统框架可以分为</p>
+<p>•	<strong>JCB</strong>（日本）：在亚洲和一些欧洲、北美市场使用广泛。</p>
+<p>•	<strong>Interac</strong>（加拿大）：用于加拿大的借记卡支付。</p>
+<p>•	<strong>Elo</strong>（巴西）：在巴西使用的支付网络，支持借记和信用支付。</p>
+<p>•	<strong>RuPay</strong>（印度）：主要用于印度国内支付。</p>
+<h2 id="二、支付需求"><a href="#二、支付需求" class="headerlink" title="二、支付需求"></a>二、支付需求</h2><h3 id="2-1-OPENAI-支付要求"><a href="#2-1-OPENAI-支付要求" class="headerlink" title="2.1 OPENAI 支付要求"></a>2.1 OPENAI 支付要求</h3><p>支付要求包括</p>
+<blockquote>
+<p>OpenAI 的充值支付方式要求包括以下几点：</p>
 <ol>
-<li>HPC，高性能计算系统常见的是用于解决复杂科学、工程和学术问题的超级计算机大型集群，特征是通过并行计算加速任务执行，通常处理的是高度复杂的计算机任务，包括气象模拟、基因组分析、流体动力学模拟</li>
-<li>Cluster computing，主要用于并行处理、分布式计算和大规模数据处理，集群的目的是通过协作提高系统的可拓展性和可靠性</li>
+<li><strong>国际信用卡或借记卡</strong>：支持 Visa、MasterCard 和 American Express 等主流国际卡。确保卡片具有国际支付功能，国内银行的银联卡通常不支持。</li>
+<li><strong>PayPal</strong>：在部分地区，OpenAI 也支持通过 PayPal 支付。需要一个经过验证的 PayPal 账户，并关联到支持国际支付的信用卡或银行账户。</li>
+<li><strong>Apple Pay 和 Google Pay</strong>：部分移动端支持 Apple Pay 或 Google Pay 付款，但前提是这些支付账户也必须关联到支持国际支付的信用卡或借记卡。</li>
+<li><strong>虚拟卡</strong>：部分虚拟卡（如虚拟预付卡）可能会被接受，但成功率不高，因为 OpenAI 对支付账户的真实性验证较为严格。</li>
+<li><strong>支付地区限制</strong>：目前 OpenAI 充值服务并非对所有国家和地区开放，部分地区可能无法使用其服务，需参考 OpenAI 官网的支持列表。</li>
 </ol>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241021110228456.png" srcset="/img/loading.gif" lazyload alt="Map Reduce 分布式框架"></p>
-<h3 id="分布式文件系统-（Distributed-file-system）"><a href="#分布式文件系统-（Distributed-file-system）" class="headerlink" title="分布式文件系统 （Distributed file system）"></a>分布式文件系统 （Distributed file system）</h3><p>将一个大数据文件分区（partition）成为数个小文件块（data block）存储再分布式集群（cluster）中的节点（node）里，常见的分布式存储系统包括：</p>
+<p>建议在充值前确保支付方式符合以上条件，并检查账户的国际支付功能是否开启，以避免支付失败。</p>
+</blockquote>
+<h3 id="2-2-Amazon-支付要求"><a href="#2-2-Amazon-支付要求" class="headerlink" title="2.2 Amazon 支付要求"></a>2.2 Amazon 支付要求</h3><blockquote>
+<ol>
+<li><strong>信用卡和借记卡</strong>：亚马逊支持主要的国际信用卡和借记卡品牌，如 Visa、MasterCard、American Express、Discover 等。在中国，您可以使用带有银联标识的信用卡或借记卡进行支付。</li>
+<li><strong>第三方支付平台</strong>：在亚马逊中国（<a target="_blank" rel="noopener" href="http://amazon.cn/">Amazon.cn</a>），您可以使用支付宝和微信支付等本地支付方式。</li>
+</ol>
+</blockquote>
+<h3 id="2-3-Apple-Store-美区支付要求"><a href="#2-3-Apple-Store-美区支付要求" class="headerlink" title="2.3 Apple Store 美区支付要求"></a>2.3 Apple Store 美区支付要求</h3><blockquote>
+<p>•	<strong>美国发行的信用卡或借记卡</strong>：Apple Store 接受由美国银行发行的 Visa、MasterCard、American Express 等信用卡或借记卡。</p>
+<p>•	<strong>美国 PayPal 账户</strong>：您可以将美国 PayPal 账户绑定到您的 Apple ID 作为支付方式。</p>
+<p>•	<strong>Apple 礼品卡</strong>：购买并兑换美国地区的 Apple 礼品卡，可将其余额用于支付。</p>
+</blockquote>
+<h3 id="2-4-Paypal-支付方式要求"><a href="#2-4-Paypal-支付方式要求" class="headerlink" title="2.4 Paypal 支付方式要求"></a>2.4 Paypal 支付方式要求</h3><blockquote>
+<ol>
+<li><strong>有效的支付方式</strong>：</li>
+</ol>
+<p>•	<strong>美国银行账户</strong>：您可以将美国的银行账户关联到您的 PayPal 账户，用于充值和支付。</p>
+<p>•	<strong>信用卡或借记卡</strong>：PayPal 支持 Visa、MasterCard、American Express 等主要信用卡和借记卡。确保您的卡片已关联到 PayPal 账户。</p>
+<ol>
+<li><strong>美国账单地址</strong>：在设置支付方式时，通常需要提供一个有效的美国账单地址。您可以使用真实的美国地址，或通过地址生成器获取。</li>
+<li><strong>美国电话号码</strong>：在某些情况下，可能需要提供一个美国电话号码。您可以使用虚拟号码服务，或通过其他方式获取。</li>
+<li><strong>账户验证</strong>：为确保账户安全，PayPal 可能要求您验证关联的银行卡或银行账户。验证过程可能包括小额扣款或其他确认步骤。</li>
+</ol>
+</blockquote>
+<h2 id="三、折腾记录"><a href="#三、折腾记录" class="headerlink" title="三、折腾记录"></a>三、折腾记录</h2><h3 id="3-1-信用卡"><a href="#3-1-信用卡" class="headerlink" title="3.1 信用卡"></a>3.1 信用卡</h3><p><strong>第一种是开通虚拟卡</strong>，这里选择 wildcard 平台</p>
+<p>非常方便但是需要付出手续费，我刚用不到 5 分钟升级了 openai plus 和绑了 api 付费，对于小白来说很方便，因为邀请有奖励这里做一些分享</p>
 <ul>
-<li>GFS（Google File System）</li>
-<li>HDFS（Hadoop Distributed File System） from Apache Hadoop</li>
-<li>TFS（Taobao File System）</li>
-<li>FastDFS</li>
-<li>CEPH：统一分布式存储系统，支持对象、块和文件存储</li>
+<li>官网地址：<a target="_blank" rel="noopener" href="https://bewildcard.com/card">https://bewildcard.com/card</a></li>
+<li>创建账户费用： 11.99&#x2F;两年，16.99&#x2F;三年</li>
+<li>手续费：3.5%</li>
+<li>限额：3000 美元&#x2F;天</li>
+<li>使用邀请码可以优惠 <a target="_blank" rel="noopener" href="https://bewildcard.com/i/MP40YHIM">https://bewildcard.com/i/MP40YHIM</a></li>
 </ul>
-<h3 id="分布式数据库"><a href="#分布式数据库" class="headerlink" title="分布式数据库"></a>分布式数据库</h3><ul>
-<li><p>HBase，在上述文件系统的基础上，如基于 HDFS 构造NoSQL 的数据库 Hbase ，通过 HiveSQL 将 SQL 语句转换成为 Map Reduce 语句来实现计算功能。其本身并不是真正意义上的数据库，只是将结构化的数据文件转换成为一种数据库表，因此本质上是一种内存的 Hash 表，所以其相对于传统的关系型 SQL 会需要加上 Partition 和 Bucket 的字段</p>
-</li>
-<li><p>ClickHouse 用于联机分析处理的开源列式数据库</p>
-</li>
-<li><p>ElasticSearch 基于 Lucene 库的全文搜索引擎</p>
-</li>
-<li><p>Redis Cluster基于内存的键值对数据库</p>
-</li>
-<li><p>Mongo DB</p>
-</li>
-<li><p>Cassandra</p>
-</li>
-<li><p>DynamoDB</p>
-</li>
-<li><p>TiDB</p>
-</li>
-</ul>
-<p><strong>注：普通的关系数据库的区别</strong></p>
-<p>普通的关系性数据库常见的使用的是服务器本地的文件系统，利用自身设计的计算模型来实现实时查询，具备介绍的拓展性</p>
-<h3 id="分布式计算处理框架-（distributed-process）"><a href="#分布式计算处理框架-（distributed-process）" class="headerlink" title="分布式计算处理框架 （distributed process）"></a>分布式计算处理框架 （distributed process）</h3><p>分布式计算是通过将算法切分成可以并行的处理框架来实现高效的计算效果，其最基本的思想是通过“分治法（Divide-and-conquer）”来进行计算，通常可以分为是基于离线数据处理和在线数据处理两种方法，常见的处理框架为</p>
-<ul>
-<li><strong>Apache Hadoop</strong>，基于 Mapreduce 模型，主要用于处理大规模数据，Hive 是基于 HDFS 的数据仓库工具，用于数据提取、转化和加载、可以实现数据存储、查询和分析存储的大规模数据的机制，适合用海量数据做数据挖掘，但是实时性较差，但是计算能力和存储拓展方便</li>
-<li><strong>Apache spark</strong>，基于内存的数据处理，是强大的分布式处理框架，处理速度更快，且更加适合迭代计算的任务，主要组件包括 Spark core、Spark streaming、MLlib、GraphX</li>
-<li><strong>Apache Flink</strong>，流处理框架</li>
-<li>Kafka Streams，允许直接在消息中处理数据，用于消息传递系统中进行流式计算</li>
-<li>Map-Reduce ，最原始的版本，在单一节点上进行计算来得到本地结构 local result，汇合多个节点的计算结果，来得到 global result</li>
-</ul>
-<h3 id="其余的平台（platform）与包（package）"><a href="#其余的平台（platform）与包（package）" class="headerlink" title="其余的平台（platform）与包（package）"></a>其余的平台（platform）与包（package）</h3><ul>
-<li>基本程序语言：JVM、Java、Scala（面向对象和函数式编程）、Python</li>
-<li>采集和传输：Kafaka（分布式订阅消息系统）、Flume、Datax</li>
-<li>数据湖：在数据存储和数据处理之间：Iceberg、Hudi</li>
-<li>资源调度框架：YARN、KUbernets、Mesos</li>
-</ul>
-<h1 id="三、如何学习分布式计算系统"><a href="#三、如何学习分布式计算系统" class="headerlink" title="三、如何学习分布式计算系统"></a>三、如何学习分布式计算系统</h1><h2 id="2-1-编程基础"><a href="#2-1-编程基础" class="headerlink" title="2.1 编程基础"></a>2.1 编程基础</h2><h3 id="Scala基础"><a href="#Scala基础" class="headerlink" title="Scala基础"></a>Scala基础</h3><p><a target="_blank" rel="noopener" href="https://www.runoob.com/scala/scala-tutorial.html">Scala 菜鸟教程</a></p>
-<p>Scala 是一门类 Java 的编程语言，结合了面向对象编程和函数式编程</p>
-<ul>
-<li>每个值都是一个对象，对象的类型和行为由类定义，不同的类可以通过混入的方式混合在一起</li>
-<li>函数式编程芋圆，原生支持嵌套函数定义和高阶函数</li>
-</ul>
-<h3 id="PySpark-基础"><a href="#PySpark-基础" class="headerlink" title="PySpark 基础"></a>PySpark 基础</h3><p><a target="_blank" rel="noopener" href="https://help.aliyun.com/zh/emr/emr-on-ecs/user-guide/use-spark-shell-and-rdds?spm=a2c4g.11186623.0.0.12522e0b0BmqTk">阿里云文档</a></p>
-<p>需要深刻理解如何使用 pyspark 来完成 spark 的算力的厂检查熬做</p>
-<h2 id="2-2-计算框架-Spark"><a href="#2-2-计算框架-Spark" class="headerlink" title="2.2 计算框架 Spark"></a>2.2 计算框架 Spark</h2><p><em><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/3.5.2/">Spark documentation overview</a></em></p>
-<p>关键的Topic 包括</p>
-<ol>
-<li><strong>快速理解 spark 的 API</strong></li>
-<li><strong>理解如何使用 RDD 来进行编程、核心 API、加速和广播操作</strong></li>
-<li><strong>理解 SPARK 的 SQL、Dataset、Dataframe，利用最新的操作 API</strong></li>
-<li><em>流处理structured streaming、spark streaming（可选）</em></li>
-<li><strong>机器学习库 MLlib</strong></li>
-<li><strong>图网络学习 GraphX</strong></li>
-<li><em>利用 R 语言来进行学习（可选）</em></li>
-<li><strong>利用 Python 来使用 Spark</strong></li>
-</ol>
-<h2 id="2-3-额外知识"><a href="#2-3-额外知识" class="headerlink" title="2.3 额外知识"></a>2.3 额外知识</h2><h4 id="SQL-CRUD"><a href="#SQL-CRUD" class="headerlink" title="SQL - CRUD"></a>SQL - CRUD</h4><h4 id="HDFS-常见操作"><a href="#HDFS-常见操作" class="headerlink" title="HDFS - 常见操作"></a>HDFS - 常见操作</h4><h4 id="Flink-流数据处理-pipeline（可选）"><a href="#Flink-流数据处理-pipeline（可选）" class="headerlink" title="Flink 流数据处理 pipeline（可选）"></a>Flink 流数据处理 pipeline（可选）</h4><ol>
-<li>首先利用 Flink 从实时流数据采集中获取数据流，例如用户的行为日志</li>
-<li>利用 Flink 处理的 api 来完成数据的清晰、格式化和特征提取操作（基于 MapReduce）</li>
-<li>调用深度学习模型来完成预测，Map 操作</li>
-<li>将更新的数据输入到 Kafka，或者根据应用常见写入到数据库、消息队列或者文件系统中</li>
-</ol>
-<h1 id="四、其他问题"><a href="#四、其他问题" class="headerlink" title="四、其他问题"></a>四、其他问题</h1><h4 id="流数据（Stream-data）和批数据（Batch-data）处理的区别？"><a href="#流数据（Stream-data）和批数据（Batch-data）处理的区别？" class="headerlink" title="流数据（Stream data）和批数据（Batch data）处理的区别？"></a>流数据（Stream data）和批数据（Batch data）处理的区别？</h4><ul>
-<li>流数据是连续生成，需要实时采集并实时处理，通常的数据来源包括传感器用户日期和、社交媒体更新、金融交易等操作。<ul>
-<li>金融服务的交易分析，比如检查用户的行为</li>
-<li>实时用户和推荐系统，比如实时分析用户的需求</li>
-</ul>
-</li>
-<li>批数据模式下，数据是成块或者成批次组成的，通常被定时的收集或者存储<ul>
-<li>金融网贷业务的预处理</li>
-</ul>
-</li>
-</ul>
-<h4 id="全量更新和增量更新"><a href="#全量更新和增量更新" class="headerlink" title="全量更新和增量更新"></a>全量更新和增量更新</h4><ul>
-<li>全量更新 （Full update） 每次更新的时候处理整个数据集<ul>
-<li>Pro 实现逻辑简单，不需要复杂的变更追踪的逻辑，每次更新都是完整的数据集，可以直接避免数据不一致的风险</li>
-<li>Con 每次都需要处理全部数据，对于系统资源要求高。特别是对于大型数据集需要很长时间才能完成更新</li>
-</ul>
-</li>
-<li>增量更新（incremental update）只处理上次更新依赖发生变化的数据<ul>
-<li>Pro 增量更新的效率高、实时性更强</li>
-<li>Con 但是面临数据处理逻辑的复杂性，容易造成数据不一致的风险，对历史数据管理要求较高</li>
-</ul>
-</li>
-</ul>
-<p>增量更新常见的操作是根据 key 和 update time 来保留最新的记录</p>
-<p>对应的表格分类包括：</p>
-<ol>
-<li>增量表：记录更新周期内新增的数据，在原表中数据的基础上新增本周起产生的新数据</li>
-<li>全量表：记录更新周期内的全量数据，无论数据是否有变化都需要记录</li>
-<li>拉链表：记录数据的历史信息，记录数据从开始 i 一直到当前所有变化的信息</li>
-</ol>
-<h4 id="持续更新…"><a href="#持续更新…" class="headerlink" title="持续更新…"></a>持续更新…</h4><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.sqlboy.tech/">https://www.sqlboy.tech/</a></p>
+<p>开通之后可以 openai api platform 绑定自己的 card 作为支付方式，或者利用wildcard 提供的服务来绑定，官方提供 ChatGPT 一键升级的功能</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/image-20241117102454663.png" srcset="/img/loading.gif" lazyload alt="image-20241117102454663"></p>
+<p>第二种是实际信用卡，这里不再赘述。</p>
+<p>【上述两种方式都可以支付购买服务了！比如 Amazon、软件购买】</p>
+<p>【但是中国发卡机构发放的支持支付组织的卡大部分情况不能直接完成美国相关线上服务的购买，比如 Apple Store、Google Pay 等】</p>
+<h3 id="3-2-美区Paypal"><a href="#3-2-美区Paypal" class="headerlink" title="3.2 美区Paypal"></a>3.2 美区Paypal</h3><p>这里需要有一个非虚拟号的美国手机号，但是大部分都没有，这里有一个操作是可以通过商户支付页面进行注册，可以是为 Wiki 捐赠页面</p>
+<p><a target="_blank" rel="noopener" href="https://donate.wikimedia.org/w/index.php?title=Special:LandingPage&country=HK&uselang=en&wmf_medium=spontaneous&wmf_source=fr-redir&wmf_campaign=spontaneous">https://donate.wikimedia.org/w/index.php?title=Special:LandingPage&amp;country=HK&amp;uselang=en&amp;wmf_medium=spontaneous&amp;wmf_source=fr-redir&amp;wmf_campaign=spontaneous</a></p>
+<p>【注意注册 PayPal 过程中全程美区 IP + 无痕浏览模式】</p>
+<p>【之后可以通过 PayPal 来绑定美区 Apple store】</p>
 
                 
               </div>
@@ -452,7 +400,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" class="category-chain-item">计算机科学</a>
+  <a href="/categories/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%B0%88/" class="category-chain-item">生活杂谈</a>
   
   
 
@@ -467,7 +415,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E5%A4%96%E9%83%A8%E9%98%85%E8%AF%BB/" class="print-no-link">#外部阅读</a>
+        <a href="/tags/%E6%95%B0%E5%AD%97%E7%A7%BB%E6%B0%91/" class="print-no-link">#数字移民</a>
       
     </div>
   
@@ -479,8 +427,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>大数据与分布式系统概述</div>
-      <div>https://blog.tjdata.site/posts/51817.html</div>
+      <div>小白的在线支付方式折腾</div>
+      <div>https://blog.tjdata.site/posts/16132.html</div>
     </div>
     <div class="license-meta">
       
@@ -492,7 +440,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年10月21日</div>
+          <div>2024年11月17日</div>
         </div>
       
       
@@ -524,18 +472,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/16132.html" title="小白的在线支付方式折腾">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">小白的在线支付方式折腾</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/54653.html" title="如何建立自己的代码心智模型">
-                        <span class="hidden-mobile">如何建立自己的代码心智模型</span>
+                      <a href="/posts/51817.html" title="大数据与分布式系统概述">
+                        <span class="hidden-mobile">大数据与分布式系统概述</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
