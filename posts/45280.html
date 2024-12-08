@@ -19,29 +19,23 @@
   <meta name="author" content="chenlongxu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在目前没有足够做的经验或者说是机器学习素养的情况下来看这种文章无疑是一种折磨，因此过一遍概念就over惹，同时记录一下文献管理中的一些经验 01 计算学习理论计算学习理论希望回答  在什么样的条件下成功的学习是可能的 在什么条件下某个特定的学习算法可以保证成功运行  在可能近似正确（probably approximately correct，PAC）下，我们确定若干假设类别，判断它们能否从多项式">
+    <meta name="description" content="这篇文章算是从第一份实习开始之后就一直想写，但是又不知道怎么表述，直到最近看到《Rich Sutton，toward a better deep learning》关于深度学习中短期学习与持续学习的讨论，才发现这是我一直想表达的：不断的训练单个模型最优并不意味着全局最优，但可悲的是团体无法跨越时间长度来追求长期价值，除非具有强有力的集权注意，希望这篇文章能带给你启发！ 0x01 互联网公司 与 M">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CS229机器学习 学习理论总结 ｜Vol9">
-<meta property="og:url" content="https://blog.tjdata.site/posts/9be9aaa.html">
+<meta property="og:title" content="ROI_监督学习_一次性学习, LTV_强化学习_持续学习">
+<meta property="og:url" content="https://blog.tjdata.site/posts/45280.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
-<meta property="og:description" content="在目前没有足够做的经验或者说是机器学习素养的情况下来看这种文章无疑是一种折磨，因此过一遍概念就over惹，同时记录一下文献管理中的一些经验 01 计算学习理论计算学习理论希望回答  在什么样的条件下成功的学习是可能的 在什么条件下某个特定的学习算法可以保证成功运行  在可能近似正确（probably approximately correct，PAC）下，我们确定若干假设类别，判断它们能否从多项式">
+<meta property="og:description" content="这篇文章算是从第一份实习开始之后就一直想写，但是又不知道怎么表述，直到最近看到《Rich Sutton，toward a better deep learning》关于深度学习中短期学习与持续学习的讨论，才发现这是我一直想表达的：不断的训练单个模型最优并不意味着全局最优，但可悲的是团体无法跨越时间长度来追求长期价值，除非具有强有力的集权注意，希望这篇文章能带给你启发！ 0x01 互联网公司 与 M">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5db0e69419713fe1c2aeac8b36f4e015_1440w.jpg">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-d573fc13effe96fc3442050468ce2da9_1440w.jpg">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-903182e8c2a0fcf1b4f96a4825753f48_1440w.jpg">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-87986e8984f280d16b993aa0f44eb883_1440w.jpg">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-38baae2e2c0e9b5c645cbf09588432de_1440w.jpg">
-<meta property="article:published_time" content="2024-04-29T08:38:38.000Z">
-<meta property="article:modified_time" content="2024-04-29T08:55:09.000Z">
+<meta property="article:published_time" content="2024-12-08T09:10:05.000Z">
+<meta property="article:modified_time" content="2024-12-08T12:40:47.997Z">
 <meta property="article:author" content="chenlongxu">
-<meta property="article:tag" content="CS229">
 <meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="强化学习">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5db0e69419713fe1c2aeac8b36f4e015_1440w.jpg">
   
   
   
-  <title>CS229机器学习 学习理论总结 ｜Vol9 - Chenlong&#39;s blog</title>
+  <title>ROI_监督学习_一次性学习, LTV_强化学习_持续学习 - Chenlong&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -220,7 +214,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CS229机器学习 学习理论总结 ｜Vol9"></span>
+            <span id="subtitle" data-typed-text="ROI_监督学习_一次性学习, LTV_强化学习_持续学习"></span>
           
         </div>
 
@@ -231,8 +225,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-04-29 16:38" pubdate>
-          2024年4月29日 下午
+        <time datetime="2024-12-08 17:10" pubdate>
+          2024年12月8日 下午
         </time>
       </span>
     
@@ -243,7 +237,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k 字
+          2.4k 字
         
       </span>
     
@@ -254,7 +248,7 @@
         
         
         
-          11 分钟
+          21 分钟
         
       </span>
     
@@ -300,73 +294,117 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CS229机器学习 学习理论总结 ｜Vol9</h1>
+            <h1 id="seo-header">ROI_监督学习_一次性学习, LTV_强化学习_持续学习</h1>
             
             
               <div class="markdown-body">
                 
-                <p>在目前没有足够做的经验或者说是机器学习素养的情况下来看这种文章无疑是一种折磨，因此过一遍概念就over惹，同时记录一下文献管理中的一些经验</p>
-<h2 id="01-计算学习理论"><a href="#01-计算学习理论" class="headerlink" title="01 计算学习理论"></a>01 计算学习理论</h2><p>计算学习理论希望回答</p>
-<ol>
-<li>在什么样的条件下成功的学习是可能的</li>
-<li>在什么条件下某个特定的学习算法可以保证成功运行</li>
-</ol>
-<p>在可能近似正确（probably approximately correct，PAC）下，我们确定若干假设类别，判断它们能否从多项式数量的训练集中得到，同时对假设空间的自然度量来界定归纳学习所需的样例的训练数目</p>
-<h3 id="1-1-问题和错误率"><a href="#1-1-问题和错误率" class="headerlink" title="1.1 问题和错误率"></a>1.1 问题和错误率</h3><p>我们具有数据集合$(x^{(i)},y^{(i)}）$，以及做出的假设的集合H和学习算法L，在这个问题中，我们感兴趣的是刻画不同的学习器L的性能，这些学习器使用不同假设空间H来学习不同类别的C中的目标概念</p>
-<p>为了描述学习器L输出的假设h对真实目标的逼近成句，我们定义真实错误率（true error）,注意这里的真实错误率的定义是在整个实例的分布上，而不只是训练样例上，因为它是在实际应用此假设h后遇到的真实错误率</p>
-<p>$error(h)&#x3D;Pr[c(x)~&#x3D;h(x)]$</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5db0e69419713fe1c2aeac8b36f4e015_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20220403173130140</p>
-<p>这个错误率的分布依赖于未知的概率分布，这个概率分布是和假设空间相关的；另外一方面h对于c的错误率不能直接由学习器观察到</p>
-<p><strong>我们的目的是刻画一个：能够从合理数量的随机抽样训练样例中通过合理的计算来得到一个可靠的假设</strong>，那我们如何来描述这种可学习性？我们当然希望所有的真实错误率都为0，但是这样是不现实的（思维辩证就知道不合适），因此我们可以从这两个角度看</p>
-<ol>
-<li>将真实错误率限定在一个常数范围内，同时让这个常数可以任意小$\epsilon$</li>
-<li>并不要求对所有的随机抽样序列都能成功，只要求其实拍的概率在某个常数$\sigma$</li>
-</ol>
-<p>一些PAC的定义：</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-d573fc13effe96fc3442050468ce2da9_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20220403175054274</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-903182e8c2a0fcf1b4f96a4825753f48_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20220403175125351</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-87986e8984f280d16b993aa0f44eb883_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20220403175202889</p>
-<p>在PAC学习定义之外，我们可以看出模型的可学习性很大程度由所需要的数据集数量确定，随着问题规模的增长所需要的训练样例的增长被称为该学习问题的样本复杂度（sample complexity）</p>
-<p>对于一个假设空间如何确定和数据集之间的关系，可以用$\epsilon-exhousted$来刻画，表示于训练样例一致的所有假设的真实错误率都恰好小于$\epsilon$</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-38baae2e2c0e9b5c645cbf09588432de_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20220403175841000</p>
-<p>由此计算的得到需要的训练实际例子</p>
-<p>$m&gt;&#x3D;1&#x2F;(\epsilon)(In|H|+in(1&#x2F;\sigma ))$</p>
-<p>同样对于一个假设空间的复杂程度，可以使用Vapnik-Chervonenkis维度来证明模型的相关复杂程度</p>
+                <p>这篇文章算是从第一份实习开始之后就一直想写，但是又不知道怎么表述，直到最近看到<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=YLiXgPhb8cQ&t=3s">《Rich Sutton，toward a better deep learning》</a>关于深度学习中短期学习与持续学习的讨论，才发现这是我一直想表达的：<strong>不断的训练单个模型最优并不意味着全局最优，但可悲的是团体无法跨越时间长度来追求长期价值，除非具有强有力的集权注意</strong>，希望这篇文章能带给你启发！</p>
+<h2 id="0x01-互联网公司-与-MDP-过程"><a href="#0x01-互联网公司-与-MDP-过程" class="headerlink" title="0x01 互联网公司 与 MDP 过程"></a>0x01 互联网公司 与 MDP 过程</h2><p>回顾第一份实习已经过去一年了，依旧忘不了首次踏入互联网公司带给我的 Model shock。当时入职的是滴滴，一家国内最早开始做网约车平台的公司，车厂或者司机可以通过平台与乘客呼单即时交流来完成接送乘客的服务，在这背后需要完成大量的交易匹配、定价策略、供需调节的模型，一个常见的链路是：</p>
+<blockquote>
+<p>根据市场的反馈，利用收集的离线数据更新模型，并根据模型上线的效果</p>
+</blockquote>
+<p>而回顾带奖励的MDP 过程则是</p>
+<blockquote>
+<p> 智能体（Agent）根据环境（Env）输入的观察（Observation）来输出自己的选择（Action）得到对应的奖励（Rewards）并生成下一个新的状态（State）和观察（Obs），希望最大化自己的回报（Return），也就是累计奖励之和。</p>
+</blockquote>
 <ul>
-<li>常见模型的复杂程度</li>
-<li>神经网络的复杂程度</li>
+<li><strong>即时奖励（Reward）</strong>：指的是在某一时刻，智能体因采取某个动作所获得的直接反馈。这是一个短期的量化反馈，可能代表了该动作在该时刻的“好坏”。</li>
+<li><strong>长期回报（Return）</strong>：是指智能体从当前状态开始，通过一系列动作所能获得的累积奖励。它通常是未来所有奖励的折扣和加权总和。强化学习的目标不是仅仅最大化某一时刻的奖励，而是最大化 <strong>未来的累积奖励</strong>，即长期回报。</li>
 </ul>
-<h2 id="02-基于实例学习"><a href="#02-基于实例学习" class="headerlink" title="02 基于实例学习"></a>02 基于实例学习</h2><p>一个很简单的思路，通过强大的计算能力，我们可以比较希望预测的值和数据集中所有实例，当从这些实例中泛化的工作被推迟到必须分类新的实例时，每当学习器遇到一个新的查询实例就分析这个实例与之前存储的的关系，来由此区分目标函数的值，这样的方法包括：</p>
+<p>类比上来看，互联网公司类似智能体，而算法工程师则是智能体的 update 策略，我们会收集离线的数据来训练我们的模型，来获取最大的短期 reward而不是 return。</p>
+<blockquote>
+<p>为什么我们要追求 return 而不是 reward？</p>
+<p>强化学习的核心目标是学习到一个 <strong>最优策略</strong>，使得智能体在整个任务过程中获得最大的累积奖励。如果智能体只关注即时奖励，<strong>它可能会做出只对当前有利但不对未来有利的决策，导致整个任务的表现并不理想。</strong></p>
+<p>例如，如果一个机器人正在玩一个游戏，它可能在某个时刻获得了很高的即时奖励，但如果它没有考虑到游戏后期的情况，它的决策可能会导致在后期失去更多的奖励。因此，智能体需要通过 <strong>长期回报</strong> 来评估当前决策的“好坏”，而不是仅仅依赖于即时反馈。</p>
+</blockquote>
+<p>AB 实验方法可以看作是蒙特卡洛采样 Sample，来得到对应的数据</p>
+<p>大盘数据可以看作是自举式的 bootstrap 方法，需要 online 学习</p>
+<p>大量的数据、产品、算法、开发根据市场需求来不断调整公司的（Policy），进而为用户的状态传递输出对应的动作。</p>
+<h2 id="0x02-ROI和LTV"><a href="#0x02-ROI和LTV" class="headerlink" title="0x02 ROI和LTV"></a>0x02 ROI和LTV</h2><h3 id="2-1-指标计算"><a href="#2-1-指标计算" class="headerlink" title="2.1 指标计算"></a>2.1 指标计算</h3><p><strong>ROI（投资回报率）</strong>是一个用来衡量投资效益的财务指标。它通过比较投资所获得的回报与投资成本之间的比例，帮助企业或个人评估某项投资是否值得进行。ROI 是评估各种投资决策的常用工具，可以帮助确定资金投入是否产生了预期的收益。</p>
+<p>LTV（<strong>Lifetime Value</strong>，客户生命周期价值）是一个常用的商业和营销指标，用于衡量一个客户在其与公司合作的整个生命周期中，可能为公司带来的总利润。LTV的计算通常基于客户的购买频率、购买金额、购买周期以及客户留存时间等因素。</p>
+<h3 id="2-2-指标理解"><a href="#2-2-指标理解" class="headerlink" title="2.2 指标理解"></a>2.2 指标理解</h3><p>计算指标最终是希望衡量模型长期的优劣，上述两个指标中 ROI 可以看作是一个短期奖励，是容易看到的但是不客观的，其中 LTV 是不可计算的但是是我们追求的圣杯。</p>
+<p>因为从用户的生命周期来看 ta 可以分为获取（A）、激活（A）、留存（R）、活跃（R）推荐（R）、流失（C）不同的阶段，不同阶段代表着不同的价值水平。如果在单次的模型迭代中仅仅关注一个维度（例如指标提升的 ROI）可能会出现下列错误：</p>
 <ol>
-<li>最近邻方法 nearest neighbor</li>
-<li>局部加权回归 locally weighted regression</li>
+<li>用户的留存率低，但是长期贡献的消费低，说明引入的用户是白嫖党</li>
+<li>用户的消费水平很高，但是立刻流失，难以形成复购和转化</li>
+<li>初始的 ROI 很低，但是用户留存率和复购率执行，可以有效的提升业务收益</li>
 </ol>
-<h2 id="03-增强学习"><a href="#03-增强学习" class="headerlink" title="03 增强学习"></a>03 增强学习</h2><p>大坑，不学，死都不学</p>
-<h2 id="04-文献管理"><a href="#04-文献管理" class="headerlink" title="04 文献管理"></a>04 文献管理</h2><p>这里就是作为一个简单的记录，看文献中可能的应用场景</p>
+<p>但是无论是互联网日星月异的变化，或者自身岗位的更迭都很难对于LTV 进行准确的计算，同时我们也没有反事实的能力去做蒙特卡洛采样，所以 AB 实验成为互联网公司的唯一准则，但是往往忘记到了环境是在改变的额</p>
+<h3 id="2-3-TD-learning-与-MC"><a href="#2-3-TD-learning-与-MC" class="headerlink" title="2.3 TD learning 与 MC"></a>2.3 TD learning 与 MC</h3><p>TD 学习是强化学习中基本的概念，主要是采用 online 学习的思想（bootstrap 自举的方法），不断的在环境中进行探索来逼近自身估计的 return，下列两种方法的区别在于 TD target 的不同，造成学习的 TD difference 进行</p>
 <ol>
-<li>日常泛读来了解自己的研究现状（对于学术小白鼠不考虑555，所以没有这种需求）</li>
-<li>文献综述</li>
-<li>组会汇报的工作</li>
+<li>SARSA 的 TD target</li>
+<li>Q learning 的 TD target</li>
 </ol>
-<p>因此需要对论文整理成一个一个项目来管理，同时需要对其做笔记，更重要的是可以方便引用，</p>
-<p>第一部分查找：</p>
-<ol>
-<li>单纯的找论文和管理的话，<a target="_blank" rel="noopener" href="https://scholar.google.com.hk/?hl=zh-CN">google scholar</a>+<a target="_blank" rel="noopener" href="https://sci-hub.se/">sci-hub</a>感觉就够了</li>
-<li>在自己的google账号账图书馆中新建自己的文章档案库，这样可以方便管理</li>
-</ol>
-<p>第二部分阅读：</p>
-<p>可以在文档下载导入到zotero，再链接到notion，利用notion来做笔记和一些comment</p>
-<p>作为一个文献管理的过程</p>
-<p>第三部分引用：</p>
-<p>可以利用zotero配合word的插件</p>
-<p>也可以google scholar中导出apa格式</p>
-<p>也可以使用latex中的texbib格式</p>
-
+<p>不同蒙特卡洛（MC sample）方法的采样，off-line 学习的成本太大了。</p>
+<h2 id="0x03-从宏观的-RL-到-DL"><a href="#0x03-从宏观的-RL-到-DL" class="headerlink" title="0x03 从宏观的 RL 到 DL"></a>0x03 从宏观的 RL 到 DL</h2><h3 id="3-1-数据处理-–-偏差"><a href="#3-1-数据处理-–-偏差" class="headerlink" title="3.1 数据处理 – 偏差"></a>3.1 数据处理 – 偏差</h3><p>在因果推断中核心的问题是处理观察数据中存在的偏差，但是很难有人可以讲清楚偏差是什么。从推荐系统中具体业务的角度理解可以对偏差有更加具体的认识，这里由 GPT 来总结常见的偏差类型：</p>
+<table>
+<thead>
+<tr>
+<th><strong>偏差类型</strong></th>
+<th><strong>定义</strong></th>
+<th><strong>表现</strong></th>
+<th><strong>解决方法</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>选择偏差</strong></td>
+<td>训练数据中某些用户或物品的行为过度或不足代表。</td>
+<td>训练数据只包含活跃用户，导致系统无法有效预测冷门用户。</td>
+<td>确保数据采样的代表性，进行平衡采样。</td>
+</tr>
+<tr>
+<td><strong>反馈偏差</strong></td>
+<td>用户反馈受推荐系统推荐的影响，形成循环。</td>
+<td>系统倾向推荐热门物品，忽略冷门物品或新物品。</td>
+<td>区分离线和在线数据，使用探索策略（如多臂老虎机）。</td>
+</tr>
+<tr>
+<td><strong>暴露偏差</strong></td>
+<td>用户仅基于展示的内容进行反馈，导致物品低估。</td>
+<td>展示频率低的物品未得到足够反馈，导致其被低估。</td>
+<td>增加展示频率或采用探索性推荐。</td>
+</tr>
+<tr>
+<td><strong>冷启动偏差</strong></td>
+<td>没有足够历史数据时，推荐系统难以有效推荐物品或用户。</td>
+<td>新用户或新物品无法得到足够反馈，推荐效果差。</td>
+<td>引入基于内容的推荐或利用外部数据（如社交网络）。</td>
+</tr>
+<tr>
+<td><strong>时间偏差</strong></td>
+<td>用户行为或物品流行趋势随时间变化，训练数据未能捕捉到这种动态。</td>
+<td>推荐过时物品，忽略用户的最新偏好。</td>
+<td>定期更新模型，使用时间衰减函数或时间序列模型。</td>
+</tr>
+<tr>
+<td><strong>稀疏性偏差</strong></td>
+<td>用户与物品之间的交互矩阵稀疏，许多用户对大部分物品没有交互。</td>
+<td>模型无法有效捕捉用户真实偏好。</td>
+<td>使用矩阵分解或深度学习技术填补缺失数据，增强协同过滤。</td>
+</tr>
+<tr>
+<td><strong>标签偏差</strong></td>
+<td>训练标签不准确或具有偏差，用户点击数据未必反映真实兴趣。</td>
+<td>点击率等指标过度偏向展示频繁内容，忽略内容多样性。</td>
+<td>通过多种反馈信号（如停留时间、评分）来综合评估用户兴趣。</td>
+</tr>
+<tr>
+<td><strong>用户偏差</strong></td>
+<td>用户行为的偏差影响推荐效果，某些用户只关注特定类型物品。</td>
+<td>模型过于依赖用户历史行为，忽略潜在兴趣。</td>
+<td>引入用户画像和多种特征，增强推荐个性化和多样性。</td>
+</tr>
+<tr>
+<td><strong>上下文偏差</strong></td>
+<td>用户偏好与环境因素（时间、地点、设备）相关，忽略这些信息会产生偏差。</td>
+<td>忽略上下文时，推荐结果可能不适合特定场景或时间。</td>
+<td>融入上下文信息，如设备、地点、时间等。</td>
+</tr>
+</tbody></table>
+<p>核心偏差的问题在于训练模型时候的状态是不一致的，我们无法单纯的输出动作到奖励之间的相关关系，而是需要考虑环境输出状态的变化造成的影响。但是往往是我们将状态S + 收集的短期数据来进行训练，依旧无法很好的保证在之后下一个 S 下的结果，因为环境是在变化的，而离线评估的结果往往也会收到状态的影响造成的偏差影响。</p>
+<h3 id="3-2-重要性采样-–-去偏"><a href="#3-2-重要性采样-–-去偏" class="headerlink" title="3.2 重要性采样 – 去偏"></a>3.2 重要性采样 – 去偏</h3><p>可以和倾向性分数（PS）的角度去理解，这里忽略</p>
+<h3 id="3-3-To-be-continuing"><a href="#3-3-To-be-continuing" class="headerlink" title="3.3 To be continuing"></a>3.3 To be continuing</h3>
                 
               </div>
             
@@ -399,9 +437,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/CS229/" class="print-no-link">#CS229</a>
-      
         <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="print-no-link">#机器学习</a>
+      
+        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="print-no-link">#强化学习</a>
       
     </div>
   
@@ -413,8 +451,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CS229机器学习 学习理论总结 ｜Vol9</div>
-      <div>https://blog.tjdata.site/posts/9be9aaa.html</div>
+      <div>ROI_监督学习_一次性学习, LTV_强化学习_持续学习</div>
+      <div>https://blog.tjdata.site/posts/45280.html</div>
     </div>
     <div class="license-meta">
       
@@ -426,7 +464,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年4月29日</div>
+          <div>2024年12月8日</div>
         </div>
       
       
@@ -458,18 +496,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/4ccb03.html" title="How to promote sustainable travel behavior in the post COVID-19 period">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">How to promote sustainable travel behavior in the post COVID-19 period</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/8c525481.html" title="CS229机器学习 集成学习 ｜ Vol8">
-                        <span class="hidden-mobile">CS229机器学习 集成学习 ｜ Vol8</span>
+                      <a href="/posts/16132.html" title="小白的在线支付方式折腾">
+                        <span class="hidden-mobile">小白的在线支付方式折腾</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
