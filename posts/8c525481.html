@@ -22,7 +22,7 @@
     <meta name="description" content="集成学习是通过构建并结合多个学习器来完成学习任务，有时候也被称为多分类系统（multi- classifier system）、基于委员会的学习（committee based learning）等等之类的，在其中主要面临基本学习器的选择和训练过程，我们希望学习器可以在相同的数据集上训练，但是得到的最终的弱学习器最好的是相互独立的，这样才能提高我们最高算法的准确程度。 集成学习成立的基础是：基学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS229机器学习 集成学习 ｜ Vol8">
-<meta property="og:url" content="https://blog.tjdata.site/posts/8c525481.html">
+<meta property="og:url" content="https://blog.chenxia.site/posts/8c525481.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
 <meta property="og:description" content="集成学习是通过构建并结合多个学习器来完成学习任务，有时候也被称为多分类系统（multi- classifier system）、基于委员会的学习（committee based learning）等等之类的，在其中主要面临基本学习器的选择和训练过程，我们希望学习器可以在相同的数据集上训练，但是得到的最终的弱学习器最好的是相互独立的，这样才能提高我们最高算法的准确程度。 集成学习成立的基础是：基学习">
 <meta property="og:locale" content="zh_CN">
@@ -79,7 +79,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"blog.chenxia.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -327,7 +327,7 @@
 <p>添加图片注释，不超过 140 字（可选）</p>
 <p>可以看出，其中的次级学习算法可以看出是一种自适应adaptive的权重调整方法，同时这种权重是通过一个学习器来训练得到的，抛弃其中的数学原理不谈，这里常用的包括多响应线性回归Multi- response Linear regression和贝叶斯模型平均Bayes Model AVeraging BMA等效果较好</p>
 <h2 id="0x04-集成学习–-特殊的概念"><a href="#0x04-集成学习–-特殊的概念" class="headerlink" title="0x04 集成学习– 特殊的概念"></a>0x04 集成学习– 特殊的概念</h2><p>在集成学习中最晦涩的就是boosting和bagging（bootstrap aggregating）两种方法</p>
-<h3 id="4-1-bagging（有放回称为bagging、无放回的称为pasting）"><a href="#4-1-bagging（有放回称为bagging、无放回的称为pasting）" class="headerlink" title="4.1 bagging（有放回称为bagging、无放回的称为pasting）"></a>4.1 bagging（有放回称为bagging、无放回的称为pasting）</h3><p>同样是根据希望的得到不同基训练模型，因此我们可以对相同的学习器来赋予不同的训练集来得到不同的模型，但是由于数据集是有限的，因此如果数据集完全隔离开，这样训练得到的学习器必然是不好的（或者说是不够好的），如果我们想尽可能的好的得到独立同时效果也好的学习模型，[可以参考之前对模型评估](<a href="https://blog.tjdata.site/2022/02/25/Andrew">https://blog.tjdata.site/2022/02/25/Andrew</a> Wu-番外02-机器学习的实验设计&#x2F;)中的样本的自助法选择（bootstrap sampling）来得到相互独立数据集得到的不同学习模型；在此基础上得到的结果可以使用<strong>简单平均策略</strong>或者<strong>简单投票</strong>来得到最终的结果</p>
+<h3 id="4-1-bagging（有放回称为bagging、无放回的称为pasting）"><a href="#4-1-bagging（有放回称为bagging、无放回的称为pasting）" class="headerlink" title="4.1 bagging（有放回称为bagging、无放回的称为pasting）"></a>4.1 bagging（有放回称为bagging、无放回的称为pasting）</h3><p>同样是根据希望的得到不同基训练模型，因此我们可以对相同的学习器来赋予不同的训练集来得到不同的模型，但是由于数据集是有限的，因此如果数据集完全隔离开，这样训练得到的学习器必然是不好的（或者说是不够好的），如果我们想尽可能的好的得到独立同时效果也好的学习模型，[可以参考之前对模型评估](<a target="_blank" rel="noopener" href="https://blog.tjdata.site/2022/02/25/Andrew">https://blog.tjdata.site/2022/02/25/Andrew</a> Wu-番外02-机器学习的实验设计&#x2F;)中的样本的自助法选择（bootstrap sampling）来得到相互独立数据集得到的不同学习模型；在此基础上得到的结果可以使用<strong>简单平均策略</strong>或者<strong>简单投票</strong>来得到最终的结果</p>
 <p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-16fc7815c5999f8082ba609838ca8c8a_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>添加图片注释，不超过 140 字（可选）</p>
 <p>从bias&#x3D;variance的角度来看，bagging主要集中在降低方差 </p>
@@ -352,7 +352,7 @@
 <h3 id="5-2-随机森林-random-forest（based-on-bagging）"><a href="#5-2-随机森林-random-forest（based-on-bagging）" class="headerlink" title="5.2 随机森林 random forest（based on bagging）"></a>5.2 随机森林 random forest（based on bagging）</h3><p>随机森林就是使用许多个决策树来集成得到最终的结果，论文最早发布与1997年的如下，他是如何将有放回的抽样应用到决策树CART中的呢？（这或许是随机森林学习的重点），以及具体的实践方法，其中的数学原理可能比较困难</p>
 <p>Paper：<a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1023/A:1010933404324">Amit, Y., &amp; Geman, D. (1997). Shape quantization and recognition with randomized trees. Neural computation, 9(7), 1545-1588.</a></p>
 <p>API:<a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">sklearn.ensemble.RandomForestClassifier</a></p>
-<p>回顾之前关于实现<a href="https://blog.tjdata.site/2022/02/20/Andrew-Wu%E5%9F%BA%E6%9C%AC%E6%A8%A1%E5%9E%8B03-%E5%86%B3%E7%AD%96%E6%A0%91CART/">决策树模型的过程</a>，它是一个很简单的过程，一种采用递归思想的算法，在不考虑最终停止的条件，它总是从现有的特征集中选择最好的特征来进行模型的分割，然后删除这个特征进行下一次递归，那么随机森林在这个过程中做了什么优化呢？</p>
+<p>回顾之前关于实现<a target="_blank" rel="noopener" href="https://blog.tjdata.site/2022/02/20/Andrew-Wu%E5%9F%BA%E6%9C%AC%E6%A8%A1%E5%9E%8B03-%E5%86%B3%E7%AD%96%E6%A0%91CART/">决策树模型的过程</a>，它是一个很简单的过程，一种采用递归思想的算法，在不考虑最终停止的条件，它总是从现有的特征集中选择最好的特征来进行模型的分割，然后删除这个特征进行下一次递归，那么随机森林在这个过程中做了什么优化呢？</p>
 <ol>
 <li>样本的角度，在训练决策树中并不选择所有的样本训练，利用bootstrap的方法来有放回的抽取数据集来训练不同的决策树（decision tree）</li>
 <li>特征的角度，传统的decision tree由上述的描述可以看出它实际上是一种没有放回抽样（why？），那么随机森林的改进就是每次不删除特征集，而是随机选择一定属性的特征（比如原始特征集的10%）来选择其中最佳的特征来进行模型的分割一直到不能再分裂为止</li>
@@ -450,7 +450,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>CS229机器学习 集成学习 ｜ Vol8</div>
-      <div>https://blog.tjdata.site/posts/8c525481.html</div>
+      <div>https://blog.chenxia.site/posts/8c525481.html</div>
     </div>
     <div class="license-meta">
       

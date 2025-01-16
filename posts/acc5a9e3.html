@@ -22,7 +22,7 @@
     <meta name="description" content="本来就以Attention为基础的Transformer结构很感兴趣，想直接从CNN跳到Attention来学习，但是通过了解一些基本的背景发现并不现实，transformer的提出本来就是在机器翻译的基础上，所以先天的在一些问题场景的解释中并不是以回归数据、或者说二维图像数据，而是基于序列（seq）类型的数据进行解释的，所以需要在了解认清楚seq2seq学习之后才能对attention有一些理解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="动手学深度学习 Vol4 ｜ Attention机制">
-<meta property="og:url" content="https://blog.tjdata.site/posts/acc5a9e3.html">
+<meta property="og:url" content="https://blog.chenxia.site/posts/acc5a9e3.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
 <meta property="og:description" content="本来就以Attention为基础的Transformer结构很感兴趣，想直接从CNN跳到Attention来学习，但是通过了解一些基本的背景发现并不现实，transformer的提出本来就是在机器翻译的基础上，所以先天的在一些问题场景的解释中并不是以回归数据、或者说二维图像数据，而是基于序列（seq）类型的数据进行解释的，所以需要在了解认清楚seq2seq学习之后才能对attention有一些理解">
 <meta property="og:locale" content="zh_CN">
@@ -82,7 +82,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.tjdata.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"blog.chenxia.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -335,7 +335,7 @@
 </ol>
 <p>这里与线性回归的区别在于权重的确定和使用上，线性回归的权重是严格推导并使用在X的不同特征上，而attention的权重是通过学习并使用在X（key）对应的y（value）</p>
 <p>同时这里的attention value的权重可以是通过学习，也可以是通过人为定义来得到的，因为我们采用的vector形式的学习，因此我们可以使用kernel function或者线性空间一些距离度量来作为计算方式，在后续进化版的升级中，我们可能会会有其他score的度量，比如书与书之间是好度量的，但是说的话和书之间如何度量？</p>
-<h3 id="0x02-可视化Attention"><a href="#0x02-可视化Attention" class="headerlink" title="0x02 可视化Attention"></a>0x02 可视化Attention</h3><p>接着上述的1.5我们可以看出《D2L》书中介绍Nadaraya- Watson核回归，只不过其中的attention score 的计算方式是用<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Kernel_method">核机器</a>；幸运的是我们在<a href="https://blog.tjdata.site/2022/02/05/CS229-02--%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BASVM/">SVM</a>里面已经初步了解过，它只是一种将低纬度的向量距离投射到高纬度，比如我们可以采用Gaussian Kernel</p>
+<h3 id="0x02-可视化Attention"><a href="#0x02-可视化Attention" class="headerlink" title="0x02 可视化Attention"></a>0x02 可视化Attention</h3><p>接着上述的1.5我们可以看出《D2L》书中介绍Nadaraya- Watson核回归，只不过其中的attention score 的计算方式是用<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Kernel_method">核机器</a>；幸运的是我们在<a target="_blank" rel="noopener" href="https://blog.tjdata.site/2022/02/05/CS229-02--%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BASVM/">SVM</a>里面已经初步了解过，它只是一种将低纬度的向量距离投射到高纬度，比如我们可以采用Gaussian Kernel</p>
 <p>这样取评价之后就可以得到我们对于新的query的x的预测为</p>
 <p>这里取的就是按照一种高斯距离，离的越近越好，如果按照这个方式得到的attention score可以看出近大远小的特点。</p>
 <p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-8e1d36a6678f9a5f916d6c710e0ea958_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
@@ -416,7 +416,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>动手学深度学习 Vol4 ｜ Attention机制</div>
-      <div>https://blog.tjdata.site/posts/acc5a9e3.html</div>
+      <div>https://blog.chenxia.site/posts/acc5a9e3.html</div>
     </div>
     <div class="license-meta">
       

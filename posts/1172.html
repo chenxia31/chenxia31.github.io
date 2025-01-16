@@ -1,0 +1,842 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文主要介绍生存分析所需要解决的问题，常见的基本概念、解决方法，帮助快速理解 一、问题背景生存分析（Survival analysis）是一种统计方法，专门用于研究「事件的一系列发生节点」的时间，常见的事件列表如下：  （疾病治疗）研究某种病被治疗之后的复发情况，如果复发则被认为“死亡”，如果未复发则被认为是“生存”，在这种情况下关注“复发”的医学规律 （职业升迁）在职业升迁的研究中，升迁可以看作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="生存分析基本概念、常见方法、评价指标">
+<meta property="og:url" content="https://blog.chenxia.site/posts/1172.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="本文主要介绍生存分析所需要解决的问题，常见的基本概念、解决方法，帮助快速理解 一、问题背景生存分析（Survival analysis）是一种统计方法，专门用于研究「事件的一系列发生节点」的时间，常见的事件列表如下：  （疾病治疗）研究某种病被治疗之后的复发情况，如果复发则被认为“死亡”，如果未复发则被认为是“生存”，在这种情况下关注“复发”的医学规律 （职业升迁）在职业升迁的研究中，升迁可以看作">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-16T06:14:48.000Z">
+<meta property="article:modified_time" content="2025-01-16T07:32:11.523Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="因果推断">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>生存分析基本概念、常见方法、评价指标 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.chenxia.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="生存分析基本概念、常见方法、评价指标"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-16 14:14" pubdate>
+          2025年1月16日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">生存分析基本概念、常见方法、评价指标</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文主要介绍生存分析所需要解决的问题，常见的基本概念、解决方法，帮助快速理解</p>
+<h2 id="一、问题背景"><a href="#一、问题背景" class="headerlink" title="一、问题背景"></a>一、问题背景</h2><p>生存分析（Survival analysis）是一种统计方法，专门用于研究「事件的一系列发生节点」的时间，常见的事件列表如下：</p>
+<ol>
+<li>（疾病治疗）研究某种病被治疗之后的复发情况，如果复发则被认为“死亡”，如果未复发则被认为是“生存”，在这种情况下关注“复发”的医学规律</li>
+<li>（职业升迁）在职业升迁的研究中，升迁可以看作是死亡、未升迁则可以认为是生存，升迁是终点事件，此时的生存分析主要介绍与升迁有关的规律</li>
+</ol>
+<p>生存分析的核心是希望得到下列结果：</p>
+<ol>
+<li>估计生存曲线，得到不同时间点下的生存结果</li>
+<li>估计因果效应，包括使用Log rank 检验、广义秩和检验</li>
+<li>影响因素识别，评价影响生存过程中的影响因素，cox 回归分析</li>
+</ol>
+<p>生存分析中面临的困难在于，其观察数据往往具有下列特点：</p>
+<ol>
+<li>偏态分布，生存时间通常具有明显的偏态分布，有正态分布假设的统计方法不能适用</li>
+<li>删失（Censoring），研究对象在观察时间内没有事件发生，一种是中途的丢失或者退出，另一种是超过最长的随访时间时间仍然没有发生</li>
+</ol>
+<h2 id="二、基本概念"><a href="#二、基本概念" class="headerlink" title="二、基本概念"></a>二、基本概念</h2><h2 id="2-1-符号定义"><a href="#2-1-符号定义" class="headerlink" title="2.1 符号定义"></a>2.1 符号定义</h2><ul>
+<li>生存时间 T 随机变量</li>
+<li>生存函数，表示个体生存时间超过 t 的概率</li>
+<li>生存时间累计分布函数，表示个体生存时间不超过 t 的概率</li>
+<li>生存时间概率密度函数，为上述分布函数的导数</li>
+<li>风险函数 hazard function，表示个体在活过时间 t 之后的瞬死概率，是回归模型的重要概念</li>
+<li>累计风险函数 cumulative hazard function，表示累计的死亡风险</li>
+</ul>
+<h2 id="2-2-生存曲线"><a href="#2-2-生存曲线" class="headerlink" title="2.2 生存曲线"></a>2.2 生存曲线</h2><p>其横轴是时间、纵轴是生存率，核心是希望直观的展示不同时间点上生存率的变化情况，有助于对比不同组别之间的生存差异，同时也可以用于评估潜在的印象因素。常见的曲线包括：</p>
+<ol>
+<li>Kaplan-Meier 曲线，最常见的曲线</li>
+<li>Nelson-Aalen 曲线，非参数生存曲线，绘制的累计风险（Cumulative hazard）随时间变化，直接反映时间发生的累计风险</li>
+<li>Cumulative incidence function 曲线，用于描述在竞争性环境下的生存情况</li>
+<li>Smoothed survival curves，使用平滑的生存曲线，用于减少数据中的噪音或小样本效应引起的不稳定性，可以通过核密度估计的方式进行平滑处理</li>
+<li>Restricted mean survival time：用于描述特定时间段内的平均生存时间，而不是整个生存时间的曲线</li>
+</ol>
+<h2 id="2-2-生存曲线常见指标"><a href="#2-2-生存曲线常见指标" class="headerlink" title="2.2 生存曲线常见指标"></a>2.2 生存曲线常见指标</h2><p><strong><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=240571580&content_type=Article&match_order=1&q=%E6%80%BB%E4%BD%93%E7%94%9F%E5%AD%98%E6%9C%9F&zhida_source=entity">总体生存期</a>（Overall Survival, OS）</strong>：任何原因导致的死亡，只关心是否死亡，不考虑死亡的具体原因。用于评估患者在治疗或研究中的总体生存情况，我们一般见到的5年生存率、10年生存率等都是基于OS的。</p>
+<p><strong><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=240571580&content_type=Article&match_order=1&q=%E6%97%A0%E8%BF%9B%E5%B1%95%E7%94%9F%E5%AD%98%E6%9C%9F&zhida_source=entity">无进展生存期</a>（Progression-Free Survival, PFS）</strong>：疾病经过治疗后没有出现进一步恶化的生存期，结局指标是发生疾病<strong>进展或死亡</strong>。PFS相比OS包含了恶化这个概念，可用于评估治疗的临床效益，也就是对疾病进展的影响，要求对<strong>疾病进展的标准</strong>进行明确的定义。</p>
+<p><strong><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=240571580&content_type=Article&match_order=1&q=%E6%97%A0%E7%97%85%E7%94%9F%E5%AD%98%E6%9C%9F&zhida_source=entity">无病生存期</a>（Disease-Free Survival, DFS）</strong>：从随机分组开始至疾病复发或由于疾病进展导致患者死亡的时间。不考虑因何种原因死亡，只关心疾病复发或进展。用于评估治疗对疾病复发或进展的影响，常用于<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=240571580&content_type=Article&match_order=1&q=%E6%A0%B9%E6%B2%BB%E6%80%A7%E6%89%8B%E6%9C%AF%E6%B2%BB%E7%96%97&zhida_source=entity">根治性手术治疗</a>或放疗后的辅助治疗，比如乳腺癌术后<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=240571580&content_type=Article&match_order=1&q=%E5%86%85%E5%88%86%E6%B3%8C%E7%96%97%E6%B3%95&zhida_source=entity">内分泌疗法</a>等，要求对<strong>复发的标准</strong>进行明确的定义。</p>
+<p><strong>疾病进展时间（Time to Progress, TTP）</strong>：从开始到肿瘤发生任意进展或者进展前死亡的时间。TTP相比PFS只包含了肿瘤的恶化，不包含死亡。</p>
+<p><strong><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=240571580&content_type=Article&match_order=1&q=%E7%96%BE%E7%97%85%E7%89%B9%E5%BC%82%E6%80%A7%E7%94%9F%E5%AD%98%E6%9C%9F&zhida_source=entity">疾病特异性生存期</a>（Disease-Specific Survival, DSS）</strong>：结局指标为由<strong>特定疾病</strong>导致的死亡，只关心特定疾病引起的死亡，而不考虑其他原因。反映特定疾病的临床获益，但患者的死因可能不容易明确。</p>
+<p><strong><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=240571580&content_type=Article&match_order=1&q=%E6%97%A0%E4%BA%8B%E4%BB%B6%E7%94%9F%E5%AD%98%E6%9C%9F&zhida_source=entity">无事件生存期</a>（Event Free Survival, EFS）</strong>：指从开始到发生任何事件的时间，这里的事件包括肿瘤进展、死亡、治疗方案的改变、致死副作用等（主要用于病程较长的恶性肿瘤或该实验方案危险性高等情况下）</p>
+<h2 id="三、常见方法"><a href="#三、常见方法" class="headerlink" title="三、常见方法"></a>三、常见方法</h2><h3 id="3-1-描述性方法"><a href="#3-1-描述性方法" class="headerlink" title="3.1 描述性方法"></a>3.1 描述性方法</h3><p>KM 生存曲线获取方法</p>
+<h3 id="3-2-检验方法"><a href="#3-2-检验方法" class="headerlink" title="3.2 检验方法"></a>3.2 检验方法</h3><p>比较不同组的生存曲线或检验变量对于生存时间的显著性影响</p>
+<ul>
+<li>对数秩检验 log-rank test</li>
+<li>wilcoxon 检验，对生存时间不均匀的情况有较好的表现</li>
+</ul>
+<h3 id="3-3-建模方法"><a href="#3-3-建模方法" class="headerlink" title="3.3 建模方法"></a>3.3 建模方法</h3><p>影响因素识别、预测方法</p>
+<ol>
+<li>Cox 比例风险模型</li>
+</ol>
+<p>假设指标生存时间的分布模型，可以通过观察数据来估计模型的参数，最终利用假设的分布模型来计算生存率</p>
+<ol start="2">
+<li>参数模型，通过假设生存时间服从某种特定分布来预测生存概率</li>
+<li>加速失效时间模型 AFT，研究协变量如何加速或者减缓生存时间</li>
+</ol>
+<h3 id="3-4-时间依赖性方法"><a href="#3-4-时间依赖性方法" class="headerlink" title="3.4 时间依赖性方法"></a>3.4 时间依赖性方法</h3><p>用于处理协变量或者风险随时间变化的情况<br>$$<br>h(t,X) &#x3D; h_0(t)exp(\beta_1 x_1+…+\beta_n x_n)<br>$$</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzIzNjk2NDg4NA==&mid=2247483938&idx=1&sn=ae913d5a109705c950a411ccf3586f4a&chksm=e8ce9f59dfb9164f252c559e40f064265ee4a829f012ffe4ede321779af602c8b143e2d8b9a3#rd">https://mp.weixin.qq.com/s?__biz=MzIzNjk2NDg4NA==&amp;mid=2247483938&amp;idx=1&amp;sn=ae913d5a109705c950a411ccf3586f4a&amp;chksm=e8ce9f59dfb9164f252c559e40f064265ee4a829f012ffe4ede321779af602c8b143e2d8b9a3#rd</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%9B%A0%E6%9E%9C%E6%8E%A8%E6%96%AD/" class="print-no-link">#因果推断</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>生存分析基本概念、常见方法、评价指标</div>
+      <div>https://blog.chenxia.site/posts/1172.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年1月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/45280.html" title="ROI_监督学习_一次性学习, LTV_强化学习_持续学习">
+                        <span class="hidden-mobile">ROI_监督学习_一次性学习, LTV_强化学习_持续学习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
