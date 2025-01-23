@@ -19,36 +19,22 @@
   <meta name="author" content="chenlongxu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在经过Lecture04介绍RL的基本概念之后，Lecture05介绍基于policy的方法，我们直接利用return的梯度进行策略学习，之后我们尝试利用Q或者V来改进policy evaluation步骤，那么我们是否可以直接抛弃参数化的梯度（parameterized policies），转向仅仅利用Q或者V进行RL 0x01 抛弃Actor- critic中的Actor1.1 回顾Actor">
+    <meta name="description" content="该系列文章主要介绍下列基本概念：  数据仓库、数据湖、数据湖仓 云存储平台 AWS、Azure、Google cloud 优化数据存储 大数据手段 Apache Spark、Kafka 实时数据处理 ETL 事件驱动架构 EDA 其他 topic：数据关联、xAI、推理计算、无限存储、人类在环集成  帮助更好的理解数据的方式 一、数据仓库、数据湖、数据湖仓1.1 历史数据仓库（data  ware">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CS285 深度强化学习 Vol7 ｜ 值函数">
-<meta property="og:url" content="https://blog.chenxia.site/posts/f2288390.html">
+<meta property="og:title" content="2025 年度后数据工程需要了解的基本概念">
+<meta property="og:url" content="https://blog.chenxia.site/posts/6123.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
-<meta property="og:description" content="在经过Lecture04介绍RL的基本概念之后，Lecture05介绍基于policy的方法，我们直接利用return的梯度进行策略学习，之后我们尝试利用Q或者V来改进policy evaluation步骤，那么我们是否可以直接抛弃参数化的梯度（parameterized policies），转向仅仅利用Q或者V进行RL 0x01 抛弃Actor- critic中的Actor1.1 回顾Actor">
+<meta property="og:description" content="该系列文章主要介绍下列基本概念：  数据仓库、数据湖、数据湖仓 云存储平台 AWS、Azure、Google cloud 优化数据存储 大数据手段 Apache Spark、Kafka 实时数据处理 ETL 事件驱动架构 EDA 其他 topic：数据关联、xAI、推理计算、无限存储、人类在环集成  帮助更好的理解数据的方式 一、数据仓库、数据湖、数据湖仓1.1 历史数据仓库（data  ware">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3033b37cb9c3a8a28f6091af830e22e9_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-63aeb1bf1dce8628c0391bdaa8659fab_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-78b90f5955c86ad937e3d2caa2647ccc_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-264ab90af8cbfaa5152a1cb8372aa29a_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0cf7ec47a81ba7ba8287e03a1735a530_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-78738f638c702cb23ee96b6efd10b0ab_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5c9870b1f223e0735e7df3adb2314ecc_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-6270cc134f6c0bac989188dcf7e86787_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-322370ad4b907e3ec3dbb7163ab1b4f8_1440w.png">
-<meta property="article:published_time" content="2024-04-29T09:14:11.000Z">
-<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="article:published_time" content="2025-01-23T02:20:53.000Z">
+<meta property="article:modified_time" content="2025-01-23T03:03:18.353Z">
 <meta property="article:author" content="chenlongxu">
-<meta property="article:tag" content="深度学习">
-<meta property="article:tag" content="强化学习">
-<meta property="article:tag" content="CS285">
-<meta property="article:tag" content="Q函数">
-<meta property="article:tag" content="价值学习">
+<meta property="article:tag" content="数据工程">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3033b37cb9c3a8a28f6091af830e22e9_1440w.png">
   
   
   
-  <title>CS285 深度强化学习 Vol7 ｜ 值函数 - Chenlong&#39;s blog</title>
+  <title>2025 年度后数据工程需要了解的基本概念 - Chenlong&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -227,7 +213,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CS285 深度强化学习 Vol7 ｜ 值函数"></span>
+            <span id="subtitle" data-typed-text="2025 年度后数据工程需要了解的基本概念"></span>
           
         </div>
 
@@ -238,8 +224,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-04-29 17:14" pubdate>
-          2024年4月29日 下午
+        <time datetime="2025-01-23 10:20" pubdate>
+          2025年1月23日 上午
         </time>
       </span>
     
@@ -250,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          885 字
+          1.3k 字
         
       </span>
     
@@ -261,7 +247,7 @@
         
         
         
-          8 分钟
+          11 分钟
         
       </span>
     
@@ -307,57 +293,71 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CS285 深度强化学习 Vol7 ｜ 值函数</h1>
+            <h1 id="seo-header">2025 年度后数据工程需要了解的基本概念</h1>
             
             
               <div class="markdown-body">
                 
-                <p>在经过Lecture04介绍RL的基本概念之后，Lecture05介绍基于policy的方法，我们直接利用return的梯度进行策略学习，之后我们尝试利用Q或者V来改进policy evaluation步骤，那么我们是否可以直接抛弃参数化的梯度（parameterized policies），转向仅仅利用Q或者V进行RL</p>
-<h3 id="0x01-抛弃Actor-critic中的Actor"><a href="#0x01-抛弃Actor-critic中的Actor" class="headerlink" title="0x01 抛弃Actor- critic中的Actor"></a>0x01 抛弃Actor- critic中的Actor</h3><h3 id="1-1-回顾Actor-critic"><a href="#1-1-回顾Actor-critic" class="headerlink" title="1.1 回顾Actor- critic"></a>1.1 回顾Actor- critic</h3><p>第一步：我们利用现有的policy得到多个采样轨迹$\tau_i$  第二步：利用数据拟合$\hat V_\phi^\pi(s)$（常见用蒙特卡洛方法、bootstrapped、n-step等方法） 第三步：评估优势策略A 第四步：根据优势策略得到Actor的梯度 第五步：更新Actor的梯度</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-3033b37cb9c3a8a28f6091af830e22e9_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102214616955</p>
-<p>但是这样存在的潜在问题是方差太大，因为我们拟合出来的state- value- function方差太大，通常我们会做经验重放等方法，但是并不能完全解决这个问题。</p>
-<p>所以为什么我们不直接丢到有参的policy，转向生成一个$\pi*$ 𝜋∗&#x3D;𝑎𝑟𝑔𝑚𝑎𝑥𝑎𝑡𝐴𝜋(𝑠𝑡,𝑎𝑡) </p>
-<h3 id="1-2-Policy-Evaluation"><a href="#1-2-Policy-Evaluation" class="headerlink" title="1.2 Policy Evaluation"></a>1.2 Policy Evaluation</h3><p>在探讨上述可能性我们需要先了解一下policy evaluation的概念；也就是从Dynamic programming的来看我们会如何求解问题；同时从policy evaluation我们会逐渐走向value evaluation。</p>
-<p>第一步：首先状态转移概率T是均匀的，那么我们可以在Policy evaluation()中得到每个状态下的Q-state-action-list；求平均来得到V-state-list。当然一次计算不够，我们会设置一个epsilon，当V- state变化的最大值都小于这个epsilon的时候停止更新。说明我们得到所有状态下的V- state 第二步：在得到V- state下我们便能判断什么action是好的，那么我们就利用Q- state- action与V- state之间的关系来选择不同state下的最优action，重新分配概率，也就是policy evaluation 第三步：由于policy evaluation会重新改变空间。V- state也会改变，所以需要重新计算Policy evaluation，直到收敛。</p>
-<p>Policy evaluation与Value evaluation之间的区别在于Policy evaluation中根据Q- state- value-list得到V- state-list是求期望，还是求最大值的方式。</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-63aeb1bf1dce8628c0391bdaa8659fab_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102221107185</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-78b90f5955c86ad937e3d2caa2647ccc_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102221124987</p>
-<p>这里参考，可以很清晰的看出policy evaluation，以及value evaluation对其做了什么简化</p>
-<p><a target="_blank" rel="noopener" href="https://hrl.boyuai.com/chapter/1/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95">动手学强化学习- Dynamic Programming</a></p>
-<h3 id="0x02-Fitted-value-iteration-and-Q-iteration"><a href="#0x02-Fitted-value-iteration-and-Q-iteration" class="headerlink" title="0x02 Fitted value  iteration and Q- iteration"></a>0x02 Fitted value  iteration and Q- iteration</h3><h3 id="2-1-我们如何表示state-value-function-V-s"><a href="#2-1-我们如何表示state-value-function-V-s" class="headerlink" title="2.1 我们如何表示state- value- function V(s)"></a>2.1 我们如何表示state- value- function V(s)</h3><p>在数量较少的离散中我们可以使用表格或者什么来记录，但是对于连续空间我们可能无能为力。所以我们可以使用<strong>神经网络来实现两者的近似</strong>，也就是转换为</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-264ab90af8cbfaa5152a1cb8372aa29a_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102221230276</p>
-<h3 id="2-2-仍然有问题"><a href="#2-2-仍然有问题" class="headerlink" title="2.2 仍然有问题"></a>2.2 仍然有问题</h3><p>因为在离散状态下，我们需要知道状态概率转移方式。我们会假设一个平均概率再重新分配的方式来更新转移概率。但是在连续情况下虽然我们知道拟合拟合出state- value- function，但是我们还不知道状态转移概率，所以我们求解不出state- value- function</p>
-<p>但是为什么我们需要state- function？直接利用state- action- function来取最大值就行</p>
-<p>但是这样我们并不能保证收敛性</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-0cf7ec47a81ba7ba8287e03a1735a530_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102221836862</p>
-<h3 id="0x03-Q-learning-method"><a href="#0x03-Q-learning-method" class="headerlink" title="0x03 Q- learning method"></a>0x03 Q- learning method</h3><h3 id="3-1-Q-iteration-的一些性质"><a href="#3-1-Q-iteration-的一些性质" class="headerlink" title="3.1 Q-iteration 的一些性质"></a>3.1 Q-iteration 的一些性质</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-78738f638c702cb23ee96b6efd10b0ab_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102222232800</p>
+                <p>该系列文章主要介绍下列基本概念：</p>
 <ol>
-<li>它是off- policy的</li>
-<li>等价优化bellman error</li>
+<li>数据仓库、数据湖、数据湖仓</li>
+<li>云存储平台 AWS、Azure、Google cloud</li>
+<li>优化数据存储</li>
+<li>大数据手段 Apache Spark、Kafka</li>
+<li>实时数据处理 ETL</li>
+<li>事件驱动架构 EDA</li>
+<li>其他 topic：数据关联、xAI、推理计算、无限存储、人类在环集成</li>
 </ol>
-<h3 id="3-2-Online-Q-learning"><a href="#3-2-Online-Q-learning" class="headerlink" title="3.2 Online Q- learning"></a>3.2 Online Q- learning</h3><p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-5c9870b1f223e0735e7df3adb2314ecc_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102222533482</p>
-<p>通常会需要一些exploration</p>
+<p>帮助更好的理解数据的方式</p>
+<h1 id="一、数据仓库、数据湖、数据湖仓"><a href="#一、数据仓库、数据湖、数据湖仓" class="headerlink" title="一、数据仓库、数据湖、数据湖仓"></a>一、数据仓库、数据湖、数据湖仓</h1><h2 id="1-1-历史"><a href="#1-1-历史" class="headerlink" title="1.1 历史"></a>1.1 历史</h2><p>数据仓库（data  warehouses）作为商业手段从 Oracle、SAP 公司起源，<strong>公司由此从不同的数据源构建集中的数据库，并使用商业智能工具开展分析</strong></p>
+<p>数据湖（data lakes）从<strong>非结构化</strong>或<strong>半结构化</strong>数据存储需求的发展，数据湖常用语存储原始数据（结构化和非结构化），例如包括<em>社交媒体的照片、推文等</em></p>
+<p>数据湖仓（data lakehouse）结合了数据仓库和数据湖的结果，由公司<em>Databricks</em>提出自己的<em>Delta lake</em>，核心有点在于<strong>允许 存储和查询非结构化数据 in 数据湖仓，和结构化数据 in 数据仓库 中一样</strong>，解决了<strong>数据库通常受到限制，数据湖通常难以搜索的缺点</strong></p>
+<h2 id="1-2-为什么需要这些结构？"><a href="#1-2-为什么需要这些结构？" class="headerlink" title="1.2 为什么需要这些结构？"></a>1.2 为什么需要这些结构？</h2><p>从 2000 年互联网爆炸开始，个人和企业生产的数据开始越来越多。由此面临的挑战包括：</p>
 <ol>
-<li>$\epsilon-greedy$</li>
-<li>Boltzman exploration</li>
+<li>数据集成，在多源数据集合的基础上，复杂的 ETL、ELT 技术</li>
+<li>拓展性和成本，数据库昂贵，数据湖容易造成数据混乱，数据湖仓需要技术投资</li>
+<li>数据获取，各种权限要求</li>
 </ol>
-<h3 id="0x04-Value-Functions-in-Theory"><a href="#0x04-Value-Functions-in-Theory" class="headerlink" title="0x04 Value Functions in Theory"></a>0x04 Value Functions in Theory</h3><p>我们需要尝试解释之前取最大值的方式是否可以收敛（converge）</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-6270cc134f6c0bac989188dcf7e86787_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102222722182</p>
+<h1 id="二、云平台-AWS、Azure、Google-CLoud"><a href="#二、云平台-AWS、Azure、Google-CLoud" class="headerlink" title="二、云平台 AWS、Azure、Google CLoud"></a>二、云平台 AWS、Azure、Google CLoud</h1><p>这些平台提供了可扩展的存储基础设置，同时用此存储数据并使用商业智能分析手段智能的。</p>
+<h2 id="2-1-个人常常面临的挑战"><a href="#2-1-个人常常面临的挑战" class="headerlink" title="2.1 个人常常面临的挑战"></a>2.1 个人常常面临的挑战</h2><ol>
+<li>在准备我的 Salesforce Data Cloud 认证（这是一个数据湖仓）时，我发现自己陷入了一个全新的术语海洋——这些术语都是 Salesforce 生态中特有的。每个云平台都有自己独特的术语和工具，这使得企业员工需要花费大量时间来熟悉这些内容。</li>
+<li>数据存储在云端，所以必须明确访问控制权限</li>
+</ol>
+<h1 id="三、优化数据存储"><a href="#三、优化数据存储" class="headerlink" title="三、优化数据存储"></a>三、优化数据存储</h1><p>更大的数据意味着更多的成本</p>
 <ol>
-<li>MDP中的bellman一定是收敛的</li>
-<li>在利用近似网络（function approximation）的方式下并不收敛</li>
+<li>删除冗余或者不必要的数据进行数据压缩</li>
+<li>数据分区，将大型数据集拆分成更小的部分</li>
+<li>选择合适的存储格式优化存储效率和查询性能</li>
 </ol>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-322370ad4b907e3ec3dbb7163ab1b4f8_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102223053608</p>
-<p>我们得到一个非常sad corollary，但是在下一张的DQN中可以让它变的更好</p>
+<h1 id="四、大数据手段-Apache-Spark、Kafka"><a href="#四、大数据手段-Apache-Spark、Kafka" class="headerlink" title="四、大数据手段 Apache Spark、Kafka"></a>四、大数据手段 Apache Spark、Kafka</h1><p>上述 1-3 介绍如何高效的存储数据，而大数据技术让我们可以处理 ta 更加高效，包括使用实时流（Real-time）或者批处理（Batch）方法</p>
+<ul>
+<li>Spark，是一个框架可以分布式处理框架用于机器学习、数据工程、ETL 处理方式</li>
+<li>Kafks，是一种实时数据流处理应用，比如金融或者物流企业</li>
+</ul>
+<p>其中面临的挑战：</p>
+<ol>
+<li>实施的困难，这一套系统构建和维护需要工程技术</li>
+<li>数据质量，收集的数据需要确定数据的有效性</li>
+</ol>
+<h1 id="五、数据集中手段"><a href="#五、数据集中手段" class="headerlink" title="五、数据集中手段"></a>五、数据集中手段</h1><p>ETL（Extract-transformer-loading）描述不同集成和处理数据手段</p>
+<h1 id="六、事件驱动架构"><a href="#六、事件驱动架构" class="headerlink" title="六、事件驱动架构"></a>六、事件驱动架构</h1><p>如果我们能够（几乎）实时地在系统之间传输数据，我们同样希望能够（几乎）实时地对其做出反应：这就是<strong>事件驱动架构（Event-Driven Architecture，EDA）</strong>的应用场景。</p>
+<p>EDA 是一种<strong>以事件为驱动</strong>的架构模式，其中应用程序的运行由事件触发。事件是系统中任何相关的状态变化，例如用户登录应用程序，或接收到一笔支付。架构中的各个组件对这些事件作出响应，而无需彼此直接连接，从而提高了应用的<strong>灵活性和可扩展性</strong>。</p>
+<p>典型的技术实现包括 <strong>Apache Kafka</strong> 或 <strong>AWS EventBridge</strong>。</p>
+<h1 id="七、可解释性与xAI"><a href="#七、可解释性与xAI" class="headerlink" title="七、可解释性与xAI"></a>七、可解释性与xAI</h1><p>xAI：从模型角度解析模型是如何取得成果的</p>
+<p>数据血统：通过可追溯的数据来了解数据来自哪里，如何处理并最终如何被使用</p>
+<h1 id="八、生成式AI"><a href="#八、生成式AI" class="headerlink" title="八、生成式AI"></a>八、生成式AI</h1><p>包括AI、LLM、Agents 等术语</p>
+<h1 id="九、人类在环-human-in-the-loop"><a href="#九、人类在环-human-in-the-loop" class="headerlink" title="九、人类在环 human-in-the-loop"></a>九、人类在环 human-in-the-loop</h1><p>将人类和人工智能之间的合作优势结合起来：</p>
+<ol>
+<li>人工智能的优势在于模型可以有效的处理大量的数据，帮助人们发现其中难以识别的模式</li>
+<li>人类的优势在于没有事先训练的情况下将判断力、到的、创造力和理解能力放到工作中，并有能力面对不可预知的情况</li>
+</ol>
+<p>面临的问题在于：</p>
+<ol>
+<li>两者之间缺乏协同作用和不信任，似乎缺乏直观的界面，是的人类更容易与人工智能工具进行足够有效的互动</li>
+<li>人工智能当前的技术限制，难以理解逻辑一致性和上下文，这可能会导致错误或者不准确的结果</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://LTAI5tNwHtQGucyrs15ssbvo@chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/s41562-024-02024-1.pdf">Humans and AI: Do they work better together or alone?</a></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a target="_blank" rel="noopener" href="https://towardsdatascience.com/the-concepts-data-professionals-should-know-in-2025-part-1-47e7e797801d">https://towardsdatascience.com/the-concepts-data-professionals-should-know-in-2025-part-1-47e7e797801d</a></p>
 
                 
               </div>
@@ -376,7 +376,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" class="category-chain-item">计算机科学</a>
   
   
 
@@ -391,15 +391,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="print-no-link">#深度学习</a>
-      
-        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="print-no-link">#强化学习</a>
-      
-        <a href="/tags/CS285/" class="print-no-link">#CS285</a>
-      
-        <a href="/tags/Q%E5%87%BD%E6%95%B0/" class="print-no-link">#Q函数</a>
-      
-        <a href="/tags/%E4%BB%B7%E5%80%BC%E5%AD%A6%E4%B9%A0/" class="print-no-link">#价值学习</a>
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B/" class="print-no-link">#数据工程</a>
       
     </div>
   
@@ -411,8 +403,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CS285 深度强化学习 Vol7 ｜ 值函数</div>
-      <div>https://blog.chenxia.site/posts/f2288390.html</div>
+      <div>2025 年度后数据工程需要了解的基本概念</div>
+      <div>https://blog.chenxia.site/posts/6123.html</div>
     </div>
     <div class="license-meta">
       
@@ -424,7 +416,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年4月29日</div>
+          <div>2025年1月23日</div>
         </div>
       
       
@@ -456,18 +448,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/7e704bf4.html" title="CS285 深度强化学习 Vol8 ｜ Q 函数">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">CS285 深度强化学习 Vol8 ｜ Q 函数</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/89c781fe.html" title="CS285 深度强化学习 Vol5 ｜ Policy gradient">
-                        <span class="hidden-mobile">CS285 深度强化学习 Vol5 ｜ Policy gradient</span>
+                      <a href="/posts/1172.html" title="生存分析基本概念、常见方法、评价指标">
+                        <span class="hidden-mobile">生存分析基本概念、常见方法、评价指标</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
