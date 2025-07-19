@@ -19,32 +19,49 @@
   <meta name="author" content="chenlongxu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="从Policy gradient，到Actor- critic，我们尝试丢弃policy，从AC到Q- iteration或者Q- learning我们彻底丢弃Policy，但是遇到不能收敛的问题。现在我们尝试改进Q- learning来实现想要的功能 0x01 Q- learning中的问题上次从理论的角度看出online Q iteration很难收敛，更直观的看待问题我们会发现有以下几点的原">
+    <meta name="description" content="TL;DR时间真是过的太快了，在学术生涯末期有幸参与TRB学术会议，同时也是一次学术旅游的机会！第一次去美国真的非常痛苦 一、行程安排1 月 3 日晚：从浦东出发（白天）1 月 3 日晚：威尔逊机场 1 月 4 日白天【纽约】：纽约🥯，时代广场，灰狗🚌，到达 Airbnb 🏠 1 月 5 日白天【华盛顿】：早中饭 🥚，华盛顿🪦，国家历史博物馆，TRB 会场，Trade Joey 杂货铺">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CS285 深度强化学习 Vol8 ｜ Q 函数">
-<meta property="og:url" content="https://blog.chenxia.site/posts/7e704bf4.html">
+<meta property="og:title" content="US旅行游记第一次-2025年">
+<meta property="og:url" content="https://blog.chenxia.site/posts/1361.html">
 <meta property="og:site_name" content="Chenlong&#39;s blog">
-<meta property="og:description" content="从Policy gradient，到Actor- critic，我们尝试丢弃policy，从AC到Q- iteration或者Q- learning我们彻底丢弃Policy，但是遇到不能收敛的问题。现在我们尝试改进Q- learning来实现想要的功能 0x01 Q- learning中的问题上次从理论的角度看出online Q iteration很难收敛，更直观的看待问题我们会发现有以下几点的原">
+<meta property="og:description" content="TL;DR时间真是过的太快了，在学术生涯末期有幸参与TRB学术会议，同时也是一次学术旅游的机会！第一次去美国真的非常痛苦 一、行程安排1 月 3 日晚：从浦东出发（白天）1 月 3 日晚：威尔逊机场 1 月 4 日白天【纽约】：纽约🥯，时代广场，灰狗🚌，到达 Airbnb 🏠 1 月 5 日白天【华盛顿】：早中饭 🥚，华盛顿🪦，国家历史博物馆，TRB 会场，Trade Joey 杂货铺">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c1d91e32f5ff28d1f146cca885d9baf8_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ac9ee308c712738a359daef7914d72f8_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4cd2d97b204e83c6a5cc26e1fcf41c12_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-858ae38d9cd26e82f0db62d602dcb3f0_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-fbd12e57b426cf7f20ea8cafac4b6256_1440w.png">
-<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-85311453c1891e8367356451b6b0741b_1440w.png">
-<meta property="article:published_time" content="2024-04-29T09:14:12.000Z">
-<meta property="article:modified_time" content="2024-04-29T11:45:10.000Z">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9062.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9089.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9129.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9095.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9081.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9199.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9204.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9221.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9295.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9410.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9571.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9569.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9610.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9604_%E5%89%AF%E6%9C%AC.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9304.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9310.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9700.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9753.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9797.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9806.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9875.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9921.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9944.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0131.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0181.jpeg">
+<meta property="og:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0220.jpeg">
+<meta property="article:published_time" content="2025-07-19T01:35:47.000Z">
+<meta property="article:modified_time" content="2025-07-19T03:42:51.155Z">
 <meta property="article:author" content="chenlongxu">
-<meta property="article:tag" content="CS285">
-<meta property="article:tag" content="强化学习">
-<meta property="article:tag" content="深度学习">
-<meta property="article:tag" content="动作状态价值">
+<meta property="article:tag" content="旅行">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c1d91e32f5ff28d1f146cca885d9baf8_1440w.png">
+<meta name="twitter:image" content="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9062.jpeg">
   
   
   
-  <title>CS285 深度强化学习 Vol8 ｜ Q 函数 - Chenlong&#39;s blog</title>
+  <title>US旅行游记第一次-2025年 - Chenlong&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -223,7 +240,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CS285 深度强化学习 Vol8 ｜ Q 函数"></span>
+            <span id="subtitle" data-typed-text="US旅行游记第一次-2025年"></span>
           
         </div>
 
@@ -234,8 +251,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-04-29 17:14" pubdate>
-          2024年4月29日 下午
+        <time datetime="2025-07-19 09:35" pubdate>
+          2025年7月19日 上午
         </time>
       </span>
     
@@ -246,7 +263,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          387 字
+          1.9k 字
         
       </span>
     
@@ -257,7 +274,7 @@
         
         
         
-          4 分钟
+          16 分钟
         
       </span>
     
@@ -303,39 +320,77 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CS285 深度强化学习 Vol8 ｜ Q 函数</h1>
+            <h1 id="seo-header">US旅行游记第一次-2025年</h1>
             
             
               <div class="markdown-body">
                 
-                <p>从Policy gradient，到Actor- critic，我们尝试丢弃policy，从AC到Q- iteration或者Q- learning我们彻底丢弃Policy，但是遇到不能收敛的问题。现在我们尝试改进Q- learning来实现想要的功能</p>
-<h3 id="0x01-Q-learning中的问题"><a href="#0x01-Q-learning中的问题" class="headerlink" title="0x01 Q- learning中的问题"></a>0x01 Q- learning中的问题</h3><p>上次从理论的角度看出online Q iteration很难收敛，更直观的看待问题我们会发现有以下几点的原因：</p>
-<ol>
-<li>Q- learning中通常使用的是单个样本，这样对于更新迭代并不友好</li>
-<li>在第三步中的有一个类似gradient descent的公式但是其实在同一个轨迹中两者之间具有强烈相关性</li>
-<li>不满足iid假设样本中的效果并不好</li>
+                <h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>时间真是过的太快了，在学术生涯末期有幸参与TRB学术会议，同时也是一次学术旅游的机会！第一次去美国真的非常痛苦</p>
+<h2 id="一、行程安排"><a href="#一、行程安排" class="headerlink" title="一、行程安排"></a>一、行程安排</h2><p><strong>1 月 3 日晚：从浦东出发（白天）1 月 3 日晚：威尔逊机场</strong></p>
+<p><strong>1 月 4 日白天【纽约】：纽约</strong>🥯<strong>，时代广场，灰狗</strong>🚌<strong>，到达 Airbnb</strong> 🏠</p>
+<p><strong>1 月 5 日白天【华盛顿】：早中饭</strong> 🥚<strong>，华盛顿</strong>🪦<strong>，国家历史博物馆，TRB 会场，Trade Joey 杂货铺</strong></p>
+<p><strong>1 月 6 日【华盛顿】：大汉堡</strong>🍔<strong>，会议，</strong></p>
+<p><strong>1 月 7 日【华盛顿】：香水，购物，奥莱购物</strong></p>
+<p><strong>1 月 8 日【华盛顿】：三大博物馆，航空航天博物馆、艺术博物馆、自然历史博物馆</strong></p>
+<p><strong>1</strong> <strong>月</strong> <strong>9</strong> <strong>日【纽约】：特种兵的一天，中央公园、大都会博物馆</strong>🎨<strong>、任天堂限定</strong> 🧸<strong>、jellycat dinner</strong> 🧇<strong>、自由女神</strong>⚓️<strong>、布鲁克林大桥</strong>🌉<strong>、下城区、帝国大厦</strong> 🏢</p>
+<h2 id="二、第一影响：城市可以很小也很大-纽约"><a href="#二、第一影响：城市可以很小也很大-纽约" class="headerlink" title="二、第一影响：城市可以很小也很大&#x2F;纽约"></a>二、第一影响：城市可以很小也很大&#x2F;纽约</h2><p>快接近13个小时的行程真的是太远，做的让人全身酥麻、做的头昏欲裂。第一次意识到地理上的距离也可以很远，可能Trump和Xi之间也不能随便打电话（因为有时差哈哈哈），好奇之间会怎么交流。</p>
+<img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9062.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9062" style="zoom: 33%;" />
+
+<p>第一次到纽约被整齐的城市规划所吸引，与在HK一样是一种高楼+网格+街道之间的秩序感，城市的活动范围严格的被划分为静态的道路和动态的高楼，注意这一切并不是在土地上，而不是在各个大楼的楼层里。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9089.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9089"></p>
+<p>道路上的人权和路权之间划分的非常清晰，或许这也是国外自动驾驶更加方便的原因吧，规则定义清晰让边界问题容易理解。唯一的缺点就是纽约的脚手架太多了，但反而让城市更有一点风味。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9129.jpeg" srcset="/img/loading.gif" lazyload alt="第五大道&amp;茅台"></p>
+<p>其次不习惯的是点餐模式和小费文化。之前看过一个视频，里面说us餐馆分为谈话的和快餐式的。因此没有国内的沙县小吃、麻辣烫这种介于两者之前但仍然热乎的饭菜。落地第一顿是在小红书上搜了推荐的一家贝果，小费痛失3刀😭，但的确很大。面包的口感和国内大部分面包店不一样，人生第一次吃到大麦的层次感。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9095.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9095"></p>
+<p>被震惊的纽约地铁，当公告基础设施以盈利为目的，而不是发挥交通行业的派生性作用，必然会造成其衰落。当然HK公共交通做的很好，依靠高额的费用。纽约地铁有一股腥臭味，特别是在布鲁克林一代，也是认识到双城之战的上城和下城。当然纽约地铁也不便宜 1.9刀一次</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9081.jpeg" srcset="/img/loading.gif" lazyload alt="没有围栏的纽约地铁"></p>
+<p>接下来坐着大巴从纽约到华盛顿,真的是非常远! 沿途看到凄凉的郊区,是一种不一样的体验。唯一影响深刻的是这里的火车底盘都很低。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9199.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9199"></p>
+<h2 id="二、华盛顿特区：真的很现代"><a href="#二、华盛顿特区：真的很现代" class="headerlink" title="二、华盛顿特区：真的很现代"></a>二、华盛顿特区：真的很现代</h2><p>如果纽约是高楼城市的代表，那么华盛顿特区则是社区的典型代表，到处都是house，街道和地铁都很宽敞，当然更加验证了汽车对于US的重要性，第一眼便被华盛顿的地铁所震撼，适合纽约不一样的体验。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9204.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9204"></p>
+<p>第一次正宗的brunch，在工作后发现一天吃两顿似乎是合理的。没有规则说一天必须三顿 或者五顿，结合现代社会紧凑的工作节奏，在11:00～13:00来一顿足够丰盛的brunch，在晚上18:00来一次正餐，期间可以通过下午茶、水果、牛奶、咖啡等补充体力，似乎更适合节奏。因为早起并不适合非农耕文化。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9221.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9221"></p>
+<p>政府单位并不是只是办公地点，也是政府权威的象征，所以xx权神授仍然如此，很多政府大楼非常的雄伟和庄严，让我想到饼叔提到的奢侈品商店也是，通过维护庄严的地域来让人失去主观性、进而上头，似乎互联网的公司也是这样。其实不过是草台班子罢了。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9295.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9295"></p>
+<p>来一个地方一定要去Apple store，正好遇到下雪的🍎，真的是非常棒的体验。在会议上与一些从未谋面的人探讨这相同的话题，意识到枯燥的世界上也是有一些共鸣的人，在这个corner中并不孤单。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9410.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9410"></p>
+<p>第二天的brunch点了一杯伦敦雾，茶真的很难喝，不过幸亏吃到了大米饭。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9571.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9571"></p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9569.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9569"></p>
+<p>傍晚和好友去outlets购物，突然想到两个人去这么远的地方有点risky，晚上回来在寒风中纸币不小心飞出来被路过的黑鬼看到了，然后就被“can you help me”爆了金币</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9610.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9610"></p>
+<p>数天的学术会议结束后就扔掉了自己的海报，和这一段过去说再见。很痛苦、很感恩时刻表项目，几乎伴随着我四年的时间，让我意识大家的能力、社会的合作是多么的困难，也认识到个人的能力也可以很大，持续坚持下去一定会有结果的，相信自己。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9604_%E5%89%AF%E6%9C%AC.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9604_副本"></p>
+<h2 id="三、特别篇SE：华盛顿特区博物馆"><a href="#三、特别篇SE：华盛顿特区博物馆" class="headerlink" title="三、特别篇SE：华盛顿特区博物馆"></a>三、特别篇SE：华盛顿特区博物馆</h2><p>美国国家历史博物馆：正好遇到了交通篇，很棒的体验。</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9304.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9304"></p>
+<p>惊喜的看到初代Apple-II</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9310.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9310"></p>
+<p>国家航空航天博物馆</p>
+<p>阿波罗11号，全体人类社会的结晶，很难想象七十多年前将三个人送到月球上是什么体验，只有做好每一步才能完成伟大的事业</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9700.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9700"></p>
+<p>艺术博物馆</p>
+<p>看了很多画家的展不禁好奇：“为什么他们要作画呢”，只是想通过图片的方式表达自己，袒露自己对世界的看法，展示自己对人生的认知，这没有什么不好，这是超过仅仅活着的意义，有想法的表达自己真的太酷了！</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9753.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9753"></p>
+<h2 id="四、最后一站：纽约特种兵"><a href="#四、最后一站：纽约特种兵" class="headerlink" title="四、最后一站：纽约特种兵"></a>四、最后一站：纽约特种兵</h2><p>坐着美国高铁从华盛顿到纽约，感觉舒适度其实也还行，检票采用传统的人工方式，虽然说中国高铁很长，但是要知道美国在上个世纪五十年代疯狂建铁路的遗产，让其现在仍然是世界第一</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9797.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9797"></p>
+<p>深夜灯火通明的纽约才是许多人的梦想吧，不过这个也很纽约规定晚上不许关灯有关，似乎是担心鸟撞击大楼</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9806.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9806"></p>
+<p>冬天的中央公园很荒凉，但是难以置信在这么大的高楼密布的城市里居然会有如此大的公园，很棒</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9875.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9875"></p>
+<p>大都会博物馆真的太痛心了，看到了好多来自于各个国家和地区的宝藏，包括但不限于法老、佛像、庭院、绘画等等</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9921.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9921"></p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_9944.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_9944"></p>
+<p>做自由女神像邮轮可以看到纽约和新泽西，很奇妙的体验，百年前可能很多人都会喊出 America吧</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0131.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_0131"></p>
+<p>夜晚的布鲁克林真的非常危险</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0181.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_0181"></p>
+<p>最后再看一眼纽约吧</p>
+<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0220.jpeg" srcset="/img/loading.gif" lazyload alt="IMG_0220"></p>
+<h2 id="五、感悟"><a href="#五、感悟" class="headerlink" title="五、感悟"></a>五、感悟</h2><ol>
+<li>表达自己比做对事情更重要，儒家文化和应试教育给了我们太多条条框框，但是生活并不需要这么多约束</li>
+<li>城市也是可以有很多风格的</li>
 </ol>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-c1d91e32f5ff28d1f146cca885d9baf8_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102223452106</p>
-<p>解决思路</p>
-<ol>
-<li>修正样本，同样借鉴AC中的方法可以使用synchronized parallel Q- learning或者asynchronous parallel Q- learning来实现。</li>
-<li>使用replay buffers，因为Q- learning只需要（state，action，next- state，reward）就行</li>
-</ol>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-ac9ee308c712738a359daef7914d72f8_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102223917061</p>
-<h3 id="0x02-Q-learning-with-replay-buffer的问题"><a href="#0x02-Q-learning-with-replay-buffer的问题" class="headerlink" title="0x02 Q-learning with replay- buffer的问题"></a>0x02 Q-learning with replay- buffer的问题</h3><p>按照厂里后面的一部份应该是没有梯度的，但是因为两者具有相关性我们的效果会很差，起不到梯度下降的效果。</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-4cd2d97b204e83c6a5cc26e1fcf41c12_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102224124136</p>
-<p>因此我们会设置一个target network，在每次更新的时候，target也不会改变，同时这个过程中两者是某种意义上的不想关的。背后的方式是启发式的，但是实际上是一种经验很好的实践方法。通常更新的时候可以用指数平均的方法</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-858ae38d9cd26e82f0db62d602dcb3f0_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102225023533</p>
-<p>更高的视角</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-fbd12e57b426cf7f20ea8cafac4b6256_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102225216215</p>
-<h3 id="0x03-提高Q-learning"><a href="#0x03-提高Q-learning" class="headerlink" title="0x03 提高Q-learning"></a>0x03 提高Q-learning</h3><p>后面结合一篇论文来介绍，也就是Rainbow～</p>
-<p><img src="https://chenxia31blog.oss-cn-hangzhou.aliyuncs.com/img/v2-85311453c1891e8367356451b6b0741b_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>image-20221102225350693</p>
+<p>还是中国饭适合中国胃～</p>
 
                 
               </div>
@@ -354,7 +409,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  <a href="/categories/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%B0%88/" class="category-chain-item">生活杂谈</a>
   
   
 
@@ -369,13 +424,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/CS285/" class="print-no-link">#CS285</a>
-      
-        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="print-no-link">#强化学习</a>
-      
-        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="print-no-link">#深度学习</a>
-      
-        <a href="/tags/%E5%8A%A8%E4%BD%9C%E7%8A%B6%E6%80%81%E4%BB%B7%E5%80%BC/" class="print-no-link">#动作状态价值</a>
+        <a href="/tags/%E6%97%85%E8%A1%8C/" class="print-no-link">#旅行</a>
       
     </div>
   
@@ -387,8 +436,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CS285 深度强化学习 Vol8 ｜ Q 函数</div>
-      <div>https://blog.chenxia.site/posts/7e704bf4.html</div>
+      <div>US旅行游记第一次-2025年</div>
+      <div>https://blog.chenxia.site/posts/1361.html</div>
     </div>
     <div class="license-meta">
       
@@ -400,7 +449,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年4月29日</div>
+          <div>2025年7月19日</div>
         </div>
       
       
@@ -432,18 +481,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/c5b2fc52.html" title="Rainbow_Combining_Improvements_in_Deep_Reinforcement_Learning categories">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Rainbow_Combining_Improvements_in_Deep_Reinforcement_Learning categories</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/f2288390.html" title="CS285 深度强化学习 Vol7 ｜ 值函数">
-                        <span class="hidden-mobile">CS285 深度强化学习 Vol7 ｜ 值函数</span>
+                      <a href="/posts/36311.html" title="如何理解广告系统">
+                        <span class="hidden-mobile">如何理解广告系统</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
