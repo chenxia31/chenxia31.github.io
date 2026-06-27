@@ -1,0 +1,878 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="根据Andrew wu 机器学习的监督学习的第一部分总结 0x01 引言机器学习的定义：  对于某类任务task和性能度量performance，如果一个计算机程序在task上以performance衡量的性能随着经验experience而自我完善，那么我们称这个计算机程序在从experience中学习  机器学习的方法在不同领域中以不同的方式逐渐发展到共通的状态，从统计学习中从特殊到一般的inf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS229机器学习广义线性模型 | vol1">
+<meta property="og:url" content="https://blog.chenxia.site/posts/ceb408a2.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="根据Andrew wu 机器学习的监督学习的第一部分总结 0x01 引言机器学习的定义：  对于某类任务task和性能度量performance，如果一个计算机程序在task上以performance衡量的性能随着经验experience而自我完善，那么我们称这个计算机程序在从experience中学习  机器学习的方法在不同领域中以不同的方式逐渐发展到共通的状态，从统计学习中从特殊到一般的inf">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-29T08:09:16.000Z">
+<meta property="article:modified_time" content="2024-04-29T08:35:38.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="CS229">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>CS229机器学习广义线性模型 | vol1 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.chenxia.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS229机器学习广义线性模型 | vol1"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-29 16:09" pubdate>
+          2024年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CS229机器学习广义线性模型 | vol1</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>根据Andrew wu <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1JE411w7Ub?from=search&seid=12699853882563574773&spm_id_from=333.337.0.0">机器学习</a>的监督学习的第一部分总结</p>
+<h2 id="0x01-引言"><a href="#0x01-引言" class="headerlink" title="0x01 引言"></a><strong>0x01 引言</strong></h2><p>机器学习的定义：</p>
+<blockquote>
+<p>对于某类任务task和性能度量performance，如果一个计算机程序在task上以performance衡量的性能随着经验experience而自我完善，那么我们称这个计算机程序在从experience中学习</p>
+</blockquote>
+<p>机器学习的方法在不同领域中以不同的方式逐渐发展到共通的状态，从统计学习中从特殊到一般的inference、从工程学中的模式识别，以及结合神经网络、信号处理、自动控制、人工智能以及数据挖掘等不同领域来综合方法，从数据中induction，从训练的模型deduction</p>
+<p>在区分中机器学习常见分为监督学习supervised learning、非监督学习unsupervised learning和强化学习reinforcement learning</p>
+<ul>
+<li>监督学习，给定dataset，包括输入x和输出y，由此来构建一个算法得到x和y的映射关系</li>
+<li>非监督学习：给定dataset，包括输入x，由此来构建一些算法</li>
+</ul>
+<p>机器学习算法的过程包括：</p>
+<ol>
+<li>首先构建一个假设函数（hypothesis），其中包含一个模型中需要的参数（parameter）</li>
+<li>之后构建目标函数（target），来让包含参数的模型更加贴合实际，这里需要一定的目标函数来刻画</li>
+<li>转换成为一个优化问题（optimization），可以利用一些算法来进去求解</li>
+<li>对模型进行指标的评价</li>
+</ol>
+<h2 id="0x02-线性回归-linear-regression"><a href="#0x02-线性回归-linear-regression" class="headerlink" title="0x02 线性回归 linear regression"></a><strong>0x02 线性回归 linear regression</strong></h2><h3 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a><strong>数据集</strong></h3><p>$$ 输入变量：输出变量：单个实例：完整数据集：输入变量：𝑋𝑖&#x3D;[𝑥1𝑖,𝑥2𝑖,…,𝑥𝑛𝑖]输出变量：𝑦𝑖单个实例：{𝑋𝑖,𝑦𝑖}完整数据集：{(𝑋𝑖,𝑦𝑖),𝑖&#x3D;1,…,𝑚}  $$</p>
+<h3 id="假设"><a href="#假设" class="headerlink" title="假设"></a><strong>假设</strong></h3><p>线性回归中比较强的假设为</p>
+<p>$$ 𝑦^&#x3D;ℎ𝜃(𝑋)&#x3D;𝜃𝑇∗𝑋𝜃:[1,(𝑛+1)]𝑋:&#x3D;[𝑥0,𝑥1,…,𝑥𝑛],𝑥0&#x3D;1  $$</p>
+<h3 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a><strong>目标函数</strong></h3><ul>
+<li>直观的方法，目标函数是预测值predict和真实值ground- truth之间的某种不相似的关系，我们希望的是两者尽可能的相似，所以这里可以使用欧氏距离来刻画： $$  </li>
+<li>$$ （这里的1&#x2F;2只是为了方便后续求导的方便） 我们希望这个越小越好</li>
+<li>概率解释的方法，在预测中总会有着各种各样的误差，所以 $$  </li>
+<li>$$ 这样解释<strong>其实是将预测值 y 看成是一个分布，这个分布首先具有一个概率分布函数，之后我们在预测中希望的是所有预测值的分布在取真实值的时候概率最大，这时候求解出来的参数就是模型想要的参数</strong> 根据中心极限定理这个推导得出误差项分布是一种高斯分布，则得到预测值的分布 $$   $$ 得到最大似然函数（likelihood function） $$   $$ 然后对其取对数后求导 $$   $$ 如果希望上式最小，<strong>等价</strong> $$   $$ 或者<strong>等价</strong>于 $$   $$</li>
+</ul>
+<p>非常amazing的看出两个方法居然得到相同的结论！但其实深思我们会发现第一种方法我们是根据经验来得到，我们主观的认识用在线性回归中利用欧式距离会好一点，第二种方法我们带着一个假设（误差满足高斯分布）出发，来得到概率分布，通过maximum likelihood estimation（MLE）得到损失函数,两者只是解释的方法不同</p>
+<h3 id="优化算法"><a href="#优化算法" class="headerlink" title="优化算法"></a><strong>优化算法</strong></h3><p>这种优化算法的常见是使用梯度下降的方式进行计算：</p>
+<p>$$   $$</p>
+<p>由上述推导看出我们的目标函数的梯度</p>
+<p>$$   $$</p>
+<p>这样就可以每次运行下去了，但是我们会发现在优化的过程每次梯度下降的过程都需要对所有数据进行计算，所以通常被称为<strong>batch gradient descent（BGD）</strong>，但是这样速度通常会变的很慢，因此需要尝试<strong>stochastic gradient descent（SGD）</strong>下降的梯度只使用一个点而不是所有点的梯度相加，由此得到最终解</p>
+<h2 id="0x03-逻辑回归-logistics-regression"><a href="#0x03-逻辑回归-logistics-regression" class="headerlink" title="0x03 逻辑回归 logistics regression"></a><strong>0x03 逻辑回归 logistics regression</strong></h2><h3 id="数据集-1"><a href="#数据集-1" class="headerlink" title="数据集"></a><strong>数据集</strong></h3><p>$$   $$</p>
+<p>与之前不同的是，这里的输出变量或者说是label，仅为0或者1</p>
+<h3 id="假设-1"><a href="#假设-1" class="headerlink" title="假设"></a><strong>假设</strong></h3><p>我们仍然假设为线性模型：</p>
+<p>$$   $$</p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a><strong>损失函数</strong></h3><p>这里我们从概率分布的角度出发，利用MLE的方式来寻找最佳的损失函数</p>
+<p>首先确定预测值 y 的分布</p>
+<p>$$   $$</p>
+<p>由此我们可以出预测值正确的概率分布函数为：</p>
+<p>$$   $$</p>
+<p>我们希望针对所有的分布函数可以最大化</p>
+<p>$$   $$</p>
+<h3 id="优化算法-1"><a href="#优化算法-1" class="headerlink" title="优化算法"></a><strong>优化算法</strong></h3><ul>
+<li>GD 梯度下降的方法 首先计算梯度、然后更新 $$   $$ 更新梯度 $$   $$</li>
+<li>Newton法</li>
+</ul>
+<p>推导过程没有看，但是更新参数的过程为</p>
+<p>$$   $$</p>
+<h3 id="番外–-logistic-code"><a href="#番外–-logistic-code" class="headerlink" title="番外– logistic code"></a><strong>番外– logistic code</strong></h3><p>根据机器学习课后习题来的：</p>
+<ol>
+<li>建立一个线性模型的class：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LinearModel</span>(<span class="hljs-title class_ inherited__">object</span>):<br>   <span class="hljs-string">&quot;&quot;&quot;Base class for linear models.&quot;&quot;&quot;</span><br><br>   <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, step_size=<span class="hljs-number">0.2</span>, max_iter=<span class="hljs-number">100</span>, eps=<span class="hljs-number">1e-2</span>,</span><br><span class="hljs-params">                theta_0=<span class="hljs-literal">None</span>, learning_rate=<span class="hljs-number">0.01</span>,verbose=<span class="hljs-literal">True</span></span>):<br>       <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">      Args:</span><br><span class="hljs-string">          step_size: Step size for iterative solvers only.</span><br><span class="hljs-string">          max_iter: Maximum number of iterations for the solver.</span><br><span class="hljs-string">          eps: Threshold for determining convergence.</span><br><span class="hljs-string">          theta_0: Initial guess for theta. If None, use the zero vector.</span><br><span class="hljs-string">          verbose: Print loss values during training.</span><br><span class="hljs-string">      &quot;&quot;&quot;</span><br>       <span class="hljs-variable language_">self</span>.theta = theta_0<br>       <span class="hljs-variable language_">self</span>.step_size = step_size<br>       <span class="hljs-variable language_">self</span>.max_iter = max_iter<br>       <span class="hljs-variable language_">self</span>.eps = eps<br>       <span class="hljs-variable language_">self</span>.verbose = verbose<br>       <span class="hljs-variable language_">self</span>.learning_rate=learning_rate<br><br>   <span class="hljs-keyword">def</span> <span class="hljs-title function_">fit</span>(<span class="hljs-params">self, x, y</span>):<br>       <span class="hljs-string">&quot;&quot;&quot;Run solver to fit linear model.</span><br><span class="hljs-string"></span><br><span class="hljs-string">      Args:</span><br><span class="hljs-string">          x: Training example inputs. Shape (m, n).</span><br><span class="hljs-string">          y: Training example labels. Shape (m,).</span><br><span class="hljs-string">      &quot;&quot;&quot;</span><br>       <span class="hljs-keyword">raise</span> NotImplementedError(<span class="hljs-string">&#x27;Subclass of LinearModel must implement fit method.&#x27;</span>)<br><br>   <span class="hljs-keyword">def</span> <span class="hljs-title function_">predict</span>(<span class="hljs-params">self, x</span>):<br>       <span class="hljs-string">&quot;&quot;&quot;Make a prediction given new inputs x.</span><br><span class="hljs-string"></span><br><span class="hljs-string">      Args:</span><br><span class="hljs-string">          x: Inputs of shape (m, n).</span><br><span class="hljs-string"></span><br><span class="hljs-string">      Returns:</span><br><span class="hljs-string">          Outputs of shape (m,).</span><br><span class="hljs-string">      &quot;&quot;&quot;</span><br>       <span class="hljs-keyword">raise</span> NotImplementedError(<span class="hljs-string">&#x27;Subclass of LinearModel must implement predict method.&#x27;</span>)<br><br></code></pre></td></tr></table></figure>
+
+<p>之后对其进行更改</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> util<br><span class="hljs-keyword">from</span> linear_model <span class="hljs-keyword">import</span> LinearModel<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>(<span class="hljs-params">train_path, eval_path, pred_path</span>):<br>   <span class="hljs-string">&quot;&quot;&quot;Problem 1(b): Logistic regression with Newton&#x27;s Method.</span><br><span class="hljs-string"></span><br><span class="hljs-string">  Args:</span><br><span class="hljs-string">      train_path: Path to CSV file containing dataset for training.</span><br><span class="hljs-string">      eval_path: Path to CSV file containing dataset for evaluation.</span><br><span class="hljs-string">      pred_path: Path to save predictions.</span><br><span class="hljs-string">  &quot;&quot;&quot;</span><br>   x_train, y_train = util.load_dataset(train_path, add_intercept=<span class="hljs-literal">True</span>)<br>   x_eval, y_eval = util.load_dataset(eval_path, add_intercept=<span class="hljs-literal">True</span>)<br><br>   <span class="hljs-comment"># *** START CODE HERE ***</span><br>   model = LogisticRegression()<br>   model.fit(x_train, y_train)<br>   <span class="hljs-comment"># *** END CODE HERE ***</span><br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">LogisticRegression</span>(<span class="hljs-title class_ inherited__">LinearModel</span>):<br>   <span class="hljs-string">&quot;&quot;&quot;Logistic regression with Newton&#x27;s Method as the solver.</span><br><span class="hljs-string"></span><br><span class="hljs-string">  Example usage:</span><br><span class="hljs-string">      &gt; clf = LogisticRegression()</span><br><span class="hljs-string">      &gt; clf.fit(x_train, y_train)</span><br><span class="hljs-string">      &gt; clf.predict(x_eval)</span><br><span class="hljs-string">  &quot;&quot;&quot;</span><br><br>   <span class="hljs-keyword">def</span> <span class="hljs-title function_">fit</span>(<span class="hljs-params">self, x, y</span>):<br>       <span class="hljs-string">&quot;&quot;&quot;Run Newton&#x27;s Method to minimize J(theta) for logistic regression.</span><br><span class="hljs-string"></span><br><span class="hljs-string">      Args:</span><br><span class="hljs-string">          x: Training example inputs. Shape (m, n).</span><br><span class="hljs-string">          y: Training example labels. Shape (m,).</span><br><span class="hljs-string">      &quot;&quot;&quot;</span><br><br>       <span class="hljs-comment"># *** START CODE HERE ***</span><br>       <span class="hljs-keyword">def</span> <span class="hljs-title function_">h</span>(<span class="hljs-params">theta, x</span>):<br>           <span class="hljs-string">&#x27;&#x27;&#x27; logistic的假设</span><br><span class="hljs-string"></span><br><span class="hljs-string">          参数：</span><br><span class="hljs-string">              theta：超参数</span><br><span class="hljs-string">              x：输入变量，或者是特征值</span><br><span class="hljs-string">          &#x27;&#x27;&#x27;</span><br>           <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> / (<span class="hljs-number">1</span> + np.exp(-np.dot(x, theta)))<br><br>       <span class="hljs-comment"># *** END CODE HERE ***</span><br><br>       <span class="hljs-keyword">def</span> <span class="hljs-title function_">gradient</span>(<span class="hljs-params">theta, x, y</span>):<br>           <span class="hljs-string">&#x27;&#x27;&#x27; 计算梯度</span><br><span class="hljs-string"></span><br><span class="hljs-string">          参数：</span><br><span class="hljs-string">              theta：超参数</span><br><span class="hljs-string">              x：输入变量</span><br><span class="hljs-string">              y：验证变量</span><br><span class="hljs-string"></span><br><span class="hljs-string">          &#x27;&#x27;&#x27;</span><br>           m, _ = x.shape<br>           <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span> / m * np.dot(x.T, (y - h(theta, x)))<br><br>       <span class="hljs-keyword">def</span> <span class="hljs-title function_">hessian</span>(<span class="hljs-params">theta, x</span>):<br>           <span class="hljs-string">&quot;&quot;&quot; 计算Hessian公式</span><br><span class="hljs-string">          &quot;&quot;&quot;</span><br>           m, _ = x.shape<br>           h_theta_x = np.reshape(h(theta, x), (-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>           <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> / m * np.dot(x.T, h_theta_x * (<span class="hljs-number">1</span> - h_theta_x) * x)<br><br>       <span class="hljs-keyword">def</span> <span class="hljs-title function_">next_theta</span>(<span class="hljs-params">theta, x, y</span>):<br>           <span class="hljs-string">&quot;&quot;&quot;通过Newton法来更新theta</span><br><span class="hljs-string"></span><br><span class="hljs-string">          :param theta: Shape (n,).</span><br><span class="hljs-string">          :return:     The updated theta of shape (n,).</span><br><span class="hljs-string">          &quot;&quot;&quot;</span><br>           <span class="hljs-keyword">return</span> theta - np.dot(np.linalg.inv(hessian(theta, x)), gradient(theta, x, y))<br><br>       m, n = x.shape  <span class="hljs-comment"># m是训练集的大小，n是特征的多少</span><br><br>       <span class="hljs-comment"># 初始化theta</span><br>       <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.theta <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>           <span class="hljs-variable language_">self</span>.theta = np.zeros(n)<br><br>       <span class="hljs-comment"># 更新theta</span><br>       old_theta = <span class="hljs-variable language_">self</span>.theta<br>       new_theta = next_theta(<span class="hljs-variable language_">self</span>.theta, x, y)<br><br>       <span class="hljs-comment"># 合适的时候停止</span><br>       <span class="hljs-keyword">while</span> np.linalg.norm(new_theta - old_theta, <span class="hljs-number">1</span>) &gt;= <span class="hljs-variable language_">self</span>.eps:<br>           old_theta = new_theta<br>           new_theta = next_theta(old_theta, x, y)<br><br>       <span class="hljs-variable language_">self</span>.theta = new_theta<br><br>   <span class="hljs-keyword">def</span> <span class="hljs-title function_">predict</span>(<span class="hljs-params">self, x</span>):<br>       <span class="hljs-string">&quot;&quot;&quot;Make a prediction given new inputs x.</span><br><span class="hljs-string"></span><br><span class="hljs-string">      Args:</span><br><span class="hljs-string">          x: Inputs of shape (m, n).</span><br><span class="hljs-string"></span><br><span class="hljs-string">      Returns:</span><br><span class="hljs-string">          Outputs of shape (m,).</span><br><span class="hljs-string">      &quot;&quot;&quot;</span><br>       <span class="hljs-comment"># *** START CODE HERE ***</span><br>       <span class="hljs-keyword">return</span> x @ <span class="hljs-variable language_">self</span>.theta &gt;= <span class="hljs-number">0</span><br>       <span class="hljs-comment"># *** END CODE HERE ***</span><br><br><br>train_path = <span class="hljs-string">&#x27;../data/ds1_train.csv&#x27;</span><br>valid_path = <span class="hljs-string">&#x27;../data/ds1_valid.csv&#x27;</span><br>prad_path = <span class="hljs-string">&#x27;../data/ds1_valid.csv&#x27;</span><br>main(train_path, valid_path, prad_path)<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="0x04-广义线性模型-Generative-linear-model"><a href="#0x04-广义线性模型-Generative-linear-model" class="headerlink" title="0x04  广义线性模型 Generative linear model"></a><strong>0x04  广义线性模型 Generative linear model</strong></h2><p>三个最基本的假设</p>
+<ol>
+<li>预测值y的分布是指数族，～Exponential Family（n）其中n为超参数</li>
+<li>对于给定的x，我们得到一个关于预测值y的概率分布函数，这个分布函数的期望我们将其作为我们最终的预测值，则满足 $$   $$</li>
+<li>（限制性最大的假设）假设自然参数n和输入变量x之前的关系是线性的 $$   $$</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhangzhenhu.github.io/blog/glm/source/%E6%8C%87%E6%95%B0%E6%97%8F/content.html">关于什么是指数族</a> 指数族分布并不是一个具体的概率分布，指的是一类分布，这类分布具有一些共同的特性，所以形成一个概率分布族family，常见的指数族分布包括高斯分布、二项分布、多项式分布、泊松分布、gamma分布、beta分布等 $$ P(y,\eta)&#x3D;b(y)*exp(\eta^TT(y)-a(\eta))\ 这里的\eta 为自然参数\ T(y)是充分统计量\ a(\eta)是对数分割函数，来帮助\int p(y,\eta)dy&#x3D;1 $$ 常见的指数族和对应分类算法的： 实数～高斯分布 0-1分布～伯努利分布 计数分布～泊松分布 非零实数～Gamma正参数分布</p>
+</blockquote>
+<h3 id="由GLM构建线性模型的过程"><a href="#由GLM构建线性模型的过程" class="headerlink" title="由GLM构建线性模型的过程"></a><strong>由GLM构建线性模型的过程</strong></h3><ol>
+<li>linear regression $$   $$</li>
+<li>logistic regression $$   $$</li>
+</ol>
+<h2 id="0x05-高斯判别式算法-Gauss-discriminant-analysis"><a href="#0x05-高斯判别式算法-Gauss-discriminant-analysis" class="headerlink" title="0x05 高斯判别式算法 Gauss discriminant analysis"></a><strong>0x05 高斯判别式算法 Gauss discriminant analysis</strong></h2><p>判别式算法：希望找到一个分别的算法</p>
+<p>生成式算法：希望针对数据本身建模</p>
+<p>（判别式算法意味着一个找到一个线来区分两者，生成算法意味着找到数据本身的性质）</p>
+<p>或许一个是频率学派、一个是贝叶斯学派…</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" class="category-chain-item">算法基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/" class="category-chain-item">数据科学</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="print-no-link">#机器学习</a>
+      
+        <a href="/tags/CS229/" class="print-no-link">#CS229</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS229机器学习广义线性模型 | vol1</div>
+      <div>https://blog.chenxia.site/posts/ceb408a2.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/e7902d53.html" title="CS229机器学习 SVM | vol2">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS229机器学习 SVM | vol2</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/3f7a02de.html" title="Mitchell 机器学习读后反思">
+                        <span class="hidden-mobile">Mitchell 机器学习读后反思</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

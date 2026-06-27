@@ -1,0 +1,852 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chenlongxu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="该系列文章主要介绍下列基本概念：  数据仓库、数据湖、数据湖仓 云存储平台 AWS、Azure、Google cloud 优化数据存储 大数据手段 Apache Spark、Kafka 实时数据处理 ETL 事件驱动架构 EDA 其他 topic：数据关联、xAI、推理计算、无限存储、人类在环集成  帮助更好的理解数据的方式 一、数据仓库、数据湖、数据湖仓1.1 历史数据仓库（data  ware">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2025 年度后数据工程需要了解的基本概念">
+<meta property="og:url" content="https://blog.chenxia.site/posts/6123.html">
+<meta property="og:site_name" content="Chenlong&#39;s blog">
+<meta property="og:description" content="该系列文章主要介绍下列基本概念：  数据仓库、数据湖、数据湖仓 云存储平台 AWS、Azure、Google cloud 优化数据存储 大数据手段 Apache Spark、Kafka 实时数据处理 ETL 事件驱动架构 EDA 其他 topic：数据关联、xAI、推理计算、无限存储、人类在环集成  帮助更好的理解数据的方式 一、数据仓库、数据湖、数据湖仓1.1 历史数据仓库（data  ware">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-23T02:20:53.000Z">
+<meta property="article:modified_time" content="2025-01-23T03:03:34.000Z">
+<meta property="article:author" content="chenlongxu">
+<meta property="article:tag" content="数据工程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>2025 年度后数据工程需要了解的基本概念 - Chenlong&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.chenxia.site","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"Python"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"leancloud":{"app_id":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","app_key":"dFO07CA3WzWD6PlBNQwhQHuy","server_url":"https://a3q5ohns.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chenlong&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="2025 年度后数据工程需要了解的基本概念"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-23 10:20" pubdate>
+          2025年1月23日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">2025 年度后数据工程需要了解的基本概念</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>该系列文章主要介绍下列基本概念：</p>
+<ol>
+<li>数据仓库、数据湖、数据湖仓</li>
+<li>云存储平台 AWS、Azure、Google cloud</li>
+<li>优化数据存储</li>
+<li>大数据手段 Apache Spark、Kafka</li>
+<li>实时数据处理 ETL</li>
+<li>事件驱动架构 EDA</li>
+<li>其他 topic：数据关联、xAI、推理计算、无限存储、人类在环集成</li>
+</ol>
+<p>帮助更好的理解数据的方式</p>
+<h1 id="一、数据仓库、数据湖、数据湖仓"><a href="#一、数据仓库、数据湖、数据湖仓" class="headerlink" title="一、数据仓库、数据湖、数据湖仓"></a>一、数据仓库、数据湖、数据湖仓</h1><h2 id="1-1-历史"><a href="#1-1-历史" class="headerlink" title="1.1 历史"></a>1.1 历史</h2><p>数据仓库（data  warehouses）作为商业手段从 Oracle、SAP 公司起源，<strong>公司由此从不同的数据源构建集中的数据库，并使用商业智能工具开展分析</strong></p>
+<p>数据湖（data lakes）从<strong>非结构化</strong>或<strong>半结构化</strong>数据存储需求的发展，数据湖常用语存储原始数据（结构化和非结构化），例如包括<em>社交媒体的照片、推文等</em></p>
+<p>数据湖仓（data lakehouse）结合了数据仓库和数据湖的结果，由公司<em>Databricks</em>提出自己的<em>Delta lake</em>，核心有点在于<strong>允许 存储和查询非结构化数据 in 数据湖仓，和结构化数据 in 数据仓库 中一样</strong>，解决了<strong>数据库通常受到限制，数据湖通常难以搜索的缺点</strong></p>
+<h2 id="1-2-为什么需要这些结构？"><a href="#1-2-为什么需要这些结构？" class="headerlink" title="1.2 为什么需要这些结构？"></a>1.2 为什么需要这些结构？</h2><p>从 2000 年互联网爆炸开始，个人和企业生产的数据开始越来越多。由此面临的挑战包括：</p>
+<ol>
+<li>数据集成，在多源数据集合的基础上，复杂的 ETL、ELT 技术</li>
+<li>拓展性和成本，数据库昂贵，数据湖容易造成数据混乱，数据湖仓需要技术投资</li>
+<li>数据获取，各种权限要求</li>
+</ol>
+<h1 id="二、云平台-AWS、Azure、Google-CLoud"><a href="#二、云平台-AWS、Azure、Google-CLoud" class="headerlink" title="二、云平台 AWS、Azure、Google CLoud"></a>二、云平台 AWS、Azure、Google CLoud</h1><p>这些平台提供了可扩展的存储基础设置，同时用此存储数据并使用商业智能分析手段智能的。</p>
+<h2 id="2-1-个人常常面临的挑战"><a href="#2-1-个人常常面临的挑战" class="headerlink" title="2.1 个人常常面临的挑战"></a>2.1 个人常常面临的挑战</h2><ol>
+<li>在准备我的 Salesforce Data Cloud 认证（这是一个数据湖仓）时，我发现自己陷入了一个全新的术语海洋——这些术语都是 Salesforce 生态中特有的。每个云平台都有自己独特的术语和工具，这使得企业员工需要花费大量时间来熟悉这些内容。</li>
+<li>数据存储在云端，所以必须明确访问控制权限</li>
+</ol>
+<h1 id="三、优化数据存储"><a href="#三、优化数据存储" class="headerlink" title="三、优化数据存储"></a>三、优化数据存储</h1><p>更大的数据意味着更多的成本</p>
+<ol>
+<li>删除冗余或者不必要的数据进行数据压缩</li>
+<li>数据分区，将大型数据集拆分成更小的部分</li>
+<li>选择合适的存储格式优化存储效率和查询性能</li>
+</ol>
+<h1 id="四、大数据手段-Apache-Spark、Kafka"><a href="#四、大数据手段-Apache-Spark、Kafka" class="headerlink" title="四、大数据手段 Apache Spark、Kafka"></a>四、大数据手段 Apache Spark、Kafka</h1><p>上述 1-3 介绍如何高效的存储数据，而大数据技术让我们可以处理 ta 更加高效，包括使用实时流（Real-time）或者批处理（Batch）方法</p>
+<ul>
+<li>Spark，是一个框架可以分布式处理框架用于机器学习、数据工程、ETL 处理方式</li>
+<li>Kafks，是一种实时数据流处理应用，比如金融或者物流企业</li>
+</ul>
+<p>其中面临的挑战：</p>
+<ol>
+<li>实施的困难，这一套系统构建和维护需要工程技术</li>
+<li>数据质量，收集的数据需要确定数据的有效性</li>
+</ol>
+<h1 id="五、数据集中手段"><a href="#五、数据集中手段" class="headerlink" title="五、数据集中手段"></a>五、数据集中手段</h1><p>ETL（Extract-transformer-loading）描述不同集成和处理数据手段</p>
+<h1 id="六、事件驱动架构"><a href="#六、事件驱动架构" class="headerlink" title="六、事件驱动架构"></a>六、事件驱动架构</h1><p>如果我们能够（几乎）实时地在系统之间传输数据，我们同样希望能够（几乎）实时地对其做出反应：这就是<strong>事件驱动架构（Event-Driven Architecture，EDA）</strong>的应用场景。</p>
+<p>EDA 是一种<strong>以事件为驱动</strong>的架构模式，其中应用程序的运行由事件触发。事件是系统中任何相关的状态变化，例如用户登录应用程序，或接收到一笔支付。架构中的各个组件对这些事件作出响应，而无需彼此直接连接，从而提高了应用的<strong>灵活性和可扩展性</strong>。</p>
+<p>典型的技术实现包括 <strong>Apache Kafka</strong> 或 <strong>AWS EventBridge</strong>。</p>
+<h1 id="七、可解释性与xAI"><a href="#七、可解释性与xAI" class="headerlink" title="七、可解释性与xAI"></a>七、可解释性与xAI</h1><p>xAI：从模型角度解析模型是如何取得成果的</p>
+<p>数据血统：通过可追溯的数据来了解数据来自哪里，如何处理并最终如何被使用</p>
+<h1 id="八、生成式AI"><a href="#八、生成式AI" class="headerlink" title="八、生成式AI"></a>八、生成式AI</h1><p>包括AI、LLM、Agents 等术语</p>
+<h1 id="九、人类在环-human-in-the-loop"><a href="#九、人类在环-human-in-the-loop" class="headerlink" title="九、人类在环 human-in-the-loop"></a>九、人类在环 human-in-the-loop</h1><p>将人类和人工智能之间的合作优势结合起来：</p>
+<ol>
+<li>人工智能的优势在于模型可以有效的处理大量的数据，帮助人们发现其中难以识别的模式</li>
+<li>人类的优势在于没有事先训练的情况下将判断力、到的、创造力和理解能力放到工作中，并有能力面对不可预知的情况</li>
+</ol>
+<p>面临的问题在于：</p>
+<ol>
+<li>两者之间缺乏协同作用和不信任，似乎缺乏直观的界面，是的人类更容易与人工智能工具进行足够有效的互动</li>
+<li>人工智能当前的技术限制，难以理解逻辑一致性和上下文，这可能会导致错误或者不准确的结果</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://LTAI5tNwHtQGucyrs15ssbvo@chenxia31blog.oss-cn-hangzhou.aliyuncs.com/blog/s41562-024-02024-1.pdf">Humans and AI: Do they work better together or alone?</a></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a target="_blank" rel="noopener" href="https://towardsdatascience.com/the-concepts-data-professionals-should-know-in-2025-part-1-47e7e797801d">https://towardsdatascience.com/the-concepts-data-professionals-should-know-in-2025-part-1-47e7e797801d</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" class="category-chain-item">计算机科学</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B/" class="print-no-link">#数据工程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>2025 年度后数据工程需要了解的基本概念</div>
+      <div>https://blog.chenxia.site/posts/6123.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chenlongxu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年1月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/36311.html" title="如何理解广告系统">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">如何理解广告系统</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/1172.html" title="生存分析基本概念、常见方法、评价指标">
+                        <span class="hidden-mobile">生存分析基本概念、常见方法、评价指标</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"a3q5ohNSDjkVMwk3Blp6NunC-gzGzoHsz","appKey":"dFO07CA3WzWD6PlBNQwhQHuy","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
