@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /page/
+Disallow: /tags/
+Disallow: /categories/
+
+Sitemap: https://blog.tjdata.site/sitemap.xml
