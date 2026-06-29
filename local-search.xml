@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>2026年6月总结 — 读书记录·新鲜链接·运势</title>
+    <link href="/posts/june-2026-summary.html"/>
+    <url>/posts/june-2026-summary.html</url>
+    
+    <content type="html"><![CDATA[<p>2026年的六月，北京的夏天热得早。这个月忙着拆解业务逻辑、打磨方法论，也在碎片时间里读了几本书、关注了一些有意思的 AI 新方向。整理成文，供日后回看。</p><span id="more"></span><hr><h1 id="📚-读书记录"><a href="#📚-读书记录" class="headerlink" title="📚 读书记录"></a>📚 读书记录</h1><h2 id="1-《骆驼祥子》—-老舍"><a href="#1-《骆驼祥子》—-老舍" class="headerlink" title="1. 《骆驼祥子》— 老舍"></a>1. 《骆驼祥子》— 老舍</h2><p>读的是骆驼祥子，但看的不是车夫，看的是一个”超人哲学在现实中的失败”。</p><p>祥子过分迷信个人努力与个人成就——成功全靠自己的勤劳与汗水，失败便是自己的无能与懒惰。他把自己与其他车夫划清界限，不求助、不结社、不去银行存钱用存钱罐（结果被骗光）。</p><p>最致命的是：他曾经对他人的鄙夷，在失败后全部变成了骂自己的话。<strong>自己 PUA 自己</strong>，失去尊严后诞生出更膨胀的自尊。一旦发现自己坠落到了”那些车夫的阶级”，便毫无负担地放弃正直，全盘接受他们的行为模式，甚至更堕落。</p><p>这不是享乐主义的问题。这是<strong>把个人奋斗绝对化</strong>带来的认知陷阱——没有系统思维，没有向外求助的能力，一切归因于自己，成就时膨胀，失败时自毁。</p><h2 id="2-《人月神话》第-1-章「焦油坑」—-弗雷德里克·布鲁克斯"><a href="#2-《人月神话》第-1-章「焦油坑」—-弗雷德里克·布鲁克斯" class="headerlink" title="2. 《人月神话》第 1 章「焦油坑」— 弗雷德里克·布鲁克斯"></a>2. 《人月神话》第 1 章「焦油坑」— 弗雷德里克·布鲁克斯</h2><blockquote><p>岸上的船儿，如同海上的灯塔，无法移动。——荷兰谚语</p></blockquote><p>布鲁克斯用”焦油坑”比喻大型软件开发——巨兽挣扎得越猛烈，焦油纠缠得越紧。</p><p>核心框架：<strong>编程系统产品成本是独立程序的 9 倍</strong></p><ul><li>程序 → 编程产品：×3（通用化、测试、文档）</li><li>程序 → 编程系统构件：×3（接口、资源限制、组合测试）</li><li>编程系统产品：×9（两者兼具）</li></ul><p><strong>编程的五重乐趣：</strong></p><ol><li>创建事物的纯粹快乐</li><li>开发对他人有用的东西</li><li>零部件组装精密运行的魔术感</li><li>工作的非重复性带来的持续学习</li><li>代码介质的灵活可控</li></ol><p><strong>编程的五大苦恼：</strong></p><ol><li>必须追求完美——计算机不宽容任何错误</li><li>权威与责任不匹配——目标由他人设定</li><li>依赖他人的低质量代码</li><li>找 bug 的重复性（调试呈线性甚至二次方复杂度）</li><li>产品完成时可能已经过时</li></ol><blockquote><p>对许多人而言，乐趣远大于苦恼。</p></blockquote><hr><h1 id="🔗-新鲜链接-有意思的东西"><a href="#🔗-新鲜链接-有意思的东西" class="headerlink" title="🔗 新鲜链接 &amp; 有意思的东西"></a>🔗 新鲜链接 &amp; 有意思的东西</h1><h2 id="AI-Agent-方向"><a href="#AI-Agent-方向" class="headerlink" title="AI Agent 方向"></a>AI Agent 方向</h2><h3 id="1-微软-SkillOpt-框架-—-像训练神经网络一样训练-Agent-Skill"><a href="#1-微软-SkillOpt-框架-—-像训练神经网络一样训练-Agent-Skill" class="headerlink" title="1. 微软 SkillOpt 框架 — 像训练神经网络一样训练 Agent Skill"></a>1. 微软 SkillOpt 框架 — 像训练神经网络一样训练 Agent Skill</h3><p><strong>来源：</strong> Vincent (@vincentlogic)</p><p>微软联合上海交大、同济、复旦发布 SkillOpt 框架。核心思路：<strong>不动模型权重，训练的是 Skill 文件</strong>（自然语言 prompt 和指导文档）。</p><p>机制：执行任务 → 记录过程 → 复盘 → 修改 Skill → 验证效果，自动闭环迭代。</p><p>实验结果夸张：7个大模型、6类任务、3种 Agent 环境，52 组测试全部第一或并列第一。最有价值的是<strong>跨模型迁移能力</strong>：</p><ul><li>GPT-5.4 优化好的 skill → GPT-5.4-nano，提升 5.6 分</li><li>Claude Code 优化好的 skill → Codex，提升 29.4 分</li><li>一个 best_skill.md 文件，到处能用</li></ul><p>对 Hermes Agent 的 self-evolution 方向很有参考价值。</p><p>🔗 <a href="https://x.com/vincentlogic/status/2066458456564080965">https://x.com/vincentlogic/status/2066458456564080965</a></p><h3 id="2-设计循环，而不是写提示词"><a href="#2-设计循环，而不是写提示词" class="headerlink" title="2. 设计循环，而不是写提示词"></a>2. 设计循环，而不是写提示词</h3><p><strong>来源：</strong> @yanhua1010</p><p>继 Prompt Engineering 之后的升级思考：人不再写提示词，转而去设计 Agent 运行的循环（Loop）。X 上开始出现新概念 “Agent Loop”。</p><h3 id="3-Awesome-Agent-Loops-—-精选实战命令合集"><a href="#3-Awesome-Agent-Loops-—-精选实战命令合集" class="headerlink" title="3. Awesome Agent Loops — 精选实战命令合集"></a>3. Awesome Agent Loops — 精选实战命令合集</h3><p><strong>来源：</strong> @qingq77</p><p>收录 Claude Code 和 Codex 用户分享的最佳 &#x2F;loop、&#x2F;goal、&#x2F;schedule 实战命令，可直接复制使用。</p><p>🔗 <a href="https://github.com/serenakeyitan/awesome-agent-loops">https://github.com/serenakeyitan/awesome-agent-loops</a></p><h3 id="4-Hyper-Extract-—-文档转知识图谱-时间轴"><a href="#4-Hyper-Extract-—-文档转知识图谱-时间轴" class="headerlink" title="4. Hyper-Extract — 文档转知识图谱 + 时间轴"></a>4. Hyper-Extract — 文档转知识图谱 + 时间轴</h3><p><strong>来源：</strong> @AIExplorerTim</p><p>用 LLM 将非结构化文本转为结构化知识图谱、超图、时空提取，一条命令搞定。</p><p>🔗 <a href="https://github.com/yifanfeng97/Hyper-Extract">https://github.com/yifanfeng97/Hyper-Extract</a></p><h3 id="5-Agent-Reach-—-全网自动搜索-Agent"><a href="#5-Agent-Reach-—-全网自动搜索-Agent" class="headerlink" title="5. Agent Reach — 全网自动搜索 Agent"></a>5. Agent Reach — 全网自动搜索 Agent</h3><p><strong>来源：</strong> @aronhouyu</p><p>开源 Agent，支持 B站、YouTube、Reddit、RSS、GitHub、X、领英等 17 个平台，零配置可用 8 个渠道。（已安装 ✅）</p><p>🔗 <a href="https://github.com/Panniantong/agent-reach">https://github.com/Panniantong/agent-reach</a></p><h3 id="6-人机交互进化论（自拟笔记）"><a href="#6-人机交互进化论（自拟笔记）" class="headerlink" title="6. 人机交互进化论（自拟笔记）"></a>6. 人机交互进化论（自拟笔记）</h3><p>远古（打孔纸带）→ 上古（汇编）→ 中古（CLI）→ 近古（GUI）→ 近代（触摸屏）→ <strong>AI 时代</strong></p><p>到了 AI 时代，人在中间似乎没用了——机器与机器沟通不需要向人兼容。讽刺的是，MCP、Skill 等 AI 工具链反而在回归 CLI，有继续往上古回归的趋势。</p><h3 id="7-倪海夏《天纪》紫微斗数开源项目"><a href="#7-倪海夏《天纪》紫微斗数开源项目" class="headerlink" title="7. 倪海夏《天纪》紫微斗数开源项目"></a>7. 倪海夏《天纪》紫微斗数开源项目</h3><p><strong>来源：</strong> @gylq520</p><p>TypeScript 开源，51.8 万条命盘样本、四化飞星规则、1100+ 行格局判定逻辑。可搭排盘网站或训练命理 AI。</p><p>🔗 <a href="https://github.com/Renhuai123/ziw">https://github.com/Renhuai123/ziw</a> （紫微斗数）</p><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="8-Exercises-Dataset-—-1324-个健身动作数据集"><a href="#8-Exercises-Dataset-—-1324-个健身动作数据集" class="headerlink" title="8. Exercises Dataset — 1324 个健身动作数据集"></a>8. Exercises Dataset — 1324 个健身动作数据集</h3><p><strong>来源：</strong> Viking (@vikingmute)</p><p>hasaneyldrm&#x2F;exercises-dataset：1324 个健身动作，每个含静态缩略图 + GIF 动图。元数据齐全（目标肌群、器械类型、双语说明）。自带前端浏览器可搜索筛选。setup.html 可一键生成 SQL &#x2F; API 代码 &#x2F; LLM 提示词。25% 动作是自重训练。</p><p>⚠️ 仅限教育&#x2F;非商业研究用途。</p><p>🔗 <a href="https://github.com/hasaneyldrm/exercises-dataset">https://github.com/hasaneyldrm/exercises-dataset</a></p><hr><h1 id="🧠-这个月的思考碎片"><a href="#🧠-这个月的思考碎片" class="headerlink" title="🧠 这个月的思考碎片"></a>🧠 这个月的思考碎片</h1><h3 id="关于-“Must”（绝对使命感）"><a href="#关于-“Must”（绝对使命感）" class="headerlink" title="关于 “Must”（绝对使命感）"></a>关于 “Must”（绝对使命感）</h3><p>一段关于存在主义危机的思考：人最核心的动力是寻找意义。”Must”不是被迫的琐事，而是一种不计得失、超越本能的内心召唤——消防员冲进火场、母亲保护孩子，做这些事时没有权衡利弊，只有”我非做不可”。</p><p>真正的使命感不能靠外界强加，而是在经历挫折、爱、失去与成长后，像植物生根一样从内心长出来的信仰。与弗兰克尔《活出意义来》共鸣。</p><blockquote><p>拥有 “Must” 就是有了承受一切苦难和无聊的底气。</p></blockquote><h3 id="关于-“大脑的时代”"><a href="#关于-“大脑的时代”" class="headerlink" title="关于 “大脑的时代”"></a>关于 “大脑的时代”</h3><blockquote><p>从今往后，是大脑的时代，也就是知识与想法创造价值的时代。</p></blockquote><p>知识与想法正在取代传统生产要素成为核心价值来源。与 “焦油坑” 形成奇妙对照——软件工程是让人挣扎的泥潭，但知识和想法是唯一能跨越它的桥梁。</p><h3 id="关于绩效与成长（来自工作笔记）"><a href="#关于绩效与成长（来自工作笔记）" class="headerlink" title="关于绩效与成长（来自工作笔记）"></a>关于绩效与成长（来自工作笔记）</h3><p>六月在业务上继续打磨方法论沉淀的重要性。核心体会：</p><ul><li><strong>业务判断力</strong>是数据科学 2-3 年时拉开差距的核心</li><li><strong>方法论沉淀</strong>——把做过的事变成可复用的资产</li><li><strong>技术纵深</strong>——不要均匀用力，选一个方向打深</li><li><strong>可见度</strong>——没被看见的分析等于没做</li></ul><hr><h1 id="🔮-七月运势：塔罗牌阵解读"><a href="#🔮-七月运势：塔罗牌阵解读" class="headerlink" title="🔮 七月运势：塔罗牌阵解读"></a>🔮 七月运势：塔罗牌阵解读</h1><p>抽了三张牌看七月的能量趋势：</p><table><thead><tr><th>位置</th><th>牌面</th><th>核心含义</th></tr></thead><tbody><tr><td>现状</td><td><strong>倒吊人（正位）</strong></td><td>进度放缓、短期瓶颈，需换位思考。看似绕远路的妥协，可能是破局关键</td></tr><tr><td>心态</td><td><strong>圣杯五（正位）</strong></td><td>预期落空、失落感。不要沉溺于沉没成本，转身关注已建立的底座和积累的经验</td></tr><tr><td>行动</td><td><strong>审判（逆位）</strong></td><td>自我怀疑、拖延面对。不要被内心的”严厉裁判”压垮，接纳不完美，果断翻篇</td></tr></tbody></table><p><strong>七月核心课题：情绪脱敏与理性回归。</strong> 把挫折视为排除错误选项、优化长期模型的必要过程，聚焦当下能把握的核心变量。</p><hr><p><em>整理于 2026 年 6 月 28 日 · 北京</em></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>月度复盘</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>月度总结</tag>
+      
+      <tag>读书笔记</tag>
+      
+      <tag>人月神话</tag>
+      
+      <tag>骆驼祥子</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>20206年工作随想_保持生活的热爱</title>
     <link href="/posts/49689.html"/>
     <url>/posts/49689.html</url>
