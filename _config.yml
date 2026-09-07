@@ -5,8 +5,8 @@
 # Site
 title: Chenlong's blog
 subtitle: 'Stay hungry,stay foolish'
-description: ''
-keywords:
+description: 'Chenlong 的个人技术博客，分享编程、数据科学、AI 技术实践与学习笔记，涵盖 Python、Hexo、网站架构、机器学习等内容。'
+keywords: [技术博客, Python, 数据科学, AI, 机器学习, 编程, Hexo]
 author: chenlongxu
 language: zh-CN
 timezone: ''
@@ -90,6 +90,7 @@ pagination_dir: page
 # Include / Exclude file(s)
 ## include:/exclude: options only apply to the 'source/' folder
 include:
+  - ".nojekyll"
 exclude:
 ignore:
 
@@ -97,6 +98,16 @@ ignore:
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: fluid
+
+# Sitemap
+sitemap:
+  path: sitemap.xml
+
+# RSS Feed
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
