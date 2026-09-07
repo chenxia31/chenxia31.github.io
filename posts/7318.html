@@ -29,7 +29,7 @@
 <meta property="og:description" content="iOS 系统一直以「封闭」著称，官方只允许从 App Store 安装应用。但对于玩机党来说，总有各种原因需要把非 App Store 的应用装进 iPhone 或 iPad——比如某些已经下架的 App、内购破解版、修改版游戏、或者测试自己开发的 App。这篇文章给你一条完整的链路：开发者证书拼车 → 自签安装 IPA → 破解资源站。  声明：本文所有内容仅用于学习、技术研究与测试目的。请遵守">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-07T06:30:00.000Z">
-<meta property="article:modified_time" content="2026-09-07T15:21:04.388Z">
+<meta property="article:modified_time" content="2026-09-07T15:32:48.385Z">
 <meta property="article:author" content="chenlongxu">
 <meta property="article:tag" content="iOS">
 <meta property="article:tag" content="签名">
@@ -259,7 +259,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.3k 字
+          2.7k 字
         
       </span>
     
@@ -270,7 +270,7 @@
         
         
         
-          20 分钟
+          23 分钟
         
       </span>
     
@@ -413,6 +413,24 @@
 <p>只适用于系统在支持范围内的设备。系统升太高就装不了，这也是很多人「养老」不升级的原因。</p>
 </blockquote>
 <h2 id="特殊国情：爱思助手（i4Tools）"><a href="#特殊国情：爱思助手（i4Tools）" class="headerlink" title="特殊国情：爱思助手（i4Tools）"></a>特殊国情：爱思助手（i4Tools）</h2><p>国内用户最常用的是 <strong>爱思助手</strong>，它自带「签名安装」功能，可配合付费&#x2F;企业证书使用。优点是有中文界面、一键操作，缺点是本身要装证书、容易掉签。</p>
+<h2 id="方式四：申请证书-手机端一键签名（拼车-自签标配流程）"><a href="#方式四：申请证书-手机端一键签名（拼车-自签标配流程）" class="headerlink" title="方式四：申请证书 + 手机端一键签名（拼车&#x2F;自签标配流程）"></a>方式四：申请证书 + 手机端一键签名（拼车&#x2F;自签标配流程）</h2><p>如果你已经搞到&#x2F;自己申请了证书，最省事的玩法是在<strong>手机上直接签名安装</strong>。这也是拼车圈最标准的操作，分两步：</p>
+<h3 id="Step-1：申请证书与描述文件（拿到自己的签名资质）"><a href="#Step-1：申请证书与描述文件（拿到自己的签名资质）" class="headerlink" title="Step 1：申请证书与描述文件（拿到自己的签名资质）"></a>Step 1：申请证书与描述文件（拿到自己的签名资质）</h3><ol>
+<li>在苹果开发者后台（developer.apple.com）生成一个 <strong>iOS Development 证书</strong>，并下载对应的<strong>描述文件（.mobileprovision，里面包含你手机的 UDID）</strong>。</li>
+<li>将 <strong>.cer 证书和私钥</strong>导出为 <strong>.p12 格式</strong>文件。两种常用途径：<ul>
+<li><strong>Mac 上</strong>：用「钥匙串访问」把证书和私钥一起导出为 .p12</li>
+<li><strong>Windows 上</strong>：用爱思助手「申请证书」功能一键导出 .p12</li>
+</ul>
+</li>
+<li>准备好这三个文件：**<code>.p12</code>（私钥证书）+ <code>.mobileprovision</code>（描述文件）+ 你的 UDID**。</li>
+</ol>
+<h3 id="Step-2：手机端签名安装（无需电脑）"><a href="#Step-2：手机端签名安装（无需电脑）" class="headerlink" title="Step 2：手机端签名安装（无需电脑）"></a>Step 2：手机端签名安装（无需电脑）</h3><ol>
+<li>在 iPhone 上下载 <strong>全能签</strong> 或 <strong>轻松签</strong>（通过 Safari 访问其官网，先装对应的测试版&#x2F;企业版）。</li>
+<li>把 <strong>.p12 文件</strong> 和 <strong>.mobileprovision 描述文件</strong> 发送到手机，导入进全能签&#x2F;轻松签中。</li>
+<li>以后你手机上<strong>下载了任何 .ipa</strong>，直接用该工具打开，选择你导入的付费证书，点击<strong>「签名并安装」</strong>即可。</li>
+</ol>
+<blockquote>
+<p>优点：证书在手机里，随时随地方便签，不用每次连电脑。缺点：依然受证书本身的有效期&#x2F;是否掉签影响。</p>
+</blockquote>
 <hr>
 <h1 id="五、破解-IPA-包资源站有哪些"><a href="#五、破解-IPA-包资源站有哪些" class="headerlink" title="五、破解 IPA 包资源站有哪些"></a>五、破解 IPA 包资源站有哪些</h1><p>有了签名工具，你还得有「成品的 IPA」。下面按类别列出较知名的去处（<strong>可靠性自辨，多为灰色不可控</strong>）：</p>
 <h2 id="1-海外经典-IPA-站"><a href="#1-海外经典-IPA-站" class="headerlink" title="1. 海外经典 IPA 站"></a>1. 海外经典 IPA 站</h2><table>
